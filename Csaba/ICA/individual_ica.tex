@@ -1,0 +1,283 @@
+\documentclass[12pt]{article}
+%\usepackage{fullpage}
+%\usepackage{a4wide}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% svn revision information into the file and page layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{svn-multi}
+% For a good documentation of svn-multi, see http://www.tug.org/pracjourn/2007-3/scharrer/scharrer.pdf
+% Do this for new svn tex files:
+% svn propset svn:keywords "Id Author Date Rev URL" *.tex
+\svnidlong {$HeadURL$}
+				{$LastChangedDate$}
+				{$LastChangedRevision$}
+				{$LastChangedBy$}
+\svnid{$Id$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Setting up the page geometry
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[margin=1.25in]{geometry}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Setting up the headers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+%\fancyhead[ol]{\slshape\leftmark}
+\fancyfoot[ol]{Rev: \svnrev\ (\svnfilerev)}
+\fancyfoot[or]{\svnyear -\svnmonth -\svnday\ \svnhour:\svnminute} %Date
+
+%\usepackage{fullpage}
+%\setlength{\headheight}{15.0pt}
+%\usepackage{indentfirst}
+\usepackage{palatino}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{datetime}
+%\usepackage{nameref}
+%\usepackage{cleveref}
+\usepackage[ruled]{algorithm2e}
+%\usepackage{program}
+%\usepackage{algorithmic}
+\usepackage[sectionbib]{natbib}
+%\usepackage{geometry}
+%\usepackage{fullpage}
+\usepackage[backgroundcolor = White]{todonotes}
+%\usepackage[disable]{todonotes}
+
+% todo by Csaba
+\newcommand{\todoc}[2][]{\todo[color=Apricot,#1]{#2}}
+\newcommand{\todob}[2][]{\todo[color=Cerulean!20,#1]{#2}}
+
+
+\usepackage[bookmarks=false,colorlinks=true,linkcolor=blue,urlcolor=green,citecolor=red,pdfstartview=FitH,pagebackref,backref=false]{hyperref}
+\usepackage{thmtools}
+\usepackage{thm-restate}
+
+
+\declaretheorem[name=Theorem,refname={theorem,theorems},Refname={Theorem,Theorems},numberwithin=section]{theorem}
+
+\declaretheorem[name=Lemma,refname={lemma,lemmas},Refname={Lemma,Lemmas},sibling=theorem]{lemma}
+
+\declaretheorem[name=Proposition,refname={proposition,propositions},Refname={Proposition,Propositions},sibling=theorem]{prop}
+
+
+\declaretheorem[name=Corollary,refname={corollary,corollaries},Refname={Corollary,Corollaries},sibling=theorem]{corollary}
+
+\declaretheorem[name=Assumption,refname={assumption,assumptions},Refname={Assumption,Assumptions},sibling=theorem]{assumption}
+
+\declaretheorem[name=Definition,refname={definition,definitions},Refname={Definition,Definitions},sibling=theorem]{definition}
+
+\declaretheorem[name=Remark,refname={remark,remarks},Refname={Remark,Remarks},style=remark,sibling=theorem]{remark}
+
+\declaretheorem[name=Claim,refname={claim,claims},Refname={Claim,Claims},style=remark,sibling=theorem]{claim}
+
+\renewcommand{\P}{{\mathcal P}}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\Ex}[1]{\mathbb{E}[#1]}
+\newcommand{\Em}[2]{\mathbb{E}_{#1}\left[#2\right]}
+\newcommand{\Prob}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\snorm}[1]{\left\|#1\right\|} % scaling norm
+\newcommand{\lmax}[1]{\lambda_{\mathrm{max}}(#1)}
+\newcommand{\lmin}[1]{\lambda_{\mathrm{min}}(#1)}
+\newcommand{\sign}{\mathrm{sign}}
+\newcommand{\dprod}[2]{\langle #1,#2 \rangle_{M}}
+\newcommand{\hA}{\hat{A}}
+\newcommand{\hb}{\hat{b}}
+\newcommand{\hC}{\hat{C}}
+\newcommand{\hAp}{\hat{A}^\prime}
+\newcommand{\hbp}{\hat{b}^\prime}
+\newcommand{\hCp}{\hat{C}^\prime}
+\renewcommand{\th}{\theta}
+\newcommand{\vth}{\hat{\theta}_{V}}
+\newcommand{\lth}{\hat{\theta}_{\lambda}}
+\newcommand{\hth}{\hat{\theta}}
+\newcommand{\ltho}{\hat{\theta}_{\lambda_1}}
+\newcommand{\ltht}{\hat{\theta}_{\lambda_2}}
+\newcommand{\hlth}{\hat{\theta}_{\hat{\lambda}}}
+\newcommand{\slth}{\hat{\theta}_{\lambda^*}}
+\newcommand{\plth}{\hat{\theta}_{\lambda_p}}
+\newcommand{\hthp}{\hat{\theta}^\prime}
+\newcommand{\lthp}{\hat{\theta}^\prime_{\lambdap}}
+\newcommand{\ath}{\hat{\theta}_{a}}
+\newcommand{\thetap}{\theta^\prime}
+\newcommand{\sth}{\theta^*}
+\newcommand{\ind}[1]{\mathbb{I}_{\left\{ #1 \right\}}}
+\newcommand{\hzeta}{\hat{\zeta}}
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\cf}{\emph{cf.}}
+\newcommand{\T}[1]{T\left( #1 \right)}
+\newcommand{\St}[1]{S\left( #1 \right)}
+\newcommand{\Ts}[2]{T_{#1}\left( #2 \right)}
+\newcommand{\Ss}[2]{S_{#1}\left( #2 \right)}
+\newcommand{\Ord}[1]{O\left( #1 \right)}
+\newcommand{\etc}{\emph{etc.}}
+%\newcommand{\det}{\mathrm{det}}
+\newcommand{\bsth}{\bar{\theta}^*}
+\newcommand{\sal}{\emph} %Emphasis the J.D. Salinger way :)
+\newcommand{\gradL}{\nabla \mathcal{L}}
+\newcommand{\lambdap}{{\lambda^\prime}}
+\newcommand{\lambdahp}{\hat{\lambda}^\prime}
+\newcommand{\pqLoss}[1]{\mathcal{L}_{#1}}
+\newcommand{\pLoss}[2]{\pqLoss{#1}( #2 )}
+\newcommand{\qLoss}{\pqLoss{M}}
+\newcommand{\Loss}[1]{\qLoss(#1)}
+
+\newcommand{\hpqLoss}[1]{\mathcal{\hat{L}}_{#1}}
+\newcommand{\hpLoss}[2]{\hpqLoss{#1}( #2 )}
+\newcommand{\hqLoss}{\hpqLoss{M}}
+\newcommand{\hLoss}[1]{\hqLoss(#1)}
+
+\newcommand{\rth}{\hat{\theta}}
+\newcommand{\tth}{\tilde{\theta}}
+\newcommand{\maxeig}{\nu_{\max}}
+\newcommand{\mineig}{\nu_{\min}}
+
+\newcommand{\ra}{\rightarrow}
+\newcommand{\real}{\mathbb{R}}
+
+\newcommand{\one}[1]{\mathbf{1}_{\{#1\}}}
+
+\newcommand{\rl}[1]{\mathbb{R}^{#1}}
+\newcommand{\Mset}{\mathcal{M}(\varepsilon)}
+\newcommand{\Cset}{\mathcal{C}}
+\newcommand{\truel}{L}
+\newcommand{\zol}{L_{\mathrm{0-1}}}
+\newcommand{\hinl}{L_{\mathrm{hinge}}}
+\newcommand{\phil}{L_{\varphi}}
+\newcommand{\lspace}{\left\{1, \dots,K \right\}}
+\newcommand{\risk}{\mathcal{R}}
+\newcommand{\scoref}{\in \mathcal{H}}
+\newcommand{\subscoref}{\in \mathcal{H}^\prime}
+\newcommand{\hQ}{\hat{Q}}
+\DeclareMathOperator{\supp}{supp}
+\renewcommand{\natural}{\mathbb{N}}
+
+\title{Independence of individual sequences}
+\author{Barna \and Andris \and Csaba}
+\date{
+Version: \svnrev\\
+Date: \svndate\\
+Author: \svnauthor
+%\today\ @ \currenttime \ Version 0.5 (r5334)
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Motivation}
+ICA (independent component analysis) algorithms are known to work well for unmixing the mixtures of various deterministic signals, as seen in one of the ICA tutorials, for example.
+The ICA identifiability question is what signals (functions) can be recovered from their mixtures.
+
+Let $f:\natural \ra \real^d$ be a $d$-dimensional deterministic signal. We will denote by $f_i$ the $i$th component of $f$.
+Let $A = (a_{ij})$ be a $d\times d$ non-singular matrix and let $g:\natural \ra \real^d$ be defined by 
+\[
+g(t) = A f(t), \quad t\in \natural.
+\]
+In the ICA problem one observes the values of $g$ in a sequential problem and the goal is to recover the components of $f$ (up to scaling and permutation).
+
+We are not the first to ask the ICA identifiability question for deterministic signals (although this is not a thoroughly studied question).
+In particular, in their paper Pando G. Georgiev and Fabian J. Thei note the following:
+\begin{quote}
+ ``Our objective is to estimate the source signals sequentially one-by-one or simultaneously assuming that they are statistically independent.
+ %
+The uniqueness of such estimation (up to permutation and scaling), or identifiability of the linear ICA model, is justified in the literature by the Skitovitch-Darmois theorem [41,17].
+ %
+ Whereas this theorem is probabilistic in nature, an elementary lemma from optimization theory (although with a non-elementary proof) can serve the same purpose -- rigorous justification of the identifiability of ICA model, when maximization of the cumulants is used.\footnote{
+Optimization Techniques for Data Representations with Biomedical Applications, in
+P.M. Pardalos, H.E. Romeijn (eds.), Handbook of Optimization in Medicine,	253 Springer Optimization and Its Applications 26,  Springer Science+Business Media LLC 2009
+pp. $253--290$.}
+\end{quote}
+
+Our purpose is to extend this observation to other ICA models that do not rely on the maximization of cumulants, but rely on the concepts of independence (and thus, on the Darmois-Skitovitch theorem).
+
+\section{Results}
+\todoc[inline]{Warning: This is a mixture of a sketch and a wishlist. None of the ``results'' should be taken as proved.}
+We generalize the previous setting to the case when the domain of ``signals'' is not restricted to the set of natural numbers.
+Thus, we let $f:X \ra \real^d$, where $X$ is a locally compact Haussdorf space (e.g., $X = \real^m$, $m\in \natural_+$).
+In what follows, we will always consider the Borel $\sigma$-algebras of all the spaces unless otherwise mentioned.
+
+Consider the following construction:
+Fix  $\mu\equiv (\mu^{(n)})$, a sequence of probability measures satisfying $\supp \mu^{(n)} \subset \supp \mu^{(n+1)}$, $\cup^{(n)} \supp \mu^{(n+1)} = X$.
+Let $Y$ be a Banach space.
+\newcommand{\dmu}{d\mu}
+We say that the measurable function $f:X\ra Y$ is \emph{nice} if $\lim_{n\ra\infty} \int f \dmu_n$ exists.
+Let $N= N(X,Y)$ be the space of these functions. 
+\begin{restatable}{prop}{prop_blin}
+$N$ is a linear space.
+\end{restatable}
+
+\noindent \emph{Question}: Does $N$ depend on $\mu$? (I think so..)
+
+Let $\phi:N \ra Y$ be defined by $\phi(f) = \lim_{n\ra\infty} \int f \dmu_n$. 
+\begin{restatable}{prop}{prop_blin}
+$\phi$ is a bounded linear operator.
+\end{restatable}
+
+\begin{restatable}{prop}{prop_bounded}
+$N \subset L_{\infty}(X,Y)$, the set of $Y$-valued  measurable functions over $X$ such that $x\mapsto \| f(x)\|$ is in $L_{\infty}(X)$.
+\end{restatable}
+
+\begin{restatable}{prop}{prop_Nsubspace}
+$N$ is a subspace of $L_{\infty}(X,Y)$.
+\end{restatable}
+
+Let $Y = \real$ so that $L_\infty(X,Y) = L_\infty(X)$. 
+By the Hahn-Banach theorem, $\phi$ has a continuous linear extension to $L_{\infty}(X)$. \todoc{Generalization for  $L_{\infty}(X,Y)$}
+
+Since the dual of $L_{\infty}(X)$ is the space of finitely additive measures on $X$, there exists a finitely additive $\mu_\infty$ measure on $X$ such that $\phi(f) = \int f d\mu_{\infty}$ for any $f\in L_{\infty}(X)$ and in particular for any nice $f$.
+It is easy to see that $\mu_\infty$ must satisfy $\mu_{\infty}(X) = 1$ and also that $\mu_\infty$ cannot be $\sigma$-additive.
+
+For any measurable function $f:X \ra Y$, let us denote  
+by $\nu^{(n)}_f$ the distribution over $Y$ induced by $f$ and $\mu^{(n)}$:
+\[
+\nu^{(n)}_f(A) = \int_X \one{f(x)\in A} \dmu^{(n)} = \mu^{(n)}( f^{-1}(A) ).
+\]
+
+Let $\mu_n$ be a sequence of (finitely additive) measures.
+We say that $(\mu_n)$ converges to $\mu$ \emph{weakly} (i.e., $\mu_n \Rightarrow \mu$) if for any bounded continuous function $f$, $\int f d\mu_n \ra \int f d\mu$, $n\ra\infty$.
+
+\begin{restatable}{prop}{prop_limmeasure}
+If $f:X\ra Y$ is nice then there exists a finitely additive probability measure $\nu_f$ over $Y$ such that $\nu_f$ is the weak limit of the sequence $\mu^{(n)}_f$.
+\end{restatable}
+
+Note that the $\sigma$-additivity of $\nu_f$ is equivalent to the following: for any $B_n\subset Y$, $n\in \natural$, $B_i \cap B_j = \emptyset$, $i\ne j$, $\mu(\cup_n f^{-1}(B_n) ) = \sum_n \mu(f^{-1}(B_n))$, i.e., that $\mu$ is $\sigma$-additive on the $\sigma$-algebra induced by $f$ on $X$ (i.e., the smallest $\sigma$-algebra containing $\{f^{-1}(B)| B \subset Y, \,\, B \text{ measurable}\}$).
+
+\emph{Question:} Can it be that $\nu_f$ is $\sigma$-additive (if, e.g., $f(X)\subset Y$ is compact)?
+
+%\begin{restatable}{prop}{prop_sigma}
+%$\nu_f$ of the previous proposition is $\sigma$-additive if $f(X)\subset Y$ is compact.
+%\end{restatable}
+%The critical element of this proposition is that $\nu$ is a \emph{$\sigma$-additive} measure. \todoc{I am not sure this holds. But if it does, it will simplify matters a lot. Further, if it holds: Can we weaken the compactness condition?}
+
+Let $f_1,\ldots, f_d$ be nice, real-valued functions.
+We say that $f_1,\ldots, f_d$ are (mutually) \emph{independent}
+ if $\nu_{f_1} \times \cdots \times \nu_{f_d} = \nu_f$, where $f = (f_1,\ldots, f_d):X\ra \real^d$.
+
+The following result extends the well-known Darmois-Skitovitch theorem:
+\begin{restatable}[Darmois-Skitovitch theorem]{theorem}{thm_ds}
+Let $f_1,\ldots,f_d$ be mutually independent real-valued, nice functions and let $f = (f_1,\ldots,f_d)$.
+%Assume that $\nu_{f_i}$ are $\sigma$-additive. \todoc{Do we need this? With this assumption the theorem should be really to prove. Naturally, the result would be more interesting without this condition but maybe it does not hold.} 
+Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$ where all the coefficients $(\alpha_i)$, $(\beta_i)$ are nonzero.
+If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussian distributions.
+\end{restatable}
+
+
+
+
+
+
+\end{document}
