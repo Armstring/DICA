@@ -56,6 +56,7 @@
 % todo by Csaba
 \newcommand{\todoc}[2][]{\todo[color=Apricot,#1]{#2}}
 \newcommand{\todob}[2][]{\todo[color=Cerulean!20,#1]{#2}}
+\newcommand{\todoa}[2][]{\todo[color=Purple,#1]{#2}}
 
 
 \usepackage[bookmarks=false,colorlinks=true,linkcolor=blue,urlcolor=green,citecolor=red,pdfstartview=FitH,pagebackref,backref=false]{hyperref}
@@ -179,6 +180,7 @@ Author: \svnauthor
 \maketitle
 
 \section{Motivation}
+\label{sec:motivation}
 ICA (independent component analysis) algorithms are known to work well for unmixing the mixtures of various deterministic signals, as seen in one of the ICA tutorials, for example.
 The ICA identifiability question is what signals (functions) can be recovered from their mixtures.
 
@@ -205,6 +207,29 @@ pp. $253--290$.}
 Our purpose is to extend this observation to other ICA models that do not rely on the maximization of cumulants, but rely on the concepts of independence (and thus, on the Darmois-Skitovitch theorem).
 
 \section{Results}
+\todoa[inline]{The following can be generalized in several ways, I am just presenting it in the most simple way.}
+Consider the sequence of empirical measures introduced by $f$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
+for any Borel set $A \in \real^d$, $\nu_t=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
+\begin{lemma}
+Let $f_i(t)$ denote the $i$th coordinate of $f(t)$, and assume that 
+\[
+\lim_{t\to\infty} \tfrac{1}{t}\sum_{k=1}^t |f_i(k)|=m_i
+\] 
+exists and is finite for all $1 \le i \le d$.
+Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
+\end{lemma}
+\begin{proof}
+The statement of the lemma follows by Prokhorov's theorem if we show that the set of probability measures $\{\nu_t\}$ is tight.
+By the convergence of $|f_i(t)|$, for any $\epsilon>0$ there exists a $T>0$ such that 
+\begin{equation}
+\label{eq:converge}
+\left| \tfrac{1}{t} \sum_{k=1}^t |f_i(k)| - m_i \right| <\epsilon
+\end{equation}
+for all $1 \le i \le d$ and $t>T$. Let $u_{T,i}=\tfrac{m_i+\epsilon}{\epsilon}$. Then the marginals
+$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([0,u_{T,i}]) > 1-\epsilon$ for all $i,t$ considered, otherwise \eqref{eq:converge} would be violated. Thus, the compact set
+$K_{\epsilon}=\prod_{i=1}^d [0,u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1),\ldots,|f_i(T)|\}$ satisfies
+$\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
+\end{proof}
 \todoc[inline]{Warning: This is a mixture of a sketch and a wishlist. None of the ``results'' should be taken as proved.}
 We generalize the previous setting to the case when the domain of ``signals'' is not restricted to the set of natural numbers.
 Thus, we let $f:X \ra \real^d$, where $X$ is a locally compact Haussdorf space (e.g., $X = \real^m$, $m\in \natural_+$).
@@ -274,7 +299,6 @@ Let $f_1,\ldots,f_d$ be mutually independent real-valued, nice functions and let
 Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$ where all the coefficients $(\alpha_i)$, $(\beta_i)$ are nonzero.
 If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussian distributions.
 \end{restatable}
-
 
 
 
