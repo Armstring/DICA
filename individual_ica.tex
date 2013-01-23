@@ -185,7 +185,7 @@ ICA (independent component analysis) algorithms are known to work well for unmix
 The ICA identifiability question is what signals (functions) can be recovered from their mixtures.
 
 Let $f:\natural \ra \real^d$ be a $d$-dimensional deterministic signal. We will denote by $f_i$ the $i$th component of $f$.
-Let $A = (a_{ij})$ be a $d\times d$ non-singular matrix and let $g:\natural \ra \real^d$ be defined by 
+Let $A = (a_{ij})$ be a $d\times d$ non-singular matrix and let $g:\natural \ra \real^d$ be defined by
 \[
 g(t) = A f(t), \quad t\in \natural.
 \]
@@ -209,18 +209,18 @@ Our purpose is to extend this observation to other ICA models that do not rely o
 \section{Results}
 \todoa[inline]{The following can be generalized in several ways, I am just presenting it in the most simple way.}
 Consider the sequence of empirical measures introduced by $f$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
-for any Borel set $A \in \real^d$, $\nu_t=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
+for any Borel set $A \in \real^d$, $\nu_t=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$.
 \begin{lemma}
-Let $f_i(t)$ denote the $i$th coordinate of $f(t)$, and assume that 
+Let $f_i(t)$ denote the $i$th coordinate of $f(t)$, and assume that
 \[
 \lim_{t\to\infty} \tfrac{1}{t}\sum_{k=1}^t |f_i(k)|=m_i
-\] 
+\]
 exists and is finite for all $1 \le i \le d$.
 Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
 \end{lemma}
 \begin{proof}
 The statement of the lemma follows by Prokhorov's theorem if we show that the set of probability measures $\{\nu_t\}$ is tight.
-By the convergence of $|f_i(t)|$, for any $\epsilon>0$ there exists a $T>0$ such that 
+By the convergence of $|f_i(t)|$, for any $\epsilon>0$ there exists a $T>0$ such that
 \begin{equation}
 \label{eq:converge}
 \left| \tfrac{1}{t} \sum_{k=1}^t |f_i(k)| - m_i \right| <\epsilon
@@ -240,14 +240,14 @@ Fix  $\mu\equiv (\mu^{(n)})$, a sequence of probability measures satisfying $\su
 Let $Y$ be a Banach space.
 \newcommand{\dmu}{d\mu}
 We say that the measurable function $f:X\ra Y$ is \emph{nice} if $\lim_{n\ra\infty} \int f \dmu_n$ exists.
-Let $N= N(X,Y)$ be the space of these functions. 
+Let $N= N(X,Y)$ be the space of these functions.
 \begin{restatable}{prop}{prop_blin}
 $N$ is a linear space.
 \end{restatable}
 
 \noindent \emph{Question}: Does $N$ depend on $\mu$? (I think so..)
 
-Let $\phi:N \ra Y$ be defined by $\phi(f) = \lim_{n\ra\infty} \int f \dmu_n$. 
+Let $\phi:N \ra Y$ be defined by $\phi(f) = \lim_{n\ra\infty} \int f \dmu_n$.
 \begin{restatable}{prop}{prop_blin}
 $\phi$ is a bounded linear operator.
 \end{restatable}
@@ -260,13 +260,13 @@ $N \subset L_{\infty}(X,Y)$, the set of $Y$-valued  measurable functions over $X
 $N$ is a subspace of $L_{\infty}(X,Y)$.
 \end{restatable}
 
-Let $Y = \real$ so that $L_\infty(X,Y) = L_\infty(X)$. 
+Let $Y = \real$ so that $L_\infty(X,Y) = L_\infty(X)$.
 By the Hahn-Banach theorem, $\phi$ has a continuous linear extension to $L_{\infty}(X)$. \todoc{Generalization for  $L_{\infty}(X,Y)$}
 
 Since the dual of $L_{\infty}(X)$ is the space of finitely additive measures on $X$, there exists a finitely additive $\mu_\infty$ measure on $X$ such that $\phi(f) = \int f d\mu_{\infty}$ for any $f\in L_{\infty}(X)$ and in particular for any nice $f$.
 It is easy to see that $\mu_\infty$ must satisfy $\mu_{\infty}(X) = 1$ and also that $\mu_\infty$ cannot be $\sigma$-additive.
 
-For any measurable function $f:X \ra Y$, let us denote  
+For any measurable function $f:X \ra Y$, let us denote
 by $\nu^{(n)}_f$ the distribution over $Y$ induced by $f$ and $\mu^{(n)}$:
 \[
 \nu^{(n)}_f(A) = \int_X \one{f(x)\in A} \dmu^{(n)} = \mu^{(n)}( f^{-1}(A) ).
@@ -295,13 +295,16 @@ We say that $f_1,\ldots, f_d$ are (mutually) \emph{independent}
 The following result extends the well-known Darmois-Skitovitch theorem:
 \begin{restatable}[Darmois-Skitovitch theorem]{theorem}{thm_ds}
 Let $f_1,\ldots,f_d$ be mutually independent real-valued, nice functions and let $f = (f_1,\ldots,f_d)$.
-%Assume that $\nu_{f_i}$ are $\sigma$-additive. \todoc{Do we need this? With this assumption the theorem should be really to prove. Naturally, the result would be more interesting without this condition but maybe it does not hold.} 
+%Assume that $\nu_{f_i}$ are $\sigma$-additive. \todoc{Do we need this? With this assumption the theorem should be really to prove. Naturally, the result would be more interesting without this condition but maybe it does not hold.}
 Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$ where all the coefficients $(\alpha_i)$, $(\beta_i)$ are nonzero.
 If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussian distributions.
 \end{restatable}
 
 
+\section{ICA cost functions}
+ICA unfriendliness measure (i.e. dependence measure instead of independence measure)
+\begin{eqnarray*}
+D_{\mathcal{F}}(s,s')=\sup
+\end{eqnarray*}
 
-
-
-\end{document}
+\end{document} 
