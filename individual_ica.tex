@@ -56,7 +56,7 @@
 % todo by Csaba
 \newcommand{\todoc}[2][]{\todo[color=Apricot,#1]{#2}}
 \newcommand{\todob}[2][]{\todo[color=Cerulean!20,#1]{#2}}
-\newcommand{\todoa}[2][]{\todo[color=Purple,#1]{#2}}
+\newcommand{\todoa}[2][]{\todo[color=Purple!20,#1]{#2}}
 
 
 \usepackage[bookmarks=false,colorlinks=true,linkcolor=blue,urlcolor=green,citecolor=red,pdfstartview=FitH,pagebackref,backref=false]{hyperref}
@@ -209,7 +209,7 @@ Our purpose is to extend this observation to other ICA models that do not rely o
 \section{Results}
 \todoa[inline]{The following can be generalized in several ways, I am just presenting it in the most simple way.}
 Consider the sequence of empirical measures introduced by $f$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
-for any Borel set $A \in \real^d$, $\nu_t=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$.
+for any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
 \begin{lemma}
 Let $f_i(t)$ denote the $i$th coordinate of $f(t)$, and assume that
 \[
@@ -230,7 +230,9 @@ $\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([0,u_{T,i}]) > 1-\eps
 $K_{\epsilon}=\prod_{i=1}^d [0,u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1),\ldots,|f_i(T)|\}$ satisfies
 $\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
 \end{proof}
-\todoc[inline]{Warning: This is a mixture of a sketch and a wishlist. None of the ``results'' should be taken as proved.}
+\todoc[inline]{Warning: What follows is a mixture of a sketch and a wishlist. None of the ``results'' should be taken as proved.
+Also, this was written before the previous proposition. It may be that it is only the above proposition what is needed.
+}
 We generalize the previous setting to the case when the domain of ``signals'' is not restricted to the set of natural numbers.
 Thus, we let $f:X \ra \real^d$, where $X$ is a locally compact Haussdorf space (e.g., $X = \real^m$, $m\in \natural_+$).
 In what follows, we will always consider the Borel $\sigma$-algebras of all the spaces unless otherwise mentioned.
