@@ -251,7 +251,7 @@ The proof for this version of Darmois-Skitovitch theorem is similar to that of i
 In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
 Assume the independent nice component functions $\{f_1,\ldots,f_d\}$ are bounded by a constant $C$, and satisfy $\E_{\nu_{f_i}}[X]=0$, $\E_{\nu_{f_i}}[X^2]=1$, and $\kappa_i := \E_{\nu_{f_i}}[X^4]\neq 3$. 
 Here $\E_{\nu_{f_i}}$ denotes the expectation is taken with respect to the probability measure of $\nu_{f_i}$. 
-For $1\le t\le d$, denote $A_{(t)} = (A_t,A_{ct})$, where $A_{ct}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{t-1},A_{t+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. 
+For $1\le k\le d$, denote $A_{(t)} = (A_k,A_{ck})$, where $A_{ck}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{k-1},A_{k+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. 
 Without loss of generality, assume $\|A_i\|_2=1$.
 The algoeithm of \citet{DHsu2012} is as follows. We denote $\widehat{E}$ as the empirical estimation of parameter $E$. 
 \begin{algorithm}[H]
@@ -296,32 +296,32 @@ where $\widehat{A}$ is the matrix of eigenvectors of $\widehat{M}$.
 \end{lemma}
 
 \begin{proof}
-For $1\le t\le d$, assume 
+For $1\le k\le d$, assume 
 \[
-A_{(t)}^{-1} E A_{(t)} =  
+A_{(k)}^{-1} E A_{(k)} =  
 \left(
 \begin{array}{cc}
-F_{1t} & F_{2t}\\
-F_{3t} & F_{4t} \\
+F_{1k} & F_{2k}\\
+F_{3k} & F_{4k} \\
 \end{array} 
 \right). 
 \] 
-Note that by definitions, $\|F_{1t}\|_2,\|F_{4t}\|_2\le\|A_{(t)}^{-1} E A_{(t)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$,
- $\|F_{3t}\|_2\le\|A_{(t)}^{-1}EA_{t}\|_2\le\frac{1}{\sigma_{\min}(A)}\|E\|_2$,
- and $\|F_{2t}\|_2\le\|(A^{-1})_tEA_{(t)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$.
-Let $\gamma_t = \|F_{3t}\|_2$, $\eta_t = \|F_{3t}\|_2$, and $\delta_t = \min_{j: j\neq t} \vert (\frac{\phi^{\top}A_t}{\psi^{\top}A_t})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - \|F_{1t}\|_2 - \|F_{4t}\|_2$. Thus 
+Note that by definitions, $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|A_{(k)}^{-1} E A_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$,
+ $\|F_{3k}\|_2\le\|A_{(k)}^{-1}EA_{k}\|_2\le\frac{1}{\sigma_{\min}(A)}\|E\|_2$,
+ and $\|F_{2k}\|_2\le\|(A^{-1})_kEA_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$.
+Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{3k}\|_2$, and $\delta_k = \min_{j: j\neq k} \vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - \|F_{1k}\|_2 - \|F_{4k}\|_2$. Thus 
 \begin{align*}
-\delta_t & = \min_{j:j\neq t} \vert (\frac{\phi^{\top}A_t}{\psi^{\top}A_t})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - \|F_{1t}\|_2 - \|F_{4t}\|_2\\
-	& \ge \min_{j:j\neq t} \vert (\frac{\phi^{\top}A_t}{\psi^{\top}A_t})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - 2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
+\delta_k & = \min_{j:j\neq k} \vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
+	& \ge \min_{j:j\neq k} \vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - 2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
 	& \ge  \kappa -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
 	& >  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 >0,
 \end{align*}
-and $\delta_t^2 > 4\gamma_t\eta_t$. 
-Therefore, by Theorem 2.8 of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_t}{\delta_t}$, such that there exists one of a eigenvector $\widehat{A_t}$ of $\widehat{M}$ satisfying
+and $\delta_k^2 > 4\gamma_k\eta_k$. 
+Therefore, by Theorem 2.8 of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$, such that there exists one of a eigenvector $\widehat{A_k}$ of $\widehat{M}$ satisfying
  \[
- \|\widehat{A_t} - A_t\|_2 \le \|A_{ct}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_t}{\delta_t}.\le \frac{4\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2.
+ \|\widehat{A_k} - A_k\|_2 \le \|A_{ct}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_k}{\delta_k}.\le \frac{4\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2.
  \]
- By condition, for $s\neq t$,  $\frac{8\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2 < \|A_s - A_t\|_2\le \|A_s - \widehat{A_t}\|_2 + \|A_t - \widehat{A_t}\|_2$, thus $\widehat{A_s} \neq \widehat{A_t}$.  Summing up the upper bound gets the result. 
+ By condition, for $i\neq j$,  $\frac{8\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \widehat{A_i}\|_2 + \|A_j - \widehat{A_i}\|_2$, thus $\widehat{A_i} \neq \widehat{A_j}$.  Summing up the upper bound gets the result. 
 \end{proof}
 
 The next lemma shows that $\|\widehat{X}^{-1}\|_2 = \|(X+E)^{-1}\|_2$ is close to $\frac{1}{\sigma_{\min}(X)}$.
@@ -370,19 +370,19 @@ where
 & G_1(\eta) = \int (\eta^{\top}Af)^2Aff^{\top}A^{\top}\,d\nu; \\
 & G_2(\eta) = \int (\eta^{\top}Af)^2\,d\nu \int Aff^{\top}A^{\top} \,d\nu; \\
 & G_3(\eta) = \Big(\int (\eta^{\top}Af)Af\,d\nu\Big)\Big(\int (\eta^{\top}Af)Af\,d\nu\Big)^{\top}. \\
-&\widehat{ G_1(\eta)} = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2g(k)g(k)^{\top} = \int (\eta^{\top}Af)^2Aff^{\top}A^{\top}\,d\nu_{n}; \\
-& \widehat{G_2(\eta)} = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2 \sum_{k=1}^{n}g(k)g(k)^{\top} = \int (\eta^{\top}Af)^2\,d\nu_{n} \int Aff^{\top}A^{\top} \,d\nu_{n}; \\
-& \widehat{G_3(\eta)} = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big)^{\top} = \Big(\int (\eta^{\top}Af)Af\,d\nu_{n}\Big)\Big(\int (\eta^{\top}Af)Af\,d\nu_{n}\Big)^{\top}.
+&\widehat{ G_1(\eta)} = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2g(k)g(k)^{\top} = \int (\eta^{\top}Af)^2Aff^{\top}A^{\top}\,d\nu_t; \\
+& \widehat{G_2(\eta)} = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2 \sum_{k=1}^{n}g(k)g(k)^{\top} = \int (\eta^{\top}Af)^2\,d\nu_t \int Aff^{\top}A^{\top} \,d\nu_t; \\
+& \widehat{G_3(\eta)} = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big)^{\top} = \Big(\int (\eta^{\top}Af)Af\,d\nu_t\Big)\Big(\int (\eta^{\top}Af)Af\,d\nu_t\Big)^{\top}.
 \end{align*}
 Given two probability measure $\mu$ and $\nu$ over $(\Omega , \xi)$, recall the definition of total variance, $D_{tv}(\mu, \nu) = \sup_{A\in\xi} |\mu(A) - \nu(A)|$. 
-The following lemma bound $\|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)} \|_2$ by $D_{tv}(\nu_n , \nu)$.
+The following lemma bound $\|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)} \|_2$ by $D_{tv}(\nu_t , \nu)$.
 
 
 \begin{lemma}
 \label{lem:nablavariation}
 Assume $\|\eta\|_2 = 1$, then 
 \[
-\|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}  \|_2 \le d q D_{tv}(\nu_n , \nu) + 2dq D_{tv}(\nu_n , \nu)^2,
+\|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}  \|_2 \le d q D_{tv}(\nu_t , \nu) + 2dq D_{tv}(\nu_t , \nu)^2,
 \]
 where $q = d^2C^4\sigma_{\max}(A)^4$.
 \end{lemma}
@@ -391,18 +391,18 @@ Denote the $i$-th row of $A$ by $A_{:,i}$, and the $(i,j)$ entry of a matrix $M$
 Thus $\big(\eta^{\top}Af\big)^2 \le d C^2\|\eta\|_2^2\sigma_{\max}(A)^2 \le d C^2\sigma_{\max}(A)^2 $,  $|A_{:i}f| \le C\sqrt{d}\sigma_{\max}(A)$, 
 therefore $|\big(\eta^{\top}Af\big)^2 A_{:i}ff^{\top} A_{:j}^{\top}| \le d^2C^4\sigma_{\max}(A)^4 = q$.
 \[
-|(G_1)_{i,j} - (\widehat{G_1})_{i,j} | \le q D_{tv}(\nu_n , \nu).
+|(G_1)_{i,j} - (\widehat{G_1})_{i,j} | \le q D_{tv}(\nu_t , \nu).
 \]
 Similarly, 
 \begin{align*}
-& |(G_2)_{i,j} - (\widehat{G_2})_{i,j} | \le q D_{tv}(\nu_n , \nu)^2 \\
-\text{and } \quad & |(G_3)_{i,j} - (\widehat{G_3})_{i,j} | \le q D_{tv}(\nu_n , \nu)^2.
+& |(G_2)_{i,j} - (\widehat{G_2})_{i,j} | \le q D_{tv}(\nu_t , \nu)^2 \\
+\text{and } \quad & |(G_3)_{i,j} - (\widehat{G_3})_{i,j} | \le q D_{tv}(\nu_t , \nu)^2.
 \end{align*}
 Therefore,
 \begin{align*}
 	& \|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}  \|_2 \\
 \le & \|G_1 - \widehat{G_1}\|_2 + \|G_2 - \widehat{G_2}\|_2 + \|G_3 - \widehat{G_3}\|_2 \\
-\le & d q D_{tv}(\nu_n , \nu) + 2dq D_{tv}(\nu_n , \nu)^2.
+\le & d q D_{tv}(\nu_t , \nu) + 2dq D_{tv}(\nu_t , \nu)^2.
 \end{align*}
 \end{proof}
 
@@ -453,7 +453,7 @@ Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have
  \]
  From the proof of Lemma \ref{lem:nablavariation}, we have $\|\nabla^2 f(\phi)\|_2\le dq$, where $q = d^2C^4\sigma_{\max}(A)^4$. Apply Lemma \ref{lem:nablavariation}, 
  \[
- \|M - \widehat{M} \|_2 \le dq(cdq+1) \frac{D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2}{\sigma_{\min}(\nabla^2f(\psi)) - d q\big( D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2\big)}  = dq(cdq+1) Q.
+ \|M - \widehat{M} \|_2 \le dq(cdq+1) \frac{D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2}{\sigma_{\min}(\nabla^2f(\psi)) - d q\big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}  = dq(cdq+1) Q.
  \]
  So, 
  \[
