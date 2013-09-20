@@ -1,0 +1,476 @@
+\documentclass[english]{article} % For LaTeX2e
+
+\usepackage[usenames,dvipsnames]{xcolor}
+% uncomment the following line and comment the line after it if you want to turn
+% off todos
+%\usepackage[disable,backgroundcolor = White,textwidth=\marginparwidth]{todonotes}
+\usepackage[backgroundcolor = White,textwidth=\marginparwidth]{todonotes}
+\newcommand{\todoc}[2][]{\todo[color=Apricot,#1]{#2}}
+\newcommand{\todob}[2][]{\todo[color=Cerulean!20,#1]{#2}}
+\newcommand{\todoa}[2][]{\todo[color=Purple!20,#1]{#2}}
+\newcommand{\todor}[2][]{\todo[color=Blue!10,#1]{#2}}
+
+\usepackage{nips12submit_e,times}
+
+\usepackage{comment}
+\usepackage{babel}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[authoryear]{natbib}
+\usepackage{xspace}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{array}
+
+
+\title{Deterministic ICA}
+
+
+\author{
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\nipsfinalcopy % Uncomment for camera-ready version
+
+
+\usepackage{algorithmic}
+\usepackage{babel}
+\providecommand{\lemmaname}{Lemma}
+\providecommand{\remarkname}{Remark}
+\providecommand{\theoremname}{Theorem}
+
+\renewcommand{\P}{{\mathcal P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ex}[1]{\mathbb{E}[#1]}
+\newcommand{\Em}[2]{\mathbb{E}_{#1}\left[#2\right]}
+\newcommand{\Prob}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\snorm}[1]{\left\|#1\right\|} % scaling norm
+\newcommand{\lmax}[1]{\lambda_{\mathrm{max}}(#1)}
+\newcommand{\lmin}[1]{\lambda_{\mathrm{min}}(#1)}
+\newcommand{\sign}{\mathrm{sign}}
+\newcommand{\dprod}[2]{\langle #1,#2 \rangle_{M}}
+\newcommand{\hA}{\hat{A}}
+\newcommand{\hb}{\hat{b}}
+\newcommand{\hC}{\hat{C}}
+\newcommand{\hAp}{\hat{A}^\prime}
+\newcommand{\hbp}{\hat{b}^\prime}
+\newcommand{\hCp}{\hat{C}^\prime}
+\renewcommand{\th}{\theta}
+\newcommand{\vth}{\hat{\theta}_{V}}
+\newcommand{\lth}{\hat{\theta}_{\lambda}}
+\newcommand{\hth}{\hat{\theta}}
+\newcommand{\ltho}{\hat{\theta}_{\lambda_1}}
+\newcommand{\ltht}{\hat{\theta}_{\lambda_2}}
+\newcommand{\hlth}{\hat{\theta}_{\hat{\lambda}}}
+\newcommand{\slth}{\hat{\theta}_{\lambda^*}}
+\newcommand{\plth}{\hat{\theta}_{\lambda_p}}
+\newcommand{\hthp}{\hat{\theta}^\prime}
+\newcommand{\lthp}{\hat{\theta}^\prime_{\lambdap}}
+\newcommand{\ath}{\hat{\theta}_{a}}
+\newcommand{\thetap}{\theta^\prime}
+\newcommand{\sth}{\theta^*}
+\newcommand{\ind}[1]{\mathbb{I}_{\left\{ #1 \right\}}}
+\newcommand{\hzeta}{\hat{\zeta}}
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\cf}{\emph{cf.}}
+\newcommand{\T}[1]{T\left( #1 \right)}
+\newcommand{\St}[1]{S\left( #1 \right)}
+\newcommand{\Ts}[2]{T_{#1}\left( #2 \right)}
+\newcommand{\Ss}[2]{S_{#1}\left( #2 \right)}
+\newcommand{\Ord}[1]{O\left( #1 \right)}
+\newcommand{\etc}{\emph{etc.}}
+%\newcommand{\det}{\mathrm{det}}
+\newcommand{\bsth}{\bar{\theta}^*}
+\newcommand{\sal}{\emph} %Emphasis the J.D. Salinger way :)
+\newcommand{\gradL}{\nabla \mathcal{L}}
+\newcommand{\lambdap}{{\lambda^\prime}}
+\newcommand{\lambdahp}{\hat{\lambda}^\prime}
+\newcommand{\pqLoss}[1]{\mathcal{L}_{#1}}
+\newcommand{\pLoss}[2]{\pqLoss{#1}( #2 )}
+\newcommand{\qLoss}{\pqLoss{M}}
+\newcommand{\Loss}[1]{\qLoss(#1)}
+
+\newcommand{\hpqLoss}[1]{\mathcal{\hat{L}}_{#1}}
+\newcommand{\hpLoss}[2]{\hpqLoss{#1}( #2 )}
+\newcommand{\hqLoss}{\hpqLoss{M}}
+\newcommand{\hLoss}[1]{\hqLoss(#1)}
+
+\newcommand{\rth}{\hat{\theta}}
+\newcommand{\tth}{\tilde{\theta}}
+\newcommand{\maxeig}{\nu_{\max}}
+\newcommand{\mineig}{\nu_{\min}}
+
+\newcommand{\ra}{\rightarrow}
+\newcommand{\real}{\mathbb{R}}
+
+\newcommand{\one}[1]{\mathbf{1}_{\{#1\}}}
+
+\newcommand{\rl}[1]{\mathbb{R}^{#1}}
+\newcommand{\Mset}{\mathcal{M}(\varepsilon)}
+\newcommand{\Cset}{\mathcal{C}}
+\newcommand{\truel}{L}
+\newcommand{\zol}{L_{\mathrm{0-1}}}
+\newcommand{\hinl}{L_{\mathrm{hinge}}}
+\newcommand{\phil}{L_{\varphi}}
+\newcommand{\lspace}{\left\{1, \dots,K \right\}}
+\newcommand{\risk}{\mathcal{R}}
+\newcommand{\scoref}{\in \mathcal{H}}
+\newcommand{\subscoref}{\in \mathcal{H}^\prime}
+\newcommand{\hQ}{\hat{Q}}
+\DeclareMathOperator{\supp}{supp}
+\renewcommand{\natural}{\mathbb{N}}
+
+\providecommand{\lemmaname}{Lemma}
+\providecommand{\remarkname}{Remark}
+\providecommand{\theoremname}{Theorem}
+\providecommand{\claimname}{Claim}
+
+\theoremstyle{plain}
+\newtheorem{thm}{\protect\theoremname}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{\protect\remarkname}
+\theoremstyle{claim}
+\newtheorem{claim}[thm]{\protect\claimname}
+\theoremstyle{plain}
+\newtheorem{lemma}[thm]{\protect\lemmaname}
+\newcounter{assumption}%[section]
+\newcommand{\theassumptionletter}{A}
+\renewcommand{\theassumption}{\theassumptionletter\arabic{assumption}}
+
+\newenvironment{ass}[1][]{\begin{trivlist}\item[] \refstepcounter{assumption}%
+ {\bf Assumption\ \theassumption\ #1} \it}{%\par\nobreak\noindent\sl\ignorespaces}{%
+ \ifvmode\smallskip\fi\end{trivlist}}
+\newcommand{\aref}[1]{(\ref{#1})}
+\newenvironment{ass*}[1][]{\begin{trivlist}\item[] %
+ {\bf Assumption\  #1} }{%\par\nobreak\noindent\sl\ignorespaces}{%
+ \ifvmode\smallskip\fi\end{trivlist}}
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Motivation}
+\label{sec:motivation}
+ICA (independent component analysis) algorithms are known to work well for unmixing the mixtures of various deterministic signals, as seen in one of the ICA tutorials, for example.
+The ICA identifiability question is what signals (functions) can be recovered from their mixtures.
+
+Let $f:\natural \ra \real^d$ be a $d$-dimensional deterministic signal. We will denote by $f_i$ the $i$th component of $f$.
+Let $A = (a_{ij})$ be a $d\times d$ non-singular matrix and let $g:\natural \ra \real^d$ be defined by
+\[
+g(t) = A f(t), \quad t\in \natural.
+\]
+In the ICA problem one observes the values of $g$ in a sequential problem and the goal is to recover the components of $f$ (up to scaling and permutation).
+
+We are not the first to ask the ICA identifiability question for deterministic signals (although this is not a thoroughly studied question).
+In particular, in their paper Pando G. Georgiev and Fabian J. Thei note the following:
+\begin{quote}
+ ``Our objective is to estimate the source signals sequentially one-by-one or simultaneously assuming that they are statistically independent.
+ %
+The uniqueness of such estimation (up to permutation and scaling), or identifiability of the linear ICA model, is justified in the literature by the Skitovitch-Darmois theorem [41,17].
+ %
+ Whereas this theorem is probabilistic in nature, an elementary lemma from optimization theory (although with a non-elementary proof) can serve the same purpose -- rigorous justification of the identifiability of ICA model, when maximization of the cumulants is used.\footnote{
+Optimization Techniques for Data Representations with Biomedical Applications, in
+P.M. Pardalos, H.E. Romeijn (eds.), Handbook of Optimization in Medicine,	253 Springer Optimization and Its Applications 26,  Springer Science+Business Media LLC 2009
+pp. $253--290$.}
+\end{quote}
+
+Our purpose is to extend this observation to other ICA models that do not rely on the maximization of cumulants, but rely on the concepts of independence (and thus, on the Darmois-Skitovitch theorem).
+
+\section{Independence of Components}
+\label{sec:IndeofComp}
+Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
+for any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
+\begin{lemma}
+\label{lem:nicefunction}
+Let $f_i(t)$ denote the $i$th coordinate of $f(t)$, and assume that
+\begin{equation}
+\label{eq:niceproperty}
+\lim_{t\to\infty} \tfrac{1}{t}\sum_{k=1}^t |f_i(k)|=m_i
+\end{equation}
+exists and is finite for all $1 \le i \le d$.
+Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
+\end{lemma}
+\begin{proof}
+The statement of the lemma follows by Prokhorov's theorem if we show that the set of probability measures $\{\nu_t\}$ is tight.
+By the convergence of $|f_i(t)|$, for any $\epsilon>0$ there exists a $T>0$ such that
+\begin{equation}
+\label{eq:converge}
+\left| \tfrac{1}{t} \sum_{k=1}^t |f_i(k)| - m_i \right| <\epsilon
+\end{equation}
+for all $1 \le i \le d$ and $t>T$. Let $u_{T,i}=\tfrac{m_i+\epsilon}{\epsilon}$. Then the marginals
+$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([0,u_{T,i}]) > 1-\epsilon$ for all $i,t$ considered, otherwise \eqref{eq:converge} would be violated. Thus, the compact set
+$K_{\epsilon}=\prod_{i=1}^d [0,u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1),\ldots,|f_i(T)|\}$ satisfies
+$\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
+\end{proof}
+
+We call the functions $f_i$s that satisfy equation \eqref{eq:niceproperty} nice functions. Denote the space of nice functions by $N$. 
+Note that Lemma \ref{lem:nicefunction} guarantees that all the convergent subsequences of $\{\nu_t\}$ will converge to probability measures. 
+Now assume all the convergent subsequences have the same limit, therefore, $\{\nu_t\}$ will converge weakly into a probability measure, defined by $\nu_f$ to indicate its dependence on $f$. 
+
+Given nice component functions $\{f_1,\ldots,f_d\}$, we say that $\{f_1,\ldots,f_d\}$ are independent, if $\nu_{f_1}\times\ldots\times\nu_{f_d} = v_f$, where $f = (f_1,\ldots,f_d):\natural \rightarrow \real^d$.
+
+\emph{Examples of period function}
+
+\section{Analysis of ICA algorithms}
+\subsection{Correctness}
+Note that given mutually independent nice functions $\{f_1,\ldots,f_d\}$, the induced probability measure of $g = \sum_i \alpha_i f_i$ is the convolution of $\nu_{\alpha_i f_i}$.
+Assume the induced probability measure of each component $f_i$ is non-Gaussian, then correctness of ICA algorithms are guaranteed by the Darmois-Skitovitch theorem, as follows.
+\begin{thm}[Darmois-Skitovitch theorem]
+Let $f_1,\ldots,f_d$ be mutually independent real-valued, nice functions and let $f = (f_1,\ldots,f_d)$.
+Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$ where all the coefficients $(\alpha_i)$, $(\beta_i)$ are nonzero.
+If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussian distributions.
+\end{thm}
+\begin{rem}
+The proof for this version of Darmois-Skitovitch theorem is similar to that of independent random variables.
+\end{rem}
+
+\subsection{Efficiency}
+In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
+Assume the independent nice component functions $\{f_1,\ldots,f_d\}$ are bounded by a constant $C$, and satisfy $\E_{\nu_{f_i}}[X]=0$, $\E_{\nu_{f_i}}[X^2]=1$, and $\kappa_i := \E_{\nu_{f_i}}[X^4]\neq 3$. 
+Here $\E_{\nu_{f_i}}$ denotes the expectation is taken with respect to the probability measure of $\nu_{f_i}$. 
+For $1\le t\le d$, denote $A_{(t)} = (A_t,A_{ct})$, where $A_{ct}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{t-1},A_{t+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. 
+Without loss of generality, assume $\|A_i\|_2=1$.
+The algoeithm of \citet{DHsu2012} is as follows. We denote $\widehat{E}$ as the empirical estimation of parameter $E$. 
+\begin{algorithm}[H]
+\caption{ICA algorithm of \citet{DHsu2012} \label{alg:icaHsu}}
+\begin{algorithmic}[1]
+\INPUT algorithmicinput $g(k)$ for $k\in\natural$.
+\OUTPUT the coefficient matrix $A$. 
+\STATE Sample $\phi$ and $\psi$ from a unit ball of $\real^d$, such that $\|\phi\|_2 = 1$ and $\|\psi\|_2 = 1$;
+\STATE Evaluate $\widehat{\nabla^2f(\phi)}$ and $\widehat{\nabla^2f(\psi)}$, \\
+\quad where $\widehat{m_p(\eta)} = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $f(\eta) = \frac{1}{12}\big(\widehat{m_4(\eta)} - 3\widehat{m_2(\eta)}^2 \big)$;
+\STATE Compute $\widehat{M} = (\widehat{\nabla^2f(\phi)})(\widehat{\nabla^2f(\psi))^{-1}}$;
+\STATE Compute all the eigenvectors of $\widehat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
+\STATE Return $\widehat{A} = (\mu_1,\ldots,\mu_d)$.
+\end{algorithmic}
+\end{algorithm}
+
+As shown in \citep{DHsu2012}, with probability 1,
+\begin{equation}
+\label{eq:M}
+M = A 
+\left(
+\begin{array}{ccc}
+\big(\frac{\phi^{\top}A_1}{\psi^{\top}A_1}\big)^2 & &\\
+    & \ddots & \\
+    & & \big(\frac{\phi^{\top}A_d}{\psi^{\top}A_d}\big)^2\\
+\end{array} 
+\right) 
+A^{-1},
+\end{equation}
+has distinguish eigenvalues. Thus, if $M =(\nabla^2f(\phi))(\nabla^2f(\psi))^{-1} $ is estimated precisely, Algorithm \ref{alg:icaHsu} returns $A$ exactly  with probability 1. 
+Let $\kappa =  \min_{i,j: i\neq j} \vert (\frac{\phi^{\top}A_i}{\psi^{\top}A_i})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert $. The following lemma shows a small perturbation of $M$ will only result a small variation of its eigenvectors, under some conditions.
+
+\begin{lemma}
+\label{lem:eigenvectorvariation}
+Denote $\widehat{M} = M+E$ as a perturbation of matrix $M$, where $M$ is defined in Equation \eqref{eq:M}. 
+Assume $\widehat{M}$ has distinguish eigenvalues. Let $\delta = \kappa -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$. 
+If $\kappa > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{s,t:s\neq t} \|A_s - A_t\|_2 \ge \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+\[
+\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2
+\]
+where $\widehat{A}$ is the matrix of eigenvectors of $\widehat{M}$. 
+\end{lemma}
+
+\begin{proof}
+For $1\le t\le d$, assume 
+\[
+A_{(t)}^{-1} E A_{(t)} =  
+\left(
+\begin{array}{cc}
+F_{1t} & F_{2t}\\
+F_{3t} & F_{4t} \\
+\end{array} 
+\right). 
+\] 
+Note that by definitions, $\|F_{1t}\|_2,\|F_{4t}\|_2\le\|A_{(t)}^{-1} E A_{(t)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$,
+ $\|F_{3t}\|_2\le\|A_{(t)}^{-1}EA_{t}\|_2\le\frac{1}{\sigma_{\min}(A)}\|E\|_2$,
+ and $\|F_{2t}\|_2\le\|(A^{-1})_tEA_{(t)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$.
+Let $\gamma_t = \|F_{3t}\|_2$, $\eta_t = \|F_{3t}\|_2$, and $\delta_t = \min_{j: j\neq t} \vert (\frac{\phi^{\top}A_t}{\psi^{\top}A_t})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - \|F_{1t}\|_2 - \|F_{4t}\|_2$. Thus 
+\begin{align*}
+\delta_t & = \min_{j:j\neq t} \vert (\frac{\phi^{\top}A_t}{\psi^{\top}A_t})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - \|F_{1t}\|_2 - \|F_{4t}\|_2\\
+	& \ge \min_{j:j\neq t} \vert (\frac{\phi^{\top}A_t}{\psi^{\top}A_t})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - 2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
+	& \ge  \kappa -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
+	& >  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 >0,
+\end{align*}
+and $\delta_t^2 > 4\gamma_t\eta_t$. 
+Therefore, by Theorem 2.8 of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_t}{\delta_t}$, such that there exists one of a eigenvector $\widehat{A_t}$ of $\widehat{M}$ satisfying
+ \[
+ \|\widehat{A_t} - A_t\|_2 \le \|A_{ct}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_t}{\delta_t}.\le \frac{4\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2.
+ \]
+ By condition, for $s\neq t$,  $\frac{8\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2 \le \|A_s - A_t\|_2\le \|A_s - \widehat{A_t}\|_2 + \|A_t - \widehat{A_t}\|_2$, thus $\widehat{A_s} \neq \widehat{A_t}$.  Summing up the upper bound gets the result. 
+\end{proof}
+
+The next lemma shows that $\|\widehat{X}^{-1}\|_2 = \|(X+E)^{-1}\|_2$ is close to $\sigma_{\min}(X)$.
+
+\begin{lemma}
+\label{lem:inversevariation}
+If non-singular matrix $\widehat{X} = X+E$ satisfying that $\sigma_{\min}(X)>\|E\|_2$, then  $\|\widehat{X}^{-1}\|_2 \le \frac{1}{\sigma_{\min}(X)-\|E\|_2}$.
+\end{lemma} 
+\begin{proof}
+Consider the minimal singular value of $\widehat{X}$. 
+\[
+ \min_{v:\|v\|_2=1} \|\widehat{X}v\|_2 = \min_{v:\|v\|_2=1}\|(X+E)v\|_2 \ge \|Xv\|_2 - \|Ev\|_2 \ge \sigma_{\min}(X) - \|E\|_2.
+\]
+\end{proof}
+
+Now we can estimate the variance between $XY^{-1}$ and $(X+E_1)(Y+E_2)^{-1}$.
+\begin{lemma}
+\label{lem:Mvariation}
+Assume $\sigma_{\min}(Y) > \|E_2\|_2$, then 
+\[
+\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2+\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2},
+\]
+where $c = \frac{1+\sqrt{5}}{2}$.
+\end{lemma}
+\begin{proof}
+
+\begin{align*}
+	& \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
+\le & \| XY^{-1} - X(Y+E_2)^{-1}\|_2 + \| X(Y+E_2)^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
+\le & \|X\|_2\| Y^{-1} - (Y+E_2)^{-1}\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2 \\
+\le & c \|X\|_2 \max\{\| Y^{-1}\|_2 , \|(Y+E_2)^{-1}\|_2\} \|E_2\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2,
+\end{align*}
+where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8 of \citep*{stewart1990matrix}. Therefore by Lemma \ref{lem:inversevariation},
+\[
+\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2+\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2}.
+\]
+\end{proof}
+
+Note that in Algorithm \ref{alg:icaHsu}, 
+\begin{align*}
+& \nabla^2 f(\eta) = G_1(\eta) - G_2(\eta) -G_3(\eta), \\
+\text{and } \quad & \widehat{\nabla^2 f(\eta)} =\widehat{G_1(\eta)} - \widehat{G_2(\eta)} -\widehat{G_3(\eta)},
+\end{align*}
+where 
+\begin{align*}
+& G_1(\eta) = \int (\eta^{\top}Af)^2Aff^{\top}A^{\top}\,d\nu; \\
+& G_2(\eta) = \int (\eta^{\top}Af)^2\,d\nu \int Aff^{\top}A^{\top} \,d\nu; \\
+& G_3(\eta) = \Big(\int (\eta^{\top}Af)Af\,d\nu\Big)\Big(\int (\eta^{\top}Af)Af\,d\nu\Big)^{\top}. \\
+&\widehat{ G_1(\eta)} = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2g(k)g(k)^{\top} = \int (\eta^{\top}Af)^2Aff^{\top}A^{\top}\,d\nu_{n}; \\
+& \widehat{G_2(\eta)} = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2 \sum_{k=1}^{n}g(k)g(k)^{\top} = \int (\eta^{\top}Af)^2\,d\nu_{n} \int Aff^{\top}A^{\top} \,d\nu_{n}; \\
+& \widehat{G_3(\eta)} = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big)^{\top} = \Big(\int (\eta^{\top}Af)Af\,d\nu_{n}\Big)\Big(\int (\eta^{\top}Af)Af\,d\nu_{n}\Big)^{\top}.
+\end{align*}
+Given two probability measure $\mu$ and $\nu$ over $(\Omega , \xi)$, recall the definition of total variance, $D_{tv}(\mu, \nu) = \sup_{A\in\xi} |\mu(A) - \nu(A)|$. 
+The following lemma bound $\|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)} \|_2$ by $D_{tv}(\nu_n , \nu)$.
+
+
+\begin{lemma}
+\label{lem:nablavariation}
+Assume $\|\eta\|_2 = 1$, then 
+\[
+\|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}  \|_2 \le d q D_{tv}(\nu_n , \nu) + 2dq D_{tv}(\nu_n , \nu)^2,
+\]
+where $q = d^2C^4\sigma_{\max}(A)^4$.
+\end{lemma}
+\begin{proof}
+Denote the $i$-th row of $A$ by $A_{:,i}$. Since $\|f_i\|_\infty \le C$,$\|f\|_2 \le C\sqrt{d}$. 
+Thus $\big(\eta^{\top}Af\big)^2 \le d C^2\|\eta\|_2^2\sigma_{\max}(A)^2 \le d C^2\sigma_{\max}(A)^2 $,  $|A_{:i}f| \le C\sqrt{d}\sigma_{\max}(A)$, 
+therefore $|\big(\eta^{\top}Af\big)^2 A_{:i}ff^{\top} A_{:j}^{\top}| \le d^2C^4\sigma_{\max}(A)^4 = q$.
+\[
+|(G_1)_{i,j} - (\widehat{G_1})_{i,j} | \le q D_{tv}(\nu_n , \nu).
+\]
+Similarly, 
+\begin{align*}
+& |(G_2)_{i,j} - (\widehat{G_2})_{i,j} | \le q D_{tv}(\nu_n , \nu)^2 \\
+\text{and } \quad & |(G_3)_{i,j} - (\widehat{G_3})_{i,j} | \le q D_{tv}(\nu_n , \nu)^2.
+\end{align*}
+Therefore,
+\begin{align*}
+	& \|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}  \|_2 \\
+\le & \|G_1 - \widehat{G_1}\|_2 + \|G_2 - \widehat{G_2}\|_2 + \|G_3 - \widehat{G_3}\|_2 \\
+\le & d q D_{tv}(\nu_n , \nu) + 2dq D_{tv}(\nu_n , \nu)^2.
+\end{align*}
+\end{proof}
+
+\if0
+We still need to bound $\|\big(\nabla^2 f(\eta)\big)^{-1} - \big(\widehat{\nabla^2 f(\eta)}\big)^{-1}  \|_2 $, as follows.
+\begin{lemma}
+Assume $\|\eta\|_2 = 1$, then 
+\[
+\|\big(\nabla^2 f(\eta)\big)^{-1} - \big(\widehat{\nabla^2 f(\eta)}\big)^{-1}  \|_2 \le cd^2q^2\big(D_{tv}(\nu_n , \nu) + 2D_{tv}(\nu_n , \nu)^2\big).
+\]
+\end{lemma}
+\begin{proof}
+From the proof of Lemma \ref{lem:boundnablafeta}, $\|\nabla^2 f(\eta)\|_2, \|\widehat{\nabla^2 f(\eta)}\|_2 \le dq$, where $q = d^2C^4\sigma_{\max}(A)^4$.
+Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have 
+\begin{align*}
+& \|\big(\nabla^2 f(\eta)\big)^{-1} - \big(\widehat{\nabla^2 f(\eta)}\big)^{-1}  \|_2 \\
+\le & c\max\{\|\nabla^2 f(\eta)\|_2, \|\widehat{\nabla^2 f(\eta)}\|_2\} \|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}\|_2 \\
+\le & cd^2q^2\big(D_{tv}(\nu_n , \nu) + 2D_{tv}(\nu_n , \nu)^2\big).
+\end{align*}
+
+\end{proof}
+\fi
+
+ \begin{thm}
+ \label{thm:efficiency}
+ Let $ Q= \frac{D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2}{\sigma_{\min}(\nabla^2f(\psi)) - d q\big( D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2\big)}$. Assume $n$ is large enough such that the following conditions hold:
+ \begin{itemize}
+ \item $\widehat{M}$ has distinguish eigenvalues;
+ \item $\sigma_{\min}(\nabla^2f(\psi)) > d q\big( D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2\big)$;
+ \item $\kappa > 4dq(cdq+1)\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
+ \item $\min_{s,t:s\neq t} \|A_s - A_t\|_2 > \frac{8dq(cdq+1)}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$.
+ \end{itemize}
+ Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
+ \[
+ \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d^2q(cdq+1)}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q ,
+ \]
+ where $\delta = \kappa -  2 dq(cdq+1)\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q>0$.
+ \end{thm}
+ \begin{proof}
+ By Lemma \ref{lem:eigenvectorvariation}, 
+ \[
+ \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|M - \widehat{M} \|_2. 
+ \]
+ Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by Lemma \ref{lem:Mvariation},
+ \[
+ \|M - \widehat{M} \|_2 \le \frac{c\|\nabla^2f(\phi)\|_2\|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2+\|\nabla^2f(\phi) - \widehat{\nabla^2f(\phi)}\|_2}{\sigma_{\min}(\nabla^2f(\psi)) - \|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2}. 
+ \]
+ From the proof of Lemma \ref{lem:nablavariation}, we have $\|\nabla^2 f(\phi)\|_2\le dq$, where $q = d^2C^4\sigma_{\max}(A)^4$. Apply Lemma \ref{lem:nablavariation}, 
+ \[
+ \|M - \widehat{M} \|_2 \le dq(cdq+1) \frac{D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2}{\sigma_{\min}(\nabla^2f(\psi)) - d q\big( D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2\big)}  = dq(cdq+1) Q.
+ \]
+ So, 
+ \[
+ \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d^2q(cdq+1)}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q. 
+ \]
+ \end{proof}
+
+\subsection{Condition number of ICA problem}
+From Theorem \ref{thm:efficiency}, two unfixed parameter that the efficiency of the algorithm depends on are the number $\kappa$ and $Q$. 
+When $n$ is large enough, $Q\approx \frac{2}{\sigma_{\min}(\nabla^2f(\psi))}D_{tv}(\nu_n , \nu)^2$. 
+Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}$. Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$ 
+
+\begin{claim}
+With large probability, $\sigma_{\min}(\nabla^2f(\psi))$ won't be small.
+\end{claim}
+
+So the efficiency of the algorithm of \citet{DHsu2012} depends on $\kappa$. Is it actually independent to the algorithm? If so, we can define it as the condition number of a ICA problem, which define how difficult the ICA problem is. 
+
+\bibliography{DICA}
+\bibliographystyle{plainnat}
+\end{document}
