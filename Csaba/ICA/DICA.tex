@@ -288,7 +288,7 @@ Let $\kappa =  \min_{i,j: i\neq j} \vert (\frac{\phi^{\top}A_i}{\psi^{\top}A_i})
 \label{lem:eigenvectorvariation}
 Denote $\widehat{M} = M+E$ as a perturbation of matrix $M$, where $M$ is defined in Equation \eqref{eq:M}. 
 Assume $\widehat{M}$ has distinguish eigenvalues. Let $\delta = \kappa -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$. 
-If $\kappa > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{s,t:s\neq t} \|A_s - A_t\|_2 \ge \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+If $\kappa > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
 \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2
 \]
@@ -321,10 +321,10 @@ Therefore, by Theorem 2.8 of \citep{stewart1990matrix}, there exist a unique vec
  \[
  \|\widehat{A_t} - A_t\|_2 \le \|A_{ct}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_t}{\delta_t}.\le \frac{4\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2.
  \]
- By condition, for $s\neq t$,  $\frac{8\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2 \le \|A_s - A_t\|_2\le \|A_s - \widehat{A_t}\|_2 + \|A_t - \widehat{A_t}\|_2$, thus $\widehat{A_s} \neq \widehat{A_t}$.  Summing up the upper bound gets the result. 
+ By condition, for $s\neq t$,  $\frac{8\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2 < \|A_s - A_t\|_2\le \|A_s - \widehat{A_t}\|_2 + \|A_t - \widehat{A_t}\|_2$, thus $\widehat{A_s} \neq \widehat{A_t}$.  Summing up the upper bound gets the result. 
 \end{proof}
 
-The next lemma shows that $\|\widehat{X}^{-1}\|_2 = \|(X+E)^{-1}\|_2$ is close to $\sigma_{\min}(X)$.
+The next lemma shows that $\|\widehat{X}^{-1}\|_2 = \|(X+E)^{-1}\|_2$ is close to $\frac{1}{\sigma_{\min}(X)}$.
 
 \begin{lemma}
 \label{lem:inversevariation}
@@ -387,7 +387,7 @@ Assume $\|\eta\|_2 = 1$, then
 where $q = d^2C^4\sigma_{\max}(A)^4$.
 \end{lemma}
 \begin{proof}
-Denote the $i$-th row of $A$ by $A_{:,i}$. Since $\|f_i\|_\infty \le C$,$\|f\|_2 \le C\sqrt{d}$. 
+Denote the $i$-th row of $A$ by $A_{:,i}$, and the $(i,j)$ entry of a matrix $M$ by $(M)_{i,j}$. Since $\|f_i\|_\infty \le C$,$\|f\|_2 \le C\sqrt{d}$. 
 Thus $\big(\eta^{\top}Af\big)^2 \le d C^2\|\eta\|_2^2\sigma_{\max}(A)^2 \le d C^2\sigma_{\max}(A)^2 $,  $|A_{:i}f| \le C\sqrt{d}\sigma_{\max}(A)$, 
 therefore $|\big(\eta^{\top}Af\big)^2 A_{:i}ff^{\top} A_{:j}^{\top}| \le d^2C^4\sigma_{\max}(A)^4 = q$.
 \[
@@ -426,14 +426,15 @@ Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have
 \end{proof}
 \fi
 
+
  \begin{thm}
  \label{thm:efficiency}
- Let $ Q= \frac{D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2}{\sigma_{\min}(\nabla^2f(\psi)) - d q\big( D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2\big)}$. Assume $n$ is large enough such that the following conditions hold:
+ Let $ Q= \frac{D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2}{\sigma_{\min}(\nabla^2f(\psi)) - d q\big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}$. Assume $t$ is large enough such that the following conditions hold:
  \begin{itemize}
  \item $\widehat{M}$ has distinguish eigenvalues;
- \item $\sigma_{\min}(\nabla^2f(\psi)) > d q\big( D_{tv}(\nu_n , \nu) + 2 D_{tv}(\nu_n , \nu)^2\big)$;
+ \item $\sigma_{\min}(\nabla^2f(\psi)) > d q\big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)$;
  \item $\kappa > 4dq(cdq+1)\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
- \item $\min_{s,t:s\neq t} \|A_s - A_t\|_2 > \frac{8dq(cdq+1)}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$.
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8dq(cdq+1)}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$.
  \end{itemize}
  Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
  \[
@@ -461,7 +462,7 @@ Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have
  \end{proof}
 
 \subsection{Condition number of ICA problem}
-From Theorem \ref{thm:efficiency}, two unfixed parameter that the efficiency of the algorithm depends on are the number $\kappa$ and $Q$. 
+From Theorem \ref{thm:efficiency}, two parameters in the efficiency that are not determined by the problem are the number $\kappa$ and $Q$. 
 When $n$ is large enough, $Q\approx \frac{2}{\sigma_{\min}(\nabla^2f(\psi))}D_{tv}(\nu_n , \nu)^2$. 
 Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}$. Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$ 
 
