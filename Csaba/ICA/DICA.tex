@@ -205,16 +205,17 @@ The uniqueness of such estimation (up to permutation and scaling), or identifiab
  Whereas this theorem is probabilistic in nature, an elementary lemma from optimization theory (although with a non-elementary proof) can serve the same purpose -- rigorous justification of the identifiability of ICA model, when maximization of the cumulants is used.\footnote{
 Optimization Techniques for Data Representations with Biomedical Applications, in
 P.M. Pardalos, H.E. Romeijn (eds.), Handbook of Optimization in Medicine,	253 Springer Optimization and Its Applications 26,  Springer Science+Business Media LLC 2009
-pp. $253--290$.}
+pp. 253--290.}
 \end{quote}
 
 Our purpose is to extend this observation to other ICA models that do not rely on the maximization of cumulants, but rely on the concepts of independence (and thus, on the Darmois-Skitovitch theorem).
 
 \section{Independence of Components}
 \label{sec:IndeofComp}
-Given a set of probability measures $\{\mu_t\, \vert t\ge0 \}$ over $(\Omega, \xi)$ and a measurable function $f:\Omega\rightarrow\real^d$, 
+Given a sequence of probability measures $(\mu_t)_{t=0,1,\ldots}$ over a measurable space
+$(\Omega, \mathcal{A})$ and a measurable function $f:\Omega\rightarrow\real^d$, 
 consider the set of probability measures over $\real^d$ induced by $f$: 
-for any $t\ge0$, let $\nu_t$ denote the a probability measure over $\real^d$ such that for any Borel set $A \in \real^d$, $\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t$. 
+for any $t\ge0$, let $\nu_t$ denote the a probability measure over $\real^d$ such that for any Borel set $A \in \real^d$, $\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t(x)$. 
 
 \if0
 Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real^d$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
@@ -223,25 +224,26 @@ for $ $ any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{
 
 \begin{lemma}
 \label{lem:nicefunction}
-Let $f_i$ denote the $i$th coordinate of $f$, and assume that
+Let $f_i$ denote the $i$th coordinate function of $f$ and assume that
 \begin{equation}
 \label{eq:niceproperty}
-\lim_{t\to\infty} \int |f_i(x)|\, d\mu_t（x） \le m_i
+\lim_{t\to\infty} \int |f_i(x)|\, d\mu_t(x) 
 \end{equation}
 exists and is finite for all $1 \le i \le d$.
 Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
 \end{lemma}
 \begin{proof}
 The statement of the lemma follows by Prokhorov's theorem if we show that the set of probability measures $\{\nu_t\}$ is tight.
+Denote by $m_i\in \mathbb{R}$ the limit of $ \int |f_i(x)|\, d\mu_t(x)$.
 By the convergence of $|f_i(t)|$, for any $\epsilon>0$ there exists a $T>0$ such that
 \begin{equation}
 \label{eq:converge}
-\left| \int |f_i(x)|\, d\mu_t - m_i \right| <\epsilon
+\left| \int |f_i(x)|\, d\mu_t (x)- m_i \right| <\epsilon
 \end{equation}
 for all $1 \le i \le d$ and $t>T$. Let $u_{T,i}=\tfrac{m_i+\epsilon}{\epsilon}$. Then the marginals
-$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([-u_{T,i},u_{T,i}]) > 1-\epsilon$ for all $i,t$ considered, otherwise \eqref{eq:converge} would be violated. Thus, the compact set
+$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([-u_{T,i},u_{T,i}]) > 1-\epsilon$ for all $i,t$ considered, otherwise \eqref{eq:converge} would be violated. Thus, by the union bound, the compact set
 $K_{\epsilon}=\prod_{i=1}^d [-u'_{T,i},u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1)|,\ldots,|f_i(T)|\}$ satisfies
-$\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
+$\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$, showing that $\{\nu_t\}$ is tight.
 \end{proof}
 
 
@@ -272,20 +274,29 @@ $\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$ by the union bound, showing
 Note that Lemma \ref{lem:nicefunction} guarantees that all the convergent subsequences of $\{\nu_t\}$ will converge to probability measures. The results of this paper depend on a stronger assumption, as follows.
 
 \begin{definition}
-A deterministic function $f:\Omega \rightarrow \real^d$ is called \emph{nice for $\{\mu_t\}$}(for simplicity we will only call it nice), 
+A deterministic function $f:\Omega \rightarrow \real^d$ is called \emph{nice for $(\mu_t)$},
 if it satisfies equation \eqref{eq:niceproperty} and its induced probability measure sequence $\nu_t$ converges. 
 Denote this limit by $\nu_f$ (or $\nu$ if not causing any ambiguity). 
 \end{definition}
+In what follows, when $(\mu_t)$ is fixed, we will call $f$ just nice, not mentioning $(\mu_t)$.
 
-\begin{cor}[QUESTION MARK]
-Is a linear combination of nice functions is still nice?
-\end{cor}
-\begin{proof}
+The next question to be investigated is whether the space of nice functions is a subspace, i.e., whether it is closed under addition and multiplication by reals. The latter is clear. However, concerning closeness under addition, we have 
+the following observation:
+\begin{claim}
+The space of nice functions is not closed under addition.
+\end{claim}
+Intuitively, what happens is that we ask for closedness under convergence in distribution, while assuming only weak convergence. In particular, if $f$ is a nice function, it may be that $\nu_t$ converges to $\nu$ weakly
+
+that weak convergence does 
 Given two nice function $f$ and $g$, let $X_t$ (and $Y_t$ ) is the random variable induced by $\mu_t$ and $f$(and $g$, respectively). Then $\nu_{f+g,t}$ is the probability function of $X_t+Y_t$. Note that $X_t \xrightarrow{D} X$ and  $Y_t \xrightarrow{D} Y$. 
 
 \emph{However, $X_t+Y_t \xrightarrow{D} X+Y$ is not guaranteed!} And this causes problem for Darmois-Skitovich theorem in next section.
 
-Let $f,g:\natural \rightarrow {\pm1}$ and $\mu_t$ as follows:
+
+\begin{proof}
+
+
+Let $f,g:\natural \rightarrow \{\pm1\}$ and $(\mu_t)$ as follows: 
 \[
 f(t) = \begin{cases} 1 & t=1 \\
 					-1 & t=2 \\
