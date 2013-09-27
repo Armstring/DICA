@@ -24,6 +24,7 @@
 \usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{array}
+\usepackage{setspace}
 
 
 \title{Deterministic ICA}
@@ -48,10 +49,9 @@
 
 \usepackage{algorithmic}
 \usepackage{babel}
-\providecommand{\lemmaname}{Lemma}
-\providecommand{\remarkname}{Remark}
-\providecommand{\theoremname}{Theorem}
 
+
+\newcommand{\cN}{\cal{N}}
 \renewcommand{\P}{{\mathcal P}}
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\Ex}[1]{\mathbb{E}[#1]}
@@ -141,15 +141,26 @@
 \providecommand{\remarkname}{Remark}
 \providecommand{\theoremname}{Theorem}
 \providecommand{\claimname}{Claim}
+\providecommand{\definitionname}{Definition}
+\providecommand{\examplename}{Example}
+\providecommand{\corollaryname}{Corollary}
 
 \theoremstyle{plain}
 \newtheorem{thm}{\protect\theoremname}
-\theoremstyle{remark}
-\newtheorem{rem}[thm]{\protect\remarkname}
-\theoremstyle{claim}
-\newtheorem{claim}[thm]{\protect\claimname}
-\theoremstyle{plain}
 \newtheorem{lemma}[thm]{\protect\lemmaname}
+\newtheorem{claim}[thm]{\protect\claimname}
+\newtheorem{cor}[thm]{\protect\corollaryname}
+
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{\protect\definitionname}
+
+
+\theoremstyle{remark}
+\newtheorem{rem}{\protect\remarkname}[thm]
+\newtheorem{example}{\protect\examplename}[section]
+
 \newcounter{assumption}%[section]
 \newcommand{\theassumptionletter}{A}
 \renewcommand{\theassumption}{\theassumptionletter\arabic{assumption}}
@@ -201,8 +212,40 @@ Our purpose is to extend this observation to other ICA models that do not rely o
 
 \section{Independence of Components}
 \label{sec:IndeofComp}
-Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
-for any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
+Given a set of probability measures $\{\mu_t\, \vert t\ge0 \}$ over $(\Omega, \xi)$ and a measurable function $f:\Omega\rightarrow\real^d$, 
+consider the set of probability measures over $\real^d$ induced by $f$: 
+for any $t\ge0$, let $\nu_t$ denote the a probability measure over $\real^d$ such that for any Borel set $A \in \real^d$, $\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t$. 
+
+\if0
+Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real^d$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
+for $ $ any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
+\fi
+
+\begin{lemma}
+\label{lem:nicefunction}
+Let $f_i$ denote the $i$th coordinate of $f$, and assume that
+\begin{equation}
+\label{eq:niceproperty}
+\lim_{t\to\infty} \int |f_i(x)|\, d\mu_t（x） \le m_i
+\end{equation}
+exists and is finite for all $1 \le i \le d$.
+Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
+\end{lemma}
+\begin{proof}
+The statement of the lemma follows by Prokhorov's theorem if we show that the set of probability measures $\{\nu_t\}$ is tight.
+By the convergence of $|f_i(t)|$, for any $\epsilon>0$ there exists a $T>0$ such that
+\begin{equation}
+\label{eq:converge}
+\left| \int |f_i(x)|\, d\mu_t - m_i \right| <\epsilon
+\end{equation}
+for all $1 \le i \le d$ and $t>T$. Let $u_{T,i}=\tfrac{m_i+\epsilon}{\epsilon}$. Then the marginals
+$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([-u_{T,i},u_{T,i}]) > 1-\epsilon$ for all $i,t$ considered, otherwise \eqref{eq:converge} would be violated. Thus, the compact set
+$K_{\epsilon}=\prod_{i=1}^d [-u'_{T,i},u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1)|,\ldots,|f_i(T)|\}$ satisfies
+$\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
+\end{proof}
+
+
+\if0
 \begin{lemma}
 \label{lem:nicefunction}
 Let $f_i(t)$ denote the $i$th coordinate of $f(t)$, and assume that
@@ -225,32 +268,158 @@ $\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([0,u_{T,i}]) > 1-\eps
 $K_{\epsilon}=\prod_{i=1}^d [0,u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1),\ldots,|f_i(T)|\}$ satisfies
 $\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
 \end{proof}
+\fi
+Note that Lemma \ref{lem:nicefunction} guarantees that all the convergent subsequences of $\{\nu_t\}$ will converge to probability measures. The results of this paper depend on a stronger assumption, as follows.
 
-We call the functions $f_i$s that satisfy equation \eqref{eq:niceproperty} nice functions. Denote the space of nice functions by $N$. 
-Note that Lemma \ref{lem:nicefunction} guarantees that all the convergent subsequences of $\{\nu_t\}$ will converge to probability measures. 
-Now assume all the convergent subsequences have the same limit, therefore, $\{\nu_t\}$ will converge weakly into a probability measure, defined by $\nu_f$ to indicate its dependence on $f$. 
+\begin{definition}
+A deterministic function $f:\Omega \rightarrow \real^d$ is called \emph{nice for $\{\mu_t\}$}(for simplicity we will only call it nice), 
+if it satisfies equation \eqref{eq:niceproperty} and its induced probability measure sequence $\nu_t$ converges. 
+Denote this limit by $\nu_f$ (or $\nu$ if not causing any ambiguity). 
+\end{definition}
 
-Given nice component functions $\{f_1,\ldots,f_d\}$, we say that $\{f_1,\ldots,f_d\}$ are independent, if $\nu_{f_1}\times\ldots\times\nu_{f_d} = v_f$, where $f = (f_1,\ldots,f_d):\natural \rightarrow \real^d$.
+\begin{cor}[QUESTION MARK]
+Is a linear combination of nice functions is still nice?
+\end{cor}
+\begin{proof}
+Given two nice function $f$ and $g$, let $X_t$ (and $Y_t$ ) is the random variable induced by $\mu_t$ and $f$(and $g$, respectively). Then $\nu_{f+g,t}$ is the probability function of $X_t+Y_t$. Note that $X_t \xrightarrow{D} X$ and  $Y_t \xrightarrow{D} Y$. 
 
-\emph{Examples of period function}
+\emph{However, $X_t+Y_t \xrightarrow{D} X+Y$ is not guaranteed!} And this causes problem for Darmois-Skitovich theorem in next section.
 
-\section{Analysis of ICA algorithms}
-\subsection{Correctness}
-Note that given mutually independent nice functions $\{f_1,\ldots,f_d\}$, the induced probability measure of $g = \sum_i \alpha_i f_i$ is the convolution of $\nu_{\alpha_i f_i}$.
-Assume the induced probability measure of each component $f_i$ is non-Gaussian, then correctness of ICA algorithms are guaranteed by the Darmois-Skitovitch theorem, as follows.
-\begin{thm}[Darmois-Skitovitch theorem]
+Let $f,g:\natural \rightarrow {\pm1}$ and $\mu_t$ as follows:
+\[
+f(t) = \begin{cases} 1 & t=1 \\
+					-1 & t=2 \\
+					1  & t=3 \\
+					-1 & t=4 
+					\end{cases};
+\quad g(t) = \begin{cases} 1 & t=1 \\
+					-1 & t=2 \\
+					-1  & t=3 \\
+					1 & t=4 
+					\end{cases};
+\]
+\[
+\quad \mu_{2t+1}(x) = \begin{cases} 1/2 & x=1 \\
+					1/2 & x=2 \\
+					0  & \text{otherwise} 
+					\end{cases};	
+\quad \mu_{2t}(x) = \begin{cases} 1/2 & x=3 \\
+					1/2 & x=4 \\
+					0  & \text{otherwise} 
+					\end{cases};		
+\]
+Then $\nu_f$ and $\nu_g$ are Bernoulli distribution. However, $\nu_{f+g,2t+1}$ is Bernoulli distribution while $\nu_{f+g,2t}$ is degenerate at 0. 
+
+If $\{\mu_t\}$ are empirical distributions, will this Corollary hold?
+\end{proof}
+The independence of sequences is defined based on $\nu_f$.
+\begin{definition}
+Given nice component functions $\{f_1,\ldots,f_d\}$, we say that $\{f_1,\ldots,f_d\}$ are \emph{independent}, if $\nu_{f_1}\times\ldots\times\nu_{f_d} = v_f$, where $f = (f_1,\ldots,f_d):\Omega \rightarrow \real^d$.
+\end{definition}
+
+Let $|S|$ be the length of the set $S\subset \real$. 
+\begin{cor}
+Assume $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with period $T_1$ and $T_2$. 
+Let $\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$. If $T_1/T_2$ is irrational, then $f$ and $g$ are independent. 
+\end{cor}
+%\vspace{-0.5cm}
+\begin{proof}
+ For two Borel sets $A\subset \real$ and $B\subset \real$, Let $S_1 =f^{-1}(A)\cap [0,T_1] $ and $ S_2 = g^{-1}(B)\cap [0,T_2]$. It is easy to verify that $\nu_f(A) = \frac{|S_1|}{T_1}$, and $\nu_g(B) = \frac{|S_2|}{T_2}$. 
+ Note that $\nu_{f,t}(A\times B) = \frac{|f^{-1}(A)\cap g^{-1}(B)\cap [0,t] |}{t}$. Now assume $nT_1 \le t\le (n+1)T_1$ and $mT_2\le t \le (m+1)T_2$. Thus,
+ \begin{align*}
+ \nu_{f,t}(A\times B) = & \frac{1}{t} \int_{ \substack{x\in f^{-1}(A) \\ 0\le x \le t}} \ind{x\in g^{-1}(B)}\, dx \\
+ 					=	& \frac{1}{t} \sum_{u=0}^{n-1} \int_{x\in S_1} \ind{uT_1+c \in g^{-1}(B)}\, dc + \frac{C}{t}
+ \end{align*}
+ for some constant $C$. Now let $n$ approach $\infty$,
+ \begin{align*}
+  \lim\limits_{n\rightarrow \infty} \nu_{f,t}(A\times B) = & \int_{x\in S_1} \lim\limits_{n\rightarrow \infty} \sum_{u=0}^{n-1} \frac{\ind{uT_1+c \in g^{-1}(B)}}{t} \, dc.
+ \end{align*}
+ Note that $\lim_{n\rightarrow \infty}\frac{\#\{uT_1+c, \vert u = 1,2,\ldots, n; \, nT_1+c \in g^{-1}(B)\, \text{for some }\}}{n} = \nu_{g}(B)$. 
+ \todor{how to prove it?} Thus, 
+ \begin{align*}
+ \lim\limits_{n\rightarrow \infty} \nu_{f,t}(A\times B) = & \int_{x\in S_1} \frac{\nu_g(B)}{T_1}\, dc \\
+ 														= & \frac{|S_1|\nu_g(B)}{T_1} \\
+ 														= & \nu_f(A)\nu_g(B).
+ \end{align*}
+ Therefore, $f$ and $g$ is independent.
+\end{proof}
+
+\begin{cor}
+Assume $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with period $T_1$ and $T_2$. 
+Let $\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$.  
+If $T_1/T_2 = \frac{u}{v}$ is rational, then $f$ and $g$ are independent IFF 
+\[
+\frac{|\{f^{-1}(A)\cap g^{-1}(B) \cap [0,vT_1]\}|}{v} = \frac{|f^{-1}(A)\cap [0,T_1]| \,|g^{-1}(B)\cap [0,T_2]|}{T_2}
+\]
+for any Borel sets $A,B\subset \real$.
+\end{cor}
+
+\begin{cor}
+Assume $f:\natural \rightarrow\real$ and $g:\natural \rightarrow\real$ are periodic functions with period $T_1$ and $T_2$, 
+and $\mu_t([1,b]) = \lfloor b\rfloor/\lfloor t\rfloor$ for $0\le b\le t$.  
+Then $f$ and $g$ are independent IFF 
+\begin{align*}
+\#\big\{x\vert f(x) = a, g(x) = b, x\in \{1,\ldots,T_1T_2\} \big\} = & \, \#\big\{x\vert f(x) = a, x\in \{1,\ldots,T_1\} \big\} \\
+& \quad \times \#\big\{x\vert g(x) = b, x\in \{1,\ldots,T_2\} \big\} 
+\end{align*}
+for any Borel sets $a,b\in \real$, where $\#S$ is the cardinality of $S$.
+\end{cor}
+
+
+\section{Correctness of ICA algorithms}
+Assume the induced probability measure of each component $f_i$ is non-Gaussian, then correctness of ICA algorithms are guaranteed by Theorem \ref{thm:CorofICA}, as follows.
+\begin{thm}
+\label{thm:CorofICA}
+Let $f_1,\ldots,f_d$ be mutually independent real-valued, nice functions and let $f = (f_1,\ldots,f_d)$.Moreover, assume $\nu_{f_i}$, $i=1,\ldots,d$ are non-Gaussian distributions. If
+\begin{equation}
+\left(
+\begin{array}{ccc}
+g_1 \\
+\vdots \\
+g_n
+\end{array}
+\right) = A
+\left(
+\begin{array}{ccc}
+f_1 \\
+\vdots \\
+f_n
+\end{array}
+\right)
+\end{equation}
+are mutually independent, then $A$ is equivalent to a permutation matrix up to scaling.
+\end{thm}
+
+Before we prove Theorem \ref{thm:CorofICA}, we first need a lemma which is straightforward from Darmois-Skitovich theorem.
+\begin{lemma}
 Let $f_1,\ldots,f_d$ be mutually independent real-valued, nice functions and let $f = (f_1,\ldots,f_d)$.
 Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$ where all the coefficients $(\alpha_i)$, $(\beta_i)$ are nonzero.
 If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussian distributions.
+\end{lemma}
+\begin{proof}
+By Section \ref{sec:IndeofComp}, $\nu_{f_i}$ exists and $\nu_{f_1},\ldots,\nu_{f_n}$ are mutually independent. 
+Let $\xi_i$ be a random variable with the distribution of $\nu_{f_i}$, and  $\xi_1,\ldots,\xi_n$ are mutually independent. Note that $\nu_{g_i}$ is the probability function of $\sum_{i}\alpha_if_i$. (OR MAYBE NOT?) 
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:CorofICA}]
+From Corollary \ref{cor:DSTheoremCor}. $n$ non-empty mutually exclusive subsets of a size $n$ set, must be a partition of the set, with one in each subset.
+\end{proof}
+\begin{thm}[Darmois-Skitovich theorem]
+Let $\xi_1,\ldots,\xi_n$ be independent random variables. If the linear forms $L_1 = \alpha_1\xi_1 + \ldots + \alpha_n\xi_n$ and $L_2 = \beta_1\xi_1 +\ldots + \beta_n\xi_n$, where the coefficients $\alpha_i$ and $\beta_i$ are nonzero, are independent, then the random variables $\xi_i$ are Gaussian variables.
 \end{thm}
-\begin{rem}
-The proof for this version of Darmois-Skitovitch theorem is similar to that of independent random variables.
-\end{rem}
+
+\begin{cor}
+\label{cor:DSTheoremCor}
+Let $\xi_1,\ldots,\xi_n$ be independent random variables. If the random variables $\xi_i$ are non-Gaussian variables, and the linear forms $L_1 = \alpha_1\xi_1 + \ldots + \alpha_n\xi_n$ and $L_2 = \beta_1\xi_1 +\ldots + \beta_n\xi_n$.  Then $\{i\vert \alpha_i \neq0\} \cap \{j\vert \beta_j \neq0\} = \emptyset$.
+\end{cor}
+
+
+\section{Analysis of ICA algorithms}
 
 \subsection{Efficiency}
 In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
 Assume the independent nice component functions $\{f_1,\ldots,f_d\}$ are bounded by a constant $C$, and satisfy $\E_{\nu_{f_i}}[X]=0$, $\E_{\nu_{f_i}}[X^2]=1$, and $\kappa_i := \E_{\nu_{f_i}}[X^4]\neq 3$. 
-Here $\E_{\nu_{f_i}}$ denotes the expectation is taken with respect to the probability measure of $\nu_{f_i}$. 
+Here $\E_{\nu_{f_i}}$ is the expectation is taken with respect to the probability measure of $\nu_{f_i}$. 
 For $1\le k\le d$, denote $A_{(t)} = (A_k,A_{ck})$, where $A_{ck}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{k-1},A_{k+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. 
 Without loss of generality, assume $\|A_i\|_2=1$.
 The algoeithm of \citet{DHsu2012} is as follows. We denote $\widehat{E}$ as the empirical estimation of parameter $E$. 
@@ -282,7 +451,12 @@ M = A
 A^{-1},
 \end{equation}
 has distinguish eigenvalues. Thus, if $M =(\nabla^2f(\phi))(\nabla^2f(\psi))^{-1} $ is estimated precisely, Algorithm \ref{alg:icaHsu} returns $A$ exactly  with probability 1. 
-Let $\kappa =  \min_{i,j: i\neq j} \vert (\frac{\phi^{\top}A_i}{\psi^{\top}A_i})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert $. The following lemma shows a small perturbation of $M$ will only result a small variation of its eigenvectors, under some conditions.
+Let 
+\begin{equation}
+\label{def:kappa}
+\kappa =  \min_{i,j: i\neq j} \vert (\frac{\phi^{\top}A_i}{\psi^{\top}A_i})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert. 
+\end{equation}
+The following lemma shows a small perturbation of $M$ will only result a small variation of its eigenvectors, under some conditions.
 
 \begin{lemma}
 \label{lem:eigenvectorvariation}
@@ -317,7 +491,7 @@ Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{3k}\|_2$, and $\delta_k = \min_{j:
 	& >  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 >0,
 \end{align*}
 and $\delta_k^2 > 4\gamma_k\eta_k$. 
-Therefore, by Theorem 2.8 of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$, such that there exists one of a eigenvector $\widehat{A_k}$ of $\widehat{M}$ satisfying
+Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$, such that there exists one of a eigenvector $\widehat{A_k}$ of $\widehat{M}$ satisfying
  \[
  \|\widehat{A_k} - A_k\|_2 \le \|A_{ct}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_k}{\delta_k}.\le \frac{4\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2.
  \]
@@ -342,7 +516,7 @@ Now we can estimate the variance between $XY^{-1}$ and $(X+E_1)(Y+E_2)^{-1}$.
 \label{lem:Mvariation}
 Assume $\sigma_{\min}(Y) > \|E_2\|_2$, then 
 \[
-\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2+\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2},
+\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2}{(\sigma_{\min}(Y) - \|E_2\|_2)^2}+\frac{\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2},
 \]
 where $c = \frac{1+\sqrt{5}}{2}$.
 \end{lemma}
@@ -352,11 +526,11 @@ where $c = \frac{1+\sqrt{5}}{2}$.
 	& \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
 \le & \| XY^{-1} - X(Y+E_2)^{-1}\|_2 + \| X(Y+E_2)^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
 \le & \|X\|_2\| Y^{-1} - (Y+E_2)^{-1}\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2 \\
-\le & c \|X\|_2 \max\{\| Y^{-1}\|_2 , \|(Y+E_2)^{-1}\|_2\} \|E_2\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2,
+\le & c \|X\|_2 \max\{\| Y^{-1}\|^2_2 , \|(Y+E_2)^{-1}\|^2_2\} \|E_2\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2,
 \end{align*}
-where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8 of \citep*{stewart1990matrix}. Therefore by Lemma \ref{lem:inversevariation},
+where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8, Chapter III of \citep*{stewart1990matrix}. Therefore by Lemma \ref{lem:inversevariation},
 \[
-\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2+\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2}.
+\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2}{(\sigma_{\min}(Y) - \|E_2\|_2)^2}+\frac{\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2}.
 \]
 \end{proof}
 
@@ -380,29 +554,30 @@ The following lemma bound $\|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)} \|_2$
 
 \begin{lemma}
 \label{lem:nablavariation}
-Assume $\|\eta\|_2 = 1$, then 
 \[
 \|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}  \|_2 \le d q D_{tv}(\nu_t , \nu) + 2dq D_{tv}(\nu_t , \nu)^2,
 \]
-where $q = d^2C^4\sigma_{\max}(A)^4$.
+where $q_{\eta} = d^2C^4\|\eta\|_2^2\sigma_{\max}(A)^4$.
 \end{lemma}
 \begin{proof}
 Denote the $i$-th row of $A$ by $A_{:,i}$, and the $(i,j)$ entry of a matrix $M$ by $(M)_{i,j}$. Since $\|f_i\|_\infty \le C$,$\|f\|_2 \le C\sqrt{d}$. 
-Thus $\big(\eta^{\top}Af\big)^2 \le d C^2\|\eta\|_2^2\sigma_{\max}(A)^2 \le d C^2\sigma_{\max}(A)^2 $,  $|A_{:i}f| \le C\sqrt{d}\sigma_{\max}(A)$, 
-therefore $|\big(\eta^{\top}Af\big)^2 A_{:i}ff^{\top} A_{:j}^{\top}| \le d^2C^4\sigma_{\max}(A)^4 = q$.
+Thus $\big(\eta^{\top}Af\big)^2 \le d C^2\|\eta\|_2^2\sigma_{\max}(A)^2$ 
+% \le d C^2\sigma_{\max}(A)^2 $
+,  $|A_{:i}f| \le C\sqrt{d}\sigma_{\max}(A)$, 
+therefore $|\big(\eta^{\top}Af\big)^2 A_{:i}ff^{\top} A_{:j}^{\top}| \le d^2C^4\sigma_{\max}(A)^4 \|\eta\|_2^2 = q_{\eta}$.
 \[
-|(G_1)_{i,j} - (\widehat{G_1})_{i,j} | \le q D_{tv}(\nu_t , \nu).
+|(G_1)_{i,j} - (\widehat{G_1})_{i,j} | \le q_{\eta} D_{tv}(\nu_t , \nu).
 \]
 Similarly, 
 \begin{align*}
-& |(G_2)_{i,j} - (\widehat{G_2})_{i,j} | \le q D_{tv}(\nu_t , \nu)^2 \\
+& |(G_2)_{i,j} - (\widehat{G_2})_{i,j} | \le q_{\eta} D_{tv}(\nu_t , \nu)^2 \\
 \text{and } \quad & |(G_3)_{i,j} - (\widehat{G_3})_{i,j} | \le q D_{tv}(\nu_t , \nu)^2.
 \end{align*}
 Therefore,
 \begin{align*}
 	& \|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}  \|_2 \\
 \le & \|G_1 - \widehat{G_1}\|_2 + \|G_2 - \widehat{G_2}\|_2 + \|G_3 - \widehat{G_3}\|_2 \\
-\le & d q D_{tv}(\nu_t , \nu) + 2dq D_{tv}(\nu_t , \nu)^2.
+\le & d q_{\eta} D_{tv}(\nu_t , \nu) + 2dq_{\eta} D_{tv}(\nu_t , \nu)^2.
 \end{align*}
 \end{proof}
 
@@ -429,18 +604,23 @@ Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have
 
  \begin{thm}
  \label{thm:efficiency}
- Let $ Q= \frac{D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2}{\sigma_{\min}(\nabla^2f(\psi)) - d q\big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}$. Assume $t$ is large enough such that the following conditions hold:
+ Let 
+ \[ 
+ Q=  cd^2 \frac{q_{\psi}q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\big(\sigma_{\min}(\nabla^2f(\psi)) - d q_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)\big)^2}
+ +d\frac{q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\sigma_{\min}(\nabla^2f(\psi)) - dq_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}.
+ \] 
+ Assume $t$ is large enough such that the following conditions hold:
  \begin{itemize}
  \item $\widehat{M}$ has distinguish eigenvalues;
- \item $\sigma_{\min}(\nabla^2f(\psi)) > d q\big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)$;
- \item $\kappa > 4dq(cdq+1)\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
- \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8dq(cdq+1)}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$.
+ \item $\sigma_{\min}(\nabla^2f(\psi)) > d q_\psi\big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)$;
+ \item $\kappa > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$.
  \end{itemize}
  Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
  \[
  \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d^2q(cdq+1)}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q ,
  \]
- where $\delta = \kappa -  2 dq(cdq+1)\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q>0$.
+ where $\delta = \kappa -  2\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q>0$.
  \end{thm}
  \begin{proof}
  By Lemma \ref{lem:eigenvectorvariation}, 
@@ -449,26 +629,66 @@ Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have
  \]
  Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by Lemma \ref{lem:Mvariation},
  \[
- \|M - \widehat{M} \|_2 \le \frac{c\|\nabla^2f(\phi)\|_2\|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2+\|\nabla^2f(\phi) - \widehat{\nabla^2f(\phi)}\|_2}{\sigma_{\min}(\nabla^2f(\psi)) - \|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2}. 
+ \|M - \widehat{M} \|_2 \le \frac{c\|\nabla^2f(\phi)\|_2\|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2}{\big(\sigma_{\min}(\nabla^2f(\psi)) - \|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2\big)^2} + \frac{\|\nabla^2f(\phi) - \widehat{\nabla^2f(\phi)}\|_2}{\sigma_{\min}(\nabla^2f(\psi)) - \|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2}. 
  \]
- From the proof of Lemma \ref{lem:nablavariation}, we have $\|\nabla^2 f(\phi)\|_2\le dq$, where $q = d^2C^4\sigma_{\max}(A)^4$. Apply Lemma \ref{lem:nablavariation}, 
- \[
- \|M - \widehat{M} \|_2 \le dq(cdq+1) \frac{D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2}{\sigma_{\min}(\nabla^2f(\psi)) - d q\big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}  = dq(cdq+1) Q.
- \]
+ From the proof of Lemma \ref{lem:nablavariation}, we have $\|\nabla^2 f(\phi)\|_2\le dq_{\phi}$, where $q_{\phi} = d^2C^4\sigma_{\max}(A)^4\|\phi\|_2^2$. Apply Lemma \ref{lem:nablavariation}, 
+ \begin{align*}
+ \|M - \widehat{M} \|_2 \le &
+ cd^2 \frac{q_{\psi}q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\big(\sigma_{\min}(\nabla^2f(\psi)) - d q_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)\big)^2} \\
+ 	&\quad +d\frac{q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\sigma_{\min}(\nabla^2f(\psi)) - dq_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}\\
+ = & Q.
+ \end{align*}
  So, 
  \[
- \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d^2q(cdq+1)}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q. 
+ \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q. 
  \]
  \end{proof}
 
 \subsection{Condition number of ICA problem}
-From Theorem \ref{thm:efficiency}, two parameters in the efficiency that are not determined by the problem are the number $\kappa$ and $Q$. 
-When $n$ is large enough, $Q\approx \frac{2}{\sigma_{\min}(\nabla^2f(\psi))}D_{tv}(\nu_n , \nu)^2$. 
+From Theorem \ref{thm:efficiency}, two parameters in the efficiency that depend on the algorithm rather than the ICA problem are the number $\kappa$ and $Q$. 
+When $n$ is large enough, 
+\[
+Q\approx \left[ \frac{2q_{\psi}q_{\phi}}{\big(\sigma_{\min}(\nabla^2f(\psi))\big)^2}+\frac{q_{\phi}}{\sigma_{\min}(\nabla^2f(\psi))}\right]D_{tv}(\nu_n , \nu)^2.
+\] 
 Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}$. Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$ 
 
 \begin{claim}
-With large probability, $\sigma_{\min}(\nabla^2f(\psi))$ won't be small.
+With large probability, $\sigma_{\min}(\nabla^2f(\psi))/\|\psi\|_2^2$ won't be small.
 \end{claim}
+
+The next
+\begin{thm}
+There exists a way sampling $\phi$ and $\psi$, such that $\kappa = \Theta(\log d)$.
+\end{thm}
+\begin{proof}
+Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
+\[
+\kappa  = \min_{i,j} \vert \big(\frac{\alpha_i}{\beta_i}\big)^2 - \big(\frac{\alpha_j}{\beta_j}\big)^2 \vert.
+\] 
+
+Note that for $x\ge0$, $\Phi(x) \approx \frac12 (1+\sqrt{1-e^{-\frac{2}{\pi}x^2}})$ \citep{aludaat2008note}.
+ 
+ When $d$ is large,
+\[
+\Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}} \text{ for all } \beta_i\text{'s}} = (2- 2\Phi(\sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}})-1)^d \approx \left(1-\frac{1}{d}\right)^d \approx \frac{1}{e}.
+\]
+Thus, with probability at least $p (\approx \frac{1}{e})$,
+\[
+\kappa \le 2 \min_i \vert \big(\frac{\alpha_i}{\beta_i}\big)^2\vert \le 2 \frac{2}{\pi}\frac{1}{\log \frac{d^2}{d^2-1}}\min_i |\alpha_i|^2.
+\]
+
+Now consider the case that at least two of $\beta_i$'s are greater than $\sqrt{\frac{\pi}{2}\log d}$,
+\begin{align*}
+& \Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log d} \text{ for at least 2 } \beta_i\text{'s}} \\
+=  & 1 - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for all } \beta_i\text{'s}} - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for (d-1) } \beta_i\text{'s}} \\
+\approx & 1 - (1-\frac{1}{d})^{\frac{d}{2}} -  (1-\frac{1}{d})^{\frac{d-1}{2}}(1-\sqrt{1-\frac{1}{d}}) \\
+\approx & 1 -\frac{1}{\sqrt{e}}.
+\end{align*}
+Thus, with probability at least $p_2$ ($\approx 1-\frac{1}{\sqrt{e}}$),
+\[
+\E[\kappa] \le \frac{4}{\pi} \frac{1}{\log d} \E[\alpha_i^2] = \frac{4}{\pi} \frac{1}{\log d}.
+\]
+\end{proof}
 
 So the efficiency of the algorithm of \citet{DHsu2012} depends on $\kappa$. Is it actually independent to the algorithm? If so, we can define it as the condition number of a ICA problem, which define how difficult the ICA problem is. 
 
