@@ -26,7 +26,7 @@
 \usepackage{algorithm}
 \usepackage{array}
 \usepackage{setspace}
-
+\newcommand{\cset}[2]{\left\{#1\,:\,#2\right\}}
 \DeclareMathOperator{\esssup}{ess\;sup}
 
 \usepackage{svn-multi}
@@ -186,7 +186,7 @@
 \newtheorem{claim}[lemma]{Claim}
 \newtheorem{cor}[lemma]{Corollary}
 \newtheorem{example}[lemma]{Example}
-\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem{prop}[lemma]{Proposition}
 
 \theoremstyle{definition}
 \newtheorem{definition}[lemma]{Definition}
@@ -204,6 +204,12 @@
 
 
 \newcommand{\FF}{\mathcal{F}}
+\newcommand{\TT}{\mathcal{T}}
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\KK}{\mathcal{K}}
+\newcommand{\eps}{\varepsilon}
+
+
 \usepackage[capitalize]{cleveref}
 
 
@@ -265,33 +271,167 @@ Note also that ICA is a special case of the ``Blind-Source Separation'' problem 
 Furthermore, the above ICA problem is the simplest of its kind. More interesting (and difficult) cases are when the number of observed components is smaller than the number of sources (underdetermined problem) or when there is noise added to the observations.
 }
 
-\section{Independence of Components}
+\section{Independence of Functions}
 \label{sec:IndeofComp}
-Given a sequence of probability measures $(\mu_t)_{t=0,1,\ldots}$ over a measurable space
-$(\Omega, \mathcal{A})$ and a measurable function $f:\Omega\rightarrow\real^d$, 
-consider the sequence $(\nu_t)$ of probability measures over $\real^d$ induced by $f$: 
-for any $t\ge0$,  $\nu_t$ is the a probability measure over $\real^d$ such that for any Borel set $A \in \real^d$, $\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t(x)$. 
+
+The purpose of this section is to define a natural notion of independence for functions.
+Let $f_1,f_2: \natural \ra \real$ be real-valued functions from the set of natural numbers.
+Then, a natural definition for $f_1$ and $f_2$ being independent is that if 
+$\nu_{t,i}$ is the empirical distribution of the values $(f_i(0),\ldots,f_i(t-1))$ over the reals
+and $\nu_t$ is the empirical distribution of the values of the pairs $( (f_1(s),f_2(s))_{0\le s \le t-1})$
+then $\nu_t \approx \nu_{t,1} \otimes \nu_{t,2}$ and we expect equality to hold as $t\ra\infty$.
+We also see that it is natural to expect $\nu_t$, and also $\nu_{t,i}$ ($i=1,2$) to converge as $t\ra\infty$.
+
+Since the choice to consider functions over the natural numbers is somewhat arbitrary, we will generalize these notions to arbitrary measurable domains $(\Omega,\AA)$ and a sequence of measures $(\mu_t)_{t=0,1,\ldots}$ over it.
+If $\Omega = \natural$, $\AA = 2^\natural$ and $\mu_t$ is the uniform distribution on $\{0,\ldots,t\}$.
+In what follows we fix $\Omega$ and $(\mu_t)$ and define all the concepts that follow relative to these.
+
+Let $f: \Omega \ra \real^d$.
+For $t\ge 0$, we define $\nu_t$ to be the probability measure over $\real^d$ that is induced by $f$ and $\mu_t$:
+In particular, for any Borel set $A\subset \real^d$,
+\[
+\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t(x) = \mu_t\Bigl( \cset{x}{f(x)\in A} \Bigr).
+\]
+In short, we will call $\nu_t$ the $t$th probability measure induced by $f$.
+Remember that a sequence of probability measures $(\nu_t)$ is said to converge weakly to a probability measure $\nu$ if $\int h d\nu_t$ converges to $\int h d\nu$ for any bounded, continuous function $h$.
+
+\begin{definition}
+A function $f:\Omega \rightarrow \real^d$ is called \emph{ergodic} w.r.t. $(\mu_t)$
+if the sequence of  induced probability measures $(\nu_t)_{t\ge 0}$ is weakly convergent.
+\end{definition}
+In what follows, when $(\mu_t)$ is fixed, we will simply call $f$  ergodic, not mentioning $(\mu_t)$.
+When the limit of $(\mu_t)$ exists, it will be denoted by $\mu$
+and if we want to emphasize the dependence on $f$ then we will use $\mu^{(f)}$.
+Similarly, when the dependence on $\mu_t$ on $f$ is important, we will use $\mu^{(f)}_t$.
+
+The following proposition follows immediately from the definition:
+\begin{prop}
+If $f_1,\ldots, f_d$ are ergodic functions with a common domain then so is $f = (f_1,\ldots,f_d)$. Conversely, if $f:\Omega \ra \real^d$ is ergodic then all its components are also ergodic.
+\end{prop}
+
+
+The next question to be investigated is whether the space of ergodic functions is a subspace, i.e., whether it is closed under addition and multiplication by reals. The latter is clear. However, concerning closeness under addition, we have 
+the following observation:
+\begin{claim}
+The space of ergodic functions is not closed under addition.
+\end{claim}
+\begin{proof}
+Let $f,g:\natural \rightarrow \{-1,+1\}$ and $(\mu_t)$ be defined as follows: 
+\[
+f(t) = \begin{cases} +1, & t \equiv 0 \pmod 4; \\
+					-1, & t \equiv 1 \pmod 4; \\
+					+1,  & t \equiv 2  \pmod 4; \\
+					-1, & t \equiv 3  \pmod 4,
+					\end{cases}
+\qquad\qquad 
+g(t) = \begin{cases} +1, & t\equiv 0 \pmod 4; \\
+					-1, & t\equiv 1 \pmod 4; \\
+					-1,  & t\equiv 2 \pmod 4; \\
+					+1, & t\equiv 3 \pmod 4.
+					\end{cases}
+\]
+\[
+\quad \mu_{2t+1}(x) = \begin{cases} 1/2, & x=0; \\
+					1/2, & x=1; \\
+					0,  & \text{otherwise},
+					\end{cases}
+\qquad\qquad 
+\mu_{2t}(x) = \begin{cases} 1/2, & x=2; \\
+					1/2, & x=3; \\
+					0,  & \text{otherwise} .
+					\end{cases}
+\]
+Then, $\nu^{(f)}_t$, $\nu^{(g)}_t$ are both the uniform Bernoulli distribution on $\{-1,+1\}$, hence they converge and the limit is the same uniform Bernoulli distribution. 
+However, while $\nu^{(f+g)}_{2t+1}$ is the uniform Bernoulli distribution on $\{-2,+2\}$,  $\nu^{(f+g)}_{2t}$ is the degenerate
+distribution that puts all the mass at $0$. Thus, $\nu^{(f+g)}_{t}$ fails to be convergent. 
+\end{proof}
+Notice that the above example shows that $\nu_t^{(f)}$  and $\nu_t^{(g)}$ alone do not determine $\nu_t^{(f+g)}$ (which is not that surprising).
+\todoc[inline]{What happens when $\Omega = \natural$ and $\mu_t$ is uniform on $\{0,\ldots, t\}$?
+}
+
+%Given two ergodic function $f$ and $g$, let $X_t$ (and $Y_t$ ) is the random variable induced by $\mu_t$ and $f$(and $g$, respectively). Then $\nu_{f+g,t}$ is the probability function of $X_t+Y_t$. Note that $X_t \xrightarrow{D} X$ and  $Y_t \xrightarrow{D} Y$.  \emph{However, $X_t+Y_t \xrightarrow{D} X+Y$ is not guaranteed!} 
+
+
+We define the independence of the components of a multidimensional ergodic function $f$ based on its induced limiting distribution $\nu^{(f)}$:
+\begin{definition}
+Given ergodic component functions $\{f_1,\ldots,f_d\}$, 
+we say that $f_1,\ldots,f_d$ are \emph{independent}, 
+	if $\nu^{(f_1)}\otimes\ldots\otimes\nu^{(f_d)} = v^{(f)}$, 
+	where $f = (f_1,\ldots,f_d):\Omega \rightarrow \real^d$.
+\end{definition}
+
+Do there exist functions that are independent (non-independent) of each other? 
+Here, we provide a few examples based on periodic functions.
+Let $|S|$ denote the length of the set $S\subset \real$, i.e., $|S| = \sup S - \inf S$.
+\begin{cor}
+Assume $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with respective periods $T_1$ and $T_2$. 
+Let $\mu_t$ be the uniform measure on $[0,t]$. 
+%$\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$.
+ If $T_1/T_2$ is irrational, then $f$ and $g$ are independent. 
+\end{cor}
+%\vspace{-0.5cm}
+\begin{proof}
+ For two Borel sets $A\subset \real$ and $B\subset \real$, let $S_1 =f^{-1}(A)\cap [0,T_1] $ and $ S_2 = g^{-1}(B)\cap [0,T_2]$. It is easy to verify that $\nu^{(f)}(A) = \frac{|S_1|}{T_1}$, and $\nu^{(g)}(B) = \frac{|S_2|}{T_2}$. 
+ Note that $\nu^{(f)}_t(A\times B) = \frac{|f^{-1}(A)\cap g^{-1}(B)\cap [0,t] |}{t}$. Now assume that $nT_1 \le t\le (n+1)T_1$ and $mT_2\le t \le (m+1)T_2$. Thus,
+ \begin{align*}
+ \nu^{(f)}_t(A\times B) =  \frac{1}{t} \int_{ \substack{x\in f^{-1}(A) \\ 0\le x \le t}} \ind{x\in g^{-1}(B)}\, dx 
+ 					=	 \frac{1}{t} \sum_{u=0}^{n-1} \int_{x\in S_1} \ind{uT_1+c \in g^{-1}(B)}\, dc + \frac{C}{t}
+ \end{align*}
+ for some constant $C$. Now let $n$ approach $\infty$:
+ \begin{align*}
+  \lim\limits_{n\rightarrow \infty} \nu^{(f)}_t(A\times B) = & \int_{x\in S_1} \lim\limits_{n\rightarrow \infty} \sum_{u=0}^{n-1} \frac{\ind{uT_1+c \in g^{-1}(B)}}{t} \, dc.
+ \end{align*}
+ Note that $\lim_{n\rightarrow \infty}\frac{\#\{uT_1+c, \vert u = 1,2,\ldots, n; \, nT_1+c \in g^{-1}(B)\, \text{for some }\}}{n} = \nu_{g}(B)$. 
+ \todor{how to prove it?} Thus, 
+ \begin{align*}
+ \lim\limits_{n\rightarrow \infty} \nu^{(f)}_t(A\times B) = & \int_{x\in S_1} \frac{\nu^{(g)}(B)}{T_1}\, dc 
+ 														=  \frac{|S_1|\nu^{(g)}(B)}{T_1} 
+ 														=  \nu^{(f)}(A)\nu^{(g)}(B),
+ \end{align*}
+which shows that  $f$ and $g$ are independent.
+\end{proof}
+
+\begin{cor}
+Assume $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with period $T_1$ and $T_2$. 
+Let $\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$.  
+If $T_1/T_2 = \frac{u}{v}$ is rational, then $f$ and $g$ are independent IFF 
+\[
+\frac{|\{f^{-1}(A)\cap g^{-1}(B) \cap [0,vT_1]\}|}{v} = \frac{|f^{-1}(A)\cap [0,T_1]| \,|g^{-1}(B)\cap [0,T_2]|}{T_2}
+\]
+for any Borel sets $A,B\subset \real$.
+\end{cor}
+
+\begin{cor}
+Assume $f:\natural \rightarrow\real$ and $g:\natural \rightarrow\real$ are periodic functions with period $T_1$ and $T_2$, 
+and $\mu_t([1,b]) = \lfloor b\rfloor/\lfloor t\rfloor$ for $0\le b\le t$.  
+Then $f$ and $g$ are independent IFF 
+\begin{align*}
+\#\big\{x\vert f(x) = a, g(x) = b, x\in \{1,\ldots,T_1T_2\} \big\} = & \, \#\big\{x\vert f(x) = a, x\in \{1,\ldots,T_1\} \big\} \\
+& \quad \times \#\big\{x\vert g(x) = b, x\in \{1,\ldots,T_2\} \big\} 
+\end{align*}
+for any Borel sets $a,b\in \real$, where $\#S$ is the cardinality of $S$.
+\end{cor}
+
+
 
 \if0
 Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real^d$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
 for $ $ any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
 \fi
 
-\begin{lemma}
-\label{lem:nicefunction}
+\subsection{Will the limiting distribution be a probability distribution?}
+In this section, we provide a sufficient condition under which all the cluster points of the induced distributions $(\nu_t)$ will be probability distributions. In particular, we have the following result:
+\begin{prop}
+\label{lem:ergodicfunction}
 Let $f_i$ denote the $i$th coordinate function of $f$.
 Assume that
 \begin{equation}
-\label{eq:niceproperty}
+\label{eq:ergodicproperty}
 \lim_{t\to\infty} \int |f_i(x)|\, d\mu_t(x) 
 \end{equation}
 exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |f_i|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
 Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
-\end{lemma}
-\newcommand{\TT}{\mathcal{T}}
-\renewcommand{\AA}{\mathcal{A}}
-\newcommand{\KK}{\mathcal{K}}
-\newcommand{\eps}{\varepsilon}
+\end{prop}
 As we we will soon see, the statement of the lemma will follow from Prokhorov theorem.
 For this, we need to introduce the concept of a ``tight'' set of probability measures.
 Let $(X,\TT)$ be a topological space, $\AA$ be a $\sigma$-algebra over $X$ that contains the topology $\TT$,
@@ -301,7 +441,7 @@ Let $(S,\rho)$ be a separable metric space, $\KK$ be a set of probability measur
 Then $\KK$ is tight iff the closure of $\KK$ is sequentially compact in the space of probability measures over $\AA$ equipped with the topology of weak convergence.
 \end{thm}
 An immediate corollary of this theorem is that if $\KK$ is tight than any cluster point of $\KK$ is also a probability measure.
-With this, let us continue with the proof of \cref{lem:nicefunction}.
+With this, let us continue with the proof of \cref{lem:ergodicfunction}.
 \begin{proof}
 If we show that the set of probability measures $\{\nu_t\}$ is tight then, as suggested beforehand,
 the statement will indeed follow from Prokhorov's theorem.
@@ -334,10 +474,10 @@ while it follows from $u_i'\ge \esssup_{\mu_t} |f_i|$ when $t\ge T$.
 
 \if0
 \begin{lemma}
-\label{lem:nicefunction}
+\label{lem:ergodicfunction}
 Let $f_i(t)$ denote the $i$th coordinate of $f(t)$, and assume that
 \begin{equation}
-\label{eq:niceproperty}
+\label{eq:ergodicproperty}
 \lim_{t\to\infty} \tfrac{1}{t}\sum_{k=1}^t |f_i(k)|=m_i
 \end{equation}
 exists and is finite for all $1 \le i \le d$.
@@ -356,117 +496,14 @@ $K_{\eps}=\prod_{i=1}^d [0,u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1),\ldot
 $\nu_t(K_{\eps})>1-d \eps$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
 \end{proof}
 \fi
-Note that Lemma \ref{lem:nicefunction} guarantees that all the convergent subsequences of $\{\nu_t\}$ will converge to probability measures. The results of this paper depend on a stronger assumption, as follows.
-
-\begin{definition}
-A deterministic function $f:\Omega \rightarrow \real^d$ is called \emph{nice for $(\mu_t)$},
-if it satisfies equation \eqref{eq:niceproperty} and its induced probability measure sequence $\nu_t$ converges. 
-Denote this limit by $\nu_f$ (or $\nu$ if not causing any ambiguity). 
-\end{definition}
-In what follows, when $(\mu_t)$ is fixed, we will call $f$ just nice, not mentioning $(\mu_t)$.
-
-The next question to be investigated is whether the space of nice functions is a subspace, i.e., whether it is closed under addition and multiplication by reals. The latter is clear. However, concerning closeness under addition, we have 
-the following observation:
-\begin{claim}
-The space of nice functions is not closed under addition.
-\end{claim}
-Intuitively, what happens is that we ask for closedness under convergence in distribution, while assuming only weak convergence. In particular, if $f$ is a nice function, it may be that $\nu_t$ converges to $\nu$ weakly
-
-that weak convergence does 
-Given two nice function $f$ and $g$, let $X_t$ (and $Y_t$ ) is the random variable induced by $\mu_t$ and $f$(and $g$, respectively). Then $\nu_{f+g,t}$ is the probability function of $X_t+Y_t$. Note that $X_t \xrightarrow{D} X$ and  $Y_t \xrightarrow{D} Y$. 
-
-\emph{However, $X_t+Y_t \xrightarrow{D} X+Y$ is not guaranteed!} And this causes problem for Darmois-Skitovich theorem in next section.
-
-
-\begin{proof}
-
-
-Let $f,g:\natural \rightarrow \{\pm1\}$ and $(\mu_t)$ as follows: 
-\[
-f(t) = \begin{cases} 1 & t=1 \\
-					-1 & t=2 \\
-					1  & t=3 \\
-					-1 & t=4 
-					\end{cases};
-\quad g(t) = \begin{cases} 1 & t=1 \\
-					-1 & t=2 \\
-					-1  & t=3 \\
-					1 & t=4 
-					\end{cases};
-\]
-\[
-\quad \mu_{2t+1}(x) = \begin{cases} 1/2 & x=1 \\
-					1/2 & x=2 \\
-					0  & \text{otherwise} 
-					\end{cases};	
-\quad \mu_{2t}(x) = \begin{cases} 1/2 & x=3 \\
-					1/2 & x=4 \\
-					0  & \text{otherwise} 
-					\end{cases};		
-\]
-Then $\nu_f$ and $\nu_g$ are Bernoulli distribution. However, $\nu_{f+g,2t+1}$ is Bernoulli distribution while $\nu_{f+g,2t}$ is degenerate at 0. 
-
-If $\{\mu_t\}$ are empirical distributions, will this Corollary hold?
-\end{proof}
-The independence of sequences is defined based on $\nu_f$.
-\begin{definition}
-Given nice component functions $\{f_1,\ldots,f_d\}$, we say that $\{f_1,\ldots,f_d\}$ are \emph{independent}, if $\nu_{f_1}\times\ldots\times\nu_{f_d} = v_f$, where $f = (f_1,\ldots,f_d):\Omega \rightarrow \real^d$.
-\end{definition}
-
-Let $|S|$ be the length of the set $S\subset \real$. 
-\begin{cor}
-Assume $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with period $T_1$ and $T_2$. 
-Let $\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$. If $T_1/T_2$ is irrational, then $f$ and $g$ are independent. 
-\end{cor}
-%\vspace{-0.5cm}
-\begin{proof}
- For two Borel sets $A\subset \real$ and $B\subset \real$, Let $S_1 =f^{-1}(A)\cap [0,T_1] $ and $ S_2 = g^{-1}(B)\cap [0,T_2]$. It is easy to verify that $\nu_f(A) = \frac{|S_1|}{T_1}$, and $\nu_g(B) = \frac{|S_2|}{T_2}$. 
- Note that $\nu_{f,t}(A\times B) = \frac{|f^{-1}(A)\cap g^{-1}(B)\cap [0,t] |}{t}$. Now assume $nT_1 \le t\le (n+1)T_1$ and $mT_2\le t \le (m+1)T_2$. Thus,
- \begin{align*}
- \nu_{f,t}(A\times B) = & \frac{1}{t} \int_{ \substack{x\in f^{-1}(A) \\ 0\le x \le t}} \ind{x\in g^{-1}(B)}\, dx \\
- 					=	& \frac{1}{t} \sum_{u=0}^{n-1} \int_{x\in S_1} \ind{uT_1+c \in g^{-1}(B)}\, dc + \frac{C}{t}
- \end{align*}
- for some constant $C$. Now let $n$ approach $\infty$,
- \begin{align*}
-  \lim\limits_{n\rightarrow \infty} \nu_{f,t}(A\times B) = & \int_{x\in S_1} \lim\limits_{n\rightarrow \infty} \sum_{u=0}^{n-1} \frac{\ind{uT_1+c \in g^{-1}(B)}}{t} \, dc.
- \end{align*}
- Note that $\lim_{n\rightarrow \infty}\frac{\#\{uT_1+c, \vert u = 1,2,\ldots, n; \, nT_1+c \in g^{-1}(B)\, \text{for some }\}}{n} = \nu_{g}(B)$. 
- \todor{how to prove it?} Thus, 
- \begin{align*}
- \lim\limits_{n\rightarrow \infty} \nu_{f,t}(A\times B) = & \int_{x\in S_1} \frac{\nu_g(B)}{T_1}\, dc \\
- 														= & \frac{|S_1|\nu_g(B)}{T_1} \\
- 														= & \nu_f(A)\nu_g(B).
- \end{align*}
- Therefore, $f$ and $g$ is independent.
-\end{proof}
-
-\begin{cor}
-Assume $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with period $T_1$ and $T_2$. 
-Let $\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$.  
-If $T_1/T_2 = \frac{u}{v}$ is rational, then $f$ and $g$ are independent IFF 
-\[
-\frac{|\{f^{-1}(A)\cap g^{-1}(B) \cap [0,vT_1]\}|}{v} = \frac{|f^{-1}(A)\cap [0,T_1]| \,|g^{-1}(B)\cap [0,T_2]|}{T_2}
-\]
-for any Borel sets $A,B\subset \real$.
-\end{cor}
-
-\begin{cor}
-Assume $f:\natural \rightarrow\real$ and $g:\natural \rightarrow\real$ are periodic functions with period $T_1$ and $T_2$, 
-and $\mu_t([1,b]) = \lfloor b\rfloor/\lfloor t\rfloor$ for $0\le b\le t$.  
-Then $f$ and $g$ are independent IFF 
-\begin{align*}
-\#\big\{x\vert f(x) = a, g(x) = b, x\in \{1,\ldots,T_1T_2\} \big\} = & \, \#\big\{x\vert f(x) = a, x\in \{1,\ldots,T_1\} \big\} \\
-& \quad \times \#\big\{x\vert g(x) = b, x\in \{1,\ldots,T_2\} \big\} 
-\end{align*}
-for any Borel sets $a,b\in \real$, where $\#S$ is the cardinality of $S$.
-\end{cor}
+%Note that \cref{lem:ergodicfunction} guarantees that all the convergent subsequences of $\{\nu_t\}$ will converge to probability measures. The results of this paper depend on a stronger assumption, as follows.
 
 
 \section{Correctness of ICA algorithms}
-Assume the induced probability measure of each component $f_i$ is non-Gaussian, then correctness of ICA algorithms are guaranteed by Theorem \ref{thm:CorofICA}, as follows.
+Assume the induced probability measure of each component $f_i$ is non-Gaussian, then correctness of ICA algorithms are guaranteed by \cref{thm:CorofICA}, as follows.
 \begin{thm}
 \label{thm:CorofICA}
-Let $f_1,\ldots,f_d$ be mutually independent real-valued, nice functions and let $f = (f_1,\ldots,f_d)$.Moreover, assume $\nu_{f_i}$, $i=1,\ldots,d$ are non-Gaussian distributions. If
+Let $f_1,\ldots,f_d$ be mutually independent real-valued, ergodic functions and let $f = (f_1,\ldots,f_d)$.Moreover, assume $\nu_{f_i}$, $i=1,\ldots,d$ are non-Gaussian distributions. If
 \begin{equation}
 \left(
 \begin{array}{ccc}
@@ -486,18 +523,18 @@ f_n
 are mutually independent, then $A$ is equivalent to a permutation matrix up to scaling.
 \end{thm}
 
-Before we prove Theorem \ref{thm:CorofICA}, we first need a lemma which is straightforward from Darmois-Skitovich theorem.
+Before we prove \cref{thm:CorofICA}, we first need a lemma which is straightforward from Darmois-Skitovich theorem.
 \begin{lemma}
-Let $f_1,\ldots,f_d$ be mutually independent real-valued, nice functions and let $f = (f_1,\ldots,f_d)$.
+Let $f_1,\ldots,f_d$ be mutually independent real-valued, ergodic functions and let $f = (f_1,\ldots,f_d)$.
 Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$ where all the coefficients $(\alpha_i)$, $(\beta_i)$ are nonzero.
 If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussian distributions.
 \end{lemma}
 \begin{proof}
-By Section \ref{sec:IndeofComp}, $\nu_{f_i}$ exists and $\nu_{f_1},\ldots,\nu_{f_n}$ are mutually independent. 
+By \cref{sec:IndeofComp}, $\nu_{f_i}$ exists and $\nu_{f_1},\ldots,\nu_{f_n}$ are mutually independent. 
 Let $\xi_i$ be a random variable with the distribution of $\nu_{f_i}$, and  $\xi_1,\ldots,\xi_n$ are mutually independent. Note that $\nu_{g_i}$ is the probability function of $\sum_{i}\alpha_if_i$. (OR MAYBE NOT?) 
 \end{proof}
 
-\begin{proof}[Proof of Theorem \ref{thm:CorofICA}]
+\begin{proof}[Proof of \cref{thm:CorofICA}]
 From \cref{cor:DSTheoremCor}. $n$ non-empty mutually exclusive subsets of a size $n$ set, must be a partition of the set, with one in each subset.
 \end{proof}
 \begin{thm}[Darmois-Skitovich theorem]
@@ -514,7 +551,7 @@ Let $\xi_1,\ldots,\xi_n$ be independent random variables. If the random variable
 
 \subsection{Efficiency}
 In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
-Assume the independent nice component functions $\{f_1,\ldots,f_d\}$ are bounded by a constant $C$, and satisfy $\E_{\nu_{f_i}}[X]=0$, $\E_{\nu_{f_i}}[X^2]=1$, and $\kappa_i := \E_{\nu_{f_i}}[X^4]\neq 3$. 
+Assume the independent ergodic component functions $\{f_1,\ldots,f_d\}$ are bounded by a constant $C$, and satisfy $\E_{\nu_{f_i}}[X]=0$, $\E_{\nu_{f_i}}[X^2]=1$, and $\kappa_i := \E_{\nu_{f_i}}[X^4]\neq 3$. 
 Here $\E_{\nu_{f_i}}$ is the expectation is taken with respect to the probability measure of $\nu_{f_i}$. 
 For $1\le k\le d$, denote $A_{(t)} = (A_k,A_{ck})$, where $A_{ck}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{k-1},A_{k+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. 
 Without loss of generality, assume $\|A_i\|_2=1$.
@@ -546,7 +583,7 @@ M = A
 \right) 
 A^{-1},
 \end{equation}
-has distinguish eigenvalues. Thus, if $M =(\nabla^2f(\phi))(\nabla^2f(\psi))^{-1} $ is estimated precisely, Algorithm \ref{alg:icaHsu} returns $A$ exactly  with probability 1. 
+has distinguish eigenvalues. Thus, if $M =(\nabla^2f(\phi))(\nabla^2f(\psi))^{-1} $ is estimated precisely, \cref{alg:icaHsu} returns $A$ exactly  with probability 1. 
 Let 
 \begin{equation}
 \label{def:kappa}
@@ -624,13 +661,13 @@ where $c = \frac{1+\sqrt{5}}{2}$.
 \le & \|X\|_2\| Y^{-1} - (Y+E_2)^{-1}\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2 \\
 \le & c \|X\|_2 \max\{\| Y^{-1}\|^2_2 , \|(Y+E_2)^{-1}\|^2_2\} \|E_2\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2,
 \end{align*}
-where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8, Chapter III of \citep*{stewart1990matrix}. Therefore by Lemma \ref{lem:inversevariation},
+where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8, Chapter III of \citep*{stewart1990matrix}. Therefore by \cref{lem:inversevariation},
 \[
 \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2}{(\sigma_{\min}(Y) - \|E_2\|_2)^2}+\frac{\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2}.
 \]
 \end{proof}
 
-Note that in Algorithm \ref{alg:icaHsu}, 
+Note that in \cref{alg:icaHsu}, 
 \begin{align*}
 & \nabla^2 f(\eta) = G_1(\eta) - G_2(\eta) -G_3(\eta), \\
 \text{and } \quad & \widehat{\nabla^2 f(\eta)} =\widehat{G_1(\eta)} - \widehat{G_2(\eta)} -\widehat{G_3(\eta)},
@@ -686,7 +723,7 @@ Assume $\|\eta\|_2 = 1$, then
 \]
 \end{lemma}
 \begin{proof}
-From the proof of Lemma \ref{lem:boundnablafeta}, $\|\nabla^2 f(\eta)\|_2, \|\widehat{\nabla^2 f(\eta)}\|_2 \le dq$, where $q = d^2C^4\sigma_{\max}(A)^4$.
+From the proof of \cref{lem:boundnablafeta}, $\|\nabla^2 f(\eta)\|_2, \|\widehat{\nabla^2 f(\eta)}\|_2 \le dq$, where $q = d^2C^4\sigma_{\max}(A)^4$.
 Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have 
 \begin{align*}
 & \|\big(\nabla^2 f(\eta)\big)^{-1} - \big(\widehat{\nabla^2 f(\eta)}\big)^{-1}  \|_2 \\
@@ -719,15 +756,15 @@ Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have
  where $\delta = \kappa -  2\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q>0$.
  \end{thm}
  \begin{proof}
- By Lemma \ref{lem:eigenvectorvariation}, 
+ By \cref{lem:eigenvectorvariation}, 
  \[
  \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|M - \widehat{M} \|_2. 
  \]
- Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by Lemma \ref{lem:Mvariation},
+ Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by \cref{lem:Mvariation},
  \[
  \|M - \widehat{M} \|_2 \le \frac{c\|\nabla^2f(\phi)\|_2\|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2}{\big(\sigma_{\min}(\nabla^2f(\psi)) - \|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2\big)^2} + \frac{\|\nabla^2f(\phi) - \widehat{\nabla^2f(\phi)}\|_2}{\sigma_{\min}(\nabla^2f(\psi)) - \|\nabla^2f(\psi) - \widehat{\nabla^2f(\psi)}\|_2}. 
  \]
- From the proof of Lemma \ref{lem:nablavariation}, we have $\|\nabla^2 f(\phi)\|_2\le dq_{\phi}$, where $q_{\phi} = d^2C^4\sigma_{\max}(A)^4\|\phi\|_2^2$. Apply Lemma \ref{lem:nablavariation}, 
+ From the proof of \cref{lem:nablavariation}, we have $\|\nabla^2 f(\phi)\|_2\le dq_{\phi}$, where $q_{\phi} = d^2C^4\sigma_{\max}(A)^4\|\phi\|_2^2$. Apply \cref{lem:nablavariation}, 
  \begin{align*}
  \|M - \widehat{M} \|_2 \le &
  cd^2 \frac{q_{\psi}q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\big(\sigma_{\min}(\nabla^2f(\psi)) - d q_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)\big)^2} \\
@@ -741,7 +778,7 @@ Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have
  \end{proof}
 
 \subsection{Condition number of ICA problem}
-From Theorem \ref{thm:efficiency}, two parameters in the efficiency that depend on the algorithm rather than the ICA problem are the number $\kappa$ and $Q$. 
+From \cref{thm:efficiency}, two parameters in the efficiency that depend on the algorithm rather than the ICA problem are the number $\kappa$ and $Q$. 
 When $n$ is large enough, 
 \[
 Q\approx \left[ \frac{2q_{\psi}q_{\phi}}{\big(\sigma_{\min}(\nabla^2f(\psi))\big)^2}+\frac{q_{\phi}}{\sigma_{\min}(\nabla^2f(\psi))}\right]D_{tv}(\nu_n , \nu)^2.
