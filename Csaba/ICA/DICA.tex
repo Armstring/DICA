@@ -443,6 +443,7 @@ for any $a,b\in \real$. \todoc{Maybe we should use $0\le x \le T-1$ in the above
 
 While the space of ergodic functions is not closed under addition, the sum of two independent ergodic functions is also ergodic and in fact its induced distribution is the convolution of the induced distributions of the two functions:
 \begin{prop}
+\label{prop:convolution}
 If $f,g$ are independent ergodic functions then
 $f+g$ is ergodic and
  $\nu^{(f+g)} = \nu^{(f)} * \nu^{(g)}$.
@@ -560,7 +561,7 @@ $\nu_t(K_{\eps})>1-d \eps$ for all $t \ge 1$ by the union bound, showing that $\
 Assume the induced probability measure of each component $f_i$ is non-Gaussian, then correctness of ICA algorithms are guaranteed by \cref{thm:CorofICA}, as follows.
 \begin{thm}
 \label{thm:CorofICA}
-Let $f_1,\ldots,f_d$ be mutually independent real-valued, ergodic functions and let $f = (f_1,\ldots,f_d)$.
+Let $f_1,\ldots,f_d$ be mutually independent real-valued, \todoc{We always have real-valued functions, right? So maybe mention this always or nowhere} ergodic functions and let $f = (f_1,\ldots,f_d)$.
 Moreover, assume $\nu_{f_i}$, $i=1,\ldots,d$ are non-Gaussian distributions. If
 \begin{equation}
 \left(
@@ -581,28 +582,61 @@ f_n
 are mutually independent, then $A$ is equivalent to a permutation matrix up to scaling.
 \end{thm}
 
-Before we prove \cref{thm:CorofICA}, we first need a lemma which is straightforward from Darmois-Skitovich theorem.
-\begin{lemma}
-Let $f_1,\ldots,f_d$ be mutually independent real-valued, ergodic functions and let $f = (f_1,\ldots,f_d)$.
-Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$ where all the coefficients $(\alpha_i)$, $(\beta_i)$ are nonzero.
-If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussian distributions.
-\end{lemma}
-\begin{proof}
-By \cref{sec:IndeofComp}, $\nu_{f_i}$ exists and $\nu_{f_1},\ldots,\nu_{f_n}$ are mutually independent. 
-Let $\xi_i$ be a random variable with the distribution of $\nu_{f_i}$, and  $\xi_1,\ldots,\xi_n$ are mutually independent. Note that $\nu_{g_i}$ is the probability function of $\sum_{i}\alpha_if_i$. (OR MAYBE NOT?) 
-\end{proof}
-
-\begin{proof}[Proof of \cref{thm:CorofICA}]
-From \cref{cor:DSTheoremCor}. $n$ non-empty mutually exclusive subsets of a size $n$ set, must be a partition of the set, with one in each subset.
-\end{proof}
+For the proof of \cref{thm:CorofICA}, we need the Darmois-Skitovich theorem and a corollary of it:
 \begin{thm}[Darmois-Skitovich theorem]
-Let $\xi_1,\ldots,\xi_n$ be independent random variables. If the linear forms $L_1 = \alpha_1\xi_1 + \ldots + \alpha_n\xi_n$ and $L_2 = \beta_1\xi_1 +\ldots + \beta_n\xi_n$, where the coefficients $\alpha_i$ and $\beta_i$ are nonzero, are independent, then the random variables $\xi_i$ are Gaussian variables.
+Let $\xi_1,\ldots,\xi_d$ be independent random variables. If the linear forms $L_1 = \alpha_1\xi_1 + \ldots + \alpha_d\xi_d$ and $L_2 = \beta_1\xi_1 +\ldots + \beta_d\xi_d$, where the coefficients $\alpha_i$ and $\beta_i$ are nonzero, are independent, then the random variables $\xi_i$ $(1\le i \le d$) are Gaussian variables.
 \end{thm}
 
+
+Note that this result can  be expressed in terms of the joint distributions of the random variables involved without ever mentioning the random variables themselves:
+%For the theorem, introduce the operator $M_c$ for $c\in \real\setminus \{0\}$ that acts on probability distributions and is defined by $(M_c \nu)(A) = \nu( \cset{ x/c}{x\in A} )$.
+\begin{prop}[Darmois-Skitovich theorem -- distributional form]
+\label{prop:Darmois-Skitovich-distr}
+For $i=1,\ldots, d$, let $\nu_i$ be probability distributions over the reals.
+Fix the nonzero real numbers $(\alpha_i)$, $(\beta_i)$.
+Define the probability distributions $\nu^{(L_1)}$, $\nu^{(L_2)}$ over the reals and 
+the probability distribution
+ $\nu^{(L_1,L_2)}$ over $\real^2$ using
+\begin{align*}
+\nu^{(L_1)}(A) & = \int \ind{ \sum_i \alpha_i x_i \in A} \,d\nu_1(x_1)\dots d\nu_d(x_d)\,,\\
+\nu^{(L_2)}(B) & = \int \ind{ \sum_i \beta_i x_i \in B} \,d\nu_1(x_1)\dots d\nu_d(x_d)\,,\\
+\nu^{(L_1,L_2)}(A\times B) 
+& = \int \ind{ \sum_i \alpha_i x_i \in A, \sum_i \beta_i x_i\in B} \,d\nu_1(x_1)\dots d\nu_d(x_d)\,,
+\end{align*}
+where $A,B\subset \real$ are Borel sets.
+If $\nu^{(L_1,L_2)} = \nu^{(L_1)} \otimes \nu^{(L_2)}$ then $\nu_i$ ($1\le i \le d$) are Gaussian distributions.
+\end{prop}
+
+From this latter result, we see that the following holds true:
+\begin{lemma}
+Let $f_1,\ldots,f_d$ be independent, ergodic functions and fix some nonzero reals
+ $(\alpha_i)$, $(\beta_i)$.
+Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$.
+If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussians.
+\end{lemma}
+\begin{proof}
+We apply~\cref{prop:Darmois-Skitovich-distr} with $\nu_i = \nu^{(f_i)}$, $i=1,\ldots,d$.
+We claim that $\nu^{(g)} = \nu^{(L_1)}$, $\nu^{(h)} = \nu^{(L_2)}$,
+$\nu^{(g,h)} = \nu^{(L_1,L_2)}$.
+From this the result follows since if $g$ and $h$ are independent then $\nu^{(L_1,L_2)} = \nu^{(g,h)} = \nu^{(g)} \otimes \nu^{(h)} = \nu^{(L_1)} \otimes \nu^{(L_2)}$.
+The claimed equalities follow by simple calculations such as in \cref{prop:convolution}. \todoc{At least I think..}
+\end{proof}
+
+As an immediate corollary, we have the following result:
 \begin{cor}
 \label{cor:DSTheoremCor}
-Let $\xi_1,\ldots,\xi_n$ be independent random variables. If the random variables $\xi_i$ are non-Gaussian variables, and the linear forms $L_1 = \alpha_1\xi_1 + \ldots + \alpha_n\xi_n$ and $L_2 = \beta_1\xi_1 +\ldots + \beta_n\xi_n$.  Then $\{i\vert \alpha_i \neq0\} \cap \{j\vert \beta_j \neq0\} = \emptyset$.
+Let $f_1,\ldots,f_d$ be independent, ergodic functions such that $\nu^{(f_i)}$ are not Gaussian distributions.
+Assume further that functions $g = \alpha_1 f_1 + \ldots + \alpha_d f_d$ and 
+$h= \beta_1f_1 +\ldots + \beta_d f_d$ are also independent.
+Then, $\cset{i}{ \alpha_i \neq0} \cap \cset{j}{ \beta_j \neq0} = \emptyset$.
 \end{cor}
+
+The proof of  \cref{thm:CorofICA} follows immediately from this result:
+\begin{proof}[Proof of \cref{thm:CorofICA}]
+From \cref{cor:DSTheoremCor} it follows that $\cset{j}{ a_{ij}\ne 0 }$, $1\le i \le d$,
+ are $d$ non-empty mutually exclusive subsets of the size $d$ set $\{1,\ldots,d\}$.
+ Hence, these sets must form a partition of the set, with one element in each subset, which proves the theorem.
+\end{proof}
 
 
 \section{Analysis of ICA algorithms}
@@ -645,7 +679,7 @@ has distinguish eigenvalues. Thus, if $M =(\nabla^2f(\phi))(\nabla^2f(\psi))^{-1
 Let 
 \begin{equation}
 \label{def:kappa}
-\kappa =  \min_{i,j: i\neq j} \vert (\frac{\phi^{\top}A_i}{\psi^{\top}A_i})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert. 
+\kappa =  \min_{i,j: i\neq j} \left\vert (\frac{\phi^{\top}A_i}{\psi^{\top}A_i})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \right\vert. 
 \end{equation}
 The following lemma shows a small perturbation of $M$ will only result a small variation of its eigenvectors, under some conditions.
 
@@ -674,10 +708,12 @@ F_{3k} & F_{4k} \\
 Note that by definitions, $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|A_{(k)}^{-1} E A_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$,
  $\|F_{3k}\|_2\le\|A_{(k)}^{-1}EA_{k}\|_2\le\frac{1}{\sigma_{\min}(A)}\|E\|_2$,
  and $\|F_{2k}\|_2\le\|(A^{-1})_kEA_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$.
-Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{3k}\|_2$, and $\delta_k = \min_{j: j\neq k} \vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - \|F_{1k}\|_2 - \|F_{4k}\|_2$. Thus 
+Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{3k}\|_2$, and $\delta_k = \min_{j: j\neq k} 
+\left\vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2$. Thus 
 \begin{align*}
-\delta_k & = \min_{j:j\neq k} \vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
-	& \ge \min_{j:j\neq k} \vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \vert - 2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
+\delta_k & = \min_{j:j\neq k} 
+	\left\vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
+	& \ge \min_{j:j\neq k} \left\vert (\frac{\phi^{\top}A_k}{\psi^{\top}A_k})^2 - \frac{\phi^{\top}A_j}{\psi^{\top}A_j})^2 \right\vert - 2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
 	& \ge  \kappa -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
 	& >  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 >0,
 \end{align*}
@@ -854,7 +890,7 @@ There exists a way sampling $\phi$ and $\psi$, such that $\kappa = \Theta(\log d
 \begin{proof}
 Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
 \[
-\kappa  = \min_{i,j} \vert \big(\frac{\alpha_i}{\beta_i}\big)^2 - \big(\frac{\alpha_j}{\beta_j}\big)^2 \vert.
+\kappa  = \min_{i,j} \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2 - \big(\frac{\alpha_j}{\beta_j}\big)^2 \right\vert.
 \] 
 
 Note that for $x\ge0$, $\Phi(x) \approx \frac12 (1+\sqrt{1-e^{-\frac{2}{\pi}x^2}})$ \citep{aludaat2008note}.
@@ -865,7 +901,7 @@ Note that for $x\ge0$, $\Phi(x) \approx \frac12 (1+\sqrt{1-e^{-\frac{2}{\pi}x^2}
 \]
 Thus, with probability at least $p (\approx \frac{1}{e})$,
 \[
-\kappa \le 2 \min_i \vert \big(\frac{\alpha_i}{\beta_i}\big)^2\vert \le 2 \frac{2}{\pi}\frac{1}{\log \frac{d^2}{d^2-1}}\min_i |\alpha_i|^2.
+\kappa \le 2 \min_i \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2\right\vert \le 2 \frac{2}{\pi}\frac{1}{\log \frac{d^2}{d^2-1}}\min_i |\alpha_i|^2.
 \]
 
 Now consider the case that at least two of $\beta_i$'s are greater than $\sqrt{\frac{\pi}{2}\log d}$,
