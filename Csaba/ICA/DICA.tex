@@ -1,6 +1,21 @@
 \documentclass[english]{article} % For LaTeX2e
 
+\usepackage{color}
 \usepackage[usenames,dvipsnames]{xcolor}
+%\definecolor{darkgreen}{RGB}{26, 82, 87} % solid linking color
+\usepackage[bookmarks=false]{hyperref}
+  \hypersetup{
+  	pdftex,
+    pdffitwindow=true,
+    pdfstartview={FitH},
+    pdfnewwindow=true,
+    colorlinks,
+    linktocpage=true,
+    linkcolor=Green,
+    urlcolor=Green,
+    citecolor=Green
+}
+
 
 % uncomment the following line and comment the line after it if you want to turn
 % off todos
@@ -180,6 +195,8 @@
  \ifvmode\smallskip\fi\end{trivlist}}
 
 
+\usepackage[capitalize]{cleveref}
+
 % theorems/definitions
 \newtheorem{lemma}{Lemma}[section]
 \newtheorem{thm}[lemma]{Theorem}
@@ -209,8 +226,6 @@
 \newcommand{\KK}{\mathcal{K}}
 \newcommand{\eps}{\varepsilon}
 
-
-\usepackage[capitalize]{cleveref}
 
 
 \title{Deterministic ICA}
@@ -283,14 +298,15 @@ then $\nu_t \approx \nu_{t,1} \otimes \nu_{t,2}$ and we expect equality to hold 
 We also see that it is natural to expect $\nu_t$, and also $\nu_{t,i}$ ($i=1,2$) to converge as $t\ra\infty$.
 
 Since the choice to consider functions over the natural numbers is somewhat arbitrary, we will generalize these notions to arbitrary measurable domains $(\Omega,\AA)$ and a sequence of measures $(\mu_t)_{t=0,1,\ldots}$ over it.
-If $\Omega = \natural$, $\AA = 2^\natural$ and $\mu_t$ is the uniform distribution on $\{0,\ldots,t\}$.
+If $\Omega = \natural$, $\AA = 2^\natural$ and $\mu_t$ is the uniform probability distribution on $\{0,\ldots,t\}$.
 In what follows we fix $\Omega$ and $(\mu_t)$ and define all the concepts that follow relative to these.
 
 Let $f: \Omega \ra \real^d$.
 For $t\ge 0$, we define $\nu_t$ to be the probability measure over $\real^d$ that is induced by $f$ and $\mu_t$:
 In particular, for any Borel set $A\subset \real^d$,
 \[
-\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t(x) = \mu_t\Bigl( \cset{x}{f(x)\in A} \Bigr).
+\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t(x) = \mu_t\Bigl( \cset{x}{f(x)\in A} \Bigr)
+= \mu_t ( f^{-1}(A) ).
 \]
 In short, we will call $\nu_t$ the $t$th probability measure induced by $f$.
 Remember that a sequence of probability measures $(\nu_t)$ is said to converge weakly to a probability measure $\nu$ if $\int h d\nu_t$ converges to $\int h d\nu$ for any bounded, continuous function $h$.
@@ -303,9 +319,10 @@ In what follows, when $(\mu_t)$ is fixed, we will simply call $f$  ergodic, not 
 When the limit of $(\mu_t)$ exists, it will be denoted by $\mu$
 and if we want to emphasize the dependence on $f$ then we will use $\mu^{(f)}$.
 Similarly, when the dependence on $\mu_t$ on $f$ is important, we will use $\mu^{(f)}_t$.
+A simple example of an ergodic function is a function over the reals (positive reals, natural numbers, etc.) that is periodic.
 
 The following proposition follows immediately from the definition:
-\begin{prop}
+\begin{prop}\label{prop:comp}
 If $f_1,\ldots, f_d$ are ergodic functions with a common domain then so is $f = (f_1,\ldots,f_d)$. Conversely, if $f:\Omega \ra \real^d$ is ergodic then all its components are also ergodic.
 \end{prop}
 
@@ -341,12 +358,12 @@ g(t) = \begin{cases} +1, & t\equiv 0 \pmod 4; \\
 					0,  & \text{otherwise} .
 					\end{cases}
 \]
-Then, $\nu^{(f)}_t$, $\nu^{(g)}_t$ are both the uniform Bernoulli distribution on $\{-1,+1\}$, hence they converge and the limit is the same uniform Bernoulli distribution. 
-However, while $\nu^{(f+g)}_{2t+1}$ is the uniform Bernoulli distribution on $\{-2,+2\}$,  $\nu^{(f+g)}_{2t}$ is the degenerate
+Then, $\nu^{(f)}_t$, $\nu^{(g)}_t$ are both the uniform  distribution on $\{-1,+1\}$, hence they converge and the limit is the same uniform  distribution. 
+However, while $\nu^{(f+g)}_{2t+1}$ is the uniform  distribution on $\{-2,+2\}$,  $\nu^{(f+g)}_{2t}$ is the degenerate
 distribution that puts all the mass at $0$. Thus, $\nu^{(f+g)}_{t}$ fails to be convergent. 
 \end{proof}
 Notice that the above example shows that $\nu_t^{(f)}$  and $\nu_t^{(g)}$ alone do not determine $\nu_t^{(f+g)}$ (which is not that surprising).
-\todoc[inline]{What happens when $\Omega = \natural$ and $\mu_t$ is uniform on $\{0,\ldots, t\}$?
+\todoc[inline]{What happens when $\Omega = \natural$ and $\mu_t$ is uniform on $\{0,1,\ldots, t\}$?
 }
 
 %Given two ergodic function $f$ and $g$, let $X_t$ (and $Y_t$ ) is the random variable induced by $\mu_t$ and $f$(and $g$, respectively). Then $\nu_{f+g,t}$ is the probability function of $X_t+Y_t$. Note that $X_t \xrightarrow{D} X$ and  $Y_t \xrightarrow{D} Y$.  \emph{However, $X_t+Y_t \xrightarrow{D} X+Y$ is not guaranteed!} 
@@ -362,57 +379,97 @@ we say that $f_1,\ldots,f_d$ are \emph{independent},
 
 Do there exist functions that are independent (non-independent) of each other? 
 Here, we provide a few examples based on periodic functions.
-Let $|S|$ denote the length of the set $S\subset \real$, i.e., $|S| = \sup S - \inf S$.
-\begin{cor}
-Assume $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with respective periods $T_1$ and $T_2$. 
-Let $\mu_t$ be the uniform measure on $[0,t]$. 
+Let $m$ denote the Lebesgue measure over the reals.
+\begin{prop}
+Assume that $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with respective periods $T_1$ and $T_2$. 
+Let $\mu_t$ be the uniform probability distribution on $[0,t]$. 
 %$\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$.
  If $T_1/T_2$ is irrational, then $f$ and $g$ are independent. 
-\end{cor}
+\end{prop}
 %\vspace{-0.5cm}
 \begin{proof}
- For two Borel sets $A\subset \real$ and $B\subset \real$, let $S_1 =f^{-1}(A)\cap [0,T_1] $ and $ S_2 = g^{-1}(B)\cap [0,T_2]$. It is easy to verify that $\nu^{(f)}(A) = \frac{|S_1|}{T_1}$, and $\nu^{(g)}(B) = \frac{|S_2|}{T_2}$. 
- Note that $\nu^{(f)}_t(A\times B) = \frac{|f^{-1}(A)\cap g^{-1}(B)\cap [0,t] |}{t}$. Now assume that $nT_1 \le t\le (n+1)T_1$ and $mT_2\le t \le (m+1)T_2$. Thus,
+ For two Borel sets $A\subset \real$ and $B\subset \real$, let $S_1 =f^{-1}(A)\cap [0,T_1] $ and $ S_2 = g^{-1}(B)\cap [0,T_2]$. It is easy to verify that $\nu^{(f)}(A) = \frac{m(S_1)}{T_1}$, and $\nu^{(g)}(B) = \frac{m(S_2)}{T_2}$. 
+ Note that $\nu^{(f)}_t(A\times B) = \frac{m( f^{-1}(A)\cap g^{-1}(B)\cap [0,t] )}{t}$. Now assume that $nT_1 \le t< (n+1)T_1$ and $mT_2\le t <(m+1)T_2$. Thus,
  \begin{align*}
  \nu^{(f)}_t(A\times B) =  \frac{1}{t} \int_{ \substack{x\in f^{-1}(A) \\ 0\le x \le t}} \ind{x\in g^{-1}(B)}\, dx 
- 					=	 \frac{1}{t} \sum_{u=0}^{n-1} \int_{x\in S_1} \ind{uT_1+c \in g^{-1}(B)}\, dc + \frac{C}{t}
+ 					=	 \frac{1}{t} \sum_{u=0}^{n-1} \int_{S_1} \ind{uT_1+s \in g^{-1}(B)}\, ds + \frac{C}{t}
  \end{align*}
- for some constant $C$. Now let $n$ approach $\infty$:
+ for some constant $0\le C<T_1$. Letting $t\ra\infty$, we get
  \begin{align*}
-  \lim\limits_{n\rightarrow \infty} \nu^{(f)}_t(A\times B) = & \int_{x\in S_1} \lim\limits_{n\rightarrow \infty} \sum_{u=0}^{n-1} \frac{\ind{uT_1+c \in g^{-1}(B)}}{t} \, dc.
+  \lim_{t\rightarrow \infty} \nu^{(f)}_t(A\times B) 
+  &=  \int_{S_1} \lim_{n\rightarrow \infty} \sum_{u=0}^{n-1} \frac{\ind{uT_1+s \in g^{-1}(B)}}{n T_1} \, ds,
  \end{align*}
- Note that $\lim_{n\rightarrow \infty}\frac{\#\{uT_1+c, \vert u = 1,2,\ldots, n; \, nT_1+c \in g^{-1}(B)\, \text{for some }\}}{n} = \nu_{g}(B)$. 
- \todor{how to prove it?} Thus, 
+ where the interchange of the limit and the integration is justified by Lebesgue's dominated theorem, once we show that the integrands converge.
+To see this, fix $s\in \real$. Then,
+ $\lim_{n\rightarrow \infty}\frac1n \sum_{u=0}^{n-1} \ind{uT_1+s \in g^{-1}(B)}
+ =\lim_{n\rightarrow \infty}\frac1n | \cset{ 0\le u \le n-1 }{ g(uT_1+s) \in (B)}
+ = \nu^{(g)}(B)$ since, as it is well known, thanks to $T_1/T_2$ being irrational, 
+ $(u T_1+s \pmod T_2 )_{u\in \natural}$ is ``uniformly distributed'' in $[0,T_2)$.
+ \todoc{We can cite P\'olya-Szeg\"o}
+Thus, the interchange is justified and
  \begin{align*}
  \lim\limits_{n\rightarrow \infty} \nu^{(f)}_t(A\times B) = & \int_{x\in S_1} \frac{\nu^{(g)}(B)}{T_1}\, dc 
- 														=  \frac{|S_1|\nu^{(g)}(B)}{T_1} 
+ 														=  \frac{m(S_1)\nu^{(g)}(B)}{T_1} 
  														=  \nu^{(f)}(A)\nu^{(g)}(B),
  \end{align*}
 which shows that  $f$ and $g$ are independent.
 \end{proof}
 
-\begin{cor}
-Assume $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with period $T_1$ and $T_2$. 
-Let $\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$.  
-If $T_1/T_2 = \frac{u}{v}$ is rational, then $f$ and $g$ are independent IFF 
+When the ratio of the periods of two periodic functions is rational, the two functions may or may not be independent of each other:
+\begin{prop}
+Assume that $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with respective periods $T_1$ and $T_2$. 
+Let $\mu_t$ be the uniform probability distribution on $[0,t]$.   
+If $T_1/T_2 = \frac{u}{v}$ is rational, then $f$ and $g$ are independent iff 
 \[
-\frac{|\{f^{-1}(A)\cap g^{-1}(B) \cap [0,vT_1]\}|}{v} = \frac{|f^{-1}(A)\cap [0,T_1]| \,|g^{-1}(B)\cap [0,T_2]|}{T_2}
+\frac{m(\{f^{-1}(A)\cap g^{-1}(B) \cap [0,vT_1]\})}{v} = \frac{m(f^{-1}(A)\cap [0,T_1]) \,m(g^{-1}(B)\cap [0,T_2])}{T_2}
 \]
-for any Borel sets $A,B\subset \real$.
-\end{cor}
+for any Borel sets $A,B\subset \real$. \todoc{Can this condition be satisfied? Example?}
+\end{prop}
+\todoc{Proof?}
 
-\begin{cor}
-Assume $f:\natural \rightarrow\real$ and $g:\natural \rightarrow\real$ are periodic functions with period $T_1$ and $T_2$, 
-and $\mu_t([1,b]) = \lfloor b\rfloor/\lfloor t\rfloor$ for $0\le b\le t$.  
-Then $f$ and $g$ are independent IFF 
+When the domain of the function is discrete (e.g., the set of natural numbers),
+	the condition in the previous result can be simplified. This simplified result clearly shows that the condition of the result
+	is non-vacuous.
+\begin{prop}
+Assume that $f:\natural\rightarrow\real$ and $g:\natural\rightarrow\real$ are periodic functions with respective periods $T_1$ and $T_2$. 
+Let $\mu_t$ be the uniform probability distribution on $\{0,1,\ldots,t-1\}$.   
+Then $f$ and $g$ are independent iff
 \begin{align*}
-\#\big\{x\vert f(x) = a, g(x) = b, x\in \{1,\ldots,T_1T_2\} \big\} = & \, \#\big\{x\vert f(x) = a, x\in \{1,\ldots,T_1\} \big\} \\
-& \quad \times \#\big\{x\vert g(x) = b, x\in \{1,\ldots,T_2\} \big\} 
+|\cset{x\in\natural}{ f(x) = a, g(x) = b, 1\le x \le T_1T_2 }| = & \, |\cset{x\in\natural}{ f(x) = a, 1\le x \le T_1 }| \\
+& \quad \times |\cset{x\in\natural}{ g(x) = b, 1\le x \le T_2 } |
 \end{align*}
-for any Borel sets $a,b\in \real$, where $\#S$ is the cardinality of $S$.
-\end{cor}
+for any $a,b\in \real$. \todoc{Maybe we should use $0\le x \le T-1$ in the above condition everywhere?}
+\end{prop}
 
-
+While the space of ergodic functions is not closed under addition, the sum of two independent ergodic functions is also ergodic and in fact its induced distribution is the convolution of the induced distributions of the two functions:
+\begin{prop}
+If $f,g$ are independent ergodic functions then
+$f+g$ is ergodic and
+ $\nu^{(f+g)} = \nu^{(f)} * \nu^{(g)}$.
+\end{prop}
+\begin{proof}
+For simplicity, the statement is shown for the case when $f,g$ take on values in $\natural$. The proof of the general statement has a similar structure and is left out for brevity. \todoc{Hmm, should we do the full thing? Someone!?}
+Fix $x\in \natural$ and let $A_x = \cset{\omega\in \Omega}{ f(\omega)+g(\omega)=x}$
+We have
+\begin{align*}
+A_x
+&=
+\cup_{y\in \natural} \cset{\omega\in \Omega}{ f(\omega)=y, g(\omega)=x-y}\\
+& =
+\cup_{y\in \natural} \underbrace{\cset{\omega\in \Omega}{ (f,g)(\omega)=(y,x-y) }}_{A_{(y,x-y)}}\,.
+\end{align*}
+Note that $A_{(y,x-y)} \cap A_{(y',x-y')} = \emptyset$ when $y\ne y'$.
+Hence,
+$\mu_t( A_x ) = \sum_{y\in \natural} \mu_t(A_{(y,x-y)})$.
+By \cref{prop:comp} and the assumption that $f$ and $g$ are ergodic, it follows that $(f,g)$ is also ergodic.
+Hence, $\lim_{t\ra\infty} \mu_t( A_{(y,x-y)}) = \nu^{(f,g)}( \{ (y,x-y) \} )$, which shows that $f+g$ is also ergodic.
+Furthermore, using the independence of $f$ and $g$, we have
+$ \nu^{(f,g)}(  \{ (y,x-y) \}  )
+= \nu^{(f)}( \{ y \} ) \nu^{(g)}( \{ x-y \} )$, and hence
+$\nu^{(f+g)}(\{x\}) = \lim_{t\ra\infty} \mu_t( A_x ) = \sum_{y\in\natural} \nu^{(f)}( \{ y \} ) \nu^{(g)}( \{ x-y \} )$, and hence indeed
+$\nu^{(f+g)} = \nu^{(f)} * \nu^{(g)}$.
+\end{proof}
+Of course, the result also extends to any number of independent functions.
 
 \if0
 Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real^d$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
@@ -503,7 +560,8 @@ $\nu_t(K_{\eps})>1-d \eps$ for all $t \ge 1$ by the union bound, showing that $\
 Assume the induced probability measure of each component $f_i$ is non-Gaussian, then correctness of ICA algorithms are guaranteed by \cref{thm:CorofICA}, as follows.
 \begin{thm}
 \label{thm:CorofICA}
-Let $f_1,\ldots,f_d$ be mutually independent real-valued, ergodic functions and let $f = (f_1,\ldots,f_d)$.Moreover, assume $\nu_{f_i}$, $i=1,\ldots,d$ are non-Gaussian distributions. If
+Let $f_1,\ldots,f_d$ be mutually independent real-valued, ergodic functions and let $f = (f_1,\ldots,f_d)$.
+Moreover, assume $\nu_{f_i}$, $i=1,\ldots,d$ are non-Gaussian distributions. If
 \begin{equation}
 \left(
 \begin{array}{ccc}
