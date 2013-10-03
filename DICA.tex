@@ -1,6 +1,7 @@
 \documentclass[english]{article} % For LaTeX2e
 
 \usepackage[usenames,dvipsnames]{xcolor}
+
 % uncomment the following line and comment the line after it if you want to turn
 % off todos
 %\usepackage[disable,backgroundcolor = White,textwidth=\marginparwidth]{todonotes}
@@ -10,8 +11,8 @@
 \newcommand{\todoa}[2][]{\todo[color=Purple!20,#1]{#2}}
 \newcommand{\todor}[2][]{\todo[color=Blue!10,#1]{#2}}
 
-\usepackage{nips12submit_e,times}
-
+%\usepackage{nips12submit_e,times}
+%\usepackage{geometry}
 \usepackage{comment}
 \usepackage{babel}
 \usepackage{amsthm}
@@ -26,12 +27,40 @@
 \usepackage{array}
 \usepackage{setspace}
 
+\DeclareMathOperator{\esssup}{ess\;sup}
 
-\title{Deterministic ICA}
+\usepackage{svn-multi}
+% For a good documentation of svn-multi, see http://www.tug.org/pracjourn/2007-3/scharrer/scharrer.pdf
+% Do this for new svn tex files:
+% svn propset svn:keywords "Id Author Date Rev URL" *.tex
+\svnidlong {$HeadURL$} {$LastChangedDate$} {$LastChangedRevision$} {$LastChangedBy$}
+\svnid{$Id$}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Setting up the page geometry
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[margin=1.0in]{geometry}
 
-\author{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Setting up the headers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[ol]{\slshape\leftmark}
+\fancyfoot[ol]{Rev: \svnrev\ (\svnfilerev)}
+\fancyfoot[or]{\svnyear -\svnmonth -\svnday\ \svnhour:\svnminute} %Date
+% If the information should be also placed % on the chapter page use:
+\fancypagestyle{plain}{%
+	\fancyhead{}
+	\fancyhead[ol]{\slshape\leftmark}
+	\fancyfoot[ol]{Rev: \svnrev\ (\svnfilerev)} \fancyfoot[or]{\svnyear -\svnmonth -\svnday\ \svnhour:\svnminute} %Date
 }
+
+%\usepackage{fullpage}
+\setlength{\headheight}{15.0pt}
+
+
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
@@ -137,29 +166,6 @@
 \DeclareMathOperator{\supp}{supp}
 \renewcommand{\natural}{\mathbb{N}}
 
-\providecommand{\lemmaname}{Lemma}
-\providecommand{\remarkname}{Remark}
-\providecommand{\theoremname}{Theorem}
-\providecommand{\claimname}{Claim}
-\providecommand{\definitionname}{Definition}
-\providecommand{\examplename}{Example}
-\providecommand{\corollaryname}{Corollary}
-
-\theoremstyle{plain}
-\newtheorem{thm}{\protect\theoremname}
-\newtheorem{lemma}[thm]{\protect\lemmaname}
-\newtheorem{claim}[thm]{\protect\claimname}
-\newtheorem{cor}[thm]{\protect\corollaryname}
-
-
-
-\theoremstyle{definition}
-\newtheorem{definition}{\protect\definitionname}
-
-
-\theoremstyle{remark}
-\newtheorem{rem}{\protect\remarkname}[thm]
-\newtheorem{example}{\protect\examplename}[section]
 
 \newcounter{assumption}%[section]
 \newcommand{\theassumptionletter}{A}
@@ -173,30 +179,74 @@
  {\bf Assumption\  #1} }{%\par\nobreak\noindent\sl\ignorespaces}{%
  \ifvmode\smallskip\fi\end{trivlist}}
 
+
+% theorems/definitions
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{thm}[lemma]{Theorem}
+\newtheorem{claim}[lemma]{Claim}
+\newtheorem{cor}[lemma]{Corollary}
+\newtheorem{example}[lemma]{Example}
+\newtheorem{proposition}[lemma]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{remark}[lemma]{Remark}
+%\newtheorem{exercise}{Exercise}[chapter]
+\newtheorem*{solution}{Solution}
+%\newtheorem{assumption}{Assumption}[section]
+\newtheorem{note}[lemma]{Note}
+\newtheorem{problem}[lemma]{Problem}
+
+%\crefname{assumption}{assumption}{assumptions}
+%\Crefname{assumption}{Assumption}{Assumptions}
+%\crefname{Exercise}{Exercise}{Exercises}
+%\Crefname{Exercise}{Exercise}{Exercises}
+
+
+\newcommand{\FF}{\mathcal{F}}
+\usepackage[capitalize]{cleveref}
+
+
+\title{Deterministic ICA}
+\author{
+}
+\date{
+Version: \svnrev\\
+Date: \svndate\\
+Last change: \svnauthor
+%\today\ @ \currenttime \ Version 0.5 (r5322)
+}
+
 \begin{document}
-
-
 \maketitle
-
-
 \begin{abstract}
 
 \end{abstract}
 
 \section{Motivation}
 \label{sec:motivation}
-ICA (independent component analysis) algorithms are known to work well for unmixing the mixtures of various deterministic signals, as seen in one of the ICA tutorials, for example.
-The ICA identifiability question is what signals (functions) can be recovered from their mixtures.
+ICA (independent component analysis) algorithms are known to work well for unmixing the mixtures of various deterministic signals, as seen,  for example, in one of the ICA tutorials. \todoc{Citation?}
+The ICA identifiability question is what signals (functions) can be recovered from their mixtures and is the subject of this paper.
 
-Let $f:\natural \ra \real^d$ be a $d$-dimensional deterministic signal. We will denote by $f_i$ the $i$th component of $f$.
+By definition, any two deterministic signals are independent of each other. Can then ICA algorithms unmix any mixtures of deterministic signals (with the usual restrictions that the mixing matrix is nonsingular and no components are repeated)? 
+Clearly, this is not possible (even when the mixture is non-singular).
+That ICA algorithms work well on some deterministic signals is a curious phenomenon which indicates that the usual probabilistic notion of independence is unsatisfactory if one wishes to have a deeper understanding of how and why ICA algorithms work.
+
+Formally, the ICA identifiability question is as follows:
+Let $f:\natural \ra \real^d$ be a $d$-dimensional deterministic ``signal''. 
+We will denote by $f_i$ the $i$th component of $f$ and we will call $f$ the source.
 Let $A = (a_{ij})$ be a $d\times d$ non-singular matrix and let $g:\natural \ra \real^d$ be defined by
 \[
 g(t) = A f(t), \quad t\in \natural.
 \]
-In the ICA problem one observes the values of $g$ in a sequential problem and the goal is to recover the components of $f$ (up to scaling and permutation).
+We will call $g$ the observed signal and by slightly abusing notation we will also write $g = A f$.%
+\footnote{In fact, if $f$, $g$ are viewed as a $d\times \infty$ ``matrices'', then there is no abuse.}
+In the ICA problem one observes the values of $g$ in a sequential manner and the goal is to recover the components of $f$ up to scaling and permutation. For $f,f':\natural \ra \real^d$, we shall call $f$ and $f'$ equivalent (which we denote by $f\sim f'$) if the components of $f$ and $f'$ agree up to scaling and permutation.
+Then, we say that the source $f$ is identifiable if there is a mapping $\FF$ between the space of $d$-dimensional signals such that  $\FF( Af )\sim f$ for any nonsingular $A\in \real^{d\times d}$.
+In the ICA identifiability question one asks for a ``large'' set of multidimensional signals that are identifiable. Ideally, one would like to ask for the largest set, but it is unclear whether such a set exists. \todoc{Does it?}
 
-We are not the first to ask the ICA identifiability question for deterministic signals (although this is not a thoroughly studied question).
-In particular, in their paper Pando G. Georgiev and Fabian J. Thei note the following:
+We are not the first to notice that ICA algorithms (sometimes) work for deterministic signals.
+In particular, in their paper Pando G. Georgiev and Fabian J. Theis note the following:
 \begin{quote}
  ``Our objective is to estimate the source signals sequentially one-by-one or simultaneously assuming that they are statistically independent.
  %
@@ -210,12 +260,17 @@ pp. 253--290.}
 
 Our purpose is to extend this observation to other ICA models that do not rely on the maximization of cumulants, but rely on the concepts of independence (and thus, on the Darmois-Skitovitch theorem).
 
+\todoc[inline]{This is a rather naive introduction. Browing the above-mentioned paper, it seems that at least Theis and Georgiev are well aware that identifiability is an algebraic question. A more thorough overview of the literature will be needed.
+Note also that ICA is a special case of the ``Blind-Source Separation'' problem and these guys talk about at least two other interesting cases: Nonnegative matrix factorization and sparse component analysis.
+Furthermore, the above ICA problem is the simplest of its kind. More interesting (and difficult) cases are when the number of observed components is smaller than the number of sources (underdetermined problem) or when there is noise added to the observations.
+}
+
 \section{Independence of Components}
 \label{sec:IndeofComp}
 Given a sequence of probability measures $(\mu_t)_{t=0,1,\ldots}$ over a measurable space
 $(\Omega, \mathcal{A})$ and a measurable function $f:\Omega\rightarrow\real^d$, 
-consider the set of probability measures over $\real^d$ induced by $f$: 
-for any $t\ge0$, let $\nu_t$ denote the a probability measure over $\real^d$ such that for any Borel set $A \in \real^d$, $\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t(x)$. 
+consider the sequence $(\nu_t)$ of probability measures over $\real^d$ induced by $f$: 
+for any $t\ge0$,  $\nu_t$ is the a probability measure over $\real^d$ such that for any Borel set $A \in \real^d$, $\nu_t(A)=\int \ind{f(x) \in A}\, d\mu_t(x)$. 
 
 \if0
 Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real^d$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
@@ -224,26 +279,56 @@ for $ $ any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{
 
 \begin{lemma}
 \label{lem:nicefunction}
-Let $f_i$ denote the $i$th coordinate function of $f$ and assume that
+Let $f_i$ denote the $i$th coordinate function of $f$.
+Assume that
 \begin{equation}
 \label{eq:niceproperty}
 \lim_{t\to\infty} \int |f_i(x)|\, d\mu_t(x) 
 \end{equation}
-exists and is finite for all $1 \le i \le d$.
+exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |f_i|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
 Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
 \end{lemma}
+\newcommand{\TT}{\mathcal{T}}
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\KK}{\mathcal{K}}
+\newcommand{\eps}{\varepsilon}
+As we we will soon see, the statement of the lemma will follow from Prokhorov theorem.
+For this, we need to introduce the concept of a ``tight'' set of probability measures.
+Let $(X,\TT)$ be a topological space, $\AA$ be a $\sigma$-algebra over $X$ that contains the topology $\TT$,
+$\KK$ a set of probability measures over $\AA$. Then $\KK$ is called \emph{tight} if for any $\eps>0$ there exists a compact set $K$ of $X$ such that for all measures $\mu \in \KK$, $\mu(K)\ge 1-\eps$. The intuitive idea behind tightness is that the measures ``do not escape to infinity''.
+\begin{thm}[Prokhorov's Theorem]
+Let $(S,\rho)$ be a separable metric space, $\KK$ be a set of probability measures over the Borel $\sigma$-algebra $\AA$ of $S$.
+Then $\KK$ is tight iff the closure of $\KK$ is sequentially compact in the space of probability measures over $\AA$ equipped with the topology of weak convergence.
+\end{thm}
+An immediate corollary of this theorem is that if $\KK$ is tight than any cluster point of $\KK$ is also a probability measure.
+With this, let us continue with the proof of \cref{lem:nicefunction}.
 \begin{proof}
-The statement of the lemma follows by Prokhorov's theorem if we show that the set of probability measures $\{\nu_t\}$ is tight.
-Denote by $m_i\in \mathbb{R}$ the limit of $ \int |f_i(x)|\, d\mu_t(x)$.
-By the convergence of $|f_i(t)|$, for any $\epsilon>0$ there exists a $T>0$ such that
+If we show that the set of probability measures $\{\nu_t\}$ is tight then, as suggested beforehand,
+the statement will indeed follow from Prokhorov's theorem.
+Denote by $m_i\in \mathbb{R}$ the limit of $ m_{t,i} = \int |f_i(x)|\, d\mu_t(x)$.
+Pick any $\eps>0$.
+By the convergence of $m_{t,i}$, there exists some $T>0$ such that
 \begin{equation}
 \label{eq:converge}
-\left| \int |f_i(x)|\, d\mu_t (x)- m_i \right| <\epsilon
+\left| \int |f_i(x)|\, d\mu_t (x)- m_i \right| <\eps
 \end{equation}
-for all $1 \le i \le d$ and $t>T$. Let $u_{T,i}=\tfrac{m_i+\epsilon}{\epsilon}$. Then the marginals
-$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([-u_{T,i},u_{T,i}]) > 1-\epsilon$ for all $i,t$ considered, otherwise \eqref{eq:converge} would be violated. Thus, by the union bound, the compact set
-$K_{\epsilon}=\prod_{i=1}^d [-u'_{T,i},u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1)|,\ldots,|f_i(T)|\}$ satisfies
-$\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$, showing that $\{\nu_t\}$ is tight.
+for all $1 \le i \le d$ and $t>T$. Let $u_{i}=\tfrac{m_i+\eps}{\eps}$. Then the marginals
+$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([-u_{i},u_{i}]) > 1-\eps$ for all $1\le i\le d$ and $t>T$, otherwise \eqref{eq:converge} would be violated. 
+Indeed, $\nu_{t,i}([-u_i,u_i]^c)=\int_{|f_i(x)|>u_i} 1\cdot d\mu_t(x)
+\le \frac{1}{u_i}\int_{|f_i(x)|>u_i} |f_i(x)| d\mu_t(x)
+\le \frac{1}{u_i} \int |f_i(x)| d\mu_t(x) \le \frac{m_i+\eps}{u_i}\le \eps$.
+
+Let $F_{t,i} = \esssup_{\mu_t} |f_i|$ be the essential supremum of $|f_i|$ w.r.t. $\mu_t$.
+Define 
+$K=\prod_{i=1}^d [-u'_{i},u'_{i}]$ where $u'_{i}=\max\{u_{i},F_{1,i}, \ldots,F_{T,i}$.
+We claim that 
+$\nu_t(K)>1-d \eps$ for all $t \ge 1$, which would show that $\{\nu_t\}$ is tight.
+To lower bound the $\nu_t$-measure of $K$, we upper bound the measure of its complement:
+$\nu_t(K^c) \le \nu_t( \cup_{1\le i \le d} \real^{i-1} \times [-u_i',u_i']^c \times \real^{d-i})
+\le \sum_{i=1}^d \nu_t( \real^{i-1} \times [-u_i',u_i']^c \times \real^{d-i})
+=   \sum_{i=1}^d \nu_{t,i}( [-u_i',u_i']^c )
+\le d \eps$, where the last inequality follows from $u_i'\ge u_i$ and our choice of $u_i$ when $t>T$,
+while it follows from $u_i'\ge \esssup_{\mu_t} |f_i|$ when $t\ge T$.
 \end{proof}
 
 
@@ -260,15 +345,15 @@ Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topo
 \end{lemma}
 \begin{proof}
 The statement of the lemma follows by Prokhorov's theorem if we show that the set of probability measures $\{\nu_t\}$ is tight.
-By the convergence of $|f_i(t)|$, for any $\epsilon>0$ there exists a $T>0$ such that
+By the convergence of $|f_i(t)|$, for any $\eps>0$ there exists a $T>0$ such that
 \begin{equation}
 \label{eq:converge}
-\left| \tfrac{1}{t} \sum_{k=1}^t |f_i(k)| - m_i \right| <\epsilon
+\left| \tfrac{1}{t} \sum_{k=1}^t |f_i(k)| - m_i \right| <\eps
 \end{equation}
-for all $1 \le i \le d$ and $t>T$. Let $u_{T,i}=\tfrac{m_i+\epsilon}{\epsilon}$. Then the marginals
-$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([0,u_{T,i}]) > 1-\epsilon$ for all $i,t$ considered, otherwise \eqref{eq:converge} would be violated. Thus, the compact set
-$K_{\epsilon}=\prod_{i=1}^d [0,u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1),\ldots,|f_i(T)|\}$ satisfies
-$\nu_t(K_{\epsilon})>1-d \epsilon$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
+for all $1 \le i \le d$ and $t>T$. Let $u_{T,i}=\tfrac{m_i+\eps}{\eps}$. Then the marginals
+$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([0,u_{T,i}]) > 1-\eps$ for all $i,t$ considered, otherwise \eqref{eq:converge} would be violated. Thus, the compact set
+$K_{\eps}=\prod_{i=1}^d [0,u'_{T,i}]$ with $u'_{T,i}=\max\{u_{T,i},|f_i(1),\ldots,|f_i(T)|\}$ satisfies
+$\nu_t(K_{\eps})>1-d \eps$ for all $t \ge 1$ by the union bound, showing that $\{\nu_t\}$ is tight.
 \end{proof}
 \fi
 Note that Lemma \ref{lem:nicefunction} guarantees that all the convergent subsequences of $\{\nu_t\}$ will converge to probability measures. The results of this paper depend on a stronger assumption, as follows.
@@ -413,7 +498,7 @@ Let $\xi_i$ be a random variable with the distribution of $\nu_{f_i}$, and  $\xi
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:CorofICA}]
-From Corollary \ref{cor:DSTheoremCor}. $n$ non-empty mutually exclusive subsets of a size $n$ set, must be a partition of the set, with one in each subset.
+From \cref{cor:DSTheoremCor}. $n$ non-empty mutually exclusive subsets of a size $n$ set, must be a partition of the set, with one in each subset.
 \end{proof}
 \begin{thm}[Darmois-Skitovich theorem]
 Let $\xi_1,\ldots,\xi_n$ be independent random variables. If the linear forms $L_1 = \alpha_1\xi_1 + \ldots + \alpha_n\xi_n$ and $L_2 = \beta_1\xi_1 +\ldots + \beta_n\xi_n$, where the coefficients $\alpha_i$ and $\beta_i$ are nonzero, are independent, then the random variables $\xi_i$ are Gaussian variables.
