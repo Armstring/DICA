@@ -579,14 +579,14 @@ assume that neither of $\nu_{f_i}$, $i=1,\ldots,d$ is a Gaussian distribution. I
 \begin{array}{ccc}
 g_1 \\
 \vdots \\
-g_n
+g_d
 \end{array}
 \right) = A
 \left(
 \begin{array}{ccc}
 f_1 \\
 \vdots \\
-f_n
+f_d
 \end{array}
 \right)
 \end{equation}
@@ -674,18 +674,22 @@ For $1\le k\le d$, denote $A_{(t)} = (A_k,A_{ck})$, where $A_{ck}$ is the $(d-1)
 Without loss of generality, assume $\|A_i\|_2=1$.
 
 For $p\ge 1$, $\eta\in \real^d$, 
-let $m_p(\eta) = \E_{x\sim \nu^{(s_i)}}[ (\eta^\top x)^p ]$ and let
-\[
+let 
+\begin{equation}
+\label{eq:mpdef}
+m_p(\eta) = \E_{x\sim \nu^{(s)}}[ (\eta^\top x)^p ]
+\end{equation}
+ and let
+\begin{equation}\label{eq:fdef}
 f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
-\]
+\end{equation}
 
 The algorithm of \citet{DHsu2012} is as follows. 
-We denote $\widehat{E}$ as the empirical estimation of parameter $E$. 
 \begin{algorithm}[H]
 \caption{ICA algorithm of \citet{DHsu2012} \label{alg:icaHsu}}
 \begin{algorithmic}[1]
 \INPUT $g(k)$ for $1\le k \le t$. \todoc[inline]{start at zero!?}
-\OUTPUT the coefficient matrix $A$. 
+\OUTPUT the estimate of the mixing matrix $A$. 
 \STATE Sample $\phi$ and $\psi$ from a unit ball of $\real^d$, such that $\|\phi\|_2 = 1$ and $\|\psi\|_2 = 1$;
 \STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, \\
 \quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
@@ -694,31 +698,53 @@ We denote $\widehat{E}$ as the empirical estimation of parameter $E$.
 \STATE Return $\widehat{A} = (\mu_1,\ldots,\mu_d)$.
 \end{algorithmic}
 \end{algorithm}
+In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
 
-As shown in \citep{DHsu2012}, with probability one,
+The following result is proven by \citet{DHsu2012}:
+\begin{thm}[\citet{DHsu2012}, Theorem~4]
+Assume that $\nu^{(s)} = \nu^{(s_1)}\otimes \dots \otimes \nu^{(s_d)}$,
+$\E_{x\sim \nu^{(s_i)}}[x] = 0$, $\E_{x\sim \nu^{(s_i)}}[x^2] = 1$, 
+$\E_{x\sim \nu^{(s_i)}}[x^4] \ne 3$, $i=1,\ldots,d$, $A$ is nonsingular
+and that the columns $(A_i)_{1\le i \le d}$ of matrix $A$ have unit length. 
+Let $m_4,m_2:\real^d \ra \real$ be defined by \eqref{eq:mpdef},
+	while $f: \real^d \ra \real$ be defined by \eqref{eq:fdef}.
+Let $\phi,\psi\in \real^d$ be vectors from the unit sphere of $\real^d$. Then, 
+	assuming that the values $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$
+	are all distinct,
+	the matrix
 \begin{equation}
 \label{eq:M}
+M =(\nabla^2f(\phi))(\nabla^2f(\psi))^{-1} 
+\end{equation}
+can be written in the diagonalized form
+\begin{equation}
+\label{eq:M2}
 M = A 
 \left(
 \begin{array}{ccc}
-\big(\frac{\phi^{\top}A_1}{\psi^{\top}A_1}\big)^2 & &\\
+\left(\frac{\phi^{\top}A_1}{\psi^{\top}A_1}\right)^2 & &\\
     & \ddots & \\
-    & & \big(\frac{\phi^{\top}A_d}{\psi^{\top}A_d}\big)^2\\
+    & & \left(\frac{\phi^{\top}A_d}{\psi^{\top}A_d}\right)^2\\
 \end{array} 
 \right) 
 A^{-1},
 \end{equation}
-has distinct eigenvalues. Thus, if $M =(\nabla^2f(\phi))(\nabla^2f(\psi))^{-1} $ was used in \cref{alg:icaHsu} in place of $\widehat{M}$, the algorithm would return $A$ with probability one. 
+\end{thm}
+It follows from this theorem that 
+if $\phi,\psi$ are chosen independently from the uniform distribution on the unit sphere of $\real^d$, with probability one,
+the eigenvalues of  $M$ are all distinct and the corresponding eigenvectors
+determine the rows of $A$ up to permutation and scaling.
+
 Let 
 \begin{equation}
 \label{def:kappa}
 \gamma =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert. 
 \end{equation}
-The following lemma shows a small perturbation of $M$ will only result in a small variation of its eigenvectors, under some conditions.
+The following lemma shows that a small perturbation of $M$ will only result in a small variation of its eigenvectors, at least under some mild regularity conditions.
 
 \begin{lemma}
 \label{lem:eigenvectorvariation}
-Denote $\widehat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in  \eqref{eq:M}. 
+Denote $\widehat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in  \eqref{eq:M2}. 
 Assume $\widehat{M}$ has distinct eigenvalues. Let $\delta = \gamma -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$. 
 If $\gamma > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
@@ -738,7 +764,7 @@ F_{3k} & F_{4k} \\
 \end{array} 
 \right). 
 \] 
-Note that by definitions, $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|A_{(k)}^{-1} E A_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$,
+Note that by definition, $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|A_{(k)}^{-1} E A_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$,
  $\|F_{3k}\|_2\le\|A_{(k)}^{-1}EA_{k}\|_2\le\frac{1}{\sigma_{\min}(A)}\|E\|_2$,
  and $\|F_{2k}\|_2\le\|(A^{-1})_kEA_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$.
 Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{3k}\|_2$, and 
