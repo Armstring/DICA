@@ -716,15 +716,15 @@ Let $\phi,\psi\in \real^d$ be vectors from the unit sphere of $\real^d$. Then,
 \label{eq:M}
 M =(\nabla^2f(\phi))(\nabla^2f(\psi))^{-1} 
 \end{equation}
-can be written in the diagonalized form
+can be written in the diagonal form
 \begin{equation}
 \label{eq:M2}
 M = A 
 \left(
 \begin{array}{ccc}
-\left(\frac{\phi^{\top}A_1}{\psi^{\top}A_1}\right)^2 & &\\
+\lambda_1 & & \\ %\left(\frac{\phi^{\top}A_1}{\psi^{\top}A_1}\right)^2 & &\\
     & \ddots & \\
-    & & \left(\frac{\phi^{\top}A_d}{\psi^{\top}A_d}\right)^2\\
+    & & \lambda_d %\left(\frac{\phi^{\top}A_d}{\psi^{\top}A_d}\right)^2\\
 \end{array} 
 \right) 
 A^{-1},
