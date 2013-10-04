@@ -246,8 +246,9 @@ Last change: \svnauthor
 
 \section{Motivation}
 \label{sec:motivation}
-ICA (independent component analysis) algorithms are known to work well for unmixing the mixtures of various deterministic signals, as seen,  for example, in one of the ICA tutorials. \todoc{Citation?}
-The ICA identifiability question is what signals (functions) can be recovered from their mixtures and is the subject of this paper.
+ICA (independent component analysis) algorithms are known to work well for unmixing the mixtures of various deterministic signals.
+In fact, is is quite common that the papers start by showing pictures of periodic functions (perfectly deterministic and predictable) and then demonstrating that the functions can be recovered from their mixtures \citep[e.g.,][]{HyvOja00}.
+The ICA identifiability question is what signals (functions) can be recovered from their mixtures and is the subject of this paper. \todoc{A nicer intro would show some examples when they can and when they cannot be identified. I suggest adding some examples, some figures.}
 
 By definition, any two deterministic signals are independent of each other. Can then ICA algorithms unmix any mixtures of deterministic signals (with the usual restrictions that the mixing matrix is nonsingular and no components are repeated)? 
 Clearly, this is not possible (even when the mixture is non-singular).
@@ -560,12 +561,19 @@ $\nu_t(K_{\eps})>1-d \eps$ for all $t \ge 1$ by the union bound, showing that $\
 %Note that \cref{lem:ergodicfunction} guarantees that all the convergent subsequences of $\{\nu_t\}$ will converge to probability measures. The results of this paper depend on a stronger assumption, as follows.
 
 
-\section{Correctness of ICA algorithms}
-Assume the induced probability measure of each component $f_i$ is non-Gaussian, then correctness of ICA algorithms are guaranteed by \cref{thm:CorofICA}, as follows.
+\section{Identifiability conditions}
+In this section we present a set of results that guarantee identifiability of the sources
+based on an observed mixture, given that the sources are independent.
+
+\subsection{Identifiability based on the Darmois-Skitovich theorem}
+Our first result requires the minimal assumption that each component $f_i$ is non-Gaussian:%
+\footnote{
+In fact, as a multidimensional standard normal distribution is invariant under orthogonal transformations, if more than two components had a Gaussian distribution, identifying the mixing matrix would be impossible. \todoc[inline]{Now, can the result be extended to allow one Gaussian? Or restrict identifiability to the non-Gaussian components?}
+}
 \begin{thm}
 \label{thm:CorofICA}
-Let $f_1,\ldots,f_d$ be mutually independent real-valued, \todoc{We always have real-valued functions, right? So maybe mention this always or nowhere} ergodic functions and let $f = (f_1,\ldots,f_d)$.
-Moreover, assume $\nu_{f_i}$, $i=1,\ldots,d$ are non-Gaussian distributions. If
+Let $f_1,\ldots,f_d$ be mutually independent real-valued, \todoc{We always have real-valued functions, right? So maybe mention this always or nowhere} ergodic functions and 
+assume that neither of $\nu_{f_i}$, $i=1,\ldots,d$ is a Gaussian distribution. If
 \begin{equation}
 \left(
 \begin{array}{ccc}
@@ -585,13 +593,11 @@ f_n
 are mutually independent, then $A$ is equivalent to a permutation matrix up to scaling.
 \end{thm}
 
-For the proof of \cref{thm:CorofICA}, we need the Darmois-Skitovich theorem and a corollary of it: \todoc{Add citation}
-\begin{thm}[Darmois-Skitovich theorem]
+The proof of \cref{thm:CorofICA} is based on the celebrated Darmois-Skitovich theorem:
+\begin{thm}[Darmois-Skitovich theorem, \citep{Darmois53,Skitovich53}]
 Let $\xi_1,\ldots,\xi_d$ be independent random variables. If the linear forms $L_1 = \alpha_1\xi_1 + \ldots + \alpha_d\xi_d$ and $L_2 = \beta_1\xi_1 +\ldots + \beta_d\xi_d$, where the coefficients $\alpha_i$ and $\beta_i$ are nonzero, are independent, then the random variables $\xi_i$ $(1\le i \le d$) are Gaussian variables.
 \end{thm}
-
-
-Note that this result can  be expressed in terms of the joint distributions of the random variables involved without ever mentioning the random variables themselves:
+Although the theorem is usually stated in the above form, it is clear that it is a statement that expresses the relationship between certain distributions. In particular, the theorem can be rewritten with no mention of random variables at all. We do this as this will be immediately useful for us:
 %For the theorem, introduce the operator $M_c$ for $c\in \real\setminus \{0\}$ that acts on probability distributions and is defined by $(M_c \nu)(A) = \nu( \cset{ x/c}{x\in A} )$.
 \begin{prop}[Darmois-Skitovich theorem -- distributional form]
 \label{prop:Darmois-Skitovich-distr}
@@ -609,8 +615,7 @@ the probability distribution
 where $A,B\subset \real$ are Borel sets.
 If $\nu^{(L_1,L_2)} = \nu^{(L_1)} \otimes \nu^{(L_2)}$ then $\nu_i$ ($1\le i \le d$) are Gaussian distributions.
 \end{prop}
-
-From this latter result, we see that the following holds true:
+From this result, we see that the following holds true:
 \begin{lemma}
 Let $f_1,\ldots,f_d$ be independent, ergodic functions and fix some nonzero reals
  $(\alpha_i)$, $(\beta_i)$.
@@ -633,13 +638,27 @@ Assume further that functions $g = \alpha_1 f_1 + \ldots + \alpha_d f_d$ and
 $h= \beta_1f_1 +\ldots + \beta_d f_d$ are also independent.
 Then, $\cset{i}{ \alpha_i \neq0} \cap \cset{j}{ \beta_j \neq0} = \emptyset$.
 \end{cor}
-
-The proof of  \cref{thm:CorofICA} follows immediately from this result:
+Now, the proof of  \cref{thm:CorofICA}  follows immediately from this result:
 \begin{proof}[Proof of \cref{thm:CorofICA}]
 From \cref{cor:DSTheoremCor} it follows that $\cset{j}{ a_{ij}\ne 0 }$, $1\le i \le d$,
  are $d$ non-empty mutually exclusive subsets of the size $d$ set $\{1,\ldots,d\}$.
  Hence, these sets must form a partition of the set, with one element in each subset, which proves the theorem.
 \end{proof}
+
+%\subsection{Identifiability based on kurtosis maximization}
+%(Delfosse & Loubaton, 1995)
+
+%\subsection{Negentropy minimization}
+
+\subsection{A general observation}
+The standard instantaneous noiseless ICA identifiability results can all be phrased as follows:
+Let $S$ be a random $d$-dimensional vector, whose components are independent of each other.
+Let $X = A S$, where $A$ is a $d\times d$ matrix. Then, given the joint distribution of $X$, assuming that the joint of $S$ satisfies some additional assumption, the matrix $A$ can be identified up to permutation and scaling. \todoc{The previous section has one example; do we need more!?}
+What is important to realize that the identifiability results can be expressed in terms of the joint distributions of the source.
+
+Now, it should be clear all these results carry through to the deterministic setting, where the joint distribution of $S$ is replaced by $\nu^{(f)}$, where $f$ is a $d$-dimensional deterministic signal.
+
+
 
 \todoc{We should add the generalization of all the other ``characterization'' results or at least the generalization of some of them.}
 
