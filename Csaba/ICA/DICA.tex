@@ -246,6 +246,9 @@ Last change: \svnauthor
 
 \section{Motivation}
 \label{sec:motivation}
+% Handbook of Blind Source Separation, Independent Component Analysis and Applications
+% Chapter 1, Contextual difficulties 1.1.2.1 Independence; sweeps the problem under the rug:
+% At first glance, this assumption seems very strong. In fact, we may think it rarely occurs, and it is more difficult to satisfy than second order independence i.e. non- correlation. In the above biological problem, it was indeed tricky to explain statistical independence between p(t) and v(t). In fact, one can remark that “speed v(t) is related to location p(t) through v(t) = dp(t)/dt. The two variables then cannot be independent”. However, this functional dependence is not a statistical dependence. The knowledge of p(t) at a given instant t does not provide any information on v(t), and vice versa. In other words, while the random vectors of speed and position, [v(t1),v(t2),...,v(tk)]T	and [p(t1), p(t2),..., p(tk)]T	are generally not independent, the (marginal) random variables, v(t) and p(t), at any given time t are independent. Therefore, for instantaneous ICA algorithms, the dependence is irrelevant.
 ICA (independent component analysis) algorithms are known to work well for unmixing the mixtures of various deterministic signals.
 In fact, is is quite common that the papers start by showing pictures of periodic functions (perfectly deterministic and predictable) and then demonstrating that the functions can be recovered from their mixtures \citep[e.g.,][]{HyvOja00}.
 The ICA identifiability question is what signals (functions) can be recovered from their mixtures and is the subject of this paper. \todoc{A nicer intro would show some examples when they can and when they cannot be identified. I suggest adding some examples, some figures.}
