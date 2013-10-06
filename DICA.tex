@@ -680,7 +680,7 @@ For $p\ge 1$, $\eta\in \real^d$,
 let 
 \begin{equation}
 \label{eq:mpdef}
-m_p(\eta) = \E_{x\sim \nu^{(s)}}[ (\eta^\top x)^p ]
+m_p(\eta) = \E_{x\sim \nu^{(s)}}[ (\eta^\top A x)^p ]
 \end{equation}
  and let
 \begin{equation}\label{eq:fdef}
@@ -702,6 +702,13 @@ The algorithm of \citet{DHsu2012} is as follows.
 \end{algorithmic}
 \end{algorithm}
 In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
+Note that the output of the algorithm entirely depends on the empirical distribution $\hat{\lambda}$ of $( g(k) )_{1\le k \le t}$ (i.e.,  $\hat{\lambda}(U) = \frac1t \sum_{k=1}^t \ind{g(k)\in U}$, $U\subset \real^d$). 
+In particular, the output depends on $\E_{x\sim \hat{\lambda}}[ \nabla^2 (\eta^\top  x)^4 ]$
+and $\nabla^2 \left( \E_{x\sim \hat{\lambda}}[(\eta^\top  x)^2 ]\right)^2$
+ only, where $\eta\in \{\phi,\psi\}$. 
+ \todoc[inline]{We expect that any ICA algorithm can be written as a mapping from the empirical distribution to the estimates. If $\FF$ is this mapping, the problem (when analyzing a particular ICA algorithm) is to derive an error estimate for  how close $\FF(\hat{\lambda})$ is to an unmixing matrix as a function of how close $\hat{\lambda}$ is to $\lambda(\cdot)$, $\lambda(U) = \E_{x\sim \nu}[ \ind{Ax\in U} ]$ where $A$ is some non-singular matrix and $\nu$ is some distribution which is the product of its marginals.
+ Where should we discuss this?
+ }
 
 The following result is proven by \citet{DHsu2012}:
 \begin{thm}[\citet{DHsu2012}, Theorem~4]
