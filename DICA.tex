@@ -155,6 +155,9 @@
 \newcommand{\hpLoss}[2]{\hpqLoss{#1}( #2 )}
 \newcommand{\hqLoss}{\hpqLoss{M}}
 \newcommand{\hLoss}[1]{\hqLoss(#1)}
+\newcommand{\bX}{\bar{X}}
+\newcommand{\bY}{\bar{Y}}
+
 
 \newcommand{\rth}{\hat{\theta}}
 \newcommand{\tth}{\tilde{\theta}}
@@ -290,7 +293,7 @@ Note also that ICA is a special case of the ``Blind-Source Separation'' problem 
 Furthermore, the above ICA problem is the simplest of its kind. More interesting (and difficult) cases are when the number of observed components is smaller than the number of sources (underdetermined problem) or when there is noise added to the observations.
 }
 
-\section{Independence of Functions}
+\section{Independence of Components}
 \label{sec:IndeofComp}
 
 The purpose of this section is to define a natural notion of independence for functions.
@@ -327,12 +330,7 @@ A simple example of an ergodic function is a function over the reals (positive r
 \todoc[inline]{Somewhere we should make the remark that this framework is a generalization of the standard stochastic framework where you can take $\mu_t = \mu$.
 And in fact, in some sense what we try to overcome here is that over the real line there is no uniform probability measure; in some sense we are building the probability theory of improper measures..?
 }
-
-The following proposition follows immediately from the definition:
-\begin{prop}\label{prop:comp}
-If $f_1,\ldots, f_d$ are ergodic functions with a common domain then so is $f = (f_1,\ldots,f_d)$. Conversely, if $f:\Omega \ra \real^d$ is ergodic then all its components are also ergodic.
-\end{prop}
-
+\todor[inline]{I guess there are typoes in this paragraph? All the $\mu$, except the first two, are $\nu$?}
 
 The next question to be investigated is whether the space of ergodic functions is a subspace, i.e., whether it is closed under addition and multiplication by reals. The latter is clear. However, concerning closeness under addition, we have 
 the following observation:
@@ -372,59 +370,86 @@ distribution that puts all the mass at $0$. Thus, $\nu^{(f+g)}_{t}$ fails to be 
 Notice that the above example shows that $\nu_t^{(f)}$  and $\nu_t^{(g)}$ alone do not determine $\nu_t^{(f+g)}$ (which is not that surprising).
 \todoc[inline]{What happens when $\Omega = \natural$ and $\mu_t$ is uniform on $\{0,1,\ldots, t\}$?
 }
+While the space of ergodic functions is not closed under addition, the space spanned by the components of an ergodic function is a space of ergodic functions, as in the following proposition. 
+Such observation lead to our definition of independence of components, and build the foundation of the rest work of our paper.
+\begin{prop}\label{prop:comp}
+$f = (f_1,\ldots, f_d)^{\top}$ is a $d$-dimension ergodic function, if and only if $g = A(f_1,\ldots,f_d)^{\top}$ is a $m$-dimension ergodic function for any $m\times d$ matrix.
+\end{prop}
 
-%Given two ergodic function $f$ and $g$, let $X_t$ (and $Y_t$ ) is the random variable induced by $\mu_t$ and $f$(and $g$, respectively). Then $\nu_{f+g,t}$ is the probability function of $X_t+Y_t$. Note that $X_t \xrightarrow{D} X$ and  $Y_t \xrightarrow{D} Y$.  \emph{However, $X_t+Y_t \xrightarrow{D} X+Y$ is not guaranteed!} 
+\begin{proof}
+The converse direction is straightforward by picking $A = I_d$.
 
+Now assume $f= (f_1,\ldots, f_d)^{\top}$ is ergodic, thus $\nu_t^{(f)}: \mathcal{B}_d \rightarrow [0,1]$ converge to $\nu^{(f)}$, where $ \mathcal{B}_d$ is the set of all Borel sets of $\real^d$. 
+Denote $\bX_t$(and $\bX$) the random vector with distribution $\nu_t^{(f)}$ (and $\nu^{\top}$ respectively). 
+Let $\bY_t = (Y_{t,1},\ldots,Y_{t,m})^{\top} = A\bX_t$ and $ \bY = (Y_1,\ldots,Y_m)^{\top} = A\bX$. 
+By definition, $\nu_t^{(g)}$(and $\nu^{(g)}$) is the distribution of $A\bX_t$ (and $A\bX$ respectively). 
+
+To prove that $\bY_t$ weakly converge to $\bY$, by Cram\'{e}r-Wold Theorem we only need to prove for any $m$-dimension vector $\alpha = (\alpha_1,\ldots,\alpha_m)$, $\alpha\bY_t$ weakly converge to $\alpha\bY$.
+Note that again by Cram\'{e}r-Wold Theorem,
+\[
+\alpha\bY_t = (\alpha A) \bX_t \xrightarrow{\mathcal{L}}  (\alpha A) \bX = \alpha \bY
+\]
+finishing the proof.
+\end{proof}
 
 We define the independence of the components of a multidimensional ergodic function $f$ based on its induced limiting distribution $\nu^{(f)}$:
 \begin{definition}
-Given ergodic component functions $\{f_1,\ldots,f_d\}$, 
-we say that $f_1,\ldots,f_d$ are \emph{independent}, 
+Given an ergodic function $f = (f_1,\ldots,f_d)^{\top}$, 
+we say that $\{f_1,\ldots,f_d\}$ are \emph{independent} components, 
 	if $\nu^{(f_1)}\otimes\ldots\otimes\nu^{(f_d)} = v^{(f)}$, 
 	where $f = (f_1,\ldots,f_d):\Omega \rightarrow \real^d$.
+	\if0
+	We say $\{f_1,\ldots,f_d\}$ are pairwise independent, if $\{f_i,f_j\}$ are independent components of the function $\tilde{f}_{ij} = (f_i,f_j)^{\top}$ for any $1\le i\neq j \le d$. 
+	\fi
 \end{definition}
 
-Do there exist functions that are independent (non-independent) of each other? 
+\begin{remark}
+Note that the existence of $\nu^{(f_i)}$ 
+%and $\nu^{(\tilde{f}_{ij})}$ are
+is guaranteed by proposition \ref{prop:comp}. 
+The definition of independent components is easy to extend to the independence of ergodic functions, by requiring that the joint function of all the functions is ergodic with independent components.
+\end{remark}
+Do there exist ergodic function that has independent (non-independent) components? 
 Here, we provide a few examples based on periodic functions.
 Let $m$ denote the Lebesgue measure over the reals.
 \begin{prop}
-Assume that $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with respective periods $T_1$ and $T_2$. 
+Assume that $f = (f_1,f_2)^{\top}:\real\rightarrow\real^2$ is an ergodic function, and both $f_1$ and $f_2$ are periodic with respective periods $T_1$ and $T_2$. 
 Let $\mu_t$ be the uniform probability distribution on $[0,t]$. 
 %$\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$.
- If $T_1/T_2$ is irrational, then $f$ and $g$ are independent. 
+ If $T_1/T_2$ is irrational, then $f_1$ and $f_2$ are independent. 
 \end{prop}
 %\vspace{-0.5cm}
 \begin{proof}
- For two Borel sets $A\subset \real$ and $B\subset \real$, let $S_1 =f^{-1}(A)\cap [0,T_1] $ and $ S_2 = g^{-1}(B)\cap [0,T_2]$. It is easy to verify that $\nu^{(f)}(A) = \frac{m(S_1)}{T_1}$, and $\nu^{(g)}(B) = \frac{m(S_2)}{T_2}$. 
- Note that $\nu^{(f)}_t(A\times B) = \frac{m( f^{-1}(A)\cap g^{-1}(B)\cap [0,t] )}{t}$. Now assume that $nT_1 \le t< (n+1)T_1$ and $mT_2\le t <(m+1)T_2$. Thus,
+ For two Borel sets $A\subset \real$ and $B\subset \real$, let $S_1 =f_1^{-1}(A)\cap [0,T_1] $ and $ S_2 = f_2^{-1}(B)\cap [0,T_2]$. It is easy to verify that $\nu^{(f_1)}(A) = \frac{m(S_1)}{T_1}$, and $\nu^{(f_2)}(B) = \frac{m(S_2)}{T_2}$. 
+ Note that $\nu^{(f_1)}_t(A\times B) = \frac{m( f_1^{-1}(A)\cap f_2^{-1}(B)\cap [0,t] )}{t}$. Now assume that $nT_1 \le t< (n+1)T_1$ and $mT_2\le t <(m+1)T_2$. Thus,
  \begin{align*}
- \nu^{(f)}_t(A\times B) =  \frac{1}{t} \int_{ \substack{x\in f^{-1}(A) \\ 0\le x \le t}} \ind{x\in g^{-1}(B)}\, dx 
- 					=	 \frac{1}{t} \sum_{u=0}^{n-1} \int_{S_1} \ind{uT_1+s \in g^{-1}(B)}\, ds + \frac{C}{t}
+ \nu^{(f_1)}_t(A\times B) =  \frac{1}{t} \int_{ \substack{x\in f_1^{-1}(A) \\ 0\le x \le t}} \ind{x\in f_2^{-1}(B)}\, dx 
+ 					=	 \frac{1}{t} \sum_{u=0}^{n-1} \int_{S_1} \ind{uT_1+s \in f_2^{-1}(B)}\, ds + \frac{C}{t}
  \end{align*}
  for some constant $0\le C<T_1$. Letting $t\ra\infty$, we get
  \begin{align*}
-  \lim_{t\rightarrow \infty} \nu^{(f)}_t(A\times B) 
-  &=  \int_{S_1} \lim_{n\rightarrow \infty} \sum_{u=0}^{n-1} \frac{\ind{uT_1+s \in g^{-1}(B)}}{n T_1} \, ds,
+  \lim_{t\rightarrow \infty} \nu^{(f_1)}_t(A\times B) 
+  &=  \int_{S_1} \lim_{n\rightarrow \infty} \sum_{u=0}^{n-1} \frac{\ind{uT_1+s \in f_2^{-1}(B)}}{n T_1} \, ds,
  \end{align*}
  where the interchange of the limit and the integration is justified by Lebesgue's dominated theorem, once we show that the integrands converge.
 To see this, fix $s\in \real$. Then,
- $\lim_{n\rightarrow \infty}\frac1n \sum_{u=0}^{n-1} \ind{uT_1+s \in g^{-1}(B)}
- =\lim_{n\rightarrow \infty}\frac1n | \cset{ 0\le u \le n-1 }{ g(uT_1+s) \in (B)}
- = \nu^{(g)}(B)$ since, as it is well known, thanks to $T_1/T_2$ being irrational, 
+ $\lim_{n\rightarrow \infty}\frac1n \sum_{u=0}^{n-1} \ind{uT_1+s \in f_2^{-1}(B)}
+ =\lim_{n\rightarrow \infty}\frac1n | \cset{ 0\le u \le n-1 }{ f_2(uT_1+s) \in (B)}
+ = \nu^{(f_2)}(B)$ since, as it is well known, thanks to $T_1/T_2$ being irrational, 
  $(u T_1+s \pmod T_2 )_{u\in \natural}$ is ``uniformly distributed'' in $[0,T_2)$.
  \todoc{We can cite P\'olya-Szeg\"o}
 Thus, the interchange is justified and
  \begin{align*}
- \lim\limits_{n\rightarrow \infty} \nu^{(f)}_t(A\times B) = & \int_{x\in S_1} \frac{\nu^{(g)}(B)}{T_1}\, dc 
- 														=  \frac{m(S_1)\nu^{(g)}(B)}{T_1} 
- 														=  \nu^{(f)}(A)\nu^{(g)}(B),
+ \lim\limits_{n\rightarrow \infty} \nu^{(f_1)}_t(A\times B) = & \int_{x\in S_1} \frac{\nu^{(f_2)}(B)}{T_1}\, dc 
+ 														=  \frac{m(S_1)\nu^{(f_2)}(B)}{T_1} 
+ 														=  \nu^{(f_1)}(A)\nu^{(f_2)}(B),
  \end{align*}
 which shows that  $f$ and $g$ are independent.
 \end{proof}
 
 When the ratio of the periods of two periodic functions is rational, the two functions may or may not be independent of each other:
 \begin{prop}
-Assume that $f:\real\rightarrow\real$ and $g:\real\rightarrow\real$ are periodic functions with respective periods $T_1$ and $T_2$. 
+Assume that $f = (f_1,f_2)^{\top}:\real\rightarrow\real^2$ is an ergodic function, and both $f_1$ and $f_2$ are periodic with respective periods $T_1$ and $T_2$. 
 Let $\mu_t$ be the uniform probability distribution on $[0,t]$.   
 If $T_1/T_2 = \frac{u}{v}$ is rational, then $f$ and $g$ are independent iff 
 \[
@@ -432,13 +457,26 @@ If $T_1/T_2 = \frac{u}{v}$ is rational, then $f$ and $g$ are independent iff
 \]
 for any Borel sets $A,B\subset \real$. \todoc{Can this condition be satisfied? Example?}
 \end{prop}
+The proof of the above proposition simply follows the definition of independent component. An example of the above proposition is:
+$f=(f_1,f_2)^{\top}:\natural \rightarrow \{-1,+1\}^2$: 
+\[
+f(t) = \begin{cases} +1, & t\in(n,n+1/2]; \\
+					 -1, & t\in(n+1/2,n+1]; 
+					\end{cases}
+\qquad\qquad 
+g(t) = \begin{cases} +1, & t\in(n,n+1/4]; \\
+					 -1, & t\in(n+1/4,n+3/4];\\
+				  	 +1, & t\in(n+3/4,n+1];
+					\end{cases}
+\]
+for any $n\in\natural$.
 \todoc{Proof?}
 
 When the domain of the function is discrete (e.g., the set of natural numbers),
 	the condition in the previous result can be simplified. This simplified result clearly shows that the condition of the result
 	is non-vacuous.
 \begin{prop}
-Assume that $f:\natural\rightarrow\real$ and $g:\natural\rightarrow\real$ are periodic functions with respective periods $T_1$ and $T_2$. 
+Assume that $f = (f_1,f_2)^{\top}:\natural\rightarrow\real^2$ is an ergodic function, and both $f_1$ and $f_2$ are periodic with respective periods $T_1$ and $T_2$. 
 Let $\mu_t$ be the uniform probability distribution on $\{0,1,\ldots,t-1\}$.   
 Then $f$ and $g$ are independent iff
 \begin{align*}
@@ -448,14 +486,26 @@ Then $f$ and $g$ are independent iff
 for any $a,b\in \real$. \todoc{Maybe we should use $0\le x \le T-1$ in the above condition everywhere?}
 \end{prop}
 
+In fact, the induced distribution of a sum of two independent components is the convolution of the induced distributions of the two component:
+
+\if0
 While the space of ergodic functions is not closed under addition, the sum of two independent ergodic functions is also ergodic and in fact its induced distribution is the convolution of the induced distributions of the two functions:
+\fi
 \begin{prop}
 \label{prop:convolution}
-If $f,g$ are independent ergodic functions then
+If $(f,g)$ is ergodic with independent components then
 $f+g$ is ergodic and
  $\nu^{(f+g)} = \nu^{(f)} * \nu^{(g)}$.
 \end{prop}
 \begin{proof}
+The ergodicity of $f+g$ immediately follows Proposition \ref{prop:comp}, i.e. $\nu^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f+g)}$ exists.
+
+Denote $(X_{t,1},X_{t,2})^{\top}$(and $(X_1,X_2)^{\top}$) the random vector with distribution $\nu_t^{((f,g)^{\top})}$ (and $\nu^{((f,g)^{\top})}$ respectively). 
+Note that for any $t\ge0 $, $\nu_t^{(f+g)}$ is the probability of $X_{t,1}+X_{t,2}$, i.e.  $\nu_t^{(f+g)} = \nu_t^{(f)}* \nu_t^{(g)}$. Thus by Cram\'{e}r-Wold Theorem, 
+\[
+\nu^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f)}* \nu_t^{(g)} = \nu^{(f)} * \nu^{(g)}.
+\]  
+\if0
 For simplicity, the statement is shown for the case when $f,g$ take on values in $\natural$. The proof of the general statement has a similar structure and is left out for brevity. \todoc{Hmm, should we do the full thing? Someone!?}
 Fix $x\in \natural$ and let $A_x = \cset{\omega\in \Omega}{ f(\omega)+g(\omega)=x}$
 We have
@@ -469,16 +519,16 @@ A_x
 Note that $A_{(y,x-y)} \cap A_{(y',x-y')} = \emptyset$ when $y\ne y'$.
 Hence,
 $\mu_t( A_x ) = \sum_{y\in \natural} \mu_t(A_{(y,x-y)})$.
-By \cref{prop:comp} and the assumption that $f$ and $g$ are ergodic, it follows that $(f,g)$ is also ergodic.
+
 Hence, $\lim_{t\ra\infty} \mu_t( A_{(y,x-y)}) = \nu^{(f,g)}( \{ (y,x-y) \} )$, which shows that $f+g$ is also ergodic.
 Furthermore, using the independence of $f$ and $g$, we have
 $ \nu^{(f,g)}(  \{ (y,x-y) \}  )
 = \nu^{(f)}( \{ y \} ) \nu^{(g)}( \{ x-y \} )$, and hence
 $\nu^{(f+g)}(\{x\}) = \lim_{t\ra\infty} \mu_t( A_x ) = \sum_{y\in\natural} \nu^{(f)}( \{ y \} ) \nu^{(g)}( \{ x-y \} )$, and hence indeed
 $\nu^{(f+g)} = \nu^{(f)} * \nu^{(g)}$.
+\fi
 \end{proof}
 Of course, the result also extends to any number of independent functions.
-
 \if0
 Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real^d$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
 for $ $ any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
@@ -575,7 +625,7 @@ In fact, as a multidimensional standard normal distribution is invariant under o
 }
 \begin{thm}
 \label{thm:CorofICA}
-Let $f_1,\ldots,f_d$ be mutually independent real-valued, \todoc{We always have real-valued functions, right? So maybe mention this always or nowhere} ergodic functions and 
+Let $f = (f_1,\ldots,f_d)^{\top}$ be an ergodic function with independent components and %\todoc{We always have real-valued functions, right? So maybe mention this always or nowhere} 
 assume that neither of $\nu_{f_i}$, $i=1,\ldots,d$ is a Gaussian distribution. If
 \begin{equation}
 \left(
@@ -593,7 +643,7 @@ f_d
 \end{array}
 \right)
 \end{equation}
-are mutually independent, then $A$ is equivalent to a permutation matrix up to scaling.
+are independent, then $A$ is equivalent to a permutation matrix up to scaling.
 \end{thm}
 
 The proof of \cref{thm:CorofICA} is based on the celebrated Darmois-Skitovich theorem:
@@ -620,17 +670,17 @@ If $\nu^{(L_1,L_2)} = \nu^{(L_1)} \otimes \nu^{(L_2)}$ then $\nu_i$ ($1\le i \le
 \end{prop}
 From this result, we see that the following holds true:
 \begin{lemma}
-Let $f_1,\ldots,f_d$ be independent, ergodic functions and fix some nonzero reals
+Let $f = (f_1,\ldots,f_d)^{\top}$ be an ergodic function with independent components and fix some nonzero reals
  $(\alpha_i)$, $(\beta_i)$.
 Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$.
-If $g$ and $h$ are independent then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussians.
+If $(g,h)^{\top}$ are of independent components then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussians.
 \end{lemma}
 \begin{proof}
 We apply~\cref{prop:Darmois-Skitovich-distr} with $\nu_i = \nu^{(f_i)}$, $i=1,\ldots,d$.
 We claim that $\nu^{(g)} = \nu^{(L_1)}$, $\nu^{(h)} = \nu^{(L_2)}$,
 $\nu^{(g,h)} = \nu^{(L_1,L_2)}$.
 From this the result follows since if $g$ and $h$ are independent then $\nu^{(L_1,L_2)} = \nu^{(g,h)} = \nu^{(g)} \otimes \nu^{(h)} = \nu^{(L_1)} \otimes \nu^{(L_2)}$.
-The claimed equalities follow by simple calculations such as in \cref{prop:convolution}. \todoc{At least I think..}
+The claimed equalities follow by \cref{prop:convolution}. \todoc{At least I think..}
 \end{proof}
 
 As an immediate corollary, we have the following result:
