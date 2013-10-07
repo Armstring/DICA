@@ -384,8 +384,8 @@ Denote $\bX_t$(and $\bX$) the random vector with distribution $\nu_t^{(f)}$ (and
 Let $\bY_t = (Y_{t,1},\ldots,Y_{t,m})^{\top} = A\bX_t$ and $ \bY = (Y_1,\ldots,Y_m)^{\top} = A\bX$. 
 By definition, $\nu_t^{(g)}$(and $\nu^{(g)}$) is the distribution of $A\bX_t$ (and $A\bX$ respectively). 
 
-To prove that $\bY_t$ weakly converge to $\bY$, by Cram\'{e}r-Wold Theorem we only need to prove for any $m$-dimension vector $\alpha = (\alpha_1,\ldots,\alpha_m)$, $\alpha\bY_t$ weakly converge to $\alpha\bY$.
-Note that again by Cram\'{e}r-Wold Theorem,
+To prove that $\bY_t$ weakly converge to $\bY$, by Cram\'{e}r-Wold Theorem \citep{cramer1936some} we only need to prove for any $m$-dimension vector $\alpha = (\alpha_1,\ldots,\alpha_m)$, $\alpha\bY_t$ weakly converge to $\alpha\bY$.
+Note that again by Cram\'{e}r-Wold Theorem \citep{cramer1936some},
 \[
 \alpha\bY_t = (\alpha A) \bX_t \xrightarrow{\mathcal{L}}  (\alpha A) \bX = \alpha \bY
 \]
@@ -501,7 +501,7 @@ $f+g$ is ergodic and
 The ergodicity of $f+g$ immediately follows Proposition \ref{prop:comp}, i.e. $\nu^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f+g)}$ exists.
 
 Denote $(X_{t,1},X_{t,2})^{\top}$(and $(X_1,X_2)^{\top}$) the random vector with distribution $\nu_t^{((f,g)^{\top})}$ (and $\nu^{((f,g)^{\top})}$ respectively). 
-Note that for any $t\ge0 $, $\nu_t^{(f+g)}$ is the probability of $X_{t,1}+X_{t,2}$, i.e.  $\nu_t^{(f+g)} = \nu_t^{(f)}* \nu_t^{(g)}$. Thus by Cram\'{e}r-Wold Theorem, 
+Note that for any $t\ge0 $, $\nu_t^{(f+g)}$ is the probability of $X_{t,1}+X_{t,2}$, i.e.  $\nu_t^{(f+g)} = \nu_t^{(f)}* \nu_t^{(g)}$. Thus by Cram\'{e}r-Wold Theorem \citep{cramer1936some}, 
 \[
 \nu^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f)}* \nu_t^{(g)} = \nu^{(f)} * \nu^{(g)}.
 \]  
@@ -710,8 +710,6 @@ Let $X = A S$, where $A$ is a $d\times d$ matrix. Then, given the joint distribu
 What is important to realize that the identifiability results can be expressed in terms of the joint distributions of the source.
 
 Now, it should be clear all these results carry through to the deterministic setting, where the joint distribution of $S$ is replaced by $\nu^{(f)}$, where $f$ is a $d$-dimensional deterministic signal.
-
-
 
 \todoc{We should add the generalization of all the other ``characterization'' results or at least the generalization of some of them.}
 
