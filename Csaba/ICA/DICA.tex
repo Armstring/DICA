@@ -323,14 +323,15 @@ A function $f:\Omega \rightarrow \real^d$ is called \emph{ergodic} w.r.t. $(\mu_
 if the sequence of  induced probability measures $(\nu_t)_{t\ge 0}$ is weakly convergent.
 \end{definition}
 In what follows, when $(\mu_t)$ is fixed, we will simply call $f$  ergodic, not mentioning $(\mu_t)$.
-When the limit of $(\mu_t)$ exists, it will be denoted by $\mu$
-and if we want to emphasize the dependence on $f$ then we will use $\mu^{(f)}$.
-Similarly, when the dependence on $\mu_t$ on $f$ is important, we will use $\mu^{(f)}_t$.
+When the limit of $(\nu_t)$ exists, it will be denoted by $\nu$
+and if we want to emphasize the dependence on $f$ then we will use $\nu^{(f)}$.
+Similarly, when the dependence on $\nu_t$ on $f$ is important, we will use $\nu^{(f)}_t$.
 A simple example of an ergodic function is a function over the reals (positive reals, natural numbers, etc.) that is periodic. 
 \todoc[inline]{Somewhere we should make the remark that this framework is a generalization of the standard stochastic framework where you can take $\mu_t = \mu$.
 And in fact, in some sense what we try to overcome here is that over the real line there is no uniform probability measure; in some sense we are building the probability theory of improper measures..?
 }
 \todor[inline]{I guess there are typoes in this paragraph? All the $\mu$, except the first two, are $\nu$?}
+\todoc[inline]{Good catch. Good now? If yes, just remove the comments.}
 
 The next question to be investigated is whether the space of ergodic functions is a subspace, i.e., whether it is closed under addition and multiplication by reals. The latter is clear. However, concerning closeness under addition, we have 
 the following observation:
@@ -373,23 +374,59 @@ Notice that the above example shows that $\nu_t^{(f)}$  and $\nu_t^{(g)}$ alone 
 While the space of ergodic functions is not closed under addition, the space spanned by the components of an ergodic function is a space of ergodic functions, as in the following proposition. 
 Such observation lead to our definition of independence of components, and build the foundation of the rest work of our paper.
 \begin{prop}\label{prop:comp}
-$f = (f_1,\ldots, f_d)^{\top}$ is a $d$-dimension ergodic function, if and only if $g = A(f_1,\ldots,f_d)^{\top}$ is a $m$-dimension ergodic function for any $m\times d$ matrix.
+$f = (f_1,\ldots, f_d)^{\top}$ is a $d$-dimensional ergodic function, if and only if 
+ for any $m\times d$ matrix $A$, $g = A f$ is an $m$-dimensional ergodic function.
 \end{prop}
+For the proof, we will need the Cram\'er-Wold theorem.
+\newcommand{\BB}{\mathcal{B}}
+%\begin{thm}[\citep{cramer1936some}]
+%Let $F_1$ and $F_2$ be probability distributions over the Borel-sets $\BB_d$ of $\real^d$,
+% and $t\in \real^d\setminus\{0\}$ be some nonzero $d$-dimensional vector.
+%Then, $F_1=F_2$ if and only if $F_1(S_{t,z}) = F_2(S_{t,z})$ holds for all $z\in \real$,
+%	where, for a given $z\in \real$, $S_{t,z} = \cset{ x\in \real^d }{t^\top x \le z }$. 
+%\end{thm}
+Fix a Borel probability distribution $F$ over $\real^d$, $t\in \real^d \setminus \{0\}$. Then,
+the Borel probability distribution $F^{(t)}: \BB_1 \ra [0,1]$ defined using $F^{(t)}(S) = F( \cset{x\in \real^d}{t^\top x\in S} )$ is called
+a one-dimensional projection of $F$ (with the projection specified using $t$). 
+(We denote by $\BB_d$ the $\sigma$-algebra of Borel-sets of $\real^d$.)
+%The previous result states that a $d$-dimensional Borel distributions is uniquely determined by its one dimensional projections.
+%From this, the following result, which will be most useful to us, follows immediately:
+\begin{thm}[\citealt{cramer1936some}]
+\label{cor:cw}
+Let $F$, $F_1,F_2,\ldots$ be Borel probability distributions over $\real^d$.
+Then $F_t$ weakly converges to $F$ if and only if all the one-dimensional projections of $F_t$ weakly converge to the corresponding one-dimensional projection of $F$.
+\todoc{I could not quite find this result in the cited paper, but it will surely follow from it. But maybe a better citation would be useful, e.g., to some probability book.}
+\end{thm}
+This result is stated and proved, for example, in the book of \citet{AtLa06}
+as  Theorem 10.4.5.
+\begin{proof}[Proof of \cref{prop:comp}] %\todoc{I think given the above corollary, this proof should be simplified.}
+The converse direction is straightforward by picking $A$ to be the $d\times d$ identity matrix.
 
-\begin{proof}
-The converse direction is straightforward by picking $A = I_d$.
+Now assume that $f= (f_1,\ldots, f_d)^{\top}$ is ergodic, thus $\nu_t^{(f)}: \mathcal{B}_d \rightarrow [0,1]$ weakly converges to $\nu^{(f)}$. Let $A\in \real^{m\times d}$ and $g = A f$.
+ We need to show that $\nu_t^{(g)}$ weakly converges to some distribution $\nu^{(g)}$.
+In particular, we also claim that $\nu^{(g)}(S) = \nu^{(f)}( \cset{x\in \real^d}{Ax \in S} )$, $S\in \BB_m$.
+By \cref{cor:cw}, for this it suffices to show that the one-dimensional projections of $\nu_t^{(g)}$ weakly converge to the one-dimensional projection of $\nu^{(g)}$.
+%Without loss of generality, we may assume that $A$ is non-singular. \todoc{Explain why..}
+Clearly, any one-dimensional projection of $\nu_t^{(g)}$, defined by say $t\in \real^m$,
+is a one-dimensional projection of $\nu_t^{(f)}$ defined by $A^\top t$ and the same also holds for $\nu^{(g)}$ and $\nu^{(f)}$.
+By \cref{cor:cw}, the one-dimensional projections of $\nu_t^{(f)}$ weakly converge to the corresponding one-dimensional projections of $\nu^{(f)}$, hence the same holds
+for the pair $(\nu_t^{(g)}, \nu^{(g)})$, finishing the proof.
+\if0
+Denote by $\bX_t$ a $d$-dimensional random vector with distribution $\nu_t^{(f)}$ and 
+	let $\bX$ be a $d$-dimensional  random vector with distribution $\nu^{\top}$. 
+Let $\bY_t =  A\bX_t$ and $ \bY =  A\bX$. 
+By definition, $\nu_t^{(g)}$ is the distribution of $A\bX_t$,
+while $\nu^{(g)}$ is the distribution of $A\bX$. 
 
-Now assume $f= (f_1,\ldots, f_d)^{\top}$ is ergodic, thus $\nu_t^{(f)}: \mathcal{B}_d \rightarrow [0,1]$ converge to $\nu^{(f)}$, where $ \mathcal{B}_d$ is the set of all Borel sets of $\real^d$. 
-Denote $\bX_t$(and $\bX$) the random vector with distribution $\nu_t^{(f)}$ (and $\nu^{\top}$ respectively). 
-Let $\bY_t = (Y_{t,1},\ldots,Y_{t,m})^{\top} = A\bX_t$ and $ \bY = (Y_1,\ldots,Y_m)^{\top} = A\bX$. 
-By definition, $\nu_t^{(g)}$(and $\nu^{(g)}$) is the distribution of $A\bX_t$ (and $A\bX$ respectively). 
-
-To prove that $\bY_t$ weakly converge to $\bY$, by Cram\'{e}r-Wold Theorem \citep{cramer1936some} we only need to prove for any $m$-dimension vector $\alpha = (\alpha_1,\ldots,\alpha_m)$, $\alpha\bY_t$ weakly converge to $\alpha\bY$.
-Note that again by Cram\'{e}r-Wold Theorem \citep{cramer1936some},
+To prove that $\bY_t$ weakly converges to $\bY$, by the Cram\'{e}r-Wold Theorem we only need to prove that 
+for any $m$-dimension vector $\alpha = (\alpha_1,\ldots,\alpha_m)$, 
+$\alpha\bY_t$ weakly converges to $\alpha\bY$. \todoc{Why does the convergence of $\bY_t$ to $\bY$ follows from this result?}
+Note that again by the Cram\'{e}r-Wold Theorem 
 \[
-\alpha\bY_t = (\alpha A) \bX_t \xrightarrow{\mathcal{L}}  (\alpha A) \bX = \alpha \bY
+\alpha\bY_t = (\alpha A) \bX_t \xrightarrow{\mathcal{L}}  (\alpha A) \bX = \alpha \bY\,,
 \]
 finishing the proof.
+\fi
 \end{proof}
 
 We define the independence of the components of a multidimensional ergodic function $f$ based on its induced limiting distribution $\nu^{(f)}$:
@@ -406,10 +443,11 @@ we say that $\{f_1,\ldots,f_d\}$ are \emph{independent} components,
 \begin{remark}
 Note that the existence of $\nu^{(f_i)}$ 
 %and $\nu^{(\tilde{f}_{ij})}$ are
-is guaranteed by proposition \ref{prop:comp}. 
-The definition of independent components is easy to extend to the independence of ergodic functions, by requiring that the joint function of all the functions is ergodic with independent components.
+is guaranteed by \cref{prop:comp}. 
+The definition of independent components is also extended to the independence of ergodic functions, by requiring that the joint function of all the functions is ergodic with independent components. \todoc{This is a bit unclear.
+}
 \end{remark}
-Do there exist ergodic function that has independent (non-independent) components? 
+Do there exist ergodic functions that have independent (or dependent) components? 
 Here, we provide a few examples based on periodic functions.
 Let $m$ denote the Lebesgue measure over the reals.
 \begin{prop}
@@ -486,7 +524,11 @@ Then $f$ and $g$ are independent iff
 for any $a,b\in \real$. \todoc{Maybe we should use $0\le x \le T-1$ in the above condition everywhere?}
 \end{prop}
 
-In fact, the induced distribution of a sum of two independent components is the convolution of the induced distributions of the two component:
+In fact, the induced distribution of a sum of two independent components is the convolution of the induced distributions of the two component.
+To state the result, let us remind the reader of the definition of the convolution $\nu*\mu$ of two distributions, 
+ $\nu,\mu:\BB_d \ra [0,1]$:
+For $S\in \BB_d$, 
+ $(\nu* \mu)(S) = \int \nu( S-x) d\mu(x)$, where $S - x$ is the translation of $S\in \BB_d$ by $-x$, i.e., $S-x =\cset{y-x}{y\in S}$.
 
 \if0
 While the space of ergodic functions is not closed under addition, the sum of two independent ergodic functions is also ergodic and in fact its induced distribution is the convolution of the induced distributions of the two functions:
@@ -495,16 +537,20 @@ While the space of ergodic functions is not closed under addition, the sum of tw
 \label{prop:convolution}
 If $(f,g)$ is ergodic with independent components then
 $f+g$ is ergodic and
- $\nu^{(f+g)} = \nu^{(f)} * \nu^{(g)}$.
+ $\nu^{(f+g)} = \nu^{(f)} * \nu^{(g)}$,
+ where for $\nu,\mu: \BB_d \ra [0,1]$.
 \end{prop}
 \begin{proof}
-The ergodicity of $f+g$ immediately follows Proposition \ref{prop:comp}, i.e. $\nu^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f+g)}$ exists.
+The ergodicity of $f+g$ immediately follows from \cref{prop:comp}, i.e., $\nu^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f+g)}$ exists.
 
-Denote $(X_{t,1},X_{t,2})^{\top}$(and $(X_1,X_2)^{\top}$) the random vector with distribution $\nu_t^{((f,g)^{\top})}$ (and $\nu^{((f,g)^{\top})}$ respectively). 
-Note that for any $t\ge0 $, $\nu_t^{(f+g)}$ is the probability of $X_{t,1}+X_{t,2}$, i.e.  $\nu_t^{(f+g)} = \nu_t^{(f)}* \nu_t^{(g)}$. Thus by Cram\'{e}r-Wold Theorem \citep{cramer1936some}, 
+Denote by $(X_{t,1},X_{t,2})^{\top}$ (and $(X_1,X_2)^{\top}$) the random vector with distribution $\nu_t^{((f,g)^{\top})}$ (and $\nu^{((f,g)^{\top})}$ respectively). 
+Note that for any $t\ge0 $, $\nu_t^{(f+g)}$ is the probability distribution of $X_{t,1}+X_{t,2}$.
+Hence,  $\nu_t^{(f+g)} = \nu_t^{(f)}* \nu_t^{(g)}$. \todoc{Hmm, this only follows if $(X_{t,1},X_{t,2})$ are independent of each other, no? I don't think this proof will go through!}
+Thus, by \cref{cor:cw},
 \[
-\nu^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f)}* \nu_t^{(g)} = \nu^{(f)} * \nu^{(g)}.
+\nu^{(f+g)} = \lim_{t\ra \infty} \nu_t^{(f+g)} = \lim_{t\ra \infty} \nu_t^{(f)}* \nu_t^{(g)} = \nu^{(f)} * \nu^{(g)}\,.
 \]  
+\todoc[inline]{Here, we use that the limit commutes with convolution. Why does this hold? Does this always hold?}
 \if0
 For simplicity, the statement is shown for the case when $f,g$ take on values in $\natural$. The proof of the general statement has a similar structure and is left out for brevity. \todoc{Hmm, should we do the full thing? Someone!?}
 Fix $x\in \natural$ and let $A_x = \cset{\omega\in \Omega}{ f(\omega)+g(\omega)=x}$
@@ -673,7 +719,7 @@ From this result, we see that the following holds true:
 Let $f = (f_1,\ldots,f_d)^{\top}$ be an ergodic function with independent components and fix some nonzero reals
  $(\alpha_i)$, $(\beta_i)$.
 Let $g = \sum_i \alpha_i f_i$, $h = \sum_i \beta_i f_i$.
-If $(g,h)^{\top}$ are of independent components then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussians.
+If $g$ and $h$ are independent  then $\nu_{f_i}$, $i=1,\ldots,d$ are Gaussians.
 \end{lemma}
 \begin{proof}
 We apply~\cref{prop:Darmois-Skitovich-distr} with $\nu_i = \nu^{(f_i)}$, $i=1,\ldots,d$.
