@@ -330,8 +330,7 @@ A simple example of an ergodic function is a function over the reals (positive r
 \todoc[inline]{Somewhere we should make the remark that this framework is a generalization of the standard stochastic framework where you can take $\mu_t = \mu$.
 And in fact, in some sense what we try to overcome here is that over the real line there is no uniform probability measure; in some sense we are building the probability theory of improper measures..?
 }
-\todor[inline]{I guess there are typoes in this paragraph? All the $\mu$, except the first two, are $\nu$?}
-\todoc[inline]{Good catch. Good now? If yes, just remove the comments.}
+
 
 The next question to be investigated is whether the space of ergodic functions is a subspace, i.e., whether it is closed under addition and multiplication by reals. The latter is clear. However, concerning closeness under addition, we have 
 the following observation:
@@ -444,8 +443,10 @@ we say that $\{f_1,\ldots,f_d\}$ are \emph{independent} components,
 Note that the existence of $\nu^{(f_i)}$ 
 %and $\nu^{(\tilde{f}_{ij})}$ are
 is guaranteed by \cref{prop:comp}. 
-The definition of independent components is also extended to the independence of ergodic functions, by requiring that the joint function of all the functions is ergodic with independent components. \todoc{This is a bit unclear.
-}
+The definition of independent components is also extended to the independence of ergodic functions. 
+For example, $f$ and $g$ are called independent, if $(f,g)$ is an ergodic function with independent components.
+% by requiring that the joint function of all the functions is ergodic with independent components. 
+\todoc{This is a bit unclear.}
 \end{remark}
 Do there exist ergodic functions that have independent (or dependent) components? 
 Here, we provide a few examples based on periodic functions.
@@ -498,16 +499,16 @@ for any Borel sets $A,B\subset \real$. \todoc{Can this condition be satisfied? E
 The proof of the above proposition simply follows the definition of independent component. An example of the above proposition is:
 $f=(f_1,f_2)^{\top}:\natural \rightarrow \{-1,+1\}^2$: 
 \[
-f(t) = \begin{cases} +1, & t\in(n,n+1/2]; \\
+f_1(t) = \begin{cases} +1, & t\in(n,n+1/2]; \\
 					 -1, & t\in(n+1/2,n+1]; 
 					\end{cases}
 \qquad\qquad 
-g(t) = \begin{cases} +1, & t\in(n,n+1/4]; \\
+f_2(t) = \begin{cases} +1, & t\in(n,n+1/4]; \\
 					 -1, & t\in(n+1/4,n+3/4];\\
 				  	 +1, & t\in(n+3/4,n+1];
 					\end{cases}
 \]
-for any $n\in\natural$.
+for any $n\in\natural$. It is easy to verify that $f$ is ergodic with independent components.
 \todoc{Proof?}
 
 When the domain of the function is discrete (e.g., the set of natural numbers),
@@ -544,13 +545,15 @@ $f+g$ is ergodic and
 The ergodicity of $f+g$ immediately follows from \cref{prop:comp}, i.e., $\nu^{(f+g)} = \lim\limits_{t\ra \infty} \nu_t^{(f+g)}$ exists.
 
 Denote by $(X_{t,1},X_{t,2})^{\top}$ (and $(X_1,X_2)^{\top}$) the random vector with distribution $\nu_t^{((f,g)^{\top})}$ (and $\nu^{((f,g)^{\top})}$ respectively). 
-Note that for any $t\ge0 $, $\nu_t^{(f+g)}$ is the probability distribution of $X_{t,1}+X_{t,2}$.
-Hence,  $\nu_t^{(f+g)} = \nu_t^{(f)}* \nu_t^{(g)}$. \todoc{Hmm, this only follows if $(X_{t,1},X_{t,2})$ are independent of each other, no? I don't think this proof will go through!}
-Thus, by \cref{cor:cw},
+Note that for any $t\ge0 $, $\nu_t^{(f+g)}$ is the probability distribution of $X_{t,1}+X_{t,2}$,
+%.Hence,  $\nu_t^{(f+g)} = \nu_t^{(f)}* \nu_t^{(g)}$. 
+\todoc{Hmm, this only follows if $(X_{t,1},X_{t,2})$ are independent of each other, no? I don't think this proof will go through!}
+which by \cref{cor:cw} will converge to the distribution of $X_1+X_2$. Note that $X_1$ and $X_2$ are independent, so their distribution is $\nu^{(f)}*\nu^{(g)}$. Thus,
 \[
-\nu^{(f+g)} = \lim_{t\ra \infty} \nu_t^{(f+g)} = \lim_{t\ra \infty} \nu_t^{(f)}* \nu_t^{(g)} = \nu^{(f)} * \nu^{(g)}\,.
+\nu^{(f+g)} = \lim_{t\ra \infty} \nu_t^{(f+g)} = \nu^{(f)} * \nu^{(g)}\,.
 \]  
 \todoc[inline]{Here, we use that the limit commutes with convolution. Why does this hold? Does this always hold?}
+\todor[inline]{Yes...I guess just remove the convolution of $\nu_t$. By Theorem \ref{cor:cw}, $X_{t,1}+X_{t,2}$ converges to $X_1+X_2$. This is all we need.}
 \if0
 For simplicity, the statement is shown for the case when $f,g$ take on values in $\natural$. The proof of the general statement has a similar structure and is left out for brevity. \todoc{Hmm, should we do the full thing? Someone!?}
 Fix $x\in \natural$ and let $A_x = \cset{\omega\in \Omega}{ f(\omega)+g(\omega)=x}$
