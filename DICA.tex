@@ -270,7 +270,10 @@ g(t) = A f(t), \quad t\in \natural.
 We will call $g$ the observed signal and by slightly abusing notation we will also write $g = A f$.%
 \footnote{In fact, if $f$, $g$ are viewed as a $d\times \infty$ ``matrices'', then there is no abuse.}
 In the ICA problem one observes the values of $g$ in a sequential manner and the goal is to recover the components of $f$ up to scaling and permutation. For $f,f':\natural \ra \real^d$, we shall call $f$ and $f'$ equivalent (which we denote by $f\sim f'$) if the components of $f$ and $f'$ agree up to scaling and permutation.
-Then, we say that the source $f$ is identifiable if there is a mapping $\FF$ between the space of $d$-dimensional signals such that  $\FF( Af )\sim f$ for any nonsingular $A\in \real^{d\times d}$.
+Then, we say that the source $f$ is identifiable if there is a mapping $\FF$
+ between the space of $d$-dimensional signals such that 
+  for any nonsingular $A\in \real^{d\times d}$,
+  $\FF( Af )\sim f$ holds.
 In the ICA identifiability question one asks for a ``large'' set of multidimensional signals that are identifiable. Ideally, one would like to ask for the largest set, but it is unclear whether such a set exists. \todoc{Does it?}
 
 We are not the first to notice that ICA algorithms (sometimes) work for deterministic signals.
