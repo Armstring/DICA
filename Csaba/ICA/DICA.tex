@@ -751,6 +751,21 @@ From \cref{cor:DSTheoremCor} it follows that $\cset{j}{ a_{ij}\ne 0 }$, $1\le i 
 %(Delfosse & Loubaton, 1995)
 
 %\subsection{Negentropy minimization}
+\subsection{How Difficult ICA problem is?}
+We would like define the difficulty of the ICA problem. In practice, we are not going to observe the true distribution of $g$, but $g(t)$, $1\le t\le n$. Note if $f$ is a continuous function, then $f(t)$, $1\le t\le n$ would never to be of independent components.
+Now assume that we have a distribution $f'$, and a true $A$, thus we are going to observe $g'=Af'$. 
+
+Ideally, we would like to claim that:
+ for any $D>0$, and any algorithm denoted by $\text{Alg}$ that learns $A$ correctly if $f'$ is an ergodic function with independent components,
+ there always exists an ergodic function $f$ with independent components, such that $f'$ and $f$ are 'close', and $d(\hat{A},A)\ge H(D,A,f')$, 
+ where $\hat{A}$ is learned by the algorithm $\text{Alg}$ from $g'$, $H(D,A,f')$ is a function of $D$, $A$, and $f'$, and $d(\hat{A},A)$ is some distance between $\hat{A}$ and $A$.  
+
+\subsubsection{Correctness built on independence}
+ We try to get to a weaker claim.
+ Assume the algorithm is built on maximizing the independence, i.e. $\text{Alg}$ learns a matrix $B$ such that $q(t) = Bg(t) = BAf(t)$ is 'close' to independence, for $1\le t\le n$.
+ Now the problem becomes given any number $D>0$, and an ergodic function $f$, there exists a matrix $M$, such that $q = Af$ is 'close' to independent (measure by $D$), while $d(q-f)\ge H(D,A,f)$, where $d(q,f)$ is some distance between $q$ and $f$. 
+
+
 
 \subsection{A general observation}
 The standard instantaneous noiseless ICA identifiability results can all be phrased as follows:
