@@ -549,38 +549,12 @@ The ergodicity of $f+g$ immediately follows from \cref{prop:comp}, i.e., $\nu^{(
 
 Denote by $(X_{t,1},X_{t,2})^{\top}$ (and $(X_1,X_2)^{\top}$) the random vector with distribution $\nu_t^{((f,g)^{\top})}$ (and $\nu^{((f,g)^{\top})}$ respectively). 
 Note that for any $t\ge0 $, $\nu_t^{(f+g)}$ is the probability distribution of $X_{t,1}+X_{t,2}$,
-%.Hence,  $\nu_t^{(f+g)} = \nu_t^{(f)}* \nu_t^{(g)}$. 
-\todoc{Hmm, this only follows if $(X_{t,1},X_{t,2})$ are independent of each other, no? I don't think this proof will go through!}
-which by \cref{cor:cw} will converge to the distribution of $X_1+X_2$. Note that $X_1$ and $X_2$ are independent, so their distribution is $\nu^{(f)}*\nu^{(g)}$. Thus,
+which by \cref{cor:cw} will converge to the distribution of $X_1+X_2$. By our assumption on $(f,g)$, $X_1$ and $X_2$ are independent with respective distributions $\nu^{(f)}$ and $\nu^{(g)}$, so the distribution of $X_1+X_2$ is $\nu^{(f)}*\nu^{(g)}$. Thus,
 \[
 \nu^{(f+g)} = \lim_{t\ra \infty} \nu_t^{(f+g)} = \nu^{(f)} * \nu^{(g)}\,.
 \]  
-\todoc[inline]{Here, we use that the limit commutes with convolution. Why does this hold? Does this always hold?}
-\todor[inline]{Yes...I guess just remove the convolution of $\nu_t$. By Theorem \ref{cor:cw}, $X_{t,1}+X_{t,2}$ converges to $X_1+X_2$. This is all we need.}
-\if0
-For simplicity, the statement is shown for the case when $f,g$ take on values in $\natural$. The proof of the general statement has a similar structure and is left out for brevity. \todoc{Hmm, should we do the full thing? Someone!?}
-Fix $x\in \natural$ and let $A_x = \cset{\omega\in \Omega}{ f(\omega)+g(\omega)=x}$
-We have
-\begin{align*}
-A_x
-&=
-\cup_{y\in \natural} \cset{\omega\in \Omega}{ f(\omega)=y, g(\omega)=x-y}\\
-& =
-\cup_{y\in \natural} \underbrace{\cset{\omega\in \Omega}{ (f,g)(\omega)=(y,x-y) }}_{A_{(y,x-y)}}\,.
-\end{align*}
-Note that $A_{(y,x-y)} \cap A_{(y',x-y')} = \emptyset$ when $y\ne y'$.
-Hence,
-$\mu_t( A_x ) = \sum_{y\in \natural} \mu_t(A_{(y,x-y)})$.
-
-Hence, $\lim_{t\ra\infty} \mu_t( A_{(y,x-y)}) = \nu^{(f,g)}( \{ (y,x-y) \} )$, which shows that $f+g$ is also ergodic.
-Furthermore, using the independence of $f$ and $g$, we have
-$ \nu^{(f,g)}(  \{ (y,x-y) \}  )
-= \nu^{(f)}( \{ y \} ) \nu^{(g)}( \{ x-y \} )$, and hence
-$\nu^{(f+g)}(\{x\}) = \lim_{t\ra\infty} \mu_t( A_x ) = \sum_{y\in\natural} \nu^{(f)}( \{ y \} ) \nu^{(g)}( \{ x-y \} )$, and hence indeed
-$\nu^{(f+g)} = \nu^{(f)} * \nu^{(g)}$.
-\fi
 \end{proof}
-Of course, the result also extends to any number of independent functions.
+The result can be easily extended to any number of independent functions.
 \if0
 Consider the sequence of empirical measures over $\real^d$ introduced by $f:\natural \rightarrow \real^d$: for any $t\ge 1$, let $\nu_t$ denote the a probability measure over $\real^d$ such that
 for $ $ any Borel set $A \in \real^d$, $\nu_t(A)=\tfrac{1}{t} \sum_{k=1}^t \ind{f(k) \in A}$. 
