@@ -477,9 +477,9 @@ Let $\mu_t$ be the uniform probability distribution on $[0,t]$.
 To see this, fix $s\in \real$. Then,
  $\lim_{n\rightarrow \infty}\frac1n \sum_{u=0}^{n-1} \ind{uT_1+s \in f_2^{-1}(B)}
  =\lim_{n\rightarrow \infty}\frac1n | \cset{ 0\le u \le n-1 }{ f_2(uT_1+s) \in (B)}
- = \nu^{(f_2)}(B)$ since, as it is well known, thanks to $T_1/T_2$ being irrational, 
- $(u T_1+s \pmod T_2 )_{u\in \natural}$ is ``uniformly distributed'' in $[0,T_2)$.
- \todoc{We can cite P\'olya-Szeg\"o}
+ = \nu^{(f_2)}(B)$ since thanks to $T_1/T_2$ being irrational, by the equidistribution theorem of Weyl,
+the empirical distribution of $(u T_1+s \pmod T_2 )_{u\in \natural}$ is uniform on $[0,T_2)$.
+ \todoc{We can cite P\'olya-Szeg\"o. }
 Thus, the interchange is justified and
  \begin{align*}
  \lim\limits_{n\rightarrow \infty} \nu^{(f_1)}_t(A\times B) = & \int_{x\in S_1} \frac{\nu^{(f_2)}(B)}{T_1}\, dc 
