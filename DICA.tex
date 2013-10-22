@@ -325,6 +325,10 @@ Remember that a sequence of probability measures $(\nu_t)$ is said to converge w
 A function $f:\Omega \rightarrow \real^d$ is called \emph{ergodic} w.r.t. $(\mu_t)$
 if the sequence of  induced probability measures $(\nu_t)_{t\ge 0}$ is weakly convergent.
 \end{definition}
+\todoc{Why ``ergodic''? A similar concept from dynamical systems is ``asymptotically mean stationary'', see Definition 325 in Chapter 23 of the notes at \url{http://www.stat.cmu.edu/~cshalizi/754/}.
+In (nonhomogeneous) Markov chains, the similar property is called weak ergodicity.
+This paper: ``Jialin Hong, R. Obaya, A.M. Sanz, Ergodic solutions via ergodic sequences, Nonlinear Anal., TMA 40 (2000), pp. 265-277. '' also introduces ergodicity of functions. Our definition is different. They only require the time averages exists.
+}
 In what follows, when $(\mu_t)$ is fixed, we will simply call $f$  ergodic, not mentioning $(\mu_t)$.
 When the limit of $(\nu_t)$ exists, it will be denoted by $\nu$
 and if we want to emphasize the dependence on $f$ then we will use $\nu^{(f)}$.
@@ -573,6 +577,7 @@ Assume that
 exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |f_i|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
 Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
 \end{prop}
+\todoc{Relationship to the Vitali-Hahn Theorem? Proposition~327 in \url{http://www.stat.cmu.edu/~cshalizi/754/}?}
 As we we will soon see, the statement of the lemma will follow from Prokhorov theorem.
 For this, we need to introduce the concept of a ``tight'' set of probability measures.
 Let $(X,\TT)$ be a topological space, $\AA$ be a $\sigma$-algebra over $X$ that contains the topology $\TT$,
