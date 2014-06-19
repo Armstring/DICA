@@ -761,8 +761,8 @@ Now, it should be clear all these results carry through to the deterministic set
 \section{Adapting \cite{arora2012provable}'s algorithm to deterministic setting}
 \citet{arora2012provable} proposed a polynomial-time algorithm to provably recover the transition matrix $A$ in a probabilistic setting. Note that the algorithm only relies on the moments, thus it should be applicable to both probabilistic setting and deterministic setting.
 
-In a probabilistic setting, the concentration inequality holds in general between the empirical distribution and the true distribution (under some boundness conditions). 
-However, in the deterministic setting such property is not guaranteed. Hence we need some assumptions that the given sequence $g$ does not go arbitrarily wild.
+However, in a probabilistic setting, the concentration inequality holds in general between the empirical distribution and the true distribution (under some boundness conditions), while in the deterministic setting such property is not guaranteed. 
+Hence we need some assumptions that the given sequence $g$ does not go arbitrarily wild.
 \begin{definition}
 Given two distributions $F_1$ and $F_2$ in $\real^d$, $D_4(F_1,F_2) = \sup_{f\in\mathcal{F}} |\int f(x)dF_1(x) - \int f(x)dF_2(x)|$, where $\mathcal{F}$ is the set of monomials up to degree 4.
 \end{definition}  
@@ -780,17 +780,19 @@ Given two distributions $F_1$ and $F_2$ in $\real^d$, we call function $D(F_1,F_
 It is easy to verify that $D_4$ itself is a '***' distance.
 \end{remark}
 
-We will assume that the given sequence is close to some independent distribution in the measure of '***' distance. The result of \cite{arora2012provable} is stated in a deterministic setting, as follows. Denote the maximal singular value of a matrix $A$ by $\sigma_{\max}(A)$. Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$ and $A_{(2,\max)} = \max_{i} \|A_i\|_2$.
+Under the assumption that the given sequence is close to some independent distribution in the measure of '***' distance, we state the result of \cite{arora2012provable} in a deterministic setting, as follows. Denote the maximal singular value of a matrix $A$ by $\sigma_{\max}(A)$. Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$.
+It is easy to verify that $A_{(2,\min)}(A) \ge \sigma_{\min}(A)$ and $A_{(2,\max)}(A) \le \sigma_{\max}(A)$.
+
 \begin{thm}
 There exists a constant $c>0$, such that for any zero mean product probability $\nu^*$, non-singular matrix $A$, and signals $g(t)$, if 
 \[
-D(\nu_T^{A^{-1}g}, \nu^*) \le c\frac{d_{\min}^{19/2}\kappa_{\min}^{19/2}\sigma_{\min}^{1/2}(A)}{d^{16}A_{(2,\max)}A_{\max}d_{max}^6\kappa_{\max}^6}
+D(\nu_T^{A^{-1}g}, \nu^*) \le c\frac{d_{\min}^{9}\kappa_{\min}^{17/2}\sigma_{\min}^{2}(A)}{d^{39/2}\sigma_{\max}^4(A)d_{max}^7\kappa_{\max}^{15/2}\sum_i\Em{\nu^*}{f_i^2}}
 \]
 where $\kappa_{\min}$ and $\kappa_{\max}$ are the minimal and maximal kurtosis of those of $\nu^*$'s components, then there is algorithm $\text{Alg}(g,\beta)$, such that for any $\beta\in [\beta_0,\beta_1]$ with probability at least $1/3$, $\text{Alg}(g,\beta)$ returns $\hat{A}$ in time $O(n/\beta^2)$ satisfying 
 \[
-\|\hat{A}_i - c_iA_{\pi(i)}\| \le K D(\nu_T^{A^{-1}g}, \nu^*),
+\|\hat{A}_i - c_iA_{\pi(i)}\|_2 \le C_A D(\nu_T^{A^{-1}g}, \nu^*),
 \]
- for some permutation $\pi$ and constants $c_i$'s, where $\beta_0$, $\beta_1$, and $K$ are constants depends on the matrix $A$, $d$, and $\nu^*$. 
+ for some permutation $\pi$ and constants $c_i$'s, where $\beta_0$, $\beta_1$, and $C_A$ are constants depends on the matrix $A$, $d$, and $\nu^*$. 
 \end{thm}
 
 \begin{proof}
@@ -799,7 +801,7 @@ By algebraic calculation,
 \[
 \nabla^2 f_A(u) = AKD_A(u)A^{\top},
 \]
-where $D_A(u) = \text{diag}\left(12(u^{\top}A_1)^2,\cdots, 12(u^{\top}A_d)^2\right)$. 
+where $D_A(u) = \text{diag}\left(12(u^{\top}A_1)^2,\cdots, 12(u^{\top}A_d)^2\right)$, and $K = \text{diag}\left( \kappa_1,\cdots,\kappa_d\right)$.
 
 \begin{lemma}
 With probability at least $e^{-1/\sqrt{\pi}}$, $d_{\min} \ge \frac{12}{d}A_{(2,\min)}^2$.
@@ -809,7 +811,7 @@ With probability at least $e^{-1/\sqrt{\pi}}$, $d_{\min} \ge \frac{12}{d}A_{(2,\
 \left|E_{i,j}\right| := \left|\left( \nabla^2 f_A(u) - \nabla^2 \widehat{f_A}(u) \right)_{i,j}\right| \le d^4A_{\max}^2 A_{(2,\max)}^2D_4(\nu^{A^{-1}g},\nu^*).
 \]
 \end{lemma} 
-Let $\nabla^2 f_A(u_0) = BB^{\top}$ and $\nabla^2 \widehat{f_A}(u_0) = \hat{B}\hat{B}^{\top}$, thus $B = AK^{-1/2}D_A^{1/2}(u_0)R$ for some orthonormal matrix $R$, then every singular value of $B^{-1}\hat{B}$ is bounded as follows. For any unit vector $x$,
+Let $\nabla^2 f_A(u_0) = BB^{\top}$ and $\nabla^2 \widehat{f_A}(u_0) = \hat{B}\hat{B}^{\top}$, thus $B = AK^{1/2}D_A^{1/2}(u_0)R$ for some orthonormal matrix $R$, then every singular value of $B^{-1}\hat{B}$ is bounded as follows. For any unit vector $x$,
 \begin{align*}
 & x^{\top} B^{-1}\hat{B}\hat{B}^{\top}B^{-\top}x - x^{\top}x \\
 & \quad  = x^{\top}  B^{-1} ( \hat{B}\hat{B}^{\top} -BB^{\top} )B^{-\top}x \\
@@ -818,54 +820,78 @@ Let $\nabla^2 f_A(u_0) = BB^{\top}$ and $\nabla^2 \widehat{f_A}(u_0) = \hat{B}\h
 & \quad  \le \frac{d^5A_{\max}^2 A_{(2,\max)}^2}{d_{\min}\sigma_{\min}^2(A)\kappa_{\min}}D_4(\nu^{A^{-1}g},\nu^*) \quad   =: \xi
 \end{align*}
 
-Thus given $D_4(\nu^{A^{-1}g},\nu^*) \le \frac{1}{2}\frac{d_{\min}\sigma_{\min}^2(A)\kappa_{\min}}{d^5A_{\max}^2 A_{(2,\max)}^2}$, 
-every singular value of $\hat{B}^{-1}B$ is between $\frac{1}{\sqrt{1+\xi}}$ and $\frac{1}{\sqrt{1-\xi}}$. Thus there exists a orthonormal matrix $R^*$ such that 
+By condition that $D_4(\nu^{A^{-1}g},\nu^*) \le \frac{1}{2}\frac{d_{\min}\sigma_{\min}^2(A)\kappa_{\min}}{d^5A_{\max}^2 A_{(2,\max)}^2} < 1$, we have $\xi\le 1/2$. 
+Thus every singular value of $\hat{B}^{-1}B$ is between $\frac{1}{\sqrt{1+\xi}}$ and $\frac{1}{\sqrt{1-\xi}}$. So there exists a orthonormal matrix $R^*$ such that 
 \[
-\|\hat{B}^{-1}B - R^*\|_2 \le \sqrt{\frac{\xi}{1-\xi}}.
+\|\hat{B}^{-1}B - R^*\|_2 \le \xi.
 \]
 
 Consider the function 
 \[
-f_{B^{-1}A}(u) = \sum_i \kappa_i (u^{\top}B^{-1}A_i)^4 = \sum_i \kappa^{-1}_i d_i^{-2} (u^{\top}R_i)^4.
+f_{R^*B^{-1}A}(u) = \sum_i \kappa_i (u^{\top}B^{-1}A_i)^4 = \sum_i \kappa^{-1}_i d_i^{-2} (u^{\top}R^*R_i)^4.
 \]
 Similarly we still use the empirical estimation of this function in the algorithm, 
 \[
-\left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right| \le \left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{\hat{B}^{-1}A}(u) \right| + \left|f_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right|.
+\left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{R^*B^{-1}A}(u) \right| \le \left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{\hat{B}^{-1}A}(u) \right| + \left|f_{\hat{B}^{-1}A}(u) - f_{R^*B^{-1}A}(u) \right|.
 \]
 
 Then for the second term 
 \begin{align*}
-& \left|f_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right| = \left| \sum_i \kappa_i(u^{\top}\hat{B}^{-1}A_i)^4 - \sum_i \kappa_i(u^{\top}B^{-1}A_i)^4\right| \\ 
-& \quad = \left| \sum_i \kappa_i (u^{\top}\hat{B}^{-1}A_i - u^{\top}B^{-1}A_i)\left[(u^{\top}\hat{B}^{-1}A_i+u^{\top}B^{-1}A_i)\left((u^{\top}\hat{B}^{-1}A_i)^2+(u^{\top}B^{-1}A_i)^2\right)\right]\right| \\
-& \quad \le \sum_i \kappa_i \left| u^{\top}\hat{B}^{-1}A_i - u^{\top}B^{-1}A_i \right| \left| u^{\top}\hat{B}^{-1}A_i+u^{\top}B^{-1}A_i\right| \left|(u^{\top}\hat{B}^{-1}A_i)^2+(u^{\top}B^{-1}A_i)^2 \right|
+& \left|f_{\hat{B}^{-1}A}(u) - f_{R^*B^{-1}A}(u) \right| = \left| \sum_i \kappa_i(u^{\top}\hat{B}^{-1}A_i)^4 - \sum_i \kappa_i(u^{\top}R^*B^{-1}A_i)^4\right| \\ 
+& \quad = \left| \sum_i \kappa_i (u^{\top}\hat{B}^{-1}A_i - u^{\top}R^*B^{-1}A_i)\left[(u^{\top}\hat{B}^{-1}A_i+u^{\top}R^*B^{-1}A_i)\left((u^{\top}\hat{B}^{-1}A_i)^2+(u^{\top}R^*B^{-1}A_i)^2\right)\right]\right| \\
+& \quad \le \sum_i \left|\kappa_i ( u^{\top}\hat{B}^{-1}A_i - u^{\top}R^*B^{-1}A_i) \right| \left| u^{\top}\hat{B}^{-1}A_i+u^{\top}R^*B^{-1}A_i\right| \left|(u^{\top}\hat{B}^{-1}A_i)^2+(u^{\top}R^*B^{-1}A_i)^2 \right|
 \end{align*}
-Note that $\left| u^{\top} \hat{B}^{-1}A_i\right| \le \|u^{\top}\hat{B}^{-1}B\|_2 \le \frac{1}{\sqrt{1-\xi}}$ and $ \left| u^{\top} B^{-1}A_i\right| \le 1$.
+Note that $\left| u^{\top} \hat{B}^{-1}A_i\right| \le \| \hat{B}^{-1}A_i\|_2 \le \|\hat{B}^{-1}B\|_2\|B^{-1}A_i\|_2 \le \frac{\sqrt{2}}{\kappa_{\min}^{1/2}d_{\min}^{1/2}}$ and $ \left| u^{\top} R^*B^{-1}A_i\right| \le \frac{1}{\kappa_{\min}^{1/2}d_{\min}^{1/2}}$.
 \begin{align*}
-& \left|f_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right| \le \frac{4}{(1-\xi)^{3/2}}\sum_i  \kappa_i\left| u^{\top}\hat{B}^{-1}A_i - u^{\top}B^{-1}A_i \right|  \\
-& \quad \le \frac{4}{(1-\xi)^{3/2}} \|u^{\top}\hat{B}^{-1}AK - u^{\top}B^{-1}AK\|_2 \\
-& \quad \le 8\sqrt{2}\|\hat{B}^{-1}B - I\|_2\|B^{-1}AK\|_2 \\
-& \quad \le \frac{8\sqrt{2}\kappa^{1/2}_{\max}}{d_{\min}^{1/2}} \sqrt{\xi}
+& \left|f_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right| \le \frac{9}{\kappa_{\min}^{3/2}d_{\min}^{3/2}}\sum_i  \left| \kappa_i( u^{\top}\hat{B}^{-1}A_i - u^{\top}R^*B^{-1}A_i )\right|  \\
+& \quad \le \frac{9\sqrt{d}}{\kappa_{\min}^{3/2}d_{\min}^{3/2}}\|u^{\top}\hat{B}^{-1}AK - u^{\top}R^*B^{-1}AK\|_2 \\
+& \quad \le \frac{9\sqrt{d}}{\kappa_{\min}^{3/2}d_{\min}^{3/2}}\|\hat{B}^{-1}B - R^*\|_2\|B^{-1}AK\|_2 \\
+& \quad \le \frac{9\sqrt{d}\kappa_{\max}^{1/2}}{\kappa_{\min}^{3/2}d_{\min}^{2}} \xi \\
+& = \frac{9 d^{11/2}\kappa_{\max}^{1/2}A_{\max}^2 A_{(2,\max)}^2 }{\kappa_{\min}^{5/2}d_{\min}^{3}\sigma_{\min}^2(A)} D_4(\nu^{A^{-1}g},\nu^*)
 \end{align*}
 
 Now for the first term, note that it is a degree-4 polynomial in $u$. Thus we only need a uniform upper bound for its coefficients. 
-Note that $f_{\hat{B}^{-1}A}(u) = \sum_i \kappa_i (u^{\top}\hat{B}^{-1}A_i)^4 $. Let $\alpha_i = |u^{\top}\hat{B}^{-1}A_i| \le \|\hat{B}^{-1}A_i\|_2 \le \frac{1}{\sqrt{(1-\xi)\kappa_{\min}d_{\min}}}$.
+Note that $f_{\hat{B}^{-1}A}(u) = \sum_i \kappa_i (u^{\top}\hat{B}^{-1}A_i)^4 $. Let $\alpha_i = |u^{\top}\hat{B}^{-1}A_i| \le \|\hat{B}^{-1}A_i\|_2 \le \frac{\sqrt{2}}{\kappa_{\min}^{1/2}d_{\min}^{1/2}}$.
 Thus, 
-\[
-\left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{\hat{B}^{-1}A}(u) \right| \le \frac{16d^4}{((1-\xi)\kappa_{\min}d_{\min})^2}(D_4(\nu^{A^{-1}g},\nu^*)+D_2^2(\nu^{A^{-1}g},\nu^*))
-\]
-
-Thus, 
-\[
-\left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right| \le \frac{8\sqrt{2}d^{5/2}\kappa^{1/2}_{\max}A_{\max} A_{(2,\max)}}{d_{\min}\kappa^{1/2}_{\min}\sigma_{\min}(A)} \sqrt{D_4(\nu^{A^{-1}g},\nu^*)} + \frac{64d^4}{(\kappa_{\min}d_{\min})^2}(D_4(\nu^{A^{-1}g},\nu^*)+D_2^2(\nu^{A^{-1}g},\nu^*))
-\]
-
-
-Given the upper bound for $\left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right| $, we now need to pick parameters for the algorithm. To guarantee the interval for $\beta$ is not empty, $D_4(\nu^{A^{-1}g},\nu^*)$ has to be small enough. In general, we need to pick 6 parameters. It is easy to verify that the following scheme is valid for the algorithm.
 \begin{align*}
- & \beta' = \frac{d_{\min}}{Qdd_{\max}}; \quad \delta' = \frac{d_{\min}\kappa_{\min}\beta'^2}{100d}; \quad  \gamma' = 3\sqrt{d}\beta'; \\
- & \beta = \frac{1}{K}\beta'; \quad \delta = \frac{d_{\min}\kappa_{\min}\beta^2}{100d}; \quad \gamma = 3\sqrt{d}\beta, 
+& \quad \left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{\hat{B}^{-1}A}(u) \right| \\
+& \le \left| \int (u^{\top}\hat{B}^{-1}Af)^4\,d\nu^* - \int (u^{\top}\hat{B}^{-1}Af)^4\,d\nu^{A^{-1}g} \right|\\
+& \quad  + 3\left| \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^* - \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^{A^{-1}g} \right| \left| \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^* + \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^{A^{-1}g} \right| \\
+& \le \left| \int (u^{\top}\hat{B}^{-1}Af)^4\,d\nu^* - \int (u^{\top}\hat{B}^{-1}Af)^4\,d\nu^{A^{-1}g} \right|\\
+& \quad  + 3\left| \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^* - \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^{A^{-1}g} \right| \left( \left| \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^* - \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^{A^{-1}g} \right| + 2 \left| \int (u^{\top}\hat{B}^{-1}Af)^2\,d\nu^*\right| \right)\\
+& \le \frac{4d^4}{\kappa_{\min}^2d_{\min}^2}D_4(\nu^{A^{-1}g},\nu^*)
++\frac{12d^4}{\kappa_{\min}^2d_{\min}^2}D_4^2(\nu^{A^{-1}g},\nu^*)
++ \frac{12\sqrt{2}d^2\sigma_{\max}^2(A)\sum_i\Em{\nu^*}{f_i^2}}{\kappa_{\min}^{3/2}d_{\min}^{3/2}}D_4(\nu^{A^{-1}g},\nu^*)\\
+%& \le Q\frac{d^4\sum_i\Em{\nu^*}{f_i^2}}{\kappa_{\min}^2d_{\min}^2} D_4(\nu^{A^{-1}g},\nu^*)
 \end{align*}
-where $Q\ge 1200$ and $K\ge \frac{90000 d^{5/2}d_{\max}\kappa_{\max}}{d_{\min}\kappa_{\min}\beta'}$ will be specified later. 
+
+
+Thus, 
+\[
+\left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right| \le 
+C \frac{d^{11/2}\kappa_{\max}^{1/2}A_{\max}^2 \sigma_{\max}^2(A) \sum_i\Em{\nu^*}{f_i^2}}{\kappa_{\min}^{5/2}d_{\min}^{3}\sigma_{\min}^2(A)} D_4(\nu^{A^{-1}g},\nu^*)
+\]
+for some constant $C>0$. We denote the upper bound by $MD_4(\nu^{A^{-1}g},\nu^*)$ where $M$ is the fractional coefficient.
+
+Given the upper bound for $\left|\hat{f}_{\hat{B}^{-1}A}(u) - f_{B^{-1}A}(u) \right| $, we now need to pick parameters for the algorithm. To guarantee the interval for $\beta$ is not empty, $D_4(\nu^{A^{-1}g},\nu^*)$ has to be small enough. In general, we need to pick 6 parameters. One of the valid picking schemes for the algorithm is as follows.
+\begin{align*}
+ & \beta' = \frac{\kappa_{\min}d_{\min}}{Qd^2\kappa_{\max}d_{\max}}; \quad \delta' = \frac{\beta'^2}{100d_{\max}\kappa_{\max}d}; \quad  \gamma' = 3\sqrt{d}\beta'; \\
+ & \beta = \frac{1}{K}\beta'; \quad \delta = \frac{\beta^2}{100d_{\max}\kappa_{\max}d}; \quad \gamma = 3\sqrt{d}\beta, 
+\end{align*}
+where $Q$ and $K$ will be specified later.  For the algorithm to work correctly, we have several conditions on these parameters:
+\begin{enumerate}[(1)]
+\item $\beta'\le \frac{\kappa_{\min}d_{\min}}{10d^2\kappa_{\max}d_{max}}$;
+\item $K\ge \frac{90000d^{5/2}d_{\max}\kappa_{\max}}{d_{\min}\kappa_{\min}\beta'}$;
+\item $Q\ge 1200$;
+\item $\frac{\beta'^2}{800d_{\max}\kappa_{\max}dK^2} \ge MD_4(\nu^{A^{-1}g},\nu^*)$
+\end{enumerate}
+To satisfy all the constraints, $\beta'^4$ has to be in the interval \[
+\left[
+ \frac{\Lambda_1 d^{21/2}d_{\max}^3\kappa_{\max}^{7/2}\sigma_{\max}^4(A)\sum_i\Em{\nu^*}{f_i^2}}{\kappa_{\min}^{9/2}d_{\min}^5\sigma_{\min}^2(A)}D_4(\nu^{A^{-1}g},\nu^*),
+ \frac{d_{\min}^4\kappa_{\min}^4}{\Lambda_2d^8d_{\max}^4\kappa_{\max}^4}
+\right]
+\]
+where $\Lambda_1 = 800\times90000^2$ and $\Lambda_2 = 1200^2$. By the upper bound condition, this interval is not empty.
 
 to be continued...
 \end{proof}
@@ -922,68 +948,31 @@ for some constant $K$.
 \begin{proof}
 Let $l = \beta_1 - \beta_0$ and $I_l = \lceil -\log l \rceil$. Thus, there exist at least one valid $\beta$ in the first $2^{I_l} \le \frac{2}{l}$ tried $\beta$'s. Thus, after time ****, with probability at least $1-\delta$, there exist at least one candidate $\tilde{A}$ such that  
 \[
-\|\tilde{A}_i - c_iA_{\pi(i)}\| \le K D(\nu_T^{A^{-1}g}, \nu^*),
+\|\tilde{A}_i - c_iA_{\pi(i)}\|_2 \le C_A D(\nu_T^{A^{-1}g}, \nu^*),
 \]
  for some permutation $\pi$ and constants $c_i$'s. Thus, 
  \[
- \text{Dep}(\nu^{\hat{A}^{-1}g}) \le  \text{Dep}(\nu^{\tilde{A}^{-1}g}) \le  \text{Dep}(\nu^{A^{-1}g})+C_{\text{Dep}}D(\nu^{\tilde{A}^{-1}g}, \nu^{A^{-1}g}) \le C_{\text{Dep}}\left(D(\nu^{\tilde{A}^{-1}g}, \nu^{A^{-1}g})  + D(\nu^{\tilde{A}^{-1}g}, \nu^*) \right)  
+ \text{Dep}(\nu^{\hat{A}^{-1}g}) \le  \text{Dep}(\nu^{\tilde{A}^{-1}g}) \le  \text{Dep}(\nu^{A^{-1}g})+C_{\text{Dep}}D(\nu^{\tilde{A}^{-1}g}, \nu^{A^{-1}g}) \le C_{\text{Dep}}\left(D(\nu^{\tilde{A}^{-1}g}, \nu^{A^{-1}g})  + D(\nu^{A^{-1}g}, \nu^*) \right)  
  \]
 
-It remains to bound $D(\nu^{\tilde{A}^{-1}g}, \nu^{A^{-1}g})$. 
+It remains to bound $D(\nu^{\tilde{A}^{-1}g}, \nu^{A^{-1}g})$. We only need to bound for $\|\tilde{A}^{-1}g - A^{-1}g\|_2$. Note that 
+\[
+\|\tilde{A}^{-1}g_i - A^{-1}g_i\|_2 \le \|\tilde{A}^{-1}- A^{-1}\|_2\|g_i\|_2 \le \|\tilde{A}^{-1}\|_2\|A^{-1}\|_2\|\tilde{A}-A\|_2\|g_i\|_2.
+\]
+Still need to bound $\|\tilde{A}^{-1}\|_2$ and $\|\tilde{A}-A\|_2$, by $\|\tilde{A}_i - c_iA_{\pi(i)}\|_2 $.
 \end{proof}
 \begin{remark}
-How large $T$ has to be? It depends on the length of the interval $[\beta_0, \beta_1]$ which depends on other quantities.
+How large $T$ has to be? 
 \end{remark}
 
 
 \section{Analysis of ICA algorithms}
-\if0
-\subsection{Analysis of Arora's algorithm}
 In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
-Introduce the notation $\E_{x\sim \nu}[f(x)]$ as a shorthand for $\int f(x) d\nu(x)$.
-Assume the independent ergodic component functions $s_1,\ldots,s_d:\natural \ra \real$ are bounded by a constant $C$, and satisfy $\E_{x\sim\nu^{(s_i)}}[x]=0$, $\E_{x\sim \nu^{(s_i)}}[x^2]=1$, and $\kappa_i := \E_{x\sim \nu^{(s_i)}}[x^4]\neq 3$.%
-\footnote{In this section, we will denote the sources by $s_i$ to avoid a clash with the function $f$ used by  \citet{DHsu2012} for a different purpose.}
+However, a detailed analysis shows that 
 
-For $p\ge 1$, $\eta\in \real^d$, 
-let 
-\begin{equation}
-\label{eq:mpdef}
-m_p(\eta) = \E_{x\sim \nu^{(s)}}[ (\eta^\top A x)^p ]
-\end{equation}
- and let
-\begin{equation}\label{eq:fdef}
-f(\eta) =   m_4(\eta) - 3 m_2(\eta)^2 \,.
-\end{equation}
 
-The algorithm of \cite{arora2012provable} is as follows. 
-\begin{algorithm}[H]
-\caption{ICA algorithm of \cite{arora2012provable} \label{alg:icaArora}}
-\begin{algorithmic}[1]
-\INPUT $g(k)$ for $1\le k \le t$. \todoc[inline]{start at zero!?}
-\OUTPUT the estimate of the mixing matrix $A$. 
-\STATE Sample $u_0$ and $u$ from a unit ball of $\real^d$, such that $\|u_0\|_2 = 1$ and $\|u\|_2 = 1$;
-\STATE Evaluate $\widehat{M} = \nabla^2\widehat{f}(u_0)$ where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
-\STATE Compute $B$ such that $\widehat{M} = BB^{\top}$;
-\STATE Evaluate $\widehat{P}(u)=\widehat{f}((B^{-1})^{\top}u)$;
-\STATE Call ALLLOPT($\widehat{P}(u)$) to calculate all the local maximas of $\widehat{P}(u)$, denoted as $\hat{R}_i$ for $1\le i\le n$; 
-\STATE Let $\widehat{D}(\hat{R})$ be a diagonal matrix whose $i$th entry is $(\widehat{P}(\widehat{R}_i))^{-1/2}$;
-\STATE Return $\widehat{A} = B\widehat{R}\widehat{D}(\hat{R})$.
-\end{algorithmic}
-\end{algorithm}
-\subsubsection{correctness}
-Assume we have all the estimation precisely. Then $A$ can be recovered precisely as follows.
-Let $D(u)$ denote the matrix in which the $k$th entry is $12q_k(u^{\top}A_k)^2$, by simple calculation, where $q_k = \kappa_k-3$ we have 
-\[
-f(u) = \sum q_k(u^{\top}A_k)^4 
-\]
-and the Hession of $f(u)$
-\[
-\nabla^2 f(u) = 12 \sum q_k(u^{\top}A_k)^2A_kA_k^{\top} = AD(u)A^{\top}.
-\]
-Therefore $P(u) = \Ex{(u^{\top}B^{-1}Ax)^4} = \Ex{(u^{\top}R^{*}D(u_0)^{-1/2}x)^4} $. Note that $D(u)^{-1/2}x$ are still independent ergodic functions, therefore all the local maxima of $P(u)$ is exactly $R^*$ (up to permutation). Thus $(P(R^{*}_i))^{-1/2} = D(u_0)_i\Ex{x_i^4}^{-1/2}$.
-\fi
 \subsection{Efficiency}
-In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
+
 Introduce the notation $\E_{x\sim \nu}[f(x)]$ as a shorthand for $\int f(x) d\nu(x)$.
 Assume the independent ergodic component functions $s_1,\ldots,s_d:\natural \ra \real$ are bounded by a constant $C$, and satisfy $\E_{x\sim\nu^{(s_i)}}[x]=0$, $\E_{x\sim \nu^{(s_i)}}[x^2]=1$, and $\kappa_i := \E_{x\sim \nu^{(s_i)}}[x^4]\neq 3$.%
 \footnote{In this section, we will denote the sources by $s_i$ to avoid a clash with the function $f$ used by  \citet{DHsu2012} for a different purpose.}
