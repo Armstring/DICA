@@ -772,7 +772,7 @@ Given two distributions $F_1$ and $F_2$ in $\real^d$, we call function $D(F_1,F_
 \begin{enumerate}
 \item If $\nu_t$ is an empirical distribution of $\nu$, then $\lim_{t\rightarrow \infty} D(\nu_t,\nu) = 0$.
 \item there exists a constant $L$, such that $ D_4(F_1,F_2) \le L D(F_1,F_2)$.
-\item There exists constant $C_D$ such that for any two sequences $Y = \{y_1, y_2,\cdots, y_T\}$ and $\Xi = \{y_1+\eps_1,\cdots, y_T\eps_T\}$, $D(\nu_T^{Y}, \nu_T^{\Xi}) \le C_D \| \Xi-Y\|_2$, where $\Xi-Y = \{\eps_1,\cdots, \eps_T\}$. 
+\item There exists constant $C_D$ such that for any two sequences $Y = \{y_1, y_2,\cdots, y_T\}$ and $\Xi = \{y_1+\eps_1,\cdots, y_T+\eps_T\}$, $D(\nu_T^{Y}, \nu_T^{\Xi}) \le C_D \| \Xi-Y\|_2$, where $\Xi-Y = \{\eps_1,\cdots, \eps_T\}$. 
 \end{enumerate}
 \end{definition}
 
@@ -807,11 +807,12 @@ where $D_A(u) = \text{diag}\left(12(u^{\top}A_1)^2,\cdots, 12(u^{\top}A_d)^2\rig
 With probability at least $e^{-1/\sqrt{\pi}}$, $d_{\min} \ge \frac{12}{d}A_{(2,\min)}^2$.
 \end{lemma} 
 \begin{lemma}
+Let $\nabla^2 \widehat{f_A}(u) = \Em{\nu^{A^{-1}g}}{(u^{\top}Ax)^4}  - 3\left(\Em{\nu^{A^{-1}g}}{(u^{\top}Ax)^2}\right)^2$, then
 \[
 \left|E_{i,j}\right| := \left|\left( \nabla^2 f_A(u) - \nabla^2 \widehat{f_A}(u) \right)_{i,j}\right| \le d^4A_{\max}^2 A_{(2,\max)}^2D_4(\nu^{A^{-1}g},\nu^*).
 \]
 \end{lemma} 
-Let $\nabla^2 f_A(u_0) = BB^{\top}$ and $\nabla^2 \widehat{f_A}(u_0) = \hat{B}\hat{B}^{\top}$, thus $B = AK^{1/2}D_A^{1/2}(u_0)R$ for some orthonormal matrix $R$, then every singular value of $B^{-1}\hat{B}$ is bounded as follows. For any unit vector $x$,
+Let $\nabla^2 f_A(u_0) = BB^{\top}$ and $\nabla^2 \widehat{f_A}(u_0) = \hat{B}\hat{B}^{\top}$, thus $B = AK^{1/2}D_A^{1/2}(u_0)R$ for some orthonormal matrix $R$. Then every singular value of $B^{-1}\hat{B}$ is bounded as follows. For any unit vector $x$,
 \begin{align*}
 & x^{\top} B^{-1}\hat{B}\hat{B}^{\top}B^{-\top}x - x^{\top}x \\
 & \quad  = x^{\top}  B^{-1} ( \hat{B}\hat{B}^{\top} -BB^{\top} )B^{-\top}x \\
@@ -820,7 +821,7 @@ Let $\nabla^2 f_A(u_0) = BB^{\top}$ and $\nabla^2 \widehat{f_A}(u_0) = \hat{B}\h
 & \quad  \le \frac{d^5A_{\max}^2 A_{(2,\max)}^2}{d_{\min}\sigma_{\min}^2(A)\kappa_{\min}}D_4(\nu^{A^{-1}g},\nu^*) \quad   =: \xi
 \end{align*}
 
-By condition that $D_4(\nu^{A^{-1}g},\nu^*) \le \frac{1}{2}\frac{d_{\min}\sigma_{\min}^2(A)\kappa_{\min}}{d^5A_{\max}^2 A_{(2,\max)}^2} < 1$, we have $\xi\le 1/2$. 
+Under the assumption that $D_4(\nu^{A^{-1}g},\nu^*) \le \frac{1}{2}\frac{d_{\min}\sigma_{\min}^2(A)\kappa_{\min}}{d^5A_{\max}^2 A_{(2,\max)}^2} < 1$, we have $\xi\le 1/2$. 
 Thus every singular value of $\hat{B}^{-1}B$ is between $\frac{1}{\sqrt{1+\xi}}$ and $\frac{1}{\sqrt{1-\xi}}$. So there exists a orthonormal matrix $R^*$ such that 
 \[
 \|\hat{B}^{-1}B - R^*\|_2 \le \xi.
