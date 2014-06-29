@@ -1156,7 +1156,7 @@ Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a
 \end{proof}
 
 The next lemma shows that $\widehat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix $2$-norm in two ways.
-
+\if0
 \begin{lemma}
 \label{lem:inversevariation1}
 If non-singular matrix $\widehat{X} = X+E$ satisfying that $\sigma_{\min}(X)>\|E\|_2$, then  $\|\widehat{X}^{-1}\|_2 \le \frac{1}{\sigma_{\min}(X)-\|E\|_2}$.
@@ -1167,10 +1167,10 @@ Consider the minimal singular value of $\widehat{X}$.
  \min_{v:\|v\|_2=1} \|\widehat{X}v\|_2 = \min_{v:\|v\|_2=1}\|(X+E)v\|_2 \ge \min_{v:\|v\|_2=1} \|Xv\|_2 - \|Ev\|_2 \ge \sigma_{\min}(X) - \|E\|_2.
 \]
 \end{proof}
-
+\fi
 \begin{lemma}
 \label{lem:inversevariation2}
-If non-singular matrix $\widehat{X} = X+E$ satisfying that $\sigma_{\min}(X)>\|E\|_2$, then  $\|\widehat{X}^{-1} - X^{-1}\|_2 \le \|X\|_2^2\|E\|_2 + \|X\|_2\|E\|_2^2$.
+If $\widehat{X} = X+E$, then  $\|\widehat{X}^{-1} - X^{-1}\|_2 \le \|X\|_2^2\|E\|_2 + \|X\|_2\|E\|_2^2$.
 \end{lemma}
 \begin{proof}
 Note that 
@@ -1182,14 +1182,13 @@ Note that
 Now we can estimate the variance between $XY^{-1}$ and $(X+E_1)(Y+E_2)^{-1}$.
 \begin{lemma}
 \label{lem:Mvariation}
-Assume $\sigma_{\min}(Y) > \|E_2\|_2$, then 
+Assume $\|E_1\|_2 \le \|X\|_2$ and $\|E_2\|_2 \le \|Y\|_2$, then
 \[
-\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2}{(\sigma_{\min}(Y) - \|E_2\|_2)^2}+\frac{\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2},
+\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + 4\|X\|_2\|Y\|_2^2\|E_2\|_2.
 \]
-where $c = \frac{1+\sqrt{5}}{2}$.
 \end{lemma}
 \begin{proof}
-
+\if0
 \begin{align*}
 	& \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
 \le & \| XY^{-1} - X(Y+E_2)^{-1}\|_2 + \| X(Y+E_2)^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
@@ -1202,12 +1201,14 @@ where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8, Chapter
 \]
 
 Or 
+\fi
 \begin{align*}
 	& \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
-\le & \| XY^{-1} - (X+E_1)Y^{-1}\|_2 + \| (X+E_1)Y^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
-\le & \|Y^{-1}\|_2\| E_1\|_2 + \left(\|E_1\|_2+\|X\|_2\right)\|Y^{-1} - (Y+E_2)^{-1}\|_2\\
-\le & \frac{1}{\sigma_{\min}(Y)}\|E_1\|_2 + \left(\|E_1\|_2+\|X\|_2\right)\left(\|Y\|_2^2\|E_2\|_2 + \|Y\|_2\|E_2\|_2^2\right)\\
-= & \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + \|X\|_2\|Y\|_2^2\|E_2\|_2 + O(\max\{\|E_1\|_2^2 , \|E_2\|_2^2\}).
+\le\, & \| XY^{-1} - (X+E_1)Y^{-1}\|_2 + \| (X+E_1)Y^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
+\le\, & \|Y^{-1}\|_2\| E_1\|_2 + \left(\|E_1\|_2+\|X\|_2\right)\|Y^{-1} - (Y+E_2)^{-1}\|_2\\
+\le\, & \frac{1}{\sigma_{\min}(Y)}\|E_1\|_2 + \left(\|E_1\|_2+\|X\|_2\right)\left(\|Y\|_2^2\|E_2\|_2 + \|Y\|_2\|E_2\|_2^2\right)\\
+=\, & \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + \|X\|_2\|Y\|_2^2\|E_2\|_2 +\left( \|Y\|_2^2\|E_1\|_2\|E_2\|_2 + \|Y\|_2\|E_1\|_2\|E_2\|_2^2 + \|X\|_2\|Y\|_2\|E_2\|_2^2\right) \\
+\le\, & \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + 4\|X\|_2\|Y\|_2^2\|E_2\|_2.
 \end{align*}
 \end{proof}
 
@@ -1229,9 +1230,9 @@ The following lemma bounds $\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta) \|_2
 \begin{lemma}
 \label{lem:nablavariation}
 \[
-\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\eta\|_2^2 \xi,
+\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi,
 \]
-where $\xi = d^5 A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right)$.
+where $\xi = \left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right)$.
 \end{lemma}
 \begin{proof}
 Without loss of generality, assume $ \|\eta\|_2 = 1$.
@@ -1279,16 +1280,24 @@ Therefore,
 \]
 \end{proof}
 Lastly, we still need to bound $\|M - \widehat{M}\|_2$.
+\begin{thm}
+Given that $\xi \le \min\{1,\kappa_{\min}\} \frac{A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, 
+\[ 
+\|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\kappa_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\kappa_{\max}^3A_{(2,\max)}^4\right) \xi.
+\]
+\end{thm}
 \begin{proof}
-Let $E_1 = \nabla^2 f(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le \xi$.
+Let $E_1 = \nabla^2 f(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le d^5 A_{(2,\max)}^2A_{\max}^2\xi$.
+Note that $\nabla^2f(\psi) = AKA^{\top}$ and $\nabla^2f(\phi) = AK\Lambda A^{\top}$ where $\Lambda = \text{diag}\left((\phi^{\top}A_1)^2,\cdots, (\phi^{\top}A_d)^2\right)$.
+Given that $\xi \le \min\{1,\kappa_{\min}\} \frac{A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, apply Lemma \ref{lem:Mvariation},
 \begin{align*}
 \|M - \widehat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1} \|_2 \\
-\le \, & \left(\frac{1}{\sigma_{\min}\left(\nabla^2f(\psi)\right)} +  \|\nabla^2 f(\phi)\|_2 \|\nabla^2 f(\psi)\|_2^2\right)\xi+O(\xi^2).
+\le \, & \left(\frac{1}{\sigma_{\min}\left(\nabla^2f(\psi)\right)} +  4\|\nabla^2 f(\phi)\|_2 \|\nabla^2 f(\psi)\|_2^2\right)d^5 A_{(2,\max)}^2A_{\max}^2\xi.
 \end{align*}
-Note that $\nabla^2f(\psi) = AKA^{\top}$ and $\nabla^2f(\phi) = AK\Lambda A^{\top}$ where $\Lambda = \text{diag}\left((\phi^{\top}A_1)^2,\cdots, (\phi^{\top}A_d)^2\right)$.
+
 Thus, 
 \[ 
-\|M - \widehat{M}\|_2 \le \left( \frac{1}{\sigma_{\min}^2(A)\kappa_{\min}}+ \sigma_{\max}^6(A)\kappa_{\max}^3A_{(2,\max)}^2\right) \xi + O(\xi^2).
+\|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\kappa_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\kappa_{\max}^3A_{(2,\max)}^4\right) \xi.
 \]
 \end{proof}
 
