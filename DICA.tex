@@ -1013,8 +1013,7 @@ How large $T$ has to be?
 
 \section{Analysis of ICA algorithms}
 In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
-However, a detailed analysis shows that the sample procedure plays an important role in the performance. Thus, we need to modify its sampling method.
-
+A detailed analysis shows that the sample procedure plays an important role in the performance. 
 
 \subsection{Efficiency}
 
@@ -1022,15 +1021,16 @@ Introduce the notation $\E_{x\sim \nu}[f(x)]$ as a shorthand for $\int f(x) d\nu
 Assume the independent ergodic component functions $s_1,\ldots,s_d:\natural \ra \real$ are bounded by a constant $C$, and satisfy $\E_{x\sim\nu^{(s_i)}}[x]=0$ and $\kappa_i := \E_{x\sim \nu^{(s_i)}}[x^4] - 3\left(\E_{x\sim \nu^{(s_i)}}[x^2]\right)^2\neq 0$.
 \footnote{In this section, we will denote the sources by $s_i$ to avoid a clash with the function $f$ used by  \citet{DHsu2012} for a different purpose.}
 %Here $\E_{\nu_{f_i}}$ is the expectation is taken with respect to the probability measure of $\nu_{f_i}$. 
-Note that sample a vector $\psi$ from a unit sphere, with probability 1 $\min_i |\psi^{\top}A_i|\neq 0$.  
+Note that sample a vector $\psi$ from a unit sphere, with probability~1, $\min_i |\psi^{\top}A_i|\neq 0$.  
 We are interested in the behave of $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
-With probability at least $\exp\{-\frac{1}{\sqrt{\pi}}\}$, $\min_i |\psi^{\top}A_i| \ge \frac{12}{d}A_{(2,\min)}^2 \ge \frac{12\min_i\|A_i\|_2}{d}$.
+With probability at least $\exp\{-\frac{1}{\sqrt{\pi}}\}$, $\min_i |\psi^{\top}A_i| \ge \frac{12}{d}A_{(2,\min)} \ge \frac{12\min_i\|A_i\|_2}{d}$.
 \end{lemma}
-Since we can always at most recover $A$ up to some scale, we can replace our goal by recovering the scaled $A$ such that $\psi^{\top}A = 1$. 
+Since we can only recover $A$ up to some scale, we can replace our goal by recovering the scaled $A$ such that $\psi^{\top}A = 1$. 
 Moreover, by Lemma \ref{lem:dmin}, the scaled $s_i$ will still be bounded by $\frac{dC}{12\min_i\|A_i\|_2}$ with probability at least $\exp\{-\frac{1}{\sqrt{\pi}}\}$. 
-The remainder of this section is based on the event that $\psi^{\top}A = 1$ and $s_i$ will still be bounded by $\frac{dC}{12\min_i\|A_i\|_2}$, denoted by $\tilde{C}$. 
+The remainder of this section is based on the event that $\psi^{\top}A = 1$ and $s_i$ will still be bounded by $\frac{dC}{12\min_i\|A_i\|_2}$, denoted by $\tilde{C}$.
+\citep{DHsu2012}'s algorithm is also modified for such event. 
 
 For $1\le k\le d$, denote $A_{(t)} = (A_k,A_{ck})$, where $A_{ck}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{k-1},A_{k+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. 
 
@@ -1071,8 +1071,7 @@ and $\nabla^2 \left( \E_{x\sim \hat{\lambda}}[(\eta^\top  x)^2 ]\right)^2$
 The following result is proven by \citet{DHsu2012}:
 \begin{thm}[\citet{DHsu2012}, Theorem~4]
 Assume that $\nu^{(s)} = \nu^{(s_1)}\otimes \dots \otimes \nu^{(s_d)}$,
-$\E_{x\sim \nu^{(s_i)}}[x] = 0$, $\E_{x\sim \nu^{(s_i)}}[x^2] = 1$, 
-$\E_{x\sim \nu^{(s_i)}}[x^4] \ne 3$, $i=1,\ldots,d$, $A$ is nonsingular
+$\E_{x\sim \nu^{(s_i)}}[x] = 0$, $\E_{x\sim \nu^{(s_i)}}[x^4] \ne 3$, $i=1,\ldots,d$, $A$ is nonsingular
 and that the columns $(A_i)_{1\le i \le d}$ of matrix $A$ have unit length. 
 Let $m_4,m_2:\real^d \ra \real$ be defined by \eqref{eq:mpdef},
 	while $f: \real^d \ra \real$ be defined by \eqref{eq:fdef}.
@@ -1156,16 +1155,27 @@ Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a
  By condition, for $i\neq j$,  $\frac{8\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \widehat{A_i}\|_2 + \|A_j - \widehat{A_i}\|_2$, thus $\widehat{A_i} \neq \widehat{A_j}$.  Summing up the upper bound gets the result. 
 \end{proof}
 
-The next lemma shows that $\|\widehat{X}^{-1}\|_2 = \|(X+E)^{-1}\|_2$ is close to $\frac{1}{\sigma_{\min}(X)}$.
+The next lemma shows that $\widehat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix $2$-norm in two ways.
 
 \begin{lemma}
-\label{lem:inversevariation}
+\label{lem:inversevariation1}
 If non-singular matrix $\widehat{X} = X+E$ satisfying that $\sigma_{\min}(X)>\|E\|_2$, then  $\|\widehat{X}^{-1}\|_2 \le \frac{1}{\sigma_{\min}(X)-\|E\|_2}$.
 \end{lemma} 
 \begin{proof}
 Consider the minimal singular value of $\widehat{X}$. 
 \[
- \min_{v:\|v\|_2=1} \|\widehat{X}v\|_2 = \min_{v:\|v\|_2=1}\|(X+E)v\|_2 \ge \|Xv\|_2 - \|Ev\|_2 \ge \sigma_{\min}(X) - \|E\|_2.
+ \min_{v:\|v\|_2=1} \|\widehat{X}v\|_2 = \min_{v:\|v\|_2=1}\|(X+E)v\|_2 \ge \min_{v:\|v\|_2=1} \|Xv\|_2 - \|Ev\|_2 \ge \sigma_{\min}(X) - \|E\|_2.
+\]
+\end{proof}
+
+\begin{lemma}
+\label{lem:inversevariation2}
+If non-singular matrix $\widehat{X} = X+E$ satisfying that $\sigma_{\min}(X)>\|E\|_2$, then  $\|\widehat{X}^{-1} - X^{-1}\|_2 \le \|X\|_2^2\|E\|_2 + \|X\|_2\|E\|_2^2$.
+\end{lemma}
+\begin{proof}
+Note that 
+\[
+\|\widehat{X}^{-1} - X^{-1} \|_2 \le \|X\|_2\|\widehat{X}\|_2\|\widehat{X} - X\|_2\le \|E\|_2\|X\|_2(\|X\|_2+\|E\|_2) = \|X\|_2^2\|E\|_2 + \|X\|_2\|E\|_2^2.
 \]
 \end{proof}
 
@@ -1190,6 +1200,15 @@ where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8, Chapter
 \[
 \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2}{(\sigma_{\min}(Y) - \|E_2\|_2)^2}+\frac{\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2}.
 \]
+
+Or 
+\begin{align*}
+	& \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
+\le & \| XY^{-1} - (X+E_1)Y^{-1}\|_2 + \| (X+E_1)Y^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
+\le & \|Y^{-1}\|_2\| E_1\|_2 + \left(\|E_1\|_2+\|X\|_2\right)\|Y^{-1} - (Y+E_2)^{-1}\|_2\\
+\le & \frac{1}{\sigma_{\min}(Y)}\|E_1\|_2 + \left(\|E_1\|_2+\|X\|_2\right)\left(\|Y\|_2^2\|E_2\|_2 + \|Y\|_2\|E_2\|_2^2\right)\\
+= & \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + \|X\|_2\|Y\|_2^2\|E_2\|_2 + O(\max\{\|E_1\|_2^2 , \|E_2\|_2^2\}).
+\end{align*}
 \end{proof}
 
 Note that in \cref{alg:icaHsu}, 
@@ -1199,63 +1218,79 @@ Note that in \cref{alg:icaHsu},
 \end{align*}
 where 
 \begin{align*}
-& G_1(\eta) = \int (\eta^{\top}Af)^2Aff^{\top}A^{\top}\,d\nu; \\
-& G_2(\eta) = \int (\eta^{\top}Af)^2\,d\nu \int Aff^{\top}A^{\top} \,d\nu; \\
-& G_3(\eta) = \Big(\int (\eta^{\top}Af)Af\,d\nu\Big)\Big(\int (\eta^{\top}Af)Af\,d\nu\Big)^{\top}. \\
-&\widehat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2g(k)g(k)^{\top} = \int (\eta^{\top}Af)^2Aff^{\top}A^{\top}\,d\nu_t; \\
-& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2 \sum_{k=1}^{n}g(k)g(k)^{\top} = \int (\eta^{\top}Af)^2\,d\nu_t \int Aff^{\top}A^{\top} \,d\nu_t; \\
-& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big)^{\top} = \Big(\int (\eta^{\top}Af)Af\,d\nu_t\Big)\Big(\int (\eta^{\top}Af)Af\,d\nu_t\Big)^{\top}.
+& G_1(\eta) = \int (\eta^{\top}Ax)^2Axx^{\top}A^{\top}\,d\nu(x); \\
+& G_2(\eta) = \int (\eta^{\top}Ax)^2\,d\nu(x) \int Axx^{\top}A^{\top} \,d\nu(x); \\
+& G_3(\eta) = \Big(\int (\eta^{\top}Ax)Ax\,d\nu(x)\Big)\Big(\int (\eta^{\top}Ax)Ax\,d\nu(x)\Big)^{\top}. \\
+&\widehat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2g(k)g(k)^{\top} = \int (\eta^{\top}Ax)^2Axx^{\top}A^{\top}\,d\nu_t(x); \\
+& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2 \sum_{k=1}^{n}g(k)g(k)^{\top} = \int (\eta^{\top}Ax)^2\,d\nu_t(x) \int Axx^{\top}A^{\top} \,d\nu_t(x); \\
+& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big)^{\top} = \Big(\int (\eta^{\top}Ax)Ax\,d\nu_t(x)\Big)\Big(\int (\eta^{\top}Ax)Ax\,d\nu_t(x)\Big)^{\top}.
 \end{align*}
-Given two probability measure $\mu$ and $\nu$ over $(\Omega , \xi)$, recall the definition of total variance, $D_{tv}(\mu, \nu) = \sup_{A\in\xi} |\mu(A) - \nu(A)|$. 
-The following lemma bounds $\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta) \|_2$ by $D_{tv}(\nu_t , \nu)$:
+The following lemma bounds $\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta) \|_2$ by $D_4(\nu_t , \nu)$ and $D_2(\nu_t , \nu)$:
 \begin{lemma}
 \label{lem:nablavariation}
 \[
-\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le d q D_{tv}(\nu_t , \nu) + 2dq D_{tv}(\nu_t , \nu)^2,
+\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\eta\|_2^2 \xi,
 \]
-where $q_{\eta} = d^2C^4\|\eta\|_2^2\sigma_{\max}(A)^4$.
+where $\xi = d^5 A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right)$.
 \end{lemma}
 \begin{proof}
-Denote the $i$-th row of $A$ by $A_{:,i}$, and the $(i,j)$ entry of a matrix $M$ by $(M)_{i,j}$. Since $\|f_i\|_\infty \le \tilde{C}$,$\|f\|_2 \le \tilde{C}\sqrt{d}$. 
-Thus $\big(\eta^{\top}Af\big)^2 \le d C^2\|\eta\|_2^2\sigma_{\max}(A)^2$ 
-% \le d C^2\sigma_{\max}(A)^2 $
-,  $|A_{:i}f| \le C\sqrt{d}\sigma_{\max}(A)$, 
-therefore $|\big(\eta^{\top}Af\big)^2 A_{:i}ff^{\top} A_{:j}^{\top}| \le d^2C^4\sigma_{\max}(A)^4 \|\eta\|_2^2 = q_{\eta}$.
+Without loss of generality, assume $ \|\eta\|_2 = 1$.
+Note that all the integral functions of $G_i(\eta)$ or $\widehat{G_i}(\eta)$ are matrices of polynomials in $x$. Thus, we only need to bound its coefficients.
+%Also, since $|b_1b_2b_3b_4| \le \frac14(b_1^4+b_2^4+b_3^4+b_4^4)$, we only need to upper bound the coefficients of $x_i^4$. 
+For $G_1(\eta)$, all the coefficients are bound by $\max_i |\eta^{\top} A_i|^2 A_{\max}^2 \le A_{(2,\max)}^2A_{\max}^2$. 
 \[
-|(G_1)_{i,j} - (\widehat{G_1})_{i,j} | \le q_{\eta} D_{tv}(\nu_t , \nu).
+\left| (G_1)_{i,j} - (\widehat{G_1})_{i,j} \right| \le d^4  A_{(2,\max)}^2A_{\max}^2D_4(\nu, \nu_t).
 \]
+
 Similarly, 
-\begin{align*}
-& |(G_2)_{i,j} - (\widehat{G_2})_{i,j} | \le q_{\eta} D_{tv}(\nu_t , \nu)^2 \\
-\text{and } \quad & |(G_3)_{i,j} - (\widehat{G_3})_{i,j} | \le q D_{tv}(\nu_t , \nu)^2.
-\end{align*}
-Therefore,
-\begin{align*}
-	& \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \\
-\le & \|G_1 - \widehat{G_1}\|_2 + \|G_2 - \widehat{G_2}\|_2 + \|G_3 - \widehat{G_3}\|_2 \\
-\le & d q_{\eta} D_{tv}(\nu_t , \nu) + 2dq_{\eta} D_{tv}(\nu_t , \nu)^2.
-\end{align*}
-\end{proof}
-
-\if0
-We still need to bound $\|\big(\nabla^2 f(\eta)\big)^{-1} - \big(\widehat{\nabla^2 f(\eta)}\big)^{-1}  \|_2 $, as follows.
-\begin{lemma}
-Assume $\|\eta\|_2 = 1$, then 
 \[
-\|\big(\nabla^2 f(\eta)\big)^{-1} - \big(\widehat{\nabla^2 f(\eta)}\big)^{-1}  \|_2 \le cd^2q^2\big(D_{tv}(\nu_n , \nu) + 2D_{tv}(\nu_n , \nu)^2\big).
+\left| \int A_ixx^{\top}A_j^{\top} \,d\nu(x) - \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \le d^2 A_{\max}^2 D_2(\nu,\nu_t)
 \]
-\end{lemma}
-\begin{proof}
-From the proof of \cref{lem:boundnablafeta}, $\|\nabla^2 f(\eta)\|_2, \|\widehat{\nabla^2 f(\eta)}\|_2 \le dq$, where $q = d^2C^4\sigma_{\max}(A)^4$.
-Apply Theorem 3.8 of \citep*{stewart1990matrix}, we have 
+ and 
+\[
+\left| \int (\eta^{\top}Ax)^2\,d\nu(x) -\int (\eta^{\top}Ax)^2\,d\nu_t(x) \right| \le d^2 A_{(2,\max)}^2 D_2(\nu,\nu_t).
+\]
+Also note that $ \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \right| \le d^2A_{(2,\max)}^2 \tilde{C}^2$, and
+$\left| \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \le d^2A_{\max}^2 \tilde{C}^2$.
+Now consider the case of $G_2$. 
 \begin{align*}
-& \|\big(\nabla^2 f(\eta)\big)^{-1} - \big(\widehat{\nabla^2 f(\eta)}\big)^{-1}  \|_2 \\
-\le & c\max\{\|\nabla^2 f(\eta)\|_2, \|\widehat{\nabla^2 f(\eta)}\|_2\} \|\nabla^2 f(\eta) - \widehat{\nabla^2 f(\eta)}\|_2 \\
-\le & cd^2q^2\big(D_{tv}(\nu_n , \nu) + 2D_{tv}(\nu_n , \nu)^2\big).
+& \left| (G_2)_{i,j} - (\widehat{G_2})_{i,j} \right| \\
+=\, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu(x)  - 
+\int (\eta^{\top}Ax)^2\,d\nu_t(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
+\le \, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu(x)  - 
+\int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\ 
+& \quad + \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x)  - 
+\int (\eta^{\top}Ax)^2\,d\nu_t(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
+\le\, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \right| \left|\int A_ixx^{\top}A_j^{\top} \,d\nu(x) - \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
+& \quad + \left| \int (\eta^{\top}Ax)^2\,d\nu(x) -\int (\eta^{\top}Ax)^2\,d\nu_t(x) \right| \left| \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
+\le\, & 2 d^4  A_{(2,\max)}^2A_{\max}^2\tilde{C}^2D_2(\nu, \nu_t).
 \end{align*}
-
+Similarly,
+\[
+\left| (G_3)_{i,j} - (\widehat{G_3})_{i,j} \right| \le 2 d^4  A_{(2,\max)}^2A_{\max}^2\tilde{C}^2D_2(\nu, \nu_t).
+\]
+Thus for any $1\le i,j\le d$,
+\begin{align*}
+\left|\left(\nabla^2 f(\eta)\right)_{i,j} - \left(\nabla^2 \widehat{f}(\eta) \right)_{i,j} \right| \le d^4  A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right).
+\end{align*}
+Therefore, 
+\[
+\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_F \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right).
+\]
 \end{proof}
-\fi
+Lastly, we still need to bound $\|M - \widehat{M}\|_2$.
+\begin{proof}
+Let $E_1 = \nabla^2 f(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le \xi$.
+\begin{align*}
+\|M - \widehat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1} \|_2 \\
+\le \, & \left(\frac{1}{\sigma_{\min}\left(\nabla^2f(\psi)\right)} +  \|\nabla^2 f(\phi)\|_2 \|\nabla^2 f(\psi)\|_2^2\right)\xi+O(\xi^2).
+\end{align*}
+Note that $\nabla^2f(\psi) = AKA^{\top}$ and $\nabla^2f(\phi) = AK\Lambda A^{\top}$ where $\Lambda = \text{diag}\left((\phi^{\top}A_1)^2,\cdots, (\phi^{\top}A_d)^2\right)$.
+Thus, 
+\[ 
+\|M - \widehat{M}\|_2 \le \left( \frac{1}{\sigma_{\min}^2(A)\kappa_{\min}}+ \sigma_{\max}^6(A)\kappa_{\max}^3A_{(2,\max)}^2\right) \xi + O(\xi^2).
+\]
+\end{proof}
 
 
  \begin{thm}
