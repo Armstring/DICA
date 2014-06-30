@@ -1011,7 +1011,7 @@ How large $T$ has to be?
 \end{remark}
 
 
-\section{Analysis of ICA algorithms}
+\section{Analysis of the ICA algorithm of \citet{DHsu2012}}
 In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
 A detailed analysis shows that the sample procedure plays an important role in the performance. 
 
@@ -1025,16 +1025,18 @@ Note that sample a vector $\psi$ from a unit sphere, with probability~1, $\min_i
 We are interested in the behave of $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
-With probability at least $\exp\{-\frac{1}{\sqrt{\pi}}\}$, $\min_i |\psi^{\top}A_i| \ge \frac{12}{d}A_{(2,\min)} \ge \frac{12\min_i\|A_i\|_2}{d}$.
+$\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
 \end{lemma}
 Since we can only recover $A$ up to some scale, we can replace our goal by recovering the scaled $A$ such that $\psi^{\top}A = 1$. 
-Moreover, by Lemma \ref{lem:dmin}, the scaled $s_i$ will still be bounded by $\frac{dC}{12\min_i\|A_i\|_2}$ with probability at least $\exp\{-\frac{1}{\sqrt{\pi}}\}$. 
-The remainder of this section is based on the event that $\psi^{\top}A = 1$ and $s_i$ will still be bounded by $\frac{dC}{12\min_i\|A_i\|_2}$, denoted by $\tilde{C}$.
-\citep{DHsu2012}'s algorithm is also modified for such event. 
+In this case, by Lemma \ref{lem:dmin} $k_i$ is scaled by a factor of $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. 
+Moreover, the scaled $s_i$ will still be bounded by $\frac{2dC}{\sqrt{2\pi}A_{(2,\min)}}$ with probability at least $1/4$. 
 
-For $1\le k\le d$, denote $A_{(t)} = (A_k,A_{ck})$, where $A_{ck}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{k-1},A_{k+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. 
+The remainder of this section is based on the event that $\psi^{\top}A = 1$, 
+$s_i$ will still be bounded by $\frac{2dC}{\sqrt{2\pi}A_{(2,\min)}}$, denoted by $\tilde{C}$, 
+and $\kappa_i$ is scaled by a factor $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. 
+Denote the diagonal matrix $\text{diag}(\tilde{\kappa}_1,\cdots,\tilde{\kappa}_d)$ by $\tilde{K}$, where $\tilde{\kappa}_i$ is the scaled $\kappa_i$. \citep{DHsu2012}'s algorithm is also modified for such event. 
 
-For $p\ge 1$, $\eta\in \real^d$, 
+For $1\le k\le d$, denote $A_{(t)} = (A_k,A_{ck})$, where $A_{ck}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{k-1},A_{k+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. For $p\ge 1$, $\eta\in \real^d$, 
 let 
 \begin{equation}
 \label{eq:mpdef}
@@ -1202,6 +1204,7 @@ where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8, Chapter
 
 Or 
 \fi
+Applying \cref{lem:inversevariation2},
 \begin{align*}
 	& \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
 \le\, & \| XY^{-1} - (X+E_1)Y^{-1}\|_2 + \| (X+E_1)Y^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
@@ -1279,17 +1282,28 @@ Therefore,
 \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_F \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right).
 \]
 \end{proof}
+Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \tilde{\kappa}_iA_iA_i^{\top} = A\tilde{K}A^{\top}$. Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$ 
+
+\begin{lemma}
+\label{lem:boundsigmaminnabla}
+$\sigma_{\min}(\nabla^2f(\psi)) \ge \tilde{\kappa}_{\min}\sigma_{\min}(A)^2$.
+\end{lemma}
+\begin{proof}
+For any unit vector $v$, $v^{\top}AKA^{\top}v \ge \tilde{\kappa}_{\min} \|v^{\top}A\|_2^2 \ge \tilde{\kappa}_{\min}\sigma_{\min}(A)^2$.
+\end{proof}
+
 Lastly, we still need to bound $\|M - \widehat{M}\|_2$.
-\begin{thm}
-Given that $\xi \le \min\{1,\kappa_{\min}\} \frac{A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, 
+\begin{lemma}
+\label{lem:Mvariation_alg}
+Given that $\xi \le \min\{1,\tilde{\kappa}_{\min}\} \frac{A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, 
 \[ 
-\|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\kappa_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\kappa_{\max}^3A_{(2,\max)}^4\right) \xi.
+\|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi.
 \]
-\end{thm}
+\end{lemma}
 \begin{proof}
 Let $E_1 = \nabla^2 f(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le d^5 A_{(2,\max)}^2A_{\max}^2\xi$.
-Note that $\nabla^2f(\psi) = AKA^{\top}$ and $\nabla^2f(\phi) = AK\Lambda A^{\top}$ where $\Lambda = \text{diag}\left((\phi^{\top}A_1)^2,\cdots, (\phi^{\top}A_d)^2\right)$.
-Given that $\xi \le \min\{1,\kappa_{\min}\} \frac{A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, apply Lemma \ref{lem:Mvariation},
+Note $\nabla^2f(\phi) = A\tilde{K}\Lambda A^{\top}$ where $\Lambda = \text{diag}\left((\phi^{\top}A_1)^2,\cdots, (\phi^{\top}A_d)^2\right)$.
+Given that $\xi \le \min\{1,\tilde{\kappa}_{\min}\} \frac{A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, apply Lemma \ref{lem:Mvariation} and \cref{lem:nablavariation},
 \begin{align*}
 \|M - \widehat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1} \|_2 \\
 \le \, & \left(\frac{1}{\sigma_{\min}\left(\nabla^2f(\psi)\right)} +  4\|\nabla^2 f(\phi)\|_2 \|\nabla^2 f(\psi)\|_2^2\right)d^5 A_{(2,\max)}^2A_{\max}^2\xi.
@@ -1297,7 +1311,7 @@ Given that $\xi \le \min\{1,\kappa_{\min}\} \frac{A^2_{(2,\min)}\sigma_{\min}^2(
 
 Thus, 
 \[ 
-\|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\kappa_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\kappa_{\max}^3A_{(2,\max)}^4\right) \xi.
+\|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi.
 \]
 \end{proof}
 
@@ -1306,19 +1320,17 @@ Thus,
  \label{thm:efficiency}
  Let 
  \[ 
- Q=  cd^2 \frac{q_{\psi}q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\big(\sigma_{\min}(\nabla^2f(\psi)) - d q_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)\big)^2}
- +d\frac{q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\sigma_{\min}(\nabla^2f(\psi)) - dq_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}.
+ Q= \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi.
  \] 
- Assume $t$ is large enough such that the following conditions hold:
+ Assume the following conditions hold:
  \begin{itemize}
  \item $\widehat{M}$ has distinct eigenvalues;
- \item $\sigma_{\min}(\nabla^2f(\psi)) > d q_\psi\big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)$;
  \item $\gamma > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
  \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$.
  \end{itemize}
  Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
  \[
- \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d^2q(cdq+1)}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q ,
+ \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q ,
  \]
  where $\delta = \gamma -  2\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q>0$.
  \end{thm}
@@ -1327,45 +1339,17 @@ Thus,
  \[
  \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|M - \widehat{M} \|_2. 
  \]
- Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by \cref{lem:Mvariation},
- \[
- \|M - \widehat{M} \|_2 \le \frac{c\|\nabla^2f(\phi)\|_2\|\nabla^2f(\psi) - \nabla^2\widehat{f}(\psi)\|_2}{\big(\sigma_{\min}(\nabla^2f(\psi)) - \|\nabla^2f(\psi) - \nabla^2\widehat{f}(\psi)\|_2\big)^2} + \frac{\|\nabla^2f(\phi) - \nabla^2\widehat{f}(\phi)\|_2}{\sigma_{\min}(\nabla^2f(\psi)) - \|\nabla^2f(\psi) - \nabla^2\widehat{f}(\psi)\|_2}. 
- \]
- From the proof of \cref{lem:nablavariation}, we have $\|\nabla^2 f(\phi)\|_2\le dq_{\phi}$, where $q_{\phi} = d^2C^4\sigma_{\max}(A)^4\|\phi\|_2^2$. Apply \cref{lem:nablavariation}, 
- \begin{align*}
- \|M - \widehat{M} \|_2 \le &
- cd^2 \frac{q_{\psi}q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\big(\sigma_{\min}(\nabla^2f(\psi)) - d q_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)\big)^2} \\
- 	&\quad +d\frac{q_{\phi}\big(D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}{\sigma_{\min}(\nabla^2f(\psi)) - dq_{\psi} \big( D_{tv}(\nu_t , \nu) + 2 D_{tv}(\nu_t , \nu)^2\big)}\\
- = & Q.
- \end{align*}
- So, 
- \[
- \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q. 
- \]
+ Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by \cref{lem:Mvariation_alg}, $\|M-\widehat{M}\|_2 \le Q$.
+ 
  \end{proof}
 
-\begin{remark}
-When will the conditions of this theorem be satisfied?
-\end{remark}
 \subsection{Condition number of ICA problem}
-From \cref{thm:efficiency}, two parameters in the efficiency that depend on the algorithm rather than the ICA problem are the number $\gamma$ and $Q$. 
-When $n$ is large enough, 
-\[
-Q\approx \left[ \frac{2q_{\psi}q_{\phi}}{\big(\sigma_{\min}(\nabla^2f(\psi))\big)^2}+\frac{q_{\phi}}{\sigma_{\min}(\nabla^2f(\psi))}\right]D_{tv}(\nu_n , \nu)^2.
-\] 
-Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \kappa_iA_iA_i^{\top} = AKA^{\top}$. Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$ 
-
-\begin{claim}
-$\sigma_{\min}(\nabla^2f(\psi)) \ge \kappa_{\min}\min_i\|A_i\|_2^2$.
-\end{claim}
-\begin{proof}
-For any unit vector $v$, $v^{\top}AKA^{\top}v \ge \kappa_{\min} \|v^{\top}A\|_2^2 \ge \kappa_{\min}\min_i\|A_i\|_2^2$.
-\end{proof}
-The next
+From \cref{thm:efficiency}, a parameter in the efficiency that depended on the algorithm is $\gamma$. This parameter could be bounded from below with constant probability, as follows. We denote this event by $E_{\gamma}$.
 \begin{thm}
-Thus, with probability at least $1/2$,
+\label{thm:gammabound}
+With probability at least $1/2$,
 \[
-\gamma \ge \frac{2\min_i\|A_i\|_2\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
+\gamma \ge \frac{2A_{(2,\min)}\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
 \]
 \end{thm}
 
@@ -1378,7 +1362,7 @@ For any $i$ and $j$,
 WLOG, assume that $\phi^{\top}A_i$ and $\phi^{\top}A_j$ are both positive. Thus, with probability at least $1/2$,
 \begin{align*}
 |(\phi^{\top}A_i)^2 - (\phi^{\top}A_j)^2| &\ge 2 \min_t |\phi^{\top}A_t||\phi^{\top}A_i - \phi^{\top}A_j| \\
-& \ge 2 \min_t |\phi^{\top}A_t|\frac{\min_{s\neq t} \|A_s-A_t\|_2}{\sqrt{ed}(d^2+d)},
+& \ge 2 \min_t |\phi^{\top}A_t|\frac{\min_{i\neq j} \|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)},
 \end{align*}
 where the last inequality is by Lemma C.6 of \citep{anandkumar2012method}.
 
@@ -1386,6 +1370,33 @@ Thus, with probability at least $1/2$,
 \[
 \gamma \ge \frac{2\min_i\|A_i\|_2\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
 \]
+\end{proof}
+
+Another question comes with \cref{thm:efficiency} is when these conditions will be satisfied.
+Note that the first condition will be satisfied with probability 1, and also $D_2(\nu,\nu_t) \le D_4(\nu,\nu_t)$. Thus, $\xi \le (4\tilde{C}^2+1) D_4(\nu,\nu_t)$.
+On the event $E_{\gamma}$, these conditions can be translated into conditions about $D_4(\nu,\nu_t)$.
+\subsubsection*{{\bf 1: $\gamma > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$ :}} 
+This inequality is weaker than the following one,
+\[
+ \frac{A_{(2,\min)}\sigma_{\min}(A)\min_{i\neq j}\|A_i-A_j\|_2}{4\sqrt{ed}d^7\sigma_{\max}(A)A_{\max}^2A_{(2,\max)}^2} 
+ >
+  \left( \frac{1} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}} + 4 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^2\right)(4\tilde{C}^2+1) D_4(\nu,\nu_t)
+\]
+
+\subsubsection*{{\bf 2: $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$ :}}
+This inequality is weaker than the following one,
+\[
+\frac{A_{(2,\min)}\sigma_{\min}(A)\min_{i,j:i\neq j} \|A_i - A_j\|_2^2 }{16\sqrt{ed}d^7\sigma_{\max}(A)A_{\max}^2A_{(2,\max)}^2}
+>
+ \left( \frac{1} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^2\right)(4\tilde{C}^2+1) D_4(\nu,\nu_t)
+\]
+
+Basically both conditions require $D_4(\nu,\nu_t)$ to be small enough.
+
+\begin{remark}
+So the efficiency of the algorithm of \citet{DHsu2012} depends on $\min_i\|A_i\|_2$ and $\min_{i\neq j}\|A_i-A_j\|_2$. Is it actually independent to the algorithm? If so, we can define it as the condition number of a ICA problem, which define how difficult the ICA problem is. 
+\end{remark}
+
 \if0
 Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
 \[
@@ -1415,9 +1426,6 @@ Thus, with probability at least $p_2$ ($\approx 1-\frac{1}{\sqrt{e}}$),
 \E[\gamma] \le \frac{4}{\pi} \frac{1}{\log d} \E[\alpha_i^2] = \frac{4}{\pi} \frac{1}{\log d}.
 \]
 \fi
-\end{proof}
-
-So the efficiency of the algorithm of \citet{DHsu2012} depends on $\gamma$. Is it actually independent to the algorithm? If so, we can define it as the condition number of a ICA problem, which define how difficult the ICA problem is. 
 
 \bibliography{DICA}
 \bibliographystyle{plainnat}
