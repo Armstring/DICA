@@ -758,35 +758,8 @@ Now, it should be clear all these results carry through to the deterministic set
 \todoc{We should add the generalization of all the other ``characterization'' results or at least the generalization of some of them.}
 
 
+\if0
 \section{Adapting probabilistic algorithms to deterministic setting}
-The concentration inequality generally holds (under some boundness conditions) in a probabilistic setting, while in a deterministic setting such property is not guaranteed. 
-Hence we need some assumptions that the given sequence $g$ does not go arbitrarily wild.
-\begin{definition}
-Given two distributions $F_1$ and $F_2$ in $\real^d$, $D_4(F_1,F_2) = \sup_{f\in\mathcal{F}} |\int f(x)dF_1(x) - \int f(x)dF_2(x)|$, where $\mathcal{F}$ is the set of monomials up to degree 4.
-\end{definition}  
-
-\begin{definition}
-Given two distributions $F_1$ and $F_2$ in $\real^d$, we call function $D(F_1,F_2)$ a '***' distance, if it satisfies the following properties:
-\begin{enumerate}
-\item If $\nu_t$ is an empirical distribution of $\nu$, then $\lim_{t\rightarrow \infty} D(\nu_t,\nu) = 0$.
-\item there exists a constant $L>0$, such that $ D_4(F_1,F_2) \le L D(F_1,F_2)$.
-\item There exists constant $C_D$ such that for any two sequences $Y = \{y_1, y_2,\cdots, y_T\}$ and $\Xi = \{y_1+\eps_1,\cdots, y_T+\eps_T\}$, $D(\nu_T^{Y}, \nu_T^{\Xi}) \le C_D \sum_i \| \eps_i\|_2$. 
-\end{enumerate}
-\end{definition}
-\begin{remark}
-It is easy to verify that $D_4$ itself is a '***' distance.
-\end{remark}
-Denote the maximal singular value of a matrix $A$ by $\sigma_{\max}(A)$. Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$.
-
-\begin{lemma}
-The following properties hold.
-\begin{itemize}
-\item $A_{(2,\min)} \ge \sigma_{\min}(A)$;
-\item $A_{(2,\max)} \le \sigma_{\max}(A)$;
-\item $A_{\max} \le \sigma_{\max}(A)$;
-\end{itemize}
-\end{lemma}
-
 
 \subsection{Adapting \cite{arora2012provable}'s algorithm}
 \citet{arora2012provable} proposed a polynomial-time algorithm to provably recover the transition matrix $A$ in a probabilistic setting. Note that the algorithm only relies on the moments, thus it should be applicable to both probabilistic setting and deterministic setting.
@@ -1009,34 +982,43 @@ v^{\top}(\tilde{A}-C\Pi A)(\tilde{A}-C\Pi A)^{\top}v & = \sum_i \|v^{\top}(\tild
 \begin{remark}
 How large $T$ has to be? 
 \end{remark}
-
+\fi
 
 \section{Analysis of the ICA algorithm of \citet{DHsu2012}}
 In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
 A detailed analysis shows that the sample procedure plays an important role in the performance. 
 
-\subsection{Efficiency}
+\subsection{Restatement of \citet{DHsu2012}'s algorithm}
 
+Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$.
+\begin{lemma}
+The following properties hold.
+\begin{itemize}
+\item $A_{(2,\min)} \ge \sigma_{\min}(A)$;
+\item $A_{(2,\max)} \le \sigma_{\max}(A)$;
+\item $A_{\max} \le A_{(2,\max)}  \le \sigma_{\max}(A)$;
+\end{itemize}
+\end{lemma}
 Introduce the notation $\E_{x\sim \nu}[f(x)]$ as a shorthand for $\int f(x) d\nu(x)$.
 Assume the independent ergodic component functions $s_1,\ldots,s_d:\natural \ra \real$ are bounded by a constant $C$, and satisfy $\E_{x\sim\nu^{(s_i)}}[x]=0$ and $\kappa_i := \E_{x\sim \nu^{(s_i)}}[x^4] - 3\left(\E_{x\sim \nu^{(s_i)}}[x^2]\right)^2\neq 0$.
 \footnote{In this section, we will denote the sources by $s_i$ to avoid a clash with the function $f$ used by  \citet{DHsu2012} for a different purpose.}
 %Here $\E_{\nu_{f_i}}$ is the expectation is taken with respect to the probability measure of $\nu_{f_i}$. 
-Note that sample a vector $\psi$ from a unit sphere, with probability~1, $\min_i |\psi^{\top}A_i|\neq 0$.  
-We are interested in the behave of $\min_i |\psi^{\top}A_i|$.
+Note that sample a vector $\psi$ from a unit sphere, $\min_i |\psi^{\top}A_i|\neq 0$ with probability~1.  
+We are interested in the behavior of $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
 $\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
 \end{lemma}
-Since we can only recover $A$ up to some scale, we can replace our goal by recovering the scaled $A$ such that $\psi^{\top}A = 1$. 
-In this case, by Lemma \ref{lem:dmin} $k_i$ is scaled by a factor of $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. 
+Since we can only recover $A$ up to some scale, we can replace our goal by recovering the scaled $A$ (we will still denote it by $A$ but keep it in mind that it has been rescaled.) such that $\psi^{\top}A = 1$. 
+In this case, by Lemma \ref{lem:dmin} $\kappa_i$ is scaled by a factor of $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. 
 Moreover, the scaled $s_i$ will still be bounded by $\frac{2dC}{\sqrt{2\pi}A_{(2,\min)}}$ with probability at least $1/4$. 
 
 The remainder of this section is based on the event that $\psi^{\top}A = 1$, 
 $s_i$ will still be bounded by $\frac{2dC}{\sqrt{2\pi}A_{(2,\min)}}$, denoted by $\tilde{C}$, 
 and $\kappa_i$ is scaled by a factor $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. 
-Denote the diagonal matrix $\text{diag}(\tilde{\kappa}_1,\cdots,\tilde{\kappa}_d)$ by $\tilde{K}$, where $\tilde{\kappa}_i$ is the scaled $\kappa_i$. \citep{DHsu2012}'s algorithm is also modified for such event. 
+Denote the diagonal matrix $\text{diag}(\tilde{\kappa}_1,\cdots,\tilde{\kappa}_d)$ by $\tilde{K}$, where $\tilde{\kappa}_i$ is the scaled $\kappa_i$. \citep{DHsu2012}'s algorithm is also modified for such event. Denote $\max_{i} \tilde{\kappa}_i$ by $\tilde{\kappa}_{\max}$ and $\min_{i} \tilde{\kappa}_i$ by $\tilde{\kappa}_{\min}$.
 
-For $1\le k\le d$, denote $A_{(t)} = (A_k,A_{ck})$, where $A_{ck}$ is the $(d-1)\times d$ matrix $(A_1,\ldots,A_{k-1},A_{k+1},\ldots,A_d)$, where $A_i$ is the $i$-th column of $A$. For $p\ge 1$, $\eta\in \real^d$, 
+For $p\ge 1$, $\eta\in \real^d$, 
 let 
 \begin{equation}
 \label{eq:mpdef}
@@ -1046,30 +1028,6 @@ m_p(\eta) = \E_{x\sim \nu^{(s)}}[ (\eta^\top A x)^p ]
 \begin{equation}\label{eq:fdef}
 f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
 \end{equation}
-
-The algorithm of \citet{DHsu2012} is as follows. 
-\begin{algorithm}[H]
-\caption{ICA algorithm of \citet{DHsu2012} \label{alg:icaHsu}}
-\begin{algorithmic}[1]
-\INPUT $g(k)$ for $1\le k \le t$. \todoc[inline]{start at zero!?}
-\OUTPUT the estimate of the mixing matrix $A$. 
-\STATE Sample $\phi$ from the unit sphere of $\real^d$;
-\STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, \\
-\quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
-\STATE Compute $\widehat{M} = (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1}$;
-\STATE Compute all the eigenvectors of $\widehat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
-\STATE Return $\widehat{A} = (\mu_1,\ldots,\mu_d)$.
-\end{algorithmic}
-\end{algorithm}
-In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
-Note that the output of the algorithm entirely depends on the empirical distribution $\hat{\lambda}$ of $( g(k) )_{1\le k \le t}$ (i.e.,  $\hat{\lambda}(U) = \frac1t \sum_{k=1}^t \ind{g(k)\in U}$, $U\subset \real^d$). 
-In particular, the output depends on $\E_{x\sim \hat{\lambda}}[ \nabla^2 (\eta^\top  x)^4 ]$
-and $\nabla^2 \left( \E_{x\sim \hat{\lambda}}[(\eta^\top  x)^2 ]\right)^2$
- only, where $\eta\in \{\phi,\psi\}$. 
- \todoc[inline]{We expect that any ICA algorithm can be written as a mapping from the empirical distribution to the estimates. If $\FF$ is this mapping, the problem (when analyzing a particular ICA algorithm) is to derive an error estimate for  how close $\FF(\hat{\lambda})$ is to an unmixing matrix as a function of how close $\hat{\lambda}$ is to $\lambda(\cdot)$, $\lambda(U) = \E_{x\sim \nu}[ \ind{Ax\in U} ]$ where $A$ is some non-singular matrix and $\nu$ is some distribution which is the product of its marginals.
- Where should we discuss this?
- }
-
 The following result is proven by \citet{DHsu2012}:
 \begin{thm}[\citet{DHsu2012}, Theorem~4]
 Assume that $\nu^{(s)} = \nu^{(s_1)}\otimes \dots \otimes \nu^{(s_d)}$,
@@ -1102,13 +1060,237 @@ A^{-1},
 It follows from this theorem that 
 if $\phi,\psi$ are chosen independently from the uniform distribution on the unit sphere of $\real^d$, with probability one,
 the eigenvalues of  $M$ are all distinct and the corresponding eigenvectors
-determine the rows of $A$ up to permutation and scaling.
+determine the rows of $A$ up to permutation and scaling. Based on this idea, \citet{DHsu2012} proposed an algorithm as follows, and claimed that it has a provable performance. 
+
+\begin{algorithm}[H]
+\caption{ICA algorithm of \citet{DHsu2012} \label{alg:icaHsu}}
+\begin{algorithmic}[1]
+\INPUT $g(k)$ for $1\le k \le t$. \todoc[inline]{start at zero!?}
+\OUTPUT the estimate of the mixing matrix $A$. 
+\STATE Sample $\phi$ from the unit sphere of $\real^d$;
+\STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, \\
+\quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
+\STATE Compute $\widehat{M} = (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1}$;
+\STATE Compute all the eigenvectors of $\widehat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
+\STATE Return $\widehat{A} = (\mu_1,\ldots,\mu_d)$.
+\end{algorithmic}
+\end{algorithm}
+In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
+Note that the output of the algorithm entirely depends on the empirical distribution $\nu_t^g$ of $( g(k) )_{1\le k \le t}$ (i.e.,  $\nu_t^g(U) = \frac1t \sum_{k=1}^t \ind{g(k)\in U}$, $U\subset \real^d$). 
+In particular, the output depends on 
+$\nabla^2 \left(\E_{x\sim \nu_t^g}[(\eta^\top  x)^4 ]\right)$
+and $ \nabla^2 \left(\E_{x\sim \nu_t^g}[(\eta^\top  x)^2 ]^2\right)$
+ only, where $\eta\in \{\phi,\psi\}$. 
+ \todoc[inline]{We expect that any ICA algorithm can be written as a mapping from the empirical distribution to the estimates. If $\FF$ is this mapping, the problem (when analyzing a particular ICA algorithm) is to derive an error estimate for  how close $\FF(\hat{\lambda})$ is to an unmixing matrix as a function of how close $\hat{\lambda}$ is to $\lambda(\cdot)$, $\lambda(U) = \E_{x\sim \nu}[ \ind{Ax\in U} ]$ where $A$ is some non-singular matrix and $\nu$ is some distribution which is the product of its marginals.
+ Where should we discuss this?
+ }
+
+\subsection{Efficiency} 
+We analyze \citet{DHsu2012}'s algorithm in a deterministic setting, so that the dependences of the learning error on both the sample procedure of $\phi$ and $\psi$, and the finite-sample estimation are clear.
+
+The concentration inequality generally holds (under some boundness conditions) in a probabilistic setting, while in a deterministic setting such property is not guaranteed. 
+Hence we need some assumptions that the given sequence $g$ does not go arbitrarily wild.
+\begin{definition}
+Given two distributions $F_1$ and $F_2$ in $\real^d$, $D_4(F_1,F_2) = \sup_{f\in\mathcal{F}} |\int f(x)dF_1(x) - \int f(x)dF_2(x)|$, where $\mathcal{F}$ is the set of monomials up to degree 4.
+\end{definition}  
+
+\begin{definition}
+Given two distributions $F_1$ and $F_2$ in $\real^d$, we call function $D(F_1,F_2)$ a '***' distance, if it satisfies the following properties:
+\begin{enumerate}
+\item If $\nu_t$ is an empirical distribution of $\nu$, then $\lim_{t\rightarrow \infty} D(\nu_t,\nu) = 0$.
+\item there exists a constant $L>0$, such that $ D_4(F_1,F_2) \le L D(F_1,F_2)$.
+\item There exists constant $C_D$ such that for any two sequences $Y = \{y_1, y_2,\cdots, y_T\}$ and $\Xi = \{y_1+\eps_1,\cdots, y_T+\eps_T\}$, $D(\nu_T^{Y}, \nu_T^{\Xi}) \le C_D \sum_i \| \eps_i\|_2$. 
+\end{enumerate}
+\end{definition}
+\begin{remark}
+It is easy to verify that $D_4$ itself is a '***' distance.
+\end{remark}
+
+The following lemma bounds $\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta) \|_2$ by $D_4(\nu_t , \nu)$ and $D_2(\nu_t , \nu)$:
+\begin{lemma}
+\label{lem:nablavariation}
+\[
+\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi,
+\]
+where $\xi = \left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right)$.
+\end{lemma}
 
 Let 
 \begin{equation}
 \label{def:kappa}
 \gamma =  \min_{i,j: i\neq j} \left\vert \left(\phi^{\top}A_i\right)^2 - \left(\phi^{\top}A_j\right)^2 \right\vert. 
 \end{equation}
+The performance of \citet{DHsu2012}'s algorithm depends on this parameter, as shown in the following theorem.
+
+ \begin{thm}
+ \label{thm:efficiency}
+ Let 
+ \[ 
+ Q= \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi.
+ \] 
+ Assume the following conditions hold:
+ \begin{itemize}
+ \item $\widehat{M}$ has distinct eigenvalues;
+ \item $\gamma > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$.
+ \end{itemize}
+ Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
+ \[
+ \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q ,
+ \]
+ where $\delta = \gamma -  2\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q>0$.
+ \end{thm}
+
+
+\subsection{The condition number $\gamma$}
+From \cref{thm:efficiency}, a parameter in the efficiency that depended on the algorithm is $\gamma$. This parameter could be bounded from below with constant probability, as follows. We denote this event by $E_{\gamma}$.
+\begin{thm}
+\label{thm:gammabound}
+With probability at least $1/2$,
+\[
+\gamma \ge \frac{2A_{(2,\min)}\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
+\]
+\end{thm}
+
+
+\begin{proof}
+For any $i$ and $j$,
+\[
+|(\phi^{\top}A_i)^2 - (\phi^{\top}A_j)^2|  = |\phi^{\top}A_i - \phi^{\top}A_j||\phi^{\top}A_i+\phi^{\top}A_j| 
+\]
+WLOG, assume that $\phi^{\top}A_i$ and $\phi^{\top}A_j$ are both positive. Thus, with probability at least $1/2$,
+\begin{align*}
+|(\phi^{\top}A_i)^2 - (\phi^{\top}A_j)^2| &\ge 2 \min_t |\phi^{\top}A_t||\phi^{\top}A_i - \phi^{\top}A_j| \\
+& \ge 2 \min_t |\phi^{\top}A_t|\frac{\min_{i\neq j} \|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)},
+\end{align*}
+where the last inequality is by Lemma C.6 of \citep{anandkumar2012method}.
+
+Thus, with probability at least $1/2$,
+\[
+\gamma \ge \frac{2\min_i\|A_i\|_2\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
+\]
+\end{proof}
+
+Another question comes with \cref{thm:efficiency} is when these conditions will be satisfied.
+Note that the first condition will be satisfied with probability 1, and also $D_2(\nu,\nu_t) \le D_4(\nu,\nu_t)$. Thus, $\xi \le (4\tilde{C}^2+1) D_4(\nu,\nu_t)$.
+On the event $E_{\gamma}$, these conditions can be translated into conditions about $D_4(\nu,\nu_t)$.
+\subsubsection*{{\bf 1: $\gamma > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$ :}} 
+This inequality is weaker than the following one,
+\[
+ \frac{A_{(2,\min)}\sigma_{\min}(A)\min_{i\neq j}\|A_i-A_j\|_2}{4\sqrt{ed}d^7\sigma_{\max}(A)A_{\max}^2A_{(2,\max)}^2} 
+ >
+  \left( \frac{1} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}} + 4 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^2\right)(4\tilde{C}^2+1) D_4(\nu,\nu_t)
+\]
+
+\subsubsection*{{\bf 2: $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$ :}}
+This inequality is weaker than the following one,
+\[
+\frac{A_{(2,\min)}\sigma_{\min}(A)\min_{i,j:i\neq j} \|A_i - A_j\|_2^2 }{16\sqrt{ed}d^7\sigma_{\max}(A)A_{\max}^2A_{(2,\max)}^2}
+>
+ \left( \frac{1} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^2\right)(4\tilde{C}^2+1) D_4(\nu,\nu_t)
+\]
+
+Basically both conditions will be satisfied when $D_4(\nu,\nu_t)$ is small enough.
+
+\begin{remark}
+So the efficiency of the algorithm of \citet{DHsu2012} depends on $\min_i\|A_i\|_2$ and $\min_{i\neq j}\|A_i-A_j\|_2$. Is it actually independent to the algorithm? If so, we can define it as the condition number of a ICA problem, which define how difficult the ICA problem is. 
+\end{remark}
+
+\if0
+Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
+\[
+\gamma  = \min_{i,j} \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2 - \big(\frac{\alpha_j}{\beta_j}\big)^2 \right\vert.
+\] 
+
+Note that for $x\ge0$, $\Phi(x) \approx \frac12 (1+\sqrt{1-e^{-\frac{2}{\pi}x^2}})$ \citep{aludaat2008note}.
+ 
+ When $d$ is large,
+\[
+\Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}} \text{ for all } \beta_i\text{'s}} = (2- 2\Phi(\sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}})-1)^d \approx \left(1-\frac{1}{d}\right)^d \approx \frac{1}{e}.
+\]
+Thus, with probability at least $p (\approx \frac{1}{e})$,
+\[
+\gamma \le 2 \min_i \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2\right\vert \le 2 \frac{2}{\pi}\frac{1}{\log \frac{d^2}{d^2-1}}\min_i |\alpha_i|^2.
+\]
+
+Now consider the case that at least two of $\beta_i$'s are greater than $\sqrt{\frac{\pi}{2}\log d}$,
+\begin{align*}
+& \Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log d} \text{ for at least 2 } \beta_i\text{'s}} \\
+=  & 1 - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for all } \beta_i\text{'s}} - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for (d-1) } \beta_i\text{'s}} \\
+\approx & 1 - (1-\frac{1}{d})^{\frac{d}{2}} -  (1-\frac{1}{d})^{\frac{d-1}{2}}(1-\sqrt{1-\frac{1}{d}}) \\
+\approx & 1 -\frac{1}{\sqrt{e}}.
+\end{align*}
+Thus, with probability at least $p_2$ ($\approx 1-\frac{1}{\sqrt{e}}$),
+\[
+\E[\gamma] \le \frac{4}{\pi} \frac{1}{\log d} \E[\alpha_i^2] = \frac{4}{\pi} \frac{1}{\log d}.
+\]
+\fi
+
+\section{Appendix}
+\subsection{Proof of Lemma \ref{lem:nablavariation}}
+Note that in \cref{alg:icaHsu}, 
+\begin{align*}
+& \nabla^2 f(\eta) = G_1(\eta) - G_2(\eta) -G_3(\eta), \\
+\text{and } \quad & \nabla^2 \widehat{f}(\eta) =\widehat{G_1}(\eta) - \widehat{G_2}(\eta) -\widehat{G_3}(\eta),
+\end{align*}
+where 
+\begin{align*}
+& G_1(\eta) = \int (\eta^{\top}Ax)^2Axx^{\top}A^{\top}\,d\nu(x); \\
+& G_2(\eta) = \int (\eta^{\top}Ax)^2\,d\nu(x) \int Axx^{\top}A^{\top} \,d\nu(x); \\
+& G_3(\eta) = \Big(\int (\eta^{\top}Ax)Ax\,d\nu(x)\Big)\Big(\int (\eta^{\top}Ax)Ax\,d\nu(x)\Big)^{\top}. \\
+&\widehat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2g(k)g(k)^{\top} = \int (\eta^{\top}Ax)^2Axx^{\top}A^{\top}\,d\nu_t(x); \\
+& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2 \sum_{k=1}^{n}g(k)g(k)^{\top} = \int (\eta^{\top}Ax)^2\,d\nu_t(x) \int Axx^{\top}A^{\top} \,d\nu_t(x); \\
+& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big)^{\top} = \Big(\int (\eta^{\top}Ax)Ax\,d\nu_t(x)\Big)\Big(\int (\eta^{\top}Ax)Ax\,d\nu_t(x)\Big)^{\top}.
+\end{align*}
+\begin{proof}
+Without loss of generality, assume $ \|\eta\|_2 = 1$.
+Note that all the integral functions of $G_i(\eta)$ or $\widehat{G_i}(\eta)$ are matrices of polynomials in $x$. Thus, we only need to bound its coefficients.
+%Also, since $|b_1b_2b_3b_4| \le \frac14(b_1^4+b_2^4+b_3^4+b_4^4)$, we only need to upper bound the coefficients of $x_i^4$. 
+For $G_1(\eta)$, all the coefficients are bound by $\max_i |\eta^{\top} A_i|^2 A_{\max}^2 \le A_{(2,\max)}^2A_{\max}^2$. 
+\[
+\left| (G_1)_{i,j} - (\widehat{G_1})_{i,j} \right| \le d^4  A_{(2,\max)}^2A_{\max}^2D_4(\nu, \nu_t).
+\]
+
+Similarly, 
+\[
+\left| \int A_ixx^{\top}A_j^{\top} \,d\nu(x) - \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \le d^2 A_{\max}^2 D_2(\nu,\nu_t)
+\]
+ and 
+\[
+\left| \int (\eta^{\top}Ax)^2\,d\nu(x) -\int (\eta^{\top}Ax)^2\,d\nu_t(x) \right| \le d^2 A_{(2,\max)}^2 D_2(\nu,\nu_t).
+\]
+Also note that $ \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \right| \le d^2A_{(2,\max)}^2 \tilde{C}^2$, and
+$\left| \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \le d^2A_{\max}^2 \tilde{C}^2$.
+Now consider the case of $G_2$. 
+\begin{align*}
+& \left| (G_2)_{i,j} - (\widehat{G_2})_{i,j} \right| \\
+=\, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu(x)  - 
+\int (\eta^{\top}Ax)^2\,d\nu_t(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
+\le \, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu(x)  - 
+\int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\ 
+& \quad + \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x)  - 
+\int (\eta^{\top}Ax)^2\,d\nu_t(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
+\le\, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \right| \left|\int A_ixx^{\top}A_j^{\top} \,d\nu(x) - \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
+& \quad + \left| \int (\eta^{\top}Ax)^2\,d\nu(x) -\int (\eta^{\top}Ax)^2\,d\nu_t(x) \right| \left| \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
+\le\, & 2 d^4  A_{(2,\max)}^2A_{\max}^2\tilde{C}^2D_2(\nu, \nu_t).
+\end{align*}
+Similarly,
+\[
+\left| (G_3)_{i,j} - (\widehat{G_3})_{i,j} \right| \le 2 d^4  A_{(2,\max)}^2A_{\max}^2\tilde{C}^2D_2(\nu, \nu_t).
+\]
+Thus for any $1\le i,j\le d$,
+\begin{align*}
+\left|\left(\nabla^2 f(\eta)\right)_{i,j} - \left(\nabla^2 \widehat{f}(\eta) \right)_{i,j} \right| \le d^4  A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right).
+\end{align*}
+Therefore, 
+\[
+\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_F \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right).
+\]
+\end{proof}
+\subsection{Proof of Theorem  \ref{thm:efficiency}}
+
+Before we can prove the theorem, we need to prove some lemmas.
+
 The following lemma shows that a small perturbation of $M$ will only result in a small variation of its eigenvectors, at least under some mild regularity conditions.
 
 \begin{lemma}
@@ -1215,73 +1397,7 @@ Applying \cref{lem:inversevariation2},
 \end{align*}
 \end{proof}
 
-Note that in \cref{alg:icaHsu}, 
-\begin{align*}
-& \nabla^2 f(\eta) = G_1(\eta) - G_2(\eta) -G_3(\eta), \\
-\text{and } \quad & \nabla^2 \widehat{f}(\eta) =\widehat{G_1}(\eta) - \widehat{G_2}(\eta) -\widehat{G_3}(\eta),
-\end{align*}
-where 
-\begin{align*}
-& G_1(\eta) = \int (\eta^{\top}Ax)^2Axx^{\top}A^{\top}\,d\nu(x); \\
-& G_2(\eta) = \int (\eta^{\top}Ax)^2\,d\nu(x) \int Axx^{\top}A^{\top} \,d\nu(x); \\
-& G_3(\eta) = \Big(\int (\eta^{\top}Ax)Ax\,d\nu(x)\Big)\Big(\int (\eta^{\top}Ax)Ax\,d\nu(x)\Big)^{\top}. \\
-&\widehat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2g(k)g(k)^{\top} = \int (\eta^{\top}Ax)^2Axx^{\top}A^{\top}\,d\nu_t(x); \\
-& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)^2 \sum_{k=1}^{n}g(k)g(k)^{\top} = \int (\eta^{\top}Ax)^2\,d\nu_t(x) \int Axx^{\top}A^{\top} \,d\nu_t(x); \\
-& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}g(k)\big)g(k)\Big)^{\top} = \Big(\int (\eta^{\top}Ax)Ax\,d\nu_t(x)\Big)\Big(\int (\eta^{\top}Ax)Ax\,d\nu_t(x)\Big)^{\top}.
-\end{align*}
-The following lemma bounds $\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta) \|_2$ by $D_4(\nu_t , \nu)$ and $D_2(\nu_t , \nu)$:
-\begin{lemma}
-\label{lem:nablavariation}
-\[
-\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi,
-\]
-where $\xi = \left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right)$.
-\end{lemma}
-\begin{proof}
-Without loss of generality, assume $ \|\eta\|_2 = 1$.
-Note that all the integral functions of $G_i(\eta)$ or $\widehat{G_i}(\eta)$ are matrices of polynomials in $x$. Thus, we only need to bound its coefficients.
-%Also, since $|b_1b_2b_3b_4| \le \frac14(b_1^4+b_2^4+b_3^4+b_4^4)$, we only need to upper bound the coefficients of $x_i^4$. 
-For $G_1(\eta)$, all the coefficients are bound by $\max_i |\eta^{\top} A_i|^2 A_{\max}^2 \le A_{(2,\max)}^2A_{\max}^2$. 
-\[
-\left| (G_1)_{i,j} - (\widehat{G_1})_{i,j} \right| \le d^4  A_{(2,\max)}^2A_{\max}^2D_4(\nu, \nu_t).
-\]
 
-Similarly, 
-\[
-\left| \int A_ixx^{\top}A_j^{\top} \,d\nu(x) - \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \le d^2 A_{\max}^2 D_2(\nu,\nu_t)
-\]
- and 
-\[
-\left| \int (\eta^{\top}Ax)^2\,d\nu(x) -\int (\eta^{\top}Ax)^2\,d\nu_t(x) \right| \le d^2 A_{(2,\max)}^2 D_2(\nu,\nu_t).
-\]
-Also note that $ \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \right| \le d^2A_{(2,\max)}^2 \tilde{C}^2$, and
-$\left| \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \le d^2A_{\max}^2 \tilde{C}^2$.
-Now consider the case of $G_2$. 
-\begin{align*}
-& \left| (G_2)_{i,j} - (\widehat{G_2})_{i,j} \right| \\
-=\, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu(x)  - 
-\int (\eta^{\top}Ax)^2\,d\nu_t(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
-\le \, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu(x)  - 
-\int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\ 
-& \quad + \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x)  - 
-\int (\eta^{\top}Ax)^2\,d\nu_t(x) \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
-\le\, & \left| \int (\eta^{\top}Ax)^2\,d\nu(x) \right| \left|\int A_ixx^{\top}A_j^{\top} \,d\nu(x) - \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
-& \quad + \left| \int (\eta^{\top}Ax)^2\,d\nu(x) -\int (\eta^{\top}Ax)^2\,d\nu_t(x) \right| \left| \int A_ixx^{\top}A_j^{\top} \,d\nu_t(x) \right| \\
-\le\, & 2 d^4  A_{(2,\max)}^2A_{\max}^2\tilde{C}^2D_2(\nu, \nu_t).
-\end{align*}
-Similarly,
-\[
-\left| (G_3)_{i,j} - (\widehat{G_3})_{i,j} \right| \le 2 d^4  A_{(2,\max)}^2A_{\max}^2\tilde{C}^2D_2(\nu, \nu_t).
-\]
-Thus for any $1\le i,j\le d$,
-\begin{align*}
-\left|\left(\nabla^2 f(\eta)\right)_{i,j} - \left(\nabla^2 \widehat{f}(\eta) \right)_{i,j} \right| \le d^4  A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right).
-\end{align*}
-Therefore, 
-\[
-\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_F \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 4\tilde{C}^2D_2(\nu, \nu_t) + D_4(\nu, \nu_t)\right).
-\]
-\end{proof}
 Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \tilde{\kappa}_iA_iA_i^{\top} = A\tilde{K}A^{\top}$. Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$ 
 
 \begin{lemma}
@@ -1316,24 +1432,6 @@ Thus,
 \end{proof}
 
 
- \begin{thm}
- \label{thm:efficiency}
- Let 
- \[ 
- Q= \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi.
- \] 
- Assume the following conditions hold:
- \begin{itemize}
- \item $\widehat{M}$ has distinct eigenvalues;
- \item $\gamma > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
- \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$.
- \end{itemize}
- Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
- \[
- \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d}{\delta} \frac{\sigma_{\max}(A)}{ \sigma_{\min}(A)}Q ,
- \]
- where $\delta = \gamma -  2\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q>0$.
- \end{thm}
  \begin{proof}
  By \cref{lem:eigenvectorvariation}, 
  \[
@@ -1342,91 +1440,6 @@ Thus,
  Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by \cref{lem:Mvariation_alg}, $\|M-\widehat{M}\|_2 \le Q$.
  
  \end{proof}
-
-\subsection{Condition number of ICA problem}
-From \cref{thm:efficiency}, a parameter in the efficiency that depended on the algorithm is $\gamma$. This parameter could be bounded from below with constant probability, as follows. We denote this event by $E_{\gamma}$.
-\begin{thm}
-\label{thm:gammabound}
-With probability at least $1/2$,
-\[
-\gamma \ge \frac{2A_{(2,\min)}\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
-\]
-\end{thm}
-
-
-\begin{proof}
-For any $i$ and $j$,
-\[
-|(\phi^{\top}A_i)^2 - (\phi^{\top}A_j)^2|  = |\phi^{\top}A_i - \phi^{\top}A_j||\phi^{\top}A_i+\phi^{\top}A_j| 
-\]
-WLOG, assume that $\phi^{\top}A_i$ and $\phi^{\top}A_j$ are both positive. Thus, with probability at least $1/2$,
-\begin{align*}
-|(\phi^{\top}A_i)^2 - (\phi^{\top}A_j)^2| &\ge 2 \min_t |\phi^{\top}A_t||\phi^{\top}A_i - \phi^{\top}A_j| \\
-& \ge 2 \min_t |\phi^{\top}A_t|\frac{\min_{i\neq j} \|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)},
-\end{align*}
-where the last inequality is by Lemma C.6 of \citep{anandkumar2012method}.
-
-Thus, with probability at least $1/2$,
-\[
-\gamma \ge \frac{2\min_i\|A_i\|_2\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
-\]
-\end{proof}
-
-Another question comes with \cref{thm:efficiency} is when these conditions will be satisfied.
-Note that the first condition will be satisfied with probability 1, and also $D_2(\nu,\nu_t) \le D_4(\nu,\nu_t)$. Thus, $\xi \le (4\tilde{C}^2+1) D_4(\nu,\nu_t)$.
-On the event $E_{\gamma}$, these conditions can be translated into conditions about $D_4(\nu,\nu_t)$.
-\subsubsection*{{\bf 1: $\gamma > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$ :}} 
-This inequality is weaker than the following one,
-\[
- \frac{A_{(2,\min)}\sigma_{\min}(A)\min_{i\neq j}\|A_i-A_j\|_2}{4\sqrt{ed}d^7\sigma_{\max}(A)A_{\max}^2A_{(2,\max)}^2} 
- >
-  \left( \frac{1} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}} + 4 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^2\right)(4\tilde{C}^2+1) D_4(\nu,\nu_t)
-\]
-
-\subsubsection*{{\bf 2: $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\delta}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A) } Q$ :}}
-This inequality is weaker than the following one,
-\[
-\frac{A_{(2,\min)}\sigma_{\min}(A)\min_{i,j:i\neq j} \|A_i - A_j\|_2^2 }{16\sqrt{ed}d^7\sigma_{\max}(A)A_{\max}^2A_{(2,\max)}^2}
->
- \left( \frac{1} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^2\right)(4\tilde{C}^2+1) D_4(\nu,\nu_t)
-\]
-
-Basically both conditions require $D_4(\nu,\nu_t)$ to be small enough.
-
-\begin{remark}
-So the efficiency of the algorithm of \citet{DHsu2012} depends on $\min_i\|A_i\|_2$ and $\min_{i\neq j}\|A_i-A_j\|_2$. Is it actually independent to the algorithm? If so, we can define it as the condition number of a ICA problem, which define how difficult the ICA problem is. 
-\end{remark}
-
-\if0
-Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
-\[
-\gamma  = \min_{i,j} \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2 - \big(\frac{\alpha_j}{\beta_j}\big)^2 \right\vert.
-\] 
-
-Note that for $x\ge0$, $\Phi(x) \approx \frac12 (1+\sqrt{1-e^{-\frac{2}{\pi}x^2}})$ \citep{aludaat2008note}.
- 
- When $d$ is large,
-\[
-\Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}} \text{ for all } \beta_i\text{'s}} = (2- 2\Phi(\sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}})-1)^d \approx \left(1-\frac{1}{d}\right)^d \approx \frac{1}{e}.
-\]
-Thus, with probability at least $p (\approx \frac{1}{e})$,
-\[
-\gamma \le 2 \min_i \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2\right\vert \le 2 \frac{2}{\pi}\frac{1}{\log \frac{d^2}{d^2-1}}\min_i |\alpha_i|^2.
-\]
-
-Now consider the case that at least two of $\beta_i$'s are greater than $\sqrt{\frac{\pi}{2}\log d}$,
-\begin{align*}
-& \Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log d} \text{ for at least 2 } \beta_i\text{'s}} \\
-=  & 1 - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for all } \beta_i\text{'s}} - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for (d-1) } \beta_i\text{'s}} \\
-\approx & 1 - (1-\frac{1}{d})^{\frac{d}{2}} -  (1-\frac{1}{d})^{\frac{d-1}{2}}(1-\sqrt{1-\frac{1}{d}}) \\
-\approx & 1 -\frac{1}{\sqrt{e}}.
-\end{align*}
-Thus, with probability at least $p_2$ ($\approx 1-\frac{1}{\sqrt{e}}$),
-\[
-\E[\gamma] \le \frac{4}{\pi} \frac{1}{\log d} \E[\alpha_i^2] = \frac{4}{\pi} \frac{1}{\log d}.
-\]
-\fi
-
 \bibliography{DICA}
 \bibliographystyle{plainnat}
 \end{document}
