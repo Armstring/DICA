@@ -1142,7 +1142,7 @@ The performance of \citet{DHsu2012}'s algorithm depends on this parameter, as sh
  \end{thm}
 
 
-\subsection{The condition number $\gamma$}
+\subsection{The parameter $\gamma$}
 From \cref{thm:efficiency}, a parameter in the efficiency that depended on the algorithm is $\gamma$. This parameter could be bounded from below with constant probability, as follows. We denote this event by $E_{\gamma}$.
 \begin{thm}
 \label{thm:gammabound}
@@ -1192,40 +1192,26 @@ This inequality is weaker than the following one,
 
 Basically both conditions will be satisfied when $D_4(\nu,\nu_t)$ is small enough.
 
-\begin{remark}
-So the efficiency of the algorithm of \citet{DHsu2012} depends on $\min_i\|A_i\|_2$ and $\min_{i\neq j}\|A_i-A_j\|_2$. Is it actually independent to the algorithm? If so, we can define it as the condition number of a ICA problem, which define how difficult the ICA problem is. 
-\end{remark}
+So the efficiency of the algorithm of \citet{DHsu2012} depends on $A_{(2,\min)}$ and $\min_{i\neq j}\|A_i-A_j\|_2$. We would expect that the performance is going to depends on $A_{(2,\min)}$. But what about $\min_{i\neq j}\|A_i-A_j\|_2$? The parameter $\gamma$ is introduce in the recovery of the eigenspace $A$.  
 
-\if0
-Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
-\[
-\gamma  = \min_{i,j} \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2 - \big(\frac{\alpha_j}{\beta_j}\big)^2 \right\vert.
-\] 
-
-Note that for $x\ge0$, $\Phi(x) \approx \frac12 (1+\sqrt{1-e^{-\frac{2}{\pi}x^2}})$ \citep{aludaat2008note}.
- 
- When $d$ is large,
-\[
-\Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}} \text{ for all } \beta_i\text{'s}} = (2- 2\Phi(\sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}})-1)^d \approx \left(1-\frac{1}{d}\right)^d \approx \frac{1}{e}.
-\]
-Thus, with probability at least $p (\approx \frac{1}{e})$,
-\[
-\gamma \le 2 \min_i \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2\right\vert \le 2 \frac{2}{\pi}\frac{1}{\log \frac{d^2}{d^2-1}}\min_i |\alpha_i|^2.
-\]
-
-Now consider the case that at least two of $\beta_i$'s are greater than $\sqrt{\frac{\pi}{2}\log d}$,
-\begin{align*}
-& \Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log d} \text{ for at least 2 } \beta_i\text{'s}} \\
-=  & 1 - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for all } \beta_i\text{'s}} - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for (d-1) } \beta_i\text{'s}} \\
-\approx & 1 - (1-\frac{1}{d})^{\frac{d}{2}} -  (1-\frac{1}{d})^{\frac{d-1}{2}}(1-\sqrt{1-\frac{1}{d}}) \\
-\approx & 1 -\frac{1}{\sqrt{e}}.
-\end{align*}
-Thus, with probability at least $p_2$ ($\approx 1-\frac{1}{\sqrt{e}}$),
-\[
-\E[\gamma] \le \frac{4}{\pi} \frac{1}{\log d} \E[\alpha_i^2] = \frac{4}{\pi} \frac{1}{\log d}.
-\]
-\fi
-
+\subsection{Modified \citet{DHsu2012}'s algorithm}
+Based on \citet{DHsu2012}'s idea, we proposed another algorithm which does not depends on $\min_{i\neq j}\|A_i-A_j\|_2$.
+Similarly, we still assume $A$ is scaled such that $\psi^{\top}A = 1^{\top}$, so $s$ and $\kappa$ is also scaled by the same factors, which are between $\frac{1}{A_{(2,\max)}}$ and $\frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. The modified algorithm is as follows. 
+\begin{algorithm}[H]
+\caption{Modified algorithm of \citet{DHsu2012} \label{alg:icaModHsu}}
+\begin{algorithmic}[1]
+\INPUT $g(k)$ for $1\le k \le t$. \todoc[inline]{start at zero!?}
+\OUTPUT the estimate of the mixing matrix $A$. 
+\STATE Sample $\phi$ from the unit sphere of $\real^d$;
+\STATE Evaluate $\nabla^2\widehat{f}(\psi)$, \\
+\quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
+\STATE Compute $\widehat{B}$ such that $\nabla^2\widehat{f}(\psi) = \widehat{B}\widehat{B}^{\top}$;
+\STATE Compute $\widehat{M} = \nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi))$;
+\STATE Compute all the eigenvectors of $\widehat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
+\STATE Return $\widehat{A} = \widehat{B}\Psi$, where $\Psi$ is the matrix $(\mu_1,\ldots,\mu_d)$.
+\end{algorithmic}
+\end{algorithm}
+The following theorem provides 
 \section{Appendix}
 \subsection{Proof of Lemma \ref{lem:nablavariation}}
 Note that in \cref{alg:icaHsu}, 
@@ -1438,8 +1424,39 @@ Thus,
  \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}(A)}{\delta \sigma_{\min}(A) } \|M - \widehat{M} \|_2. 
  \]
  Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by \cref{lem:Mvariation_alg}, $\|M-\widehat{M}\|_2 \le Q$.
- 
+
  \end{proof}
+ 
+ 
+ \if0
+ Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
+ \[
+ \gamma  = \min_{i,j} \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2 - \big(\frac{\alpha_j}{\beta_j}\big)^2 \right\vert.
+ \] 
+ 
+ Note that for $x\ge0$, $\Phi(x) \approx \frac12 (1+\sqrt{1-e^{-\frac{2}{\pi}x^2}})$ \citep{aludaat2008note}.
+  
+  When $d$ is large,
+ \[
+ \Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}} \text{ for all } \beta_i\text{'s}} = (2- 2\Phi(\sqrt{\frac{\pi}{2}\log \frac{d^2}{d^2-1}})-1)^d \approx \left(1-\frac{1}{d}\right)^d \approx \frac{1}{e}.
+ \]
+ Thus, with probability at least $p (\approx \frac{1}{e})$,
+ \[
+ \gamma \le 2 \min_i \left\vert \big(\frac{\alpha_i}{\beta_i}\big)^2\right\vert \le 2 \frac{2}{\pi}\frac{1}{\log \frac{d^2}{d^2-1}}\min_i |\alpha_i|^2.
+ \]
+ 
+ Now consider the case that at least two of $\beta_i$'s are greater than $\sqrt{\frac{\pi}{2}\log d}$,
+ \begin{align*}
+ & \Prob{|\beta_i| \ge \sqrt{\frac{\pi}{2}\log d} \text{ for at least 2 } \beta_i\text{'s}} \\
+ =  & 1 - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for all } \beta_i\text{'s}} - \Prob{|\beta_i| \le \sqrt{\frac{\pi}{2}\log d} \text{ for (d-1) } \beta_i\text{'s}} \\
+ \approx & 1 - (1-\frac{1}{d})^{\frac{d}{2}} -  (1-\frac{1}{d})^{\frac{d-1}{2}}(1-\sqrt{1-\frac{1}{d}}) \\
+ \approx & 1 -\frac{1}{\sqrt{e}}.
+ \end{align*}
+ Thus, with probability at least $p_2$ ($\approx 1-\frac{1}{\sqrt{e}}$),
+ \[
+ \E[\gamma] \le \frac{4}{\pi} \frac{1}{\log d} \E[\alpha_i^2] = \frac{4}{\pi} \frac{1}{\log d}.
+ \]
+ \fi
 \bibliography{DICA}
 \bibliographystyle{plainnat}
 \end{document}
