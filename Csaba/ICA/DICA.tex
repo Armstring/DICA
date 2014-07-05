@@ -986,9 +986,22 @@ Similarly, we still assume $A$ is scaled such that $\psi^{\top}A = 1^{\top}$, so
 \STATE Sample $\phi$ from the unit sphere of $\real^d$;
 \STATE Compute $\widehat{T} = \frac{1}{12}\nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi))$;
 \STATE Compute all the eigenvectors of $\widehat{T}$, $\{\mu_1,\ldots,\mu_d\}$;
-\STATE Return $\widehat{A} = \widehat{B}\Psi$, where $\Psi$ is the matrix $(\mu_1,\ldots,\mu_d)$.
+\STATE Return $\widehat{A} = \widehat{B}\widehat{R}$, where $\widehat{R}$ is the matrix $(\mu_1,\ldots,\mu_d)$.
 \end{algorithmic}
 \end{algorithm}
+
+Then for any unit vector $x$,
+\begin{align*}
+& x^{\top} B^{-1}\widehat{B}\widehat{B}^{\top}B^{-\top}x - x^{\top}x \\
+& \quad  = x^{\top}  B^{-1} ( \widehat{B}\widehat{B}^{\top} -BB^{\top} )B^{-\top}x \\
+& \quad  \le \|B^{-\top}x \|_2^2 \|E\|_2 \\
+& \quad  \le \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} \xi\stackrel{\Delta}{=:}\bar{\xi}.\\
+\end{align*}
+Thus given that ****, $\bar{\xi} \le 1/2$. Also every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
+\[
+\|\widehat{B}^{-1}B - R^*\|_2 \le \max \left\{ \left|1-\frac{1}{\sqrt{1+\xi}}\right| , \left|\frac{1}{\sqrt{1-\xi}}-1\right| \right\} \le \bar{\xi}.
+\]
+
 The following theorem shows that this algorithm does not depend on $\min_{i\neq j}\|A_i-A_j\|_2$.
 \begin{thm}
 \label{thm:Modefficiency}
@@ -1088,8 +1101,9 @@ A_{(k)}^{-1} E A_{(k)} =
 F_{1k} & F_{2k}\\
 F_{3k} & F_{4k} \\
 \end{array} 
-\right). 
-\] 
+\right), 
+\]
+where $A_{(k)}$ is the matrix $(A_k, A_1, \cdots, A_{k-1}, A_{k+1}, \cdots, A_d)$. 
 Note that by definition, $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|A_{(k)}^{-1} E A_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$,
  $\|F_{3k}\|_2\le\|A_{(k)}^{-1}EA_{k}\|_2\le\frac{1}{\sigma_{\min}(A)}\|E\|_2$,
  and $\|F_{2k}\|_2\le\|(A^{-1})_kEA_{(k)}\|_2\le\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$.
@@ -1216,85 +1230,171 @@ Thus,
 \subsection{Proof of Theorem \ref{thm:Modefficiency}}
 Note that $\nabla^2 (f(\psi)) = A\tilde{K}A^{\top}\stackrel{\Delta}{=:}BB^{\top}$. So there exists an
 orthonormal matrix $R$ such that $B =A\tilde{K}^{1/2}R^{\top}$. 
-Thus, $f(B^{-\top}\phi) = \sum_i\tilde{\kappa}_i(\phi^{\top}B^{-1}A)_i^4 = \sum_i \tilde{\kappa}_i(\phi^{\top}R\tilde{K}^{-1/2})_i^4=\sum_i\tilde{\kappa}_i^{-1}(\phi^{\top}R)_i^4$, and 
-\[
-\frac{1}{12}\nabla^2(f(B^{-\top}\phi)) = R\tilde{K}^{-1}DR^{\top},
-\]
-where $D = \text{diag}\left((\phi^{\top}R_1)^2, \cdots, (\phi^{\top}R_d)^2\right)$.
+Thus, $f(R^*B^{-\top}\phi) = \sum_i\tilde{\kappa}_i(\phi^{\top}R^*B^{-1}A)_i^4 = \sum_i \tilde{\kappa}_i(\phi^{\top}R^*R\tilde{K}^{-1/2})_i^4=\sum_i\tilde{\kappa}_i^{-1}(\phi^{\top}R^*R)_i^4$, and 
+\begin{equation}
+\label{eq:T}
+\frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi)) = R^*R\tilde{K}^{-1}D(R^*R)^{\top} \stackrel{\Delta}{=:}T,
+\end{equation}
+where $D = \text{diag}\left((\phi^{\top}R^*R_1)^2, \cdots, (\phi^{\top}R^*R_d)^2\right)$.
 
-Note that by ********
+Note that by Lemma \ref{lem:Binversenablavariation}, there exist some orthonormal matrix $R^*$, such that 
 \[
-\|\frac{1}{12}\nabla^2(f(B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
-\le ddd
+\|\frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le  \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi}.
 \]
+Therefore, by Lemma \ref{lem:Teigenvectorvariation}, there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+\[
+\sum_{k=1}^{d}\| c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{2d}{\delta_R} \|\widehat{T} - T\|_2\,,
+\]
+where $\widehat{R}$ is the matrix of eigenvectors of $\widehat{T}$. 
 
-Therefore, by ******, 
-\[
-\|\Psi - R\|_2 \le 
-\]
 Therefore, 
 \[
-\|\hat{A} - A\tilde{K}^{1/2} \|_2
+\|\hat{A} - A\tilde{K}^{1/2} \|_2 = \| \hat{B}\hat{R} - BR \|_2
 \]
 
+Let 
+\begin{equation}
+\label{def:gammaR}
+\gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\phi^{\top}(R^*R)_i\right)^2 - \left(\phi^{\top}(R^*R)_j\right)^2 \right\vert. 
+\end{equation}
 \begin{lemma}
+\label{lem:Teigenvectorvariation}
+Denote $\widehat{T} = T+E$ be a perturbation of matrix $T$, where $T$ is defined in Equation \eqref{eq:T}. 
+Assume $\widehat{T}$ has distinct eigenvalues. Let $\delta_R = \gamma_R -  2\|E\|_2$. 
+If $\gamma_R > 4 \|E\|_2$, and $\min_{i,j:i\neq j} \|R_i - R_j\|_2 > \frac{4}{\delta_R}\|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
-\|\frac{1}{12}\nabla^2(f(B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
-\le ddd
+\sum_{k=1}^{d}\| c_k\widehat{R}_{\pi(k)} - R_k\|_2 \le \frac{2d}{\delta_R} \|E\|_2\,,
+\]
+where $\widehat{R}$ is the matrix of eigenvectors of $\widehat{T}$. 
+\end{lemma}
+\begin{proof}
+The proof is similar to the one of Lemma \ref{lem:eigenvectorvariation}.
+
+\if0
+Similar to Lemma \ref{lem:eigenvectorvariation}, for $1\le k\le d$ assume 
+\[
+R_{(k)}^{\top} E R_{(k)} =  
+\left(
+\begin{array}{cc}
+F_{1k} & F_{2k}\\
+F_{3k} & F_{4k} \\
+\end{array} 
+\right), 
+\] 
+where $R_{(k)}$ is the matrix $(R_k, R_1, \cdots, R_{k-1}, R_{k+1}, \cdots, R_d)$. 
+Note that by definition, $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|R_{(k)}^{\top} E R_{(k)}\|_2\le\|E\|_2$,
+ $\|F_{3k}\|_2\le\|R_{(k)}^{-1}ER_{k}\|_2\le\|E\|_2$,
+ and $\|F_{2k}\|_2\le\|(R^{\top})_kER_{(k)}\|_2\le\|E\|_2$.
+Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{3k}\|_2$, and 
+\[
+\delta_k = \min_{j: j\neq k} 
+\left\vert \left(\phi^{\top}R_k\right)^2 -\left( \phi^{\top}R_j\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\,.
+\]
+Thus 
+\begin{align*}
+\delta_k & = \min_{j: j\neq k} 
+\left\vert \left(\phi^{\top}R_k\right)^2 -\left( \phi^{\top}R_j\right)^2 \right\vert
+ - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
+	& \ge \min_{j: j\neq k} 
+	\left\vert \left(\phi^{\top}R_k\right)^2 -\left( \phi^{\top}R_j\right)^2 \right\vert - 2\|E\|_2\\
+	& \ge  \gamma_R -  2 \|E\|_2\\
+	& >  2\|E\|_2 >0,
+\end{align*}
+and $\delta_k^2 > 4\gamma_k\eta_k$. 
+Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$ such that there exists one of a eigenvector $\widehat{R_k}$ of $\widehat{T}$ satisfying
+ \[
+ \|\widehat{R_k} - R_k\|_2 \le \|R\|_2 \|v\|_2 \le 2\frac{\gamma_k}{\delta_k}.\le \frac{2}{\delta_R} \|E\|_2.
+ \]
+ By condition, for $i\neq j$,  $\frac{4}{\delta_R} \|E\|_2 < \|R_i - R_j\|_2\le \|R_i - \widehat{R_i}\|_2 + \|R_j - \widehat{R_i}\|_2$, thus $\widehat{R_i} \neq \widehat{R_j}$.  Summing up the upper bound gets the result. 
+ \fi
+\end{proof}
+
+\begin{lemma}
+\label{lem:Binversenablavariation}
+Given that $\bar{\xi}\le 1/2$, there exist some orthonormal matrix $R^*$, such that
+\[
+\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi}.
 \]
 \end{lemma}
 \begin{proof}
 By Lemma \ref{lem:nablavariation}, $\|E\|_2 = \frac{1}{12}\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)\|_2 \le d^5  A_{(2,\max)}^2A_{\max}^2\xi$. 
-Then for any unit vector $x$,
-\begin{align*}
-& x^{\top} B^{-1}\widehat{B}\widehat{B}^{\top}B^{-\top}x - x^{\top}x \\
-& \quad  = x^{\top}  B^{-1} ( \widehat{B}\widehat{B}^{\top} -BB^{\top} )B^{-\top}x \\
-& \quad  \le \|B^{-\top}x \|_2^2 \|E\|_2 \\
-& \quad  \le \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} \xi\stackrel{\Delta}{=:}\bar{\xi}.\\
-\end{align*}
-Thus given that ****, $\bar{\xi} \le 1/2$. Also every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
-\[
-\|\widehat{B}^{-1}B - R^*\|_2 \le \max \left\{ \left|1-\frac{1}{\sqrt{1+\xi}}\right| , \left|\frac{1}{\sqrt{1-\xi}}-1\right| \right\} \le \bar{\xi}.
-\]
+
 
 By the triangular inequality, 
 \[
-\frac{1}{12}\|\nabla^2(f(B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
 \le 
-\frac{1}{12}\|\nabla^2(f(B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2
+\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2
 + \frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2.
 \]
+
 Similar to Lemma \ref{lem:nablavariation}, to Bound $\frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2$ note that
 for $1\le i, j\le d$,
 \begin{itemize}
-\item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\widehat{B}^{-1}\|_2A_{(2,\max)}\le \frac{A_{(2,\max)}}{\sqrt{1-\bar{\xi}}\sigma_{\min}(A)\tilde{\kappa}^{1/2}}$;
-\item $|(\widehat{B}^{-1})_{i:}A_j| \le \frac{A_{(2,\max)}}{\sqrt{1-\bar{\xi}}\sigma_{\min}(A)\tilde{\kappa}^{1/2}}$;
-\item d.
+\item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\widehat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le \frac{1}{\sqrt{1-\bar{\xi}}\tilde{\kappa}_{\min}^{1/2}}$;
+\item $|(\widehat{B}^{-1}A)_{ij}| \le \frac{1}{\sqrt{1-\bar{\xi}}\tilde{\kappa}_{\min}^{1/2}}$;
 \end{itemize}
 Thus for $1\le i, j\le d$,
 \[
 |(G_1(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_1}(\widehat{B}^{-\top}\phi))_{i,j}| \le
-\frac{d^4A_{(2,\max)}^4}{(1-\bar{\xi})^2\sigma_{\min}^4(A)\tilde{\kappa}^{2}}D_4(\nu,\nu_t).
+\frac{d^4}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^{2}}D_4(\nu,\nu_t).
 \]
 Also note that for $1\le i, j\le d$ and any distribution $\Prob{y}$ of $y$,
 \begin{itemize}
-\item $|\int(\phi^{\top}\widehat{B}^{-1}y)(\widehat{B}^{-1})_{i:}y d\Prob{y}| \le d\|\widehat{B}^{-1}A\|_2^2\tilde{C}^2 \le $; 
-\item $|\int(\phi^{\top}\widehat{B}^{-1}y)^2 d\Prob{y}|\le d\|\widehat{B}^{-1}A\|_2^2\tilde{C}^2$;
-\item $|\int(\widehat{B}^{-1})_{i:}yy^{\top}(\widehat{B}^{-\top})_{:j}d\Prob{y}|\le d\|\widehat{B}^{-1}A\|_2^2\tilde{C}^2$.
+\item $|\int(\phi^{\top}\widehat{B}^{-1}y)(\widehat{B}^{-1})_{i:}y d\Prob{y}| \le \frac{d\tilde{C}^2}{(1-\bar{\xi})\tilde{\kappa}_{\min}}$; 
+\item $|\int(\phi^{\top}\widehat{B}^{-1}y)^2 d\Prob{y}|\le \frac{d\tilde{C}^2}{(1-\bar{\xi})\tilde{\kappa}_{\min}}$;
+\item $|\int(\widehat{B}^{-1})_{i:}yy^{\top}(\widehat{B}^{-\top})_{:j}d\Prob{y}|\le \frac{d\tilde{C}^2}{(1-\bar{\xi})\tilde{\kappa}_{\min}}$.
 \end{itemize}
 Thus, 
 \[
 |(G_2(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_2}(\widehat{B}^{-\top}\phi))_{i,j}| \le
-\frac{d^4A_{(2,\max)}^4}{(1-\bar{\xi})^2\sigma_{\min}^4(A)\tilde{\kappa}^{2}}D_2(\nu,\nu_t).
+\frac{2d^3\tilde{C}^2}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}D_2(\nu,\nu_t),
 \]
+and 
+\[
+|(G_3(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_3}(\widehat{B}^{-\top}\phi))_{i,j}| \le
+\frac{2d^3\tilde{C}^2}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}D_2(\nu,\nu_t).
+\]
+Therefore for $1\le i,j\le d$,
+\[
+\frac{1}{12}\left|\left(\nabla^2(f(\widehat{B}^{-\top}\phi))\right)_{i,j} - \left(\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\right)_{i,j}\right| 
+\le
+\frac{d^4}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi, 
+\]
+thus, 
+\begin{equation}
+\label{eq:fBhatfhatBhat}
+ \frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2 \le 
+ \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi.
+\end{equation}
 
+On the other hand, 
+\begin{align*}
+\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2 
+= & \, \|R^*B^{-1}A\tilde{K}A^{\top}B^{-\top}(R^*)^{\top}- \widehat{B}^{-1}A\tilde{K}A^{\top}\widehat{B}^{-\top}\|_2 \\
+= & \, \|I - (\widehat{B}^{-1}B)B^{-1}A\tilde{K}A^{\top}B^{-\top}(\widehat{B}^{-1}B)^{\top}\|_2 \\
+= & \, \|I - (\widehat{B}^{-1}B)(\widehat{B}^{-1}B)^{\top} \|_2\\
+\le & \, \|\widehat{B}^{-1}B\|_2^2\|B^{-1}\widehat{B}\widehat{B}^{\top}B^{-\top} - I\|_2 \\
+\le & \, \frac{\bar{\xi}}{1-\bar{\xi}} 
+\end{align*}
+Thus,
+\begin{equation}
+\label{eq:fBfBhat}
+\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2 \le 2\bar{\xi}. 
+\end{equation}
 
-
-
+Combine Equation \eqref{eq:fBhatfhatBhat} and and Equation \eqref{eq:fBfBhat},
+\[
+\frac{1}{12}\|\nabla^2(f(B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le 
+ \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi}.
+\]
 \end{proof}
 
 %=========================================================================================
-
+\if0
 \section{Adapting probabilistic algorithms to deterministic setting}
 \subsection{Adapting \cite{arora2012provable}'s algorithm}
 \citet{arora2012provable} proposed a polynomial-time algorithm to provably recover the transition matrix $A$ in a probabilistic setting. Note that the algorithm only relies on the moments, thus it should be applicable to both probabilistic setting and deterministic setting.
@@ -1517,7 +1617,7 @@ v^{\top}(\tilde{A}-C\Pi A)(\tilde{A}-C\Pi A)^{\top}v & = \sum_i \|v^{\top}(\tild
 \begin{remark}
 How large $T$ has to be? 
 \end{remark}
-
+\fi
 %========================================================================================= 
  \if0
  Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
