@@ -882,6 +882,11 @@ It is easy to verify that $D_4$ itself is a '***' distance.
 The following lemma bounds $\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta) \|_2$ by $D_4(\nu_t , \nu)$ and $D_2(\nu_t , \nu)$:
 \begin{lemma}
 \label{lem:nablavariation}
+For any $1\le i,j\le d$,
+\begin{align*}
+\left|\left(\nabla^2 f(\eta)\right)_{i,j} - \left(\nabla^2 \widehat{f}(\eta) \right)_{i,j} \right| \le \|\eta\|_2^2 d^4  A_{(2,\max)}^2A_{\max}^2\xi.
+\end{align*}
+Also,
 \[
 \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi,
 \]
@@ -975,12 +980,12 @@ Similarly, we still assume $A$ is scaled such that $\psi^{\top}A = 1^{\top}$, so
 \begin{algorithmic}[1]
 \INPUT $g(k)$ for $1\le k \le t$. \todoc[inline]{start at zero!?}
 \OUTPUT the estimate of the mixing matrix $A$. 
-\STATE Sample $\phi$ from the unit sphere of $\real^d$;
-\STATE Evaluate $\nabla^2\widehat{f}(\psi)$, \\
+\STATE Evaluate $\frac{1}{12}\nabla^2\widehat{f}(\psi)$, \\
 \quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
 \STATE Compute $\widehat{B}$ such that $\nabla^2\widehat{f}(\psi) = \widehat{B}\widehat{B}^{\top}$;
-\STATE Compute $\widehat{M} = \nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi))$;
-\STATE Compute all the eigenvectors of $\widehat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
+\STATE Sample $\phi$ from the unit sphere of $\real^d$;
+\STATE Compute $\widehat{T} = \frac{1}{12}\nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi))$;
+\STATE Compute all the eigenvectors of $\widehat{T}$, $\{\mu_1,\ldots,\mu_d\}$;
 \STATE Return $\widehat{A} = \widehat{B}\Psi$, where $\Psi$ is the matrix $(\mu_1,\ldots,\mu_d)$.
 \end{algorithmic}
 \end{algorithm}
@@ -996,10 +1001,13 @@ d
 \section{Appendix}
 \subsection{Proof of Lemma \ref{lem:nablavariation}}
 Note that in \cref{alg:icaHsu}, 
-\begin{align*}
-& \nabla^2 f(\eta) = G_1(\eta) - G_2(\eta) -G_3(\eta), \\
-\text{and } \quad & \nabla^2 \widehat{f}(\eta) =\widehat{G_1}(\eta) - \widehat{G_2}(\eta) -\widehat{G_3}(\eta),
-\end{align*}
+\[
+\frac{1}{12}\nabla^2 f(\eta) = G_1(\eta) - G_2(\eta) -G_3(\eta),
+\]
+and 
+\[
+\frac{1}{12}\nabla^2 \widehat{f}(\eta) =\widehat{G_1}(\eta) - \widehat{G_2}(\eta) -\widehat{G_3}(\eta),
+\]
 where 
 \begin{align*}
 & G_1(\eta) = \int (\eta^{\top}Ax)^2Axx^{\top}A^{\top}\,d\nu(x); \\
@@ -1206,12 +1214,87 @@ Thus,
 \end{proof}
 
 \subsection{Proof of Theorem \ref{thm:Modefficiency}}
+Note that $\nabla^2 (f(\psi)) = A\tilde{K}A^{\top}\stackrel{\Delta}{=:}BB^{\top}$. So there exists an
+orthonormal matrix $R$ such that $B =A\tilde{K}^{1/2}R^{\top}$. 
+Thus, $f(B^{-\top}\phi) = \sum_i\tilde{\kappa}_i(\phi^{\top}B^{-1}A)_i^4 = \sum_i \tilde{\kappa}_i(\phi^{\top}R\tilde{K}^{-1/2})_i^4=\sum_i\tilde{\kappa}_i^{-1}(\phi^{\top}R)_i^4$, and 
+\[
+\frac{1}{12}\nabla^2(f(B^{-\top}\phi)) = R\tilde{K}^{-1}DR^{\top},
+\]
+where $D = \text{diag}\left((\phi^{\top}R_1)^2, \cdots, (\phi^{\top}R_d)^2\right)$.
+
+Note that by ********
+\[
+\|\frac{1}{12}\nabla^2(f(B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le ddd
+\]
+
+Therefore, by ******, 
+\[
+\|\Psi - R\|_2 \le 
+\]
+Therefore, 
+\[
+\|\hat{A} - A\tilde{K}^{1/2} \|_2
+\]
+
+\begin{lemma}
+\[
+\|\frac{1}{12}\nabla^2(f(B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le ddd
+\]
+\end{lemma}
+\begin{proof}
+By Lemma \ref{lem:nablavariation}, $\|E\|_2 = \frac{1}{12}\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)\|_2 \le d^5  A_{(2,\max)}^2A_{\max}^2\xi$. 
+Then for any unit vector $x$,
+\begin{align*}
+& x^{\top} B^{-1}\widehat{B}\widehat{B}^{\top}B^{-\top}x - x^{\top}x \\
+& \quad  = x^{\top}  B^{-1} ( \widehat{B}\widehat{B}^{\top} -BB^{\top} )B^{-\top}x \\
+& \quad  \le \|B^{-\top}x \|_2^2 \|E\|_2 \\
+& \quad  \le \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} \xi\stackrel{\Delta}{=:}\bar{\xi}.\\
+\end{align*}
+Thus given that ****, $\bar{\xi} \le 1/2$. Also every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
+\[
+\|\widehat{B}^{-1}B - R^*\|_2 \le \max \left\{ \left|1-\frac{1}{\sqrt{1+\xi}}\right| , \left|\frac{1}{\sqrt{1-\xi}}-1\right| \right\} \le \bar{\xi}.
+\]
+
+By the triangular inequality, 
+\[
+\frac{1}{12}\|\nabla^2(f(B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le 
+\frac{1}{12}\|\nabla^2(f(B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2
++ \frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2.
+\]
+Similar to Lemma \ref{lem:nablavariation}, to Bound $\frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2$ note that
+for $1\le i, j\le d$,
+\begin{itemize}
+\item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\widehat{B}^{-1}\|_2A_{(2,\max)}\le \frac{A_{(2,\max)}}{\sqrt{1-\bar{\xi}}\sigma_{\min}(A)\tilde{\kappa}^{1/2}}$;
+\item $|(\widehat{B}^{-1})_{i:}A_j| \le \frac{A_{(2,\max)}}{\sqrt{1-\bar{\xi}}\sigma_{\min}(A)\tilde{\kappa}^{1/2}}$;
+\item d.
+\end{itemize}
+Thus for $1\le i, j\le d$,
+\[
+|(G_1(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_1}(\widehat{B}^{-\top}\phi))_{i,j}| \le
+\frac{d^4A_{(2,\max)}^4}{(1-\bar{\xi})^2\sigma_{\min}^4(A)\tilde{\kappa}^{2}}D_4(\nu,\nu_t).
+\]
+Also note that for $1\le i, j\le d$ and any distribution $\Prob{y}$ of $y$,
+\begin{itemize}
+\item $|\int(\phi^{\top}\widehat{B}^{-1}y)(\widehat{B}^{-1})_{i:}y d\Prob{y}| \le d\|\widehat{B}^{-1}A\|_2^2\tilde{C}^2$;
+\item $|\int(\phi^{\top}\widehat{B}^{-1}y)^2 d\Prob{y}|\le d\|\widehat{B}^{-1}A\|_2^2\tilde{C}^2$;
+\item $|\int(\widehat{B}^{-1})_{i:}yy^{\top}(\widehat{B}^{-\top})_{:j}d\Prob{y}|\le d\|\widehat{B}^{-1}A\|_2^2\tilde{C}^2$.
+\end{itemize}
+Thus, 
+\[
+|(G_2(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_2}(\widehat{B}^{-\top}\phi))_{i,j}| \le
+\frac{d^4A_{(2,\max)}^4}{(1-\bar{\xi})^2\sigma_{\min}^4(A)\tilde{\kappa}^{2}}D_2(\nu,\nu_t).
+\]
 
 
 
+
+\end{proof}
 
 %=========================================================================================
-\if0
+
 \section{Adapting probabilistic algorithms to deterministic setting}
 \subsection{Adapting \cite{arora2012provable}'s algorithm}
 \citet{arora2012provable} proposed a polynomial-time algorithm to provably recover the transition matrix $A$ in a probabilistic setting. Note that the algorithm only relies on the moments, thus it should be applicable to both probabilistic setting and deterministic setting.
@@ -1434,7 +1517,7 @@ v^{\top}(\tilde{A}-C\Pi A)(\tilde{A}-C\Pi A)^{\top}v & = \sum_i \|v^{\top}(\tild
 \begin{remark}
 How large $T$ has to be? 
 \end{remark}
-\fi
+
 %========================================================================================= 
  \if0
  Instead of sampling $\phi$ and $\psi$ uniformly from the unit ball, sample $\phi,\psi \sim {\cN} (0,\,A^{-1}A^{{-1}^{\top}})$ independently. Therefore, $\alpha_i = \phi^{\top}A_i$, $\beta_i = \psi^{\top}A_i$ are independent standard normal variables. Moreover, 
