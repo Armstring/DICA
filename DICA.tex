@@ -949,6 +949,9 @@ Thus, with probability at least $1/2$,
 \]
 \end{proof}
 
+\begin{remark}
+Even Theorem \ref{thm:gammabound} provides a probabilistic lower bound for $\gamma$, such lower bound is still vague. On one hand, note that each column of $A$ has been rescaled with different factors, which makes it hard to bound $\min_{i\neq j}\|A_i-A_j\|_2$. On the other hand, if we begin with the assumption that $\psi^{\top}A = 1^{\top}$, then this quantity is in fact part of the setting of the problem.
+\end{remark}
 Another question comes with \cref{thm:efficiency} is when these conditions will be satisfied.
 Note that the first condition will be satisfied with probability 1, and also $D_2(\nu,\nu_t) \le D_4(\nu,\nu_t)$. Thus, $\xi \le (4\tilde{C}^2+1) D_4(\nu,\nu_t)$.
 On the event $E_{\gamma}$, these conditions can be translated into conditions about $D_4(\nu,\nu_t)$.
@@ -970,15 +973,15 @@ This inequality is weaker than the following one,
 
 Basically both conditions will be satisfied when $D_4(\nu,\nu_t)$ is small enough.
 
-So the efficiency of the algorithm of \citet{DHsu2012} depends on $A_{(2,\min)}$ and $\min_{i\neq j}\|A_i-A_j\|_2$. We would expect that the performance is going to depends on $A_{(2,\min)}$. But what about $\min_{i\neq j}\|A_i-A_j\|_2$? The parameter $\gamma$ is introduce in the recovery of the eigenspace $A$.  
+So the efficiency of the algorithm of \citet{DHsu2012} depends on $A_{(2,\min)}$ and $\min_{i\neq j}\|A_i-A_j\|_2$. We would expect that the performance is going to depends on $A_{(2,\min)}$. But what about $\min_{i\neq j}\|A_i-A_j\|_2$? This parameter $\gamma$ is introduce in the recovery of the eigenspace $A$. We introduce a new algorithm based on \citet{DHsu2012}'s one and the idea of \citet{arora2012provable} which shows that such dependence is not necessary. 
 
 \subsection{Modified \citet{DHsu2012}'s algorithm}
-Based on \citet{DHsu2012}'s idea, we proposed another algorithm which does not depends on $\min_{i\neq j}\|A_i-A_j\|_2$.
+Based on \citet{DHsu2012}'s algorithm, we proposed another algorithm which does not depends on $\min_{i\neq j}\|A_i-A_j\|_2$. This idea is inspired by the paper of \citet{arora2012provable}.
 Similarly, we still assume $A$ is scaled such that $\psi^{\top}A = 1^{\top}$, so $s$ and $\kappa$ is also scaled by the same factors, which are between $\frac{1}{A_{(2,\max)}}$ and $\frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. The modified algorithm is as follows. 
 \begin{algorithm}[H]
 \caption{Modified algorithm of \citet{DHsu2012} \label{alg:icaModHsu}}
 \begin{algorithmic}[1]
-\INPUT $g(k)$ for $1\le k \le t$. \todoc[inline]{start at zero!?}
+\INPUT $g(k)$ for $1\le k \le t$. 
 \OUTPUT the estimate of the mixing matrix $A$. 
 \STATE Evaluate $\frac{1}{12}\nabla^2\widehat{f}(\psi)$, \\
 \quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
@@ -990,26 +993,43 @@ Similarly, we still assume $A$ is scaled such that $\psi^{\top}A = 1^{\top}$, so
 \end{algorithmic}
 \end{algorithm}
 
-Then for any unit vector $x$,
+\begin{lemma}
+\label{lem:BhatinverseB}
+Given that $\xi \le \frac{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}}{2d^5A_{(2,\max)}^2A_{\max}^2}$, there exist an orthonormal matrix $R^*$ such that 
+\[
+\|\widehat{B}^{-1}B - R^*\|_2 \le \bar{\xi},
+\]
+where $\bar{\xi} = \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} \xi$.
+\end{lemma}
+\begin{proof}
+For any unit vector $x$,
 \begin{align*}
 & x^{\top} B^{-1}\widehat{B}\widehat{B}^{\top}B^{-\top}x - x^{\top}x \\
 & \quad  = x^{\top}  B^{-1} ( \widehat{B}\widehat{B}^{\top} -BB^{\top} )B^{-\top}x \\
 & \quad  \le \|B^{-\top}x \|_2^2 \|E\|_2 \\
 & \quad  \le \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} \xi\stackrel{\Delta}{=:}\bar{\xi}.\\
 \end{align*}
-Thus given that ****, $\bar{\xi} \le 1/2$. Also every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
+Thus given that $\xi \le \frac{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}}{2d^5A_{(2,\max)}^2A_{\max}^2}$, $\bar{\xi} \le 1/2$. Also every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
 \[
 \|\widehat{B}^{-1}B - R^*\|_2 \le \max \left\{ \left|1-\frac{1}{\sqrt{1+\xi}}\right| , \left|\frac{1}{\sqrt{1-\xi}}-1\right| \right\} \le \bar{\xi}.
 \]
-
+\end{proof}
+Let 
+\begin{equation}
+\label{def:gammaR}
+\gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\phi^{\top}(R^*R)_i\right)^2 - \left(\phi^{\top}(R^*R)_j\right)^2 \right\vert. 
+\end{equation}
 The following theorem shows that this algorithm does not depend on $\min_{i\neq j}\|A_i-A_j\|_2$.
 \begin{thm}
 \label{thm:Modefficiency}
-ddd
+There exists a permutation matrix $\Pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+\[
+\|\widehat{A}\Pi D(c) - A\|_2 \le 2\sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2} \left( \bar{\xi} + \frac{4\sqrt{d}}{\delta_R}\bar{\xi} + \frac{2\sqrt{d}d^5}{\delta_R(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi\right). 
+\]
 \end{thm}
-\begin{proof}
-d
-\end{proof}
+\begin{remark}
+Note that the bound does not depends on $\gamma$ anymore but $\gamma_R$, and it can be bounded from lower by $\frac{4}{\sqrt{ed}(d^2+d)}$ with probability at least $1/2$. The proof is similar to the proof of theorem \ref{thm:gammabound}.
+\end{remark}
 
 \section{Appendix}
 \subsection{Proof of Lemma \ref{lem:nablavariation}}
@@ -1228,7 +1248,7 @@ Thus,
 \end{proof}
 
 \subsection{Proof of Theorem \ref{thm:Modefficiency}}
-Note that $\nabla^2 (f(\psi)) = A\tilde{K}A^{\top}\stackrel{\Delta}{=:}BB^{\top}$. So there exists an
+We need to introduce two lemmas before we can prove the theorem. Note that $\nabla^2 (f(\psi)) = A\tilde{K}A^{\top}\stackrel{\Delta}{=:}BB^{\top}$. So there exists an
 orthonormal matrix $R$ such that $B =A\tilde{K}^{1/2}R^{\top}$. 
 Thus, $f(R^*B^{-\top}\phi) = \sum_i\tilde{\kappa}_i(\phi^{\top}R^*B^{-1}A)_i^4 = \sum_i \tilde{\kappa}_i(\phi^{\top}R^*R\tilde{K}^{-1/2})_i^4=\sum_i\tilde{\kappa}_i^{-1}(\phi^{\top}R^*R)_i^4$, and 
 \begin{equation}
@@ -1237,34 +1257,13 @@ Thus, $f(R^*B^{-\top}\phi) = \sum_i\tilde{\kappa}_i(\phi^{\top}R^*B^{-1}A)_i^4 =
 \end{equation}
 where $D = \text{diag}\left((\phi^{\top}R^*R_1)^2, \cdots, (\phi^{\top}R^*R_d)^2\right)$.
 
-Note that by Lemma \ref{lem:Binversenablavariation}, there exist some orthonormal matrix $R^*$, such that 
-\[
-\|\frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
-\le  \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi}.
-\]
-Therefore, by Lemma \ref{lem:Teigenvectorvariation}, there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
-\[
-\sum_{k=1}^{d}\| c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{2d}{\delta_R} \|\widehat{T} - T\|_2\,,
-\]
-where $\widehat{R}$ is the matrix of eigenvectors of $\widehat{T}$. 
-
-Therefore, 
-\[
-\|\hat{A} - A\tilde{K}^{1/2} \|_2 = \| \hat{B}\hat{R} - BR \|_2
-\]
-
-Let 
-\begin{equation}
-\label{def:gammaR}
-\gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\phi^{\top}(R^*R)_i\right)^2 - \left(\phi^{\top}(R^*R)_j\right)^2 \right\vert. 
-\end{equation}
 \begin{lemma}
 \label{lem:Teigenvectorvariation}
 Denote $\widehat{T} = T+E$ be a perturbation of matrix $T$, where $T$ is defined in Equation \eqref{eq:T}. 
 Assume $\widehat{T}$ has distinct eigenvalues. Let $\delta_R = \gamma_R -  2\|E\|_2$. 
-If $\gamma_R > 4 \|E\|_2$, and $\min_{i,j:i\neq j} \|R_i - R_j\|_2 > \frac{4}{\delta_R}\|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+If $\gamma_R > 4 \|E\|_2$, and $\min_{i,j:i\neq j} \|R_i - R_j\|_2 > \frac{4}{\delta_R}\|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$
 \[
-\sum_{k=1}^{d}\| c_k\widehat{R}_{\pi(k)} - R_k\|_2 \le \frac{2d}{\delta_R} \|E\|_2\,,
+\| c_k\widehat{R}_{\pi(k)} - R_k\|_2 \le \frac{2}{\delta_R} \|E\|_2\,,
 \]
 where $\widehat{R}$ is the matrix of eigenvectors of $\widehat{T}$. 
 \end{lemma}
@@ -1319,10 +1318,7 @@ Given that $\bar{\xi}\le 1/2$, there exist some orthonormal matrix $R^*$, such t
 \]
 \end{lemma}
 \begin{proof}
-By Lemma \ref{lem:nablavariation}, $\|E\|_2 = \frac{1}{12}\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)\|_2 \le d^5  A_{(2,\max)}^2A_{\max}^2\xi$. 
-
-
-By the triangular inequality, 
+Note that by Lemma \ref{lem:nablavariation} $\|E\|_2 = \frac{1}{12}\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)\|_2 \le d^5  A_{(2,\max)}^2A_{\max}^2\xi$, and 
 \[
 \frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
 \le 
@@ -1330,7 +1326,7 @@ By the triangular inequality,
 + \frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2.
 \]
 
-Similar to Lemma \ref{lem:nablavariation}, to Bound $\frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2$ note that
+To Bound $\frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2$, we will need the following properties which are straightforward based on Lemma \ref{lem:BhatinverseB}: 
 for $1\le i, j\le d$,
 \begin{itemize}
 \item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\widehat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le \frac{1}{\sqrt{1-\bar{\xi}}\tilde{\kappa}_{\min}^{1/2}}$;
@@ -1392,7 +1388,29 @@ Combine Equation \eqref{eq:fBhatfhatBhat} and and Equation \eqref{eq:fBfBhat},
  \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi}.
 \]
 \end{proof}
-
+\begin{proof}[Proof of Theorem \ref{thm:Modefficiency}]
+Note that by Lemma \ref{lem:Binversenablavariation}, there exist some orthonormal matrix $R^*$, such that 
+\[
+\|\widehat{T} - T\|_2 = \|\frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le  \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi}.
+\]
+Therefore, by Lemma \ref{lem:Teigenvectorvariation}, there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$
+\[
+\|c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{2}{\delta_R} \|\widehat{T} - T\|_2\,,
+\]
+where $\widehat{R}$ is the matrix of eigenvectors of $\widehat{T}$. 
+Denote $\text{diag}(c_1, \cdots, c_d )$ by $D(c)$ and the permutation matrix corresponding to $\pi$ by $\Pi$.
+Therefore, 
+\begin{align*}
+\|\hat{A}\Pi D(c) - A\tilde{K}^{1/2} \|_2 & = \| \hat{B}\hat{R}\Pi D(c) - BR \|_2 \\
+& \le \|\widehat{B}\widehat{R}\Pi D(c) - \widehat{B}R^*R \|_2 + \|\widehat{B}R^*R - B(R^*)^{\top}R^*R \|_2 \\
+& \le \|B\|_2\|B^{-1}\widehat{B}\|_2\|\widehat{R}\Pi D(c) - R^*R\|_2 + \|B\|_2\|B^{-1}\widehat{B}\|_2\|R^* - \widehat{B}^{-1}B\|_2 \\
+& \le \sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2}(1+\bar{\xi})^{1/2} \|\widehat{T} - T\|_2 + \sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2}(1+\bar{\xi})^{1/2}\bar{\xi}\\
+& \le  \sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2}(1+\bar{\xi})^{1/2} \left( \bar{\xi} + \frac{4\sqrt{d}}{\delta_R}\bar{\xi} + \frac{2\sqrt{d}d^5}{\delta_R(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi\right) \\
+%& \le 2\sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2} 
+%\left( \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} + \frac{4d^{5\frac12}A_{(2,\max)}^2A_{\max}^2}{\delta_R\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} + \frac{8d^{5\frac12}}{\delta_R\tilde{\kappa}_{\min}^2}\right)\xi
+\end{align*}
+\end{proof}
 %=========================================================================================
 \if0
 \section{Adapting probabilistic algorithms to deterministic setting}
