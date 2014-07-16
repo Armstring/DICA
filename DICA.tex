@@ -757,11 +757,11 @@ Now, it should be clear all these results carry through to the deterministic set
 
 \todoc{We should add the generalization of all the other ``characterization'' results or at least the generalization of some of them.}
 
-\section{Analysis of the ICA algorithm of \citet{DHsu2012}}
+\section{Analysis of \citet{DHsu2012}'s ICA algorithm}
 In this section, we will take the ICA algorithm of \citet{DHsu2012} as an example. 
 A detailed analysis shows that the sample procedure plays an important role in the performance. 
 
-\subsection{Restatement of \citet{DHsu2012}'s algorithm}
+\subsection{\citet{DHsu2012}'s algorithm}
 
 Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$.
 \begin{lemma}
@@ -782,14 +782,13 @@ We are interested in the behavior of $\min_i |\psi^{\top}A_i|$.
 \label{lem:dmin}
 $\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
 \end{lemma}
-Since we can only recover $A$ up to some scale, we can replace our goal by recovering the scaled $A$ (we will still denote it by $A$ but keep it in mind that it has been rescaled.) such that $\psi^{\top}A = 1$. 
-In this case, by Lemma \ref{lem:dmin} $\kappa_i$ is scaled by a factor of $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. 
-Moreover, the scaled $s_i$ will still be bounded by $\frac{2dC}{\sqrt{2\pi}A_{(2,\min)}}$ with probability at least $1/4$. 
-
-The remainder of this section is based on the event that $\psi^{\top}A = 1$, 
-$s_i$ will still be bounded by $\frac{2dC}{\sqrt{2\pi}A_{(2,\min)}}$, denoted by $\tilde{C}$, 
-and $\kappa_i$ is scaled by a factor $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. 
-Denote the diagonal matrix $\text{diag}(\tilde{\kappa}_1,\cdots,\tilde{\kappa}_d)$ by $\tilde{K}$, where $\tilde{\kappa}_i$ is the scaled $\kappa_i$. \citep{DHsu2012}'s algorithm is also modified for such event. Denote $\max_{i} \tilde{\kappa}_i$ by $\tilde{\kappa}_{\max}$ and $\min_{i} \tilde{\kappa}_i$ by $\tilde{\kappa}_{\min}$.
+Let $\widehat{A}$ be the scaled $A$ such that $\psi^{\top}\widehat{A} = 1$. Since $A$ can only be recovered up to scaling and permutation, we instead try to recover $\widehat{A}$. 
+In the rest of this section we will still denote $\widehat{A}$ by $A$, but keep it in mind that it has been rescaled. 
+To maintain the same observations, $s_1,\cdots, s_d$ have to be rescaled by the same factor.  
+By Lemma \ref{lem:dmin}, $\kappa_i$ is scaled by a factor of $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$, denoted by $\tilde{\kappa}$. 
+Moreover, the scaled $s_i$ will still be bounded by $\frac{2dC}{\sqrt{2\pi}A_{(2,\min)}}$, denoted by $\tilde{C}$, with probability at least $1/4$. 
+Denote the diagonal matrix $\text{diag}(\tilde{\kappa}_1,\cdots,\tilde{\kappa}_d)$ by $\tilde{K}$. 
+Also, denote $\max_{i} \tilde{\kappa}_i$ by $\tilde{\kappa}_{\max}$ and $\min_{i} \tilde{\kappa}_i$ by $\tilde{\kappa}_{\min}$.
 
 For $p\ge 1$, $\eta\in \real^d$, 
 let 
@@ -804,13 +803,10 @@ f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
 The following result is proven by \citet{DHsu2012}:
 \begin{thm}[\citet{DHsu2012}, Theorem~4]
 Assume that $\nu^{(s)} = \nu^{(s_1)}\otimes \dots \otimes \nu^{(s_d)}$,
-$\E_{x\sim \nu^{(s_i)}}[x] = 0$, $\E_{x\sim \nu^{(s_i)}}[x^4] \ne 3$, $i=1,\ldots,d$, $A$ is nonsingular
-and that the columns $(A_i)_{1\le i \le d}$ of matrix $A$ have unit length. 
+$\E_{x\sim \nu^{(s_i)}}[x] = 0$, $\E_{x\sim \nu^{(s_i)}}[x^4] \ne 3\left(\E_{x\sim \nu^{(s_i)}}[x^2]\right)^2$, $i=1,\ldots,d$, $A$ is nonsingular. 
 Let $m_4,m_2:\real^d \ra \real$ be defined by \eqref{eq:mpdef},
 	while $f: \real^d \ra \real$ be defined by \eqref{eq:fdef}.
-Let $\phi,\psi\in \real^d$ be vectors from the unit sphere of $\real^d$. Then, 
-	assuming that the values $\lambda_i = \left(\phi^{\top}A_i\right)^2$
-	are all distinct,
+Let $\phi,\psi\in \real^d$ be vectors from the unit sphere of $\real^d$ such that $\psi^{\top}A = 1^{\top}$. Then, 
 	the matrix
 \begin{equation}
 \label{eq:M}
@@ -829,6 +825,7 @@ M = A
 \right) 
 A^{-1},
 \end{equation}
+where $\lambda_i = \left(\phi^{\top}A_i\right)^2$.
 \end{thm}
 It follows from this theorem that 
 if $\phi,\psi$ are chosen independently from the uniform distribution on the unit sphere of $\real^d$, with probability one,
@@ -859,9 +856,9 @@ and $ \nabla^2 \left(\E_{x\sim \nu_t^g}[(\eta^\top  x)^2 ]^2\right)$
  }
 
 \subsection{Efficiency} 
-We analyze \citet{DHsu2012}'s algorithm in a deterministic setting, so that the dependences of the learning error on both the sample procedure of $\phi$ and $\psi$, and the finite-sample estimation are clear.
+We analyze \citet{DHsu2012}'s algorithm in a deterministic setting, so that we can decouple the dependences of the learning error caused by the sample procedure of $\phi$ and $\psi$, and the finite-sample estimation.
 
-The concentration inequality generally holds (under some boundness conditions) in a probabilistic setting, while in a deterministic setting such property is not guaranteed. 
+Concentration inequalities generally hold (under some boundness conditions) in a probabilistic setting, while in a deterministic one such property is not guaranteed. 
 Hence we need some assumptions that the given sequence $g$ does not go arbitrarily wild.
 \begin{definition}
 Given two distributions $F_1$ and $F_2$ in $\real^d$, $D_4(F_1,F_2) = \sup_{f\in\mathcal{F}} |\int f(x)dF_1(x) - \int f(x)dF_2(x)|$, where $\mathcal{F}$ is the set of monomials up to degree 4.
