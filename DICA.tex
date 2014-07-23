@@ -785,7 +785,7 @@ $\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probabi
 Let $\widehat{A}$ be the scaled $A$ such that $\psi^{\top}\widehat{A} = 1$. Since $A$ can only be recovered up to scaling and permutation, we instead try to recover $\widehat{A}$. 
 In the rest of this section we will still denote $\widehat{A}$ by $A$, but keep it in mind that it has been rescaled. 
 To maintain the same observations, $s_1,\cdots, s_d$ have to be rescaled by the same factor.  
-By Lemma \ref{lem:dmin}, $\kappa_i$ is scaled by a factor of $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$, denoted by $\tilde{\kappa}$. 
+By Lemma \ref{lem:dmin}, $\kappa_i$ is scaled by a factor of $k_i^4$, where $ \frac{1}{A_{(2,\max)}} \le k_i \le \frac{2d}{\sqrt{2\pi}A_{(2,\min)}}$. We also denote the scaled $\kappa$ by $\tilde{\kappa}$. 
 Moreover, the scaled $s_i$ will still be bounded by $\frac{2dC}{\sqrt{2\pi}A_{(2,\min)}}$, denoted by $\tilde{C}$, with probability at least $1/4$. 
 Denote the diagonal matrix $\text{diag}(\tilde{\kappa}_1,\cdots,\tilde{\kappa}_d)$ by $\tilde{K}$. 
 Also, denote $\max_{i} \tilde{\kappa}_i$ by $\tilde{\kappa}_{\max}$ and $\min_{i} \tilde{\kappa}_i$ by $\tilde{\kappa}_{\min}$.
@@ -902,17 +902,20 @@ The performance of \citet{DHsu2012}'s algorithm depends on this parameter, as sh
  \label{thm:efficiency}
 Let 
  \[ 
- Q= \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi,
- \]
- and $\delta = \gamma -  2\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q$. 
+ Q= \frac{2d^5A_{(2,\max)}^4A_{\max}^2\tilde{\kappa}_{\max}\sigma_{\max}^2(A) + 2d^5A_{(2,\max)}^2A_{\max}^2\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}{\tilde{\kappa}^2_{\min}\sigma_{\min}^4(A)} \xi.
+ \] 
  Assume the following conditions hold:
  \begin{itemize}
  \item $\widehat{M}$ has distinct eigenvalues;
  \item $\gamma > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
- \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{4}{\delta}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } Q$;
- \item $\xi \le \min\{1,A^2_{(2,\min)}\} \frac{\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$.
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } Q$;
+ \item $\xi \le \frac12\frac{\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$.
  \end{itemize}
  Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
+ \[
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4}{\gamma} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q .
+  \]
+  and therefore,
  \[
  \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d}{\gamma} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q .
  \]
@@ -1040,10 +1043,13 @@ There exists a permutation matrix $\Pi$ and constants $\{c_1,\ldots,c_d\}$, such
 \end{thm}
 \begin{remark}
 The upper bound now depends on $\gamma_R$ rather than $\gamma$.
-Note that it can be bounded from lower by $\frac{4}{\sqrt{ed}(d^2+d)}$ with probability at least $1/2$. The proof is similar to the proof of theorem \ref{thm:gammabound}.
+Note that it can be bounded from below by $\frac{4}{\sqrt{ed}(d^2+d)}$ with probability at least $1/2$. The proof is similar to the proof of theorem \ref{thm:gammabound}.
 \end{remark}
 
 \section{Experimental Results}
+\subsection{Simulation}
+\subsubsection{error measures}
+
 
 \bibliography{DICA}
 \bibliographystyle{plainnat}
@@ -1133,6 +1139,10 @@ Denote $\widehat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined
 Assume $\widehat{M}$ has distinct eigenvalues. Let $\delta = \gamma -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$. 
 If $\gamma > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{4}{\delta}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
+\max_{1\le k\le d} \| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 2  \frac{\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|E\|_2\,,
+\]
+and therefore
+\[
 \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 2d  \frac{\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|E\|_2\,,
 \]
 where $\widehat{A}$ is the matrix of eigenvectors of $\widehat{M}$. 
@@ -1176,61 +1186,39 @@ Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a
  By condition, for $i\neq j$,  $\frac{4\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \widehat{A_i}\|_2 + \|A_j - \widehat{A_i}\|_2$, thus $\widehat{A_i} \neq \widehat{A_j}$.  Summing up the upper bound gets the result. 
 \end{proof}
 
-The next lemma shows that $\widehat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix $2$-norm in two ways.
-\if0
+The next lemma shows that $\widehat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix $2$-norm.
+
 \begin{lemma}
-\label{lem:inversevariation1}
-If non-singular matrix $\widehat{X} = X+E$ satisfying that $\sigma_{\min}(X)>\|E\|_2$, then  $\|\widehat{X}^{-1}\|_2 \le \frac{1}{\sigma_{\min}(X)-\|E\|_2}$.
+\label{lem:inversevariation}
+If non-singular matrix $\widehat{X} = X+E$ satisfying that $\sigma_{\min}(X)\ge2\|E\|_2$, then $\|\widehat{X}^{-1}\|_2 \le \frac{2}{\sigma_{\min}(X)}$, and $\|\widehat{X}^{-1} - X^{-1} \|_2 \le \frac{2}{\sigma_{\min}^2(X)}\|E\|_2$.
 \end{lemma} 
 \begin{proof}
-Consider the minimal singular value of $\widehat{X}$. 
+Note that $\|\widehat{X}^{-1}\|_2$ is the inverse of the minimal singular value of $\widehat{X}$. Also, 
 \[
  \min_{v:\|v\|_2=1} \|\widehat{X}v\|_2 = \min_{v:\|v\|_2=1}\|(X+E)v\|_2 \ge \min_{v:\|v\|_2=1} \|Xv\|_2 - \|Ev\|_2 \ge \sigma_{\min}(X) - \|E\|_2.
 \]
-\end{proof}
-\fi
-\begin{lemma}
-\label{lem:inversevariation2}
-If $\widehat{X} = X+E$, then  $\|\widehat{X}^{-1} - X^{-1}\|_2 \le \|X\|_2^2\|E\|_2 + \|X\|_2\|E\|_2^2$.
-\end{lemma}
-\begin{proof}
-Note that 
-\[
-\|\widehat{X}^{-1} - X^{-1} \|_2 \le \|X\|_2\|\widehat{X}\|_2\|\widehat{X} - X\|_2\le \|E\|_2\|X\|_2(\|X\|_2+\|E\|_2) = \|X\|_2^2\|E\|_2 + \|X\|_2\|E\|_2^2.
-\]
+So $\|\widehat{X}^{-1}\|_2 \le \frac{1}{\sigma_{\min}(X) - \|E\|_2} \le \frac{2}{\sigma_{\min}(X)}$. Moreover,
+\begin{align*}
+\|\widehat{X}^{-1} - X^{-1} \|_2 \le \|X^{-1}\|_2\|\widehat{X}^{-1}\|_2\|\widehat{X} - X\|_2
+\le \frac{2}{\sigma_{\min}^2(X)}\|E\|_2.
+\end{align*}
 \end{proof}
 
 Now we can estimate the variance between $XY^{-1}$ and $(X+E_1)(Y+E_2)^{-1}$.
 \begin{lemma}
 \label{lem:Mvariation}
-Assume $\|E_1\|_2 \le \|X\|_2$ and $\|E_2\|_2 \le \|Y\|_2$, then
+Assume that $\sigma_{\min}(X)\ge2\|E\|_2$, then
 \[
 \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + 4\|X\|_2\|Y\|_2^2\|E_2\|_2.
 \]
 \end{lemma}
 \begin{proof}
-\if0
+Applying \cref{lem:inversevariation},
 \begin{align*}
 	& \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
-\le & \| XY^{-1} - X(Y+E_2)^{-1}\|_2 + \| X(Y+E_2)^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
-\le & \|X\|_2\| Y^{-1} - (Y+E_2)^{-1}\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2 \\
-\le & c \|X\|_2 \max\{\| Y^{-1}\|^2_2 , \|(Y+E_2)^{-1}\|^2_2\} \|E_2\|_2 + \| E_1\|_2 \|(Y+E_2)^{-1}\|_2,
-\end{align*}
-where $c = \frac{1+\sqrt{5}}{2}$. The last inequality is by Theorem 3.8, Chapter III of \citep*{stewart1990matrix}. Therefore by \cref{lem:inversevariation},
-\[
-\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{c\|X\|_2\|E_2\|_2}{(\sigma_{\min}(Y) - \|E_2\|_2)^2}+\frac{\|E_1\|_2}{\sigma_{\min}(Y) - \|E_2\|_2}.
-\]
-
-Or 
-\fi
-Applying \cref{lem:inversevariation2},
-\begin{align*}
-	& \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
-\le\, & \| XY^{-1} - (X+E_1)Y^{-1}\|_2 + \| (X+E_1)Y^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
-\le\, & \|Y^{-1}\|_2\| E_1\|_2 + \left(\|E_1\|_2+\|X\|_2\right)\|Y^{-1} - (Y+E_2)^{-1}\|_2\\
-\le\, & \frac{1}{\sigma_{\min}(Y)}\|E_1\|_2 + \left(\|E_1\|_2+\|X\|_2\right)\left(\|Y\|_2^2\|E_2\|_2 + \|Y\|_2\|E_2\|_2^2\right)\\
-=\, & \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + \|X\|_2\|Y\|_2^2\|E_2\|_2 +\left( \|Y\|_2^2\|E_1\|_2\|E_2\|_2 + \|Y\|_2\|E_1\|_2\|E_2\|_2^2 + \|X\|_2\|Y\|_2\|E_2\|_2^2\right) \\
-\le\, & \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + 4\|X\|_2\|Y\|_2^2\|E_2\|_2.
+\le\, & \| XY^{-1} - X(Y+E_2)^{-1}\|_2 + \| X(Y+E_2)^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \\
+\le\, & \|X\|_2\| Y^{-1} - (Y+E_2)^{-1}\|_2 + \|E_1\|_2\|(Y+E_2)^{-1}\|_2\\
+\le\, & \frac{2\|X\|_2}{\sigma_{\min}^2(Y)}\|E_2\|_2 + \frac{2}{\sigma_{\min}(Y)}\|E_1\|_2
 \end{align*}
 \end{proof}
 
@@ -1239,16 +1227,17 @@ Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \tilde{\kappa}_iA_iA_i^{\top} = A\ti
 
 \begin{lemma}
 \label{lem:boundsigmaminnabla}
-$\sigma_{\min}(\nabla^2f(\psi)) \ge \tilde{\kappa}_{\min}\sigma_{\min}^2(A)$.
+$\sigma_{\min}(\nabla^2f(\psi)) \ge \tilde{\kappa}_{\min}\sigma_{\min}^2(A)$, and 
+$\sigma_{\max}(\nabla^2f(\psi)) \le \tilde{\kappa}_{\max}\sigma_{\max}^2(A)$.
 \end{lemma}
 \begin{proof}
-For any unit vector $v$, $v^{\top}AKA^{\top}v \ge \tilde{\kappa}_{\min} \|v^{\top}A\|_2^2 \ge \tilde{\kappa}_{\min}\sigma_{\min}^2(A)$.
+For any unit vector $v$, $v^{\top}AKA^{\top}v \ge \tilde{\kappa}_{\min} \|v^{\top}A\|_2^2 \ge \tilde{\kappa}_{\min}\sigma_{\min}^2(A)$. Similar calculation for the maximum singular value.
 \end{proof}
 
 Lastly, we still need to bound $\|M - \widehat{M}\|_2$.
 \begin{lemma}
 \label{lem:Mvariation_alg}
-Given that $\xi \le \min\{1,A^2_{(2,\min)}\} \frac{\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, 
+Given that $\xi \le \frac12\frac{\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, 
 \[ 
 \|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi.
 \]
@@ -1256,19 +1245,26 @@ Given that $\xi \le \min\{1,A^2_{(2,\min)}\} \frac{\tilde{\kappa}_{\min}\sigma_{
 \begin{proof}
 Let $E_1 = \nabla^2 f(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le d^5 A_{(2,\max)}^2A_{\max}^2\xi$.
 Note $\nabla^2f(\phi) = A\tilde{K}\Lambda A^{\top}$ where $\Lambda = \text{diag}\left((\phi^{\top}A_1)^2,\cdots, (\phi^{\top}A_d)^2\right)$.
-Given that $\xi \le \min\{1,A^2_{(2,\min)}\} \frac{\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, apply Lemma \ref{lem:Mvariation} and \cref{lem:nablavariation},
+Given that $\xi \le \frac12 \frac{\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, the condition in Lemma \ref{lem:Mvariation} holds. Then apply Lemma \ref{lem:Mvariation} and \cref{lem:nablavariation}, we have
 \begin{align*}
 \|M - \widehat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1} \|_2 \\
-\le \, & \left(\frac{1}{\sigma_{\min}\left(\nabla^2f(\psi)\right)} +  4\|\nabla^2 f(\phi)\|_2 \|\nabla^2 f(\psi)\|_2^2\right)d^5 A_{(2,\max)}^2A_{\max}^2\xi.
+\le \, &\frac{2\|\nabla^2 f(\phi)\|_2}{\sigma_{\min}^2(\nabla^2f(\psi))}\|E_2\|_2 + \frac{2}{\sigma_{\min}(\nabla^2f(\psi))}\|E_1\|_2 \\
+\le \, & 2\left( \frac{A_{(2,\max)}^2\tilde{\kappa}_{\max}\sigma_{\max}^2(A)}{\tilde{\kappa}^2_{\min}\sigma_{\min}^4(A)} + 
+\frac{1}{\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}
+\right)d^5 A_{(2,\max)}^2A_{\max}^2\xi
 \end{align*}
 
 Thus, 
 \[ 
-\|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi.
+\|M - \widehat{M}\|_2 \le \frac{2d^5A_{(2,\max)}^4A_{\max}^2\tilde{\kappa}_{\max}\sigma_{\max}^2(A) + 2d^5A_{(2,\max)}^2A_{\max}^2\tilde{\kappa}_{\min}\sigma_{\min}^2(A)}{\tilde{\kappa}^2_{\min}\sigma_{\min}^4(A)} \xi.
 \]
 \end{proof}
 \begin{proof}[{\bf Proof of Theorem  \ref{thm:efficiency}}]
  By \cref{lem:eigenvectorvariation}, 
+  \[
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 2 \frac{\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|M - \widehat{M} \|_2, 
+  \]
+ and 
  \[
  \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 2d  \frac{\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|M - \widehat{M} \|_2. 
  \]
