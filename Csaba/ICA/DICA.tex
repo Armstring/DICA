@@ -827,7 +827,7 @@ determine the rows of $A$ up to permutation and scaling. Based on this idea, \ci
 \caption{ICA algorithm of \citet{DHsu2012} \label{alg:icaHsu}}
 \begin{algorithmic}[1]
 \INPUT $g(k)$ for $1\le k \le t$. \todoc[inline]{start at zero!?}
-\OUTPUT the estimate of the mixing matrix $A$. 
+\OUTPUT An estimation of the mixing matrix $A$. 
 \STATE Sample $\phi$ from the unit sphere of $\real^d$;
 \STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, \\
 \quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
@@ -921,12 +921,18 @@ Let
 \end{thm}
 \fi
 \subsubsection{The parameter $\gamma$}
-The behavior of the parameter $\gamma$ plays an important role in \cite{DHsu2012}'s algorithm. 
+The behavior of the parameter $\gamma$ plays an important role in the analysis of \cite{DHsu2012}'s algorithm. 
 In fact, $\gamma$ affects not only the theoretical upper bound in \ref{thm:efficiency}, but also the validity its conditions.
-Note that $M$ and $\widehat{M}$ are not symmetric. Thus in practice for the algorithm's output to be meaningful, we need $\widehat{M}$ to still have $d$ real eigenvalues.
-Intuitively, the stability of this property is also close related to the quantity $\gamma$. 
 
-Note that $\gamma$ is invariant to the norm of $A_i$, and all the $\psi^{\top}A_i$s are not 0. Thus, we can rescale $A_i$, such that $|\psi^{\top}A_i| = 1$. Now that $\gamma = |(\phi^{\top}A_i)^2 - (\phi^{\top}A_j)^2|$, this quantity could be bounded from below with constant probability, as follows. We denote this event by $E_{\gamma}$.
+Note that $\gamma$ is invariant to the norm of $A_i$, and all the $\psi^{\top}A_i$s are not 0. 
+Thus, we can rescale $A_i$, such that $|\psi^{\top}A_i| = 1$. 
+ To investigate how much each $A_i$ is rescaled, we are interested in the behavior of $\min_i |\psi^{\top}A_i|$.
+\begin{lemma}
+\label{lem:dmin}
+$\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
+\end{lemma}
+
+Now that $\gamma = |(\phi^{\top}A_i)^2 - (\phi^{\top}A_j)^2|$, this quantity could be bounded from below with constant probability, as follows. We denote this event by $E_{\gamma}$.
 \begin{thm}
 \label{thm:gammabound}
 With probability at least $1/2$,
@@ -946,17 +952,14 @@ WLOG, assume that $\phi^{\top}A_i$ and $\phi^{\top}A_j$ are both positive. Thus,
 \end{align*}
 where the last inequality is by Lemma C.6 of \citep{anandkumar2012method}.
 
-Thus, with probability at least $1/2$,
+Thus by lemma \ref{lem:dmin}, with probability at least $1/2\times 1/4 = 1/8$,
 \[
-\gamma \ge \frac{2\min_i\|A_i\|_2\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
+\gamma \ge \frac{\sqrt{2\pi}A_{(2,\min)}\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^3+d^2)}.
 \]
 \end{proof}
 
-On one hand, even Theorem \ref{thm:gammabound} provides a probabilistic lower bound for $\gamma$, such lower bound is still vague since that each column of $A$ has been rescaled with different factors, which makes $\min_{i\neq j}\|A_i-A_j\|_2$ unpredictable. To investigate how much each $A_i$ is rescaled, we are interested in the behavior of $\min_i |\psi^{\top}A_i|$.
-\begin{lemma}
-\label{lem:dmin}
-$\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
-\end{lemma}
+On one hand, even Theorem \ref{thm:gammabound} provides a probabilistic lower bound for $\gamma$, such lower bound is still vague.
+Note that each column of $A$ has been rescaled with different factors, which makes $\min_{i\neq j}\|A_i-A_j\|_2$ unpredictable.
 
 On the other hand, note that $A$ can only be recovered up to scaling, we can instead start from the assumption that $\psi^{\top}A = 1^{\top}$. 
 Then this quantity is in fact part of the setting of the problem.
@@ -985,7 +988,7 @@ First note that $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma}\frac{\sig
 by the fact that $\sigma_{\max}(A) \ge \frac{1}{\sqrt{2}} \min_{i,j:i\neq j} \|A_i - A_j\|_2$. 
 Moreover, the second condition (or both) will be satisfied when the event in Theorem \ref{thm:gammabound} holds, and 
 \[
-\min_{i,j:i\neq j} \|A_i - A_j\|_2 >\left( \frac{4\sqrt{ed}(d^2+d)\sigma_{\max}^2(A)}{A_{(2,\min)}\sigma_{\min}(A) } Q\right)^{1/2}.
+\min_{i,j:i\neq j} \|A_i - A_j\|_2 >\left( \frac{8\sqrt{ed}(d^3+d^2)\sigma_{\max}^2(A)}{\sqrt{2\pi}A_{(2,\min)}\sigma_{\min}(A) } Q\right)^{1/2}.
 \]
 This inequality is still related to $\psi$ and the rescaled $A$, which makes the probability of its validity vague.
 
@@ -1001,16 +1004,16 @@ Let
  \begin{enumerate}
  \item $\widehat{M}$ has distinct eigenvalues;
  \item $\psi^{\top}A_i = 1$ for $1\le i \le d$;
- \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 >\left( \frac{4\sqrt{ed}(d^2+d)\sigma_{\max}^2(A)}{A_{(2,\min)}\sigma_{\min}(A) } Q\right)^{1/2}$;
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 >\left( \frac{8\sqrt{ed}(d^3+d^2)\sigma_{\max}^2(A)}{\sqrt{2\pi}A_{(2,\min)}\sigma_{\min}(A) } Q\right)^{1/2}$;
  \item $\xi \le \frac12\frac{\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$.
   \end{enumerate}
- Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that with probability at least $1/2$,
+ Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that with probability at least $1/8$,
  \[
-  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{2\sqrt{ed}(d^2+d)}{\min_{i\neq j}\|A_i-A_j\|_2} \frac{\sigma_{\max}^2(A)}{A_{(2,\min)}\sigma_{\min}(A)}Q .
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sqrt{ed}(d^3+d^2)}{\sqrt{2\pi}\min_{i\neq j}\|A_i-A_j\|_2} \frac{\sigma_{\max}^2(A)}{A_{(2,\min)}\sigma_{\min}(A)}Q .
   \]
   and therefore,
  \[
- \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{2d^2\sqrt{ed}(d+1)}{\min_{i\neq j}\|A_i-A_j\|_2} \frac{\sigma_{\max}^2(A)}{A_{(2,\min)}\sigma_{\min}(A)}Q .
+ \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d^3\sqrt{ed}(d+1)}{\sqrt{2\pi}\min_{i\neq j}\|A_i-A_j\|_2} \frac{\sigma_{\max}^2(A)}{A_{(2,\min)}\sigma_{\min}(A)}Q .
  \]
  \end{thm}
  
@@ -1018,23 +1021,64 @@ In summary, the efficiency of the algorithm of \citet{DHsu2012} depends on $\min
 %We would expect that the performance is going to depends on $A_{(2,\min)}$. But what about $\min_{i\neq j}\|A_i-A_j\|_2$? The parameter $\gamma$ is introduce in the recovery of the eigenspace $A$. 
 To avoid this problem, we modify \citet{DHsu2012}'s algorithm based on an idea from the paper \citet{arora2012provable}, so that the performance of the new algorithm doesn't depend on $\min_{i\neq j}\|A_i-A_j\|_2$ or $\gamma$.
 
-\subsection{Modified \citet{DHsu2012}'s algorithm}
-In this subsection we introduce a new algorithm whose performance does not depends on $\min_{i\neq j}\|A_i-A_j\|_2$ or $\gamma$. The idea is inspired by the paper of \citet{arora2012provable}.
-The modified algorithm is as follows. 
+
+\subsubsection{Modified \citet{DHsu2012}'s algorithm}
+Note that $M$ and $\widehat{M}$ are not symmetric. Thus in practice the algorithm could return complex result which is meaningless, if $\widehat{M}$ does not have $d$ real eigenvalues. 
+Intuitively, the chance of such $\widehat{M}$ happens will also depend on $\gamma$ (the minimal gaps between eigenvalues). 
+We modify \citet{DHsu2012}'s algorithm to avoid this problem in this section.
+
+Let $B$ be the matrix such that $\nabla^2f(\phi) = BB^{\top}$, thus $B = AK^{1/2}D_\phi^{1/2}R^{\top}$ for some orthonormal matrix $R$, where $D_{\phi} = \text{diag}\left((\phi^{\top}A_1)^2,\cdots, (\phi^{\top}A_d)^2\right)$.
+Then we define $M$ in a new way:
+\[
+M = B^{\top}\nabla^2f(\psi)^{-1}B = R
+\left(
+\begin{array}{ccc}
+\lambda_1 & & \\ %\left(\frac{\phi^{\top}A_1}{\psi^{\top}A_1}\right)^2 & &\\
+    & \ddots & \\
+    & & \lambda_d %\left(\frac{\phi^{\top}A_d}{\psi^{\top}A_d}\right)^2\\
+\end{array} 
+\right) 
+R^{\top}.
+\]
+Once $R$ is known, $BR = AK^{1/2}D_\phi^{1/2}$ is the matrix we are interested.
+Thus the modified algorithm is as follows.
 \begin{algorithm}[H]
-\caption{Modified algorithm of \citet{DHsu2012} \label{alg:icaModHsu}}
+\caption{Modified  \citet{DHsu2012}'s algorithm \label{alg:icaModHsu}}
 \begin{algorithmic}[1]
 \INPUT $g(k)$ for $1\le k \le t$. 
-\OUTPUT the estimate of the mixing matrix $A$. 
-\STATE Evaluate $\frac{1}{12}\nabla^2\widehat{f}(\psi)$, \\
+\OUTPUT An estimation of the mixing matrix $A$. 
+\STATE Sample $\psi$ from the unit sphere of $\real^d$;
+\STATE Evaluate $\nabla^2\widehat{f}(\psi)$, \\
+\quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
+\STATE Sample $\phi$ from the unit sphere of $\real^d$;
+\STATE Compute $\widehat{B}$ such that $\nabla^2\widehat{f}(\phi) = \widehat{B}\widehat{B}^{\top}$;
+\STATE Compute $\widehat{M} = \widehat{B}^{\top}(\nabla^2\widehat{f}(\psi))^{-1}\widehat{B}$;
+\STATE Compute all the eigenvectors of $\widehat{M}$, $\widehat{R} = \{\mu_1,\ldots,\mu_d\}$;
+\STATE Return $\widehat{A} = \widehat{B}\widehat{R}$.
+\end{algorithmic}
+\end{algorithm}
+Note that $\widehat{M}$ is always symmetric, so it solves the complex output problem of \citet{DHsu2012}'s algorithm. However, the modified version still requires an eigen-decompostion of a matrix whose eigenvalues are $\lambda_i$'s. 
+Thus, Theoretical results similar to Theorem \ref{thm:efficiency} will still depend on $\gamma$.
+
+
+\subsection{Modified \citet{DHsu2012}'s algorithm}
+In this subsection we introduce a new algorithm whose performance does not depends on $\min_{i\neq j}\|A_i-A_j\|_2$ or $\gamma$. The idea is inspired by the paper of \citet{arora2012provable} and the one of \cite{frieze1996learning}.
+The new algorithm, called Determined ICA, is as follows. 
+\begin{algorithm}[H]
+\caption{Determined ICA}
+\begin{algorithmic}[1]
+\INPUT $g(k)$ for $1\le k \le t$. 
+\OUTPUT An estimation of the mixing matrix $A$. 
+\STATE Evaluate $\nabla^2\widehat{f}(\psi)$, \\
 \quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
 \STATE Compute $\widehat{B}$ such that $\nabla^2\widehat{f}(\psi) = \widehat{B}\widehat{B}^{\top}$;
 \STATE Sample $\phi_1$ from the unit sphere of $\real^d$;
-\STATE Compute $\widehat{T}_1 = \frac{1}{12}\nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi_1))$;
+\STATE Compute $\widehat{T}_1 = \nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi_1))$;
+\STATE Compute $\widehat{B}$ such that $\widehat{T_1} = \widehat{H}\widehat{H}^{\top}$;
 \STATE Sample $\phi_2$ from the unit sphere of $\real^d$;
-\STATE Compute $\widehat{T}_2 = \frac{1}{12}\nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi_2))$;
+\STATE Compute $\widehat{T}_2 =\nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi_2))$;
 
-\STATE Compute all the eigenvectors of $\widehat{T}_1\left(\widehat{T}_2\right)^{-1}$, $\widehat{R} = \{\mu_1,\ldots,\mu_d\}$;
+\STATE Compute all the eigenvectors of $\widehat{T} = \widehat{H}^{\top}\left(\widehat{T}_2\right)^{-1}\widehat{H}$, $\widehat{R} = \{\mu_1,\ldots,\mu_d\}$;
 \STATE Return $\widehat{A} = \widehat{B}\widehat{R}$.
 \end{algorithmic}
 \end{algorithm}
@@ -1198,14 +1242,14 @@ The following lemma shows that a small perturbation of $M$ will only result in a
 \begin{lemma}
 \label{lem:eigenvectorvariation}
 Denote $\widehat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in  \eqref{eq:M2}. 
-Assume $\widehat{M}$ has distinct eigenvalues. Let $\delta = \gamma -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$. 
-If $\gamma > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{4}{\delta}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+Assume $\widehat{M}$ has distinct eigenvalues. 
+If $\gamma > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
-\max_{1\le k\le d} \| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 2  \frac{\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|E\|_2\,,
+\max_{1\le k\le d} \| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4  \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A) } \|E\|_2\,,
 \]
 and therefore
 \[
-\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 2d  \frac{\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|E\|_2\,,
+\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A) } \|E\|_2\,,
 \]
 where $\widehat{A}$ is the matrix of eigenvectors of $\widehat{M}$. 
 \end{lemma}
@@ -1235,7 +1279,7 @@ Note that by definition, $\gamma_k = \|F_{3k}\|_2\le\|A_{(k)}^{-1}EA_{k}\|_2\le\
 \delta_k & = \min_{j:j\neq k} 
 	\left\vert \left(\frac{\phi^{\top}A_k}{\psi^{\top}A_k}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
 	& \ge \min_{j:j\neq k} \left\vert \left(\frac{\phi^{\top}A_k}{\psi^{\top}A_k}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert - 2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
-	& \ge  \gamma -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 = \delta\\
+	& \ge  \gamma -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 \\
 	& >  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 >0,
 \end{align*}
 and $\delta_k^2 > 4\gamma_k\eta_k$. 
@@ -1243,9 +1287,9 @@ Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a
  \[
  \|\widehat{A_k} - A_k\|_2 \le \|A_{ct}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_k}{\delta_k}
  \le 
- \frac{2\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|E\|_2.
+ \frac{4\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A) } \|E\|_2.
  \]
- By condition, for $i\neq j$,  $\frac{4\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \widehat{A_i}\|_2 + \|A_j - \widehat{A_i}\|_2$, thus $\widehat{A_i} \neq \widehat{A_j}$.  Summing up the upper bound gets the result. 
+ By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \widehat{A_i}\|_2 + \|A_j - \widehat{A_i}\|_2$, thus $\widehat{A_i} \neq \widehat{A_j}$.  Summing up the upper bound gets the result. 
 \end{proof}
 
 The next lemma shows that $\widehat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix $2$-norm.
@@ -1271,7 +1315,7 @@ Now we can estimate the variance between $XY^{-1}$ and $(X+E_1)(Y+E_2)^{-1}$.
 \label{lem:Mvariation}
 Assume that $\sigma_{\min}(X)\ge2\|E\|_2$, then
 \[
-\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{\|E_1\|_2}{\sigma_{\min}(Y)} + 4\|X\|_2\|Y\|_2^2\|E_2\|_2.
+\| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{2\|X\|_2}{\sigma_{\min}^2(Y)}\|E_2\|_2 + \frac{2}{\sigma_{\min}(Y)}\|E_1\|_2.
 \]
 \end{lemma}
 \begin{proof}
@@ -1367,16 +1411,16 @@ Define $T$ as follows. For $i = 1,2$,
 \label{eq:T}
 T_i = \frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi_i)) = R^*RK^{-1}D_{\psi}^{-2}\Lambda_i(R^*R)^{\top},
 \end{equation}
-where $\Lambda_i = \text{diag}\left((\phi_i^{\top}R^*R_1)^2, \cdots, (\phi_i^{\top}R^*R_d)^2\right)$, and $T = T_1T_2^{-1}$. 
+where $\Lambda_i = \text{diag}\left((\phi_i^{\top}R^*R_1)^2, \cdots, (\phi_i^{\top}R^*R_d)^2\right)$. 
 Then $T = R^*R \Lambda_1 \Lambda_2^{-1} (R^*R)^{\top} = R^*R \Lambda (R^*R)^{\top}$, where $\Lambda = \text{diag}\left((\frac{\phi_1^{\top}R^*R_1}{\phi_2^{\top}R^*R_1})^2, \cdots, (\frac{\phi_1^{\top}R^*R_d}{\phi_2^{\top}R^*R_d})^2\right)$.
 
 \begin{lemma}
 \label{lem:Teigenvectorvariation}
 Denote $\widehat{T} = T+E$ be a perturbation of matrix $T$, where $T$ is defined in Equation \eqref{eq:T}. 
-Assume $\widehat{T}$ has distinct eigenvalues. Let $\delta_R = \gamma_R -  2\|E\|_2$. 
+Assume $\widehat{T}$ has distinct eigenvalues. 
 If $\gamma_R > 4 \sqrt{2}\|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$
 \[
-\| c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{2}{\delta_R} \|E\|_2\,,
+\| c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|E\|_2\,,
 \]
 where $\widehat{R}$ is the matrix of eigenvectors of $\widehat{T}$. 
 \end{lemma}
@@ -1385,7 +1429,7 @@ Note that
 \[
 \min_{i\neq j} \|(R^*R)_i - (R^*R)_j\|_2 = \sqrt{2}>\frac{8}{\gamma_R}\|E\|_2 > \frac{4}{\delta_R}\|E\|_2.
 \]
-The rest of the proof is similar to the one of Lemma \ref{lem:eigenvectorvariation}.
+The rest of the proof is by Lemma \ref{lem:eigenvectorvariation}.
 
 \if0
 Similar to Lemma \ref{lem:eigenvectorvariation}, for $1\le k\le d$ assume 
@@ -1429,7 +1473,7 @@ Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a
 It remains to bound $\|E\|_2$.
 \begin{lemma}
 \label{lem:Binversenablavariation}
-Given that $\bar{\xi}\le 1/2$, then
+Given that $\bar{\xi}\le 1/2$, then for $\phi \in \{\phi_1, \phi_2\}$,
 \[
 \frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
 \le \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi} 
@@ -1448,41 +1492,41 @@ Note that by Lemma \ref{lem:nablavariation} $\|E\|_2 = \frac{1}{12}\|\nabla^2 f(
 To Bound $\frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2$, we will need the following properties which are straightforward based on Lemma \ref{lem:BhatinverseB}: 
 for $1\le i, j\le d$,
 \begin{itemize}
-\item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\widehat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le \frac{1}{\sqrt{1-\bar{\xi}}\tilde{\kappa}_{\min}^{1/2}}$;
-\item $|(\widehat{B}^{-1}A)_{ij}| \le \frac{1}{\sqrt{1-\bar{\xi}}\tilde{\kappa}_{\min}^{1/2}}$;
+\item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\widehat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le \frac{1}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}A_{(2,\min)}}$;
+\item $|(\widehat{B}^{-1}A)_{ij}| \le \frac{1}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}A_{(2,\min)}}$;
 \end{itemize}
 Thus for $1\le i, j\le d$,
 \[
 |(G_1(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_1}(\widehat{B}^{-\top}\phi))_{i,j}| \le
-\frac{d^4}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^{2}}D_4(\nu,\nu_t).
+\frac{d^4}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}D_4(\nu,\nu_t).
 \]
 Also note that for $1\le i, j\le d$ and any distribution $\Prob{y}$ of $y$,
 \begin{itemize}
-\item $|\int(\phi^{\top}\widehat{B}^{-1}y)(\widehat{B}^{-1})_{i:}y d\Prob{y}| \le \frac{d\tilde{C}^2}{(1-\bar{\xi})\tilde{\kappa}_{\min}}$; 
-\item $|\int(\phi^{\top}\widehat{B}^{-1}y)^2 d\Prob{y}|\le \frac{d\tilde{C}^2}{(1-\bar{\xi})\tilde{\kappa}_{\min}}$;
-\item $|\int(\widehat{B}^{-1})_{i:}yy^{\top}(\widehat{B}^{-\top})_{:j}d\Prob{y}|\le \frac{d\tilde{C}^2}{(1-\bar{\xi})\tilde{\kappa}_{\min}}$.
+\item $|\int(\phi^{\top}\widehat{B}^{-1}y)(\widehat{B}^{-1})_{i:}y d\Prob{y}| \le \frac{dC^2}{(1-\bar{\xi})\kappa_{\min}A^2_{(2,\min)}}$; 
+\item $|\int(\phi^{\top}\widehat{B}^{-1}y)^2 d\Prob{y}|\le \frac{dC^2}{(1-\bar{\xi}))\kappa_{\min}A^2_{(2,\min)}}$;
+\item $|\int(\widehat{B}^{-1})_{i:}yy^{\top}(\widehat{B}^{-\top})_{:j}d\Prob{y}|\le \frac{dC^2}{(1-\bar{\xi}))\kappa_{\min}A^2_{(2,\min)}}$.
 \end{itemize}
 Thus, 
 \[
 |(G_2(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_2}(\widehat{B}^{-\top}\phi))_{i,j}| \le
-\frac{2d^3\tilde{C}^2}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}D_2(\nu,\nu_t),
+\frac{2d^3C^2}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}D_2(\nu,\nu_t),
 \]
 and 
 \[
 |(G_3(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_3}(\widehat{B}^{-\top}\phi))_{i,j}| \le
-\frac{2d^3\tilde{C}^2}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}D_2(\nu,\nu_t).
+\frac{2d^3C^2}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}D_2(\nu,\nu_t).
 \]
 Therefore for $1\le i,j\le d$,
 \[
 \frac{1}{12}\left|\left(\nabla^2(f(\widehat{B}^{-\top}\phi))\right)_{i,j} - \left(\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\right)_{i,j}\right| 
 \le
-\frac{d^4}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi, 
+\frac{d^4}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}\xi, 
 \]
 thus, 
 \begin{equation}
 \label{eq:fBhatfhatBhat}
  \frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2 \le 
- \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi.
+ \frac{d^5}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}\xi.
 \end{equation}
 
 On the other hand, 
@@ -1504,16 +1548,28 @@ Combine Equation \eqref{eq:fBhatfhatBhat} and and Equation \eqref{eq:fBfBhat},
 \[
 \frac{1}{12}\|\nabla^2(f(B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
 \le 
- \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi}.
+ \frac{d^5}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi}.
 \]
 \end{proof}
 \begin{proof}[{\bf Proof of Theorem \ref{thm:Modefficiency}}]
-Note that by Lemma \ref{lem:Binversenablavariation}, 
+Note that by Lemma \ref{lem:Binversenablavariation}, for $i = 1,2$
 \[
-\|\widehat{T} - T\|_2 = \|\frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
-\le  \frac{4d^5}{\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi} = Q.
+\|\widehat{T}_i - T_i\|_2 = \|\frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le  \frac{4d^5}{\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi} = Q.
 \]
-Then by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$
+Also  note that 
+$
+\sigma_{\min}(T_i) = \frac{\min_i (\phi^{\top}R^*R_i)^2}{\kappa_{\max}A_{(2,\max)}}.
+$
+By Lemma \ref{lem:dmin}, with probability at least $\frac14$, $\min_i (\phi^{\top}R^*R_i)^2 \ge \frac{\pi}{2d^2}$, thus 
+\[
+Q\le \frac{\pi}{4d^2\kappa_{\max}A_{(2,\max)}} \le \frac{\min_i (\phi^{\top}R^*R_i)^2}{2\kappa_{\max}A_{(2,\max)}} =\frac12 \sigma_{\min}(T_i).
+\]
+Then by lemma \ref{lem:Mvariation}, since$\|T_i\|_2 = \|K^{-1}D_{\psi}^{-2}\Lambda_i\|_2 \le \frac{1}{\kappa_{\min}A_{(2,\min)}}$,
+\[
+\|\widehat{T} - T\|_2 \le \frac{2\|X\|_2}{\sigma_{\min}^2(Y)}\|E_2\|_2 + \frac{2}{\sigma_{\min}(Y)}\|E_1\|_2 \le 
+\]
+by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$
 \[
 \|c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{2}{\delta_R} \|\widehat{T} - T\|_2\,,
 \]
