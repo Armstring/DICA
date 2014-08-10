@@ -94,7 +94,7 @@
 \usepackage{algorithmic}
 \usepackage{babel}
 
-
+\newcommand{\Epsi}{\mathbb{E}_{\psi}}
 \newcommand{\cN}{\cal{N}}
 \renewcommand{\P}{{\mathcal P}}
 \newcommand{\E}{\mathbb{E}}
@@ -926,18 +926,14 @@ In fact, $\gamma$ affects not only the theoretical upper bound in \ref{thm:effic
 
 Note that $\gamma$ is invariant to the norm of $A_i$, and all the $\psi^{\top}A_i$s are not 0. 
 Thus, we can rescale $A_i$, such that $|\psi^{\top}A_i| = 1$. 
- To investigate how much each $A_i$ is rescaled, we are interested in the behavior of $\min_i |\psi^{\top}A_i|$.
-\begin{lemma}
-\label{lem:dmin}
-$\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
-\end{lemma}
+
 
 Now that $\gamma = |(\phi^{\top}A_i)^2 - (\phi^{\top}A_j)^2|$, this quantity could be bounded from below with constant probability, as follows. We denote this event by $E_{\gamma}$.
 \begin{thm}
 \label{thm:gammabound}
-With probability at least $1/2$,
+With probability at least $1/8$,
 \[
-\gamma \ge \frac{2A_{(2,\min)}\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^2+d)}.
+\gamma \ge \frac{\sqrt{2\pi}A_{(2,\min)}\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^3+d^2)}.
 \]
 \end{thm}
 \begin{proof}
@@ -1085,7 +1081,7 @@ The new algorithm, called Determined ICA, is as follows.
 
 Let 
 \[
-\bar{\xi} =  \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}^2(A)\kappa_{\min}A^2_{(2,\min)}} \xi
+\bar{\xi} =  \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi
 \] 
 and 
 \begin{equation}
@@ -1163,6 +1159,7 @@ where $\widehat{x} = \widehat{A}^{-1}y$, and $|\widehat{A}|$ is the absolute val
 \appendix
 \section{Appendix}
 \subsection{Proof of Lemma \ref{lem:nablavariation}}
+\label{proofoflemma}
 Note that in \cref{alg:icaHsu}, 
 \[
 \nabla^2 f(\eta) = G_1(\eta) - G_2(\eta) -2G_3(\eta),
@@ -1313,7 +1310,7 @@ So $\|\widehat{X}^{-1}\|_2 \le \frac{1}{\sigma_{\min}(X) - \|E\|_2} \le \frac{2}
 Now we can estimate the variance between $XY^{-1}$ and $(X+E_1)(Y+E_2)^{-1}$.
 \begin{lemma}
 \label{lem:Mvariation}
-Assume that $\sigma_{\min}(X)\ge2\|E\|_2$, then
+Assume that $\sigma_{\min}(Y)\ge2\|E_2\|_2$, then
 \[
 \| XY^{-1} - (X+E_1)(Y+E_2)^{-1}\|_2 \le \frac{2\|X\|_2}{\sigma_{\min}^2(Y)}\|E_2\|_2 + \frac{2}{\sigma_{\min}(Y)}\|E_1\|_2.
 \]
@@ -1330,40 +1327,46 @@ Applying \cref{lem:inversevariation},
 
 
 Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top} = AKD_{\psi}A^{\top}$,  where $D_{\psi} = \text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$. 
-Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$ 
-
+Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$. 
+The following lemma investigate the behavior of $\min_i |\psi^{\top}A_i|$.
+\begin{lemma}
+\label{lem:dmin}
+$\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
+\end{lemma}
+Denote this event by $\Epsi$.
 \begin{lemma}
 \label{lem:boundsigmaminnabla}
-$\sigma_{\min}(\nabla^2f(\psi)) \ge \kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$, and 
-$\sigma_{\max}(\nabla^2f(\psi)) \le \kappa_{\max}A^2_{(2,\max)}\sigma_{\max}^2(A)$.
+$\sigma_{\max}(\nabla^2f(\psi)) \le \kappa_{\max}A^2_{(2,\max)}\sigma_{\max}^2(A)$. 
+Also under the event $\Epsi$, $\sigma_{\min}(\nabla^2f(\psi)) \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$.
 \end{lemma}
 \begin{proof}
-For any unit vector $v$, $v^{\top}AD_{\psi}KA^{\top}v \ge \kappa_{\min} A^2_{(2,\min)}\|v^{\top}A\|_2^2 \ge \kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Similar calculation for the maximum singular value.
+For any unit vector $v$, $v^{\top}AD_{\psi}KA^{\top}v \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min} A^2_{(2,\min)}\|v^{\top}A\|_2^2 \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Similar calculation for the maximum singular value.
 \end{proof}
 
 Lastly, we still need to bound $\|M - \widehat{M}\|_2$.
 \begin{lemma}
 \label{lem:Mvariation_alg}
-Given that $\xi \le \frac12\frac{\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, 
+Given that $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$, 
 \[ 
-\|M - \widehat{M}\|_2 \le \left( \frac{d^5 A_{(2,\max)}^2A_{\max}^2} {\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}+ 4d^5A_{\max}^2 \sigma_{\max}^6(A)\tilde{\kappa}_{\max}^3A_{(2,\max)}^4\right) \xi.
+\|M - \widehat{M}\|_2 \le \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2}\sqrt{\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
 \]
 \end{lemma}
 \begin{proof}
 Let $E_1 = \nabla^2 f(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le d^5 A_{(2,\max)}^2A_{\max}^2\xi$.
 Note $\nabla^2f(\phi) = AKD_{\phi} A^{\top}$.
-Given that $\xi \le \frac12 \frac{\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$, the condition in Lemma \ref{lem:Mvariation} holds. Then apply Lemma \ref{lem:Mvariation} and \cref{lem:nablavariation}, we have
+Given that $\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$, the condition in Lemma \ref{lem:Mvariation} holds. 
+Then apply Lemma \ref{lem:Mvariation} and \cref{lem:nablavariation}, we have
 \begin{align*}
 \|M - \widehat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1} \|_2 \\
 \le \, &\frac{2\|\nabla^2 f(\phi)\|_2}{\sigma_{\min}^2(\nabla^2f(\psi))}\|E_2\|_2 + \frac{2}{\sigma_{\min}(\nabla^2f(\psi))}\|E_1\|_2 \\
-\le \, & 2\left( \frac{A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} + 
-\frac{1}{\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}
+\le \, & 2\left( \frac{2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} + 
+\frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}
 \right)d^5 A_{(2,\max)}^2A_{\max}^2\xi
 \end{align*}
 
 Thus, 
 \[ 
-\|M - \widehat{M}\|_2 \le \frac{2d^5A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2d^5A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
+\|M - \widehat{M}\|_2 \le \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2}\sqrt{\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
 \]
 \end{proof}
 \begin{proof}[{\bf Proof of Theorem  \ref{thm:efficiency}}]
@@ -1379,41 +1382,10 @@ Thus,
 \end{proof}
 
 \subsection{Proof of Theorem \ref{thm:Modefficiency}}
-We need to introduce three lemmas before we can prove the theorem. Without loss of generality, we assume $\kappa_i>0$ for $1\le i \le d$.
+We need to introduce some lemmas before we can prove the theorem. Without loss of generality, we assume $\kappa_i>0$ for $1\le i \le d$.
 Assume $B$ is a matrix such that $\nabla^2 (f(\psi)) = AKD_{\psi}A^{\top}\stackrel{\Delta}{=:}BB^{\top}$. 
 So there exists an orthonormal matrix $R$ such that $B =AK^{1/2}D_{\psi}^{1/2}R^{\top}$. 
-\begin{lemma}
-\label{lem:BhatinverseB}
-Given that $\xi \le \frac{\sigma_{\min}^2(A)\kappa_{\min}A^2_{(2,\min)}}{2d^5A_{(2,\max)}^2A_{\max}^2}$, there exist an orthonormal matrix $R^*$ such that 
-\[
-\|\widehat{B}^{-1}B - R^*\|_2 \le \bar{\xi}.
-\]
-\end{lemma}
-\begin{proof}
-Note that $\|B\|_2 \ge \sigma_{\min}(A)\kappa^{1/2}_{\min}A_{(2,\min)}$. For any unit vector $x$,
-\begin{align*}
-& x^{\top} B^{-1}\widehat{B}\widehat{B}^{\top}B^{-\top}x - x^{\top}x \\
-& \quad  = x^{\top}  B^{-1} ( \widehat{B}\widehat{B}^{\top} -BB^{\top} )B^{-\top}x \\
-& \quad  \le \|B^{-\top}x \|_2^2 \|E\|_2 \\
-& \quad  \le \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}^2(A)\kappa_{\min}A^2_{(2,\min)}} \xi = \bar{\xi}.
-\end{align*}
-Thus given that $\xi \le \frac{\sigma_{\min}^2(A)\kappa_{\min}A^2_{(2,\min)}}{2d^5A_{(2,\max)}^2A_{\max}^2}$, $\bar{\xi} \le 1/2$. 
-Also every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
-\[
-\|\widehat{B}^{-1}B - R^*\|_2 \le \max \left\{ \left|1-\frac{1}{\sqrt{1+\xi}}\right| , \left|\frac{1}{\sqrt{1-\xi}}-1\right| \right\} \le \bar{\xi}.
-\]
-\end{proof}
-
-
-Moreover, note that $f(R^*B^{-\top}\phi) = \sum_i\kappa_i(\phi^{\top}R^*B^{-1}A)_i^4 = \sum_i \kappa_i(\phi^{\top}R^*RK^{-1/2}D_{\psi}^{-1/2})_i^4=\sum_i\kappa_i^{-1}D_{\psi,i}^{-2}(\phi^{\top}R^*R)_i^4$.
-Define $T$ as follows. For $i = 1,2$, 
-\begin{equation}
-\label{eq:T}
-T_i = \frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi_i)) = R^*RK^{-1}D_{\psi}^{-2}\Lambda_i(R^*R)^{\top},
-\end{equation}
-where $\Lambda_i = \text{diag}\left((\phi_i^{\top}R^*R_1)^2, \cdots, (\phi_i^{\top}R^*R_d)^2\right)$. 
-Then $T = R^*R \Lambda_1 \Lambda_2^{-1} (R^*R)^{\top} = R^*R \Lambda (R^*R)^{\top}$, where $\Lambda = \text{diag}\left((\frac{\phi_1^{\top}R^*R_1}{\phi_2^{\top}R^*R_1})^2, \cdots, (\frac{\phi_1^{\top}R^*R_d}{\phi_2^{\top}R^*R_d})^2\right)$.
-
+Similarly, we have the stability of the eigen-decomposition, as follows. 
 \begin{lemma}
 \label{lem:Teigenvectorvariation}
 Denote $\widehat{T} = T+E$ be a perturbation of matrix $T$, where $T$ is defined in Equation \eqref{eq:T}. 
@@ -1430,108 +1402,115 @@ Note that
 \min_{i\neq j} \|(R^*R)_i - (R^*R)_j\|_2 = \sqrt{2}>\frac{8}{\gamma_R}\|E\|_2 > \frac{4}{\delta_R}\|E\|_2.
 \]
 The rest of the proof is by Lemma \ref{lem:eigenvectorvariation}.
-
-\if0
-Similar to Lemma \ref{lem:eigenvectorvariation}, for $1\le k\le d$ assume 
-\[
-R_{(k)}^{\top} E R_{(k)} =  
-\left(
-\begin{array}{cc}
-F_{1k} & F_{2k}\\
-F_{3k} & F_{4k} \\
-\end{array} 
-\right), 
-\] 
-where $R_{(k)}$ is the matrix $(R_k, R_1, \cdots, R_{k-1}, R_{k+1}, \cdots, R_d)$. 
-Note that by definition, $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|R_{(k)}^{\top} E R_{(k)}\|_2\le\|E\|_2$,
- $\|F_{3k}\|_2\le\|R_{(k)}^{-1}ER_{k}\|_2\le\|E\|_2$,
- and $\|F_{2k}\|_2\le\|(R^{\top})_kER_{(k)}\|_2\le\|E\|_2$.
-Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{3k}\|_2$, and 
-\[
-\delta_k = \min_{j: j\neq k} 
-\left\vert \left(\phi^{\top}R_k\right)^2 -\left( \phi^{\top}R_j\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\,.
-\]
-Thus 
-\begin{align*}
-\delta_k & = \min_{j: j\neq k} 
-\left\vert \left(\phi^{\top}R_k\right)^2 -\left( \phi^{\top}R_j\right)^2 \right\vert
- - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
-	& \ge \min_{j: j\neq k} 
-	\left\vert \left(\phi^{\top}R_k\right)^2 -\left( \phi^{\top}R_j\right)^2 \right\vert - 2\|E\|_2\\
-	& \ge  \gamma_R -  2 \|E\|_2\\
-	& >  2\|E\|_2 >0,
-\end{align*}
-and $\delta_k^2 > 4\gamma_k\eta_k$. 
-Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$ such that there exists one of a eigenvector $\widehat{R_k}$ of $\widehat{T}$ satisfying
- \[
- \|\widehat{R_k} - R_k\|_2 \le \|R\|_2 \|v\|_2 \le 2\frac{\gamma_k}{\delta_k}.\le \frac{2}{\delta_R} \|E\|_2.
- \]
- By condition, for $i\neq j$,  $\frac{4}{\delta_R} \|E\|_2 < \|R_i - R_j\|_2\le \|R_i - \widehat{R_i}\|_2 + \|R_j - \widehat{R_i}\|_2$, thus $\widehat{R_i} \neq \widehat{R_j}$.  Summing up the upper bound gets the result. 
- \fi
 \end{proof}
-
-It remains to bound $\|E\|_2$.
+It still remains to bound $\|E\|_2$. The following lemma shows the stability of the square root of matrix.
 \begin{lemma}
-\label{lem:Binversenablavariation}
-Given that $\bar{\xi}\le 1/2$, then for $\phi \in \{\phi_1, \phi_2\}$,
+\label{lem:matrixsquareroot}
+Given two symmetric matrices $X$ and $\widehat{X} = X + E$, where $X = HH^{\top}$ and $\widehat{X} = \widehat{H}\widehat{H}^{\top}$, such that $|X^{-1}\|_2 \|E\|_2 < 1$, then every singular value of $H^{-1}\widehat{H}$ is bounded between $1- \|X^{-1}\|_2 \|E\|_2$ and $1+ \|X^{-1}\|_2 \|E\|_2$, 
+and every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{1 + \|X^{-1}\|_2 \|E\|_2}$ and $\frac{1}{1 - \|X^{-1}\|_2 \|E\|_2}$. 
+\end{lemma}
+\begin{proof}
+For any unit vector $x$,
+\begin{align*}
+& x^{\top}H^{-1}\widehat{H}\widehat{H}^{\top}H^{-\top}x - x^{\top}x\\
+& \quad = x^{\top}H^{-1}\left( \widehat{H}\widehat{H}^{\top} - HH^{\top}\right)H^{-\top}x \\
+& \quad \le \|H^{-\top}x\|^2_2 \|E\|_2 \\
+& \quad \le \|X^{-1}\|_2 \|E\|_2.
+\end{align*}
+Thus every singular value of $H^{-1}\widehat{H}$ is bounded between $1- \|X^{-1}\|_2 \|E\|_2$ and $1+ \|X^{-1}\|_2 \|E\|_2$, 
+and every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{1 + \|X^{-1}\|_2 \|E\|_2}$ and $\frac{1}{1 - \|X^{-1}\|_2 \|E\|_2}$.
+\end{proof}
+Applying Lemma \ref{lem:matrixsquareroot}, we can get the stability of $B$, as follows.
+\begin{lemma}
+\label{lem:BhatinverseB}
+Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{2\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$, under the event $\Epsi$ there exists an orthonormal matrix $R^*$ such that 
 \[
-\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
-\le \frac{d^5}{(1-\bar{\xi})^2\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi} 
-\le \frac{4d^5}{\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi} .
+\|\widehat{B}^{-1}B - R^*\|_2 \le \bar{\xi}.
 \]
 \end{lemma}
 \begin{proof}
-Note that by Lemma \ref{lem:nablavariation} $\|E\|_2 = \frac{1}{12}\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)\|_2 \le d^5  A_{(2,\max)}^2A_{\max}^2\xi$, and 
+By Lemma \ref{lem:matrixsquareroot}, every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1 + \|\left(\nabla^2f(\phi)\right)^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|\left(\nabla^2f(\phi)\right)^{-1}\|_2 \|E\|_2}}$. 
+Note that by Lemma \ref{lem:boundsigmaminnabla},  under the event $\Epsi$, $\|\nabla^2f(\phi)\|_2 \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Thus,
 \[
-\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\|\left(\nabla^2f(\phi)\right)^{-1}\|_2 \|E\|_2 \le \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi = \bar{\xi}.
+\]
+Also note that  given $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{2\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$, $\bar{\xi} \le 1/2$. 
+Thus every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
+\[
+\|\widehat{B}^{-1}B - R^*\|_2 \le \max \left\{ \left|1-\frac{1}{\sqrt{1+\xi}}\right| , \left|\frac{1}{\sqrt{1-\xi}}-1\right| \right\} \le \bar{\xi}.
+\]
+\end{proof}
+
+
+Moreover, $f(R^*B^{-\top}\phi) = \sum_i\kappa_i(\phi^{\top}R^*B^{-1}A)_i^4 = \sum_i \kappa_i(\phi^{\top}R^*RK^{-1/2}D_{\psi}^{-1/2})_i^4=\sum_i\kappa_i^{-1}D_{\psi,i}^{-2}(\phi^{\top}R^*R)_i^4$.
+Define $T$ as follows. For $i = 1,2$, 
+\begin{equation}
+\label{eq:T}
+T_i = \frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi_i)) = R^*RK^{-1}D_{\psi}^{-2}\Lambda_i(R^*R)^{\top},
+\end{equation}
+where $\Lambda_i = \text{diag}\left((\phi_i^{\top}R^*R_1)^2, \cdots, (\phi_i^{\top}R^*R_d)^2\right)$. 
+Then $T = R^*R \Lambda_1 \Lambda_2^{-1} (R^*R)^{\top} = R^*R \Lambda (R^*R)^{\top}$, where $\Lambda = \text{diag}\left((\frac{\phi_1^{\top}R^*R_1}{\phi_2^{\top}R^*R_1})^2, \cdots, (\frac{\phi_1^{\top}R^*R_d}{\phi_2^{\top}R^*R_d})^2\right)$.
+\begin{lemma}
+\label{lem:Binversenablavariation}
+Given that $\bar{\xi}\le 1/2$, then under the event $\Epsi$ for $\phi \in \{\phi_1, \phi_2\}$,
+\[
+\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\le \frac{4d^9}{(1-\bar{\xi})^2\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi} 
+\le\frac{16d^9}{\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi} .
+\]
+\end{lemma}
+\begin{proof}
+Note that by Lemma \ref{lem:nablavariation} $\|E\|_2 = \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)\|_2 \le d^5  A_{(2,\max)}^2A_{\max}^2\xi$, and 
+\[
+\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
 \le 
-\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2
-+ \frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2.
+\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2
++ \|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2.
 \]
 
-To Bound $\frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2$, we will need the following properties which are straightforward based on Lemma \ref{lem:BhatinverseB}: 
-for $1\le i, j\le d$,
+To Bound $\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2$, we will need the following properties which are straightforward based on Lemma \ref{lem:BhatinverseB}: 
+under the event $\Epsi$ for $1\le i, j\le d$,
 \begin{itemize}
-\item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\widehat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le \frac{1}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}A_{(2,\min)}}$;
-\item $|(\widehat{B}^{-1}A)_{ij}| \le \frac{1}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}A_{(2,\min)}}$;
+\item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\widehat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le \frac{\sqrt{2}d}{\sqrt{1-\bar{\xi}}\sqrt{\pi}\kappa_{\min}^{1/2}A_{(2,\min)}}$;
+\item $|(\widehat{B}^{-1}A)_{ij}| \le \frac{\sqrt{2}d}{\sqrt{1-\bar{\xi}}\sqrt{\pi}\kappa_{\min}^{1/2}A_{(2,\min)}}$;
 \end{itemize}
 Thus for $1\le i, j\le d$,
 \[
 |(G_1(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_1}(\widehat{B}^{-\top}\phi))_{i,j}| \le
-\frac{d^4}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}D_4(\nu,\nu_t).
+\frac{4d^8}{(1-\bar{\xi})^2\pi^2\kappa_{\min}^2A^4_{(2,\min)}}D_4(\nu,\nu_t).
 \]
 Also note that for $1\le i, j\le d$ and any distribution $\Prob{y}$ of $y$,
 \begin{itemize}
-\item $|\int(\phi^{\top}\widehat{B}^{-1}y)(\widehat{B}^{-1})_{i:}y d\Prob{y}| \le \frac{dC^2}{(1-\bar{\xi})\kappa_{\min}A^2_{(2,\min)}}$; 
-\item $|\int(\phi^{\top}\widehat{B}^{-1}y)^2 d\Prob{y}|\le \frac{dC^2}{(1-\bar{\xi}))\kappa_{\min}A^2_{(2,\min)}}$;
-\item $|\int(\widehat{B}^{-1})_{i:}yy^{\top}(\widehat{B}^{-\top})_{:j}d\Prob{y}|\le \frac{dC^2}{(1-\bar{\xi}))\kappa_{\min}A^2_{(2,\min)}}$.
+\item $|\int(\phi^{\top}\widehat{B}^{-1}y)(\widehat{B}^{-1})_{i:}y d\Prob{y}| \le \frac{2d^3C^2}{(1-\bar{\xi})\pi\kappa_{\min}A^2_{(2,\min)}}$; 
+\item $|\int(\phi^{\top}\widehat{B}^{-1}y)^2 d\Prob{y}|\le \frac{2d^3C^2}{(1-\bar{\xi})\pi\kappa_{\min}A^2_{(2,\min)}}$;
+\item $|\int(\widehat{B}^{-1})_{i:}yy^{\top}(\widehat{B}^{-\top})_{:j}d\Prob{y}|\le \frac{2d^3C^2}{(1-\bar{\xi}))\pi\kappa_{\min}A^2_{(2,\min)}}$.
 \end{itemize}
-Thus, 
+Thus, similar to \ref{proofoflemma},
 \[
 |(G_2(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_2}(\widehat{B}^{-\top}\phi))_{i,j}| \le
-\frac{2d^3C^2}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}D_2(\nu,\nu_t),
+\frac{4d^7C^2}{(1-\bar{\xi})^2\pi^2\kappa_{\min}^2A^4_{(2,\min)}}D_2(\nu,\nu_t),
 \]
 and 
 \[
 |(G_3(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_3}(\widehat{B}^{-\top}\phi))_{i,j}| \le
-\frac{2d^3C^2}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}D_2(\nu,\nu_t).
+\frac{4d^7C^2}{(1-\bar{\xi})^2\pi^2\kappa_{\min}^2A^4_{(2,\min)}}D_2(\nu,\nu_t).
 \]
 Therefore for $1\le i,j\le d$,
 \[
-\frac{1}{12}\left|\left(\nabla^2(f(\widehat{B}^{-\top}\phi))\right)_{i,j} - \left(\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\right)_{i,j}\right| 
+\left|\left(\nabla^2(f(\widehat{B}^{-\top}\phi))\right)_{i,j} - \left(\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\right)_{i,j}\right| 
 \le
-\frac{d^4}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}\xi, 
+\frac{4d^8}{(1-\bar{\xi})^2\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi, 
 \]
 thus, 
 \begin{equation}
 \label{eq:fBhatfhatBhat}
- \frac{1}{12}\|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2 \le 
- \frac{d^5}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}\xi.
+ \|\nabla^2(f(\widehat{B}^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2 \le 
+ \frac{4d^9}{(1-\bar{\xi})^2\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi.
 \end{equation}
 
 On the other hand, 
 \begin{align*}
-\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2 
+\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2 
 = & \, \|R^*B^{-1}A\tilde{K}A^{\top}B^{-\top}(R^*)^{\top}- \widehat{B}^{-1}A\tilde{K}A^{\top}\widehat{B}^{-\top}\|_2 \\
 = & \, \|I - (\widehat{B}^{-1}B)B^{-1}A\tilde{K}A^{\top}B^{-\top}(\widehat{B}^{-1}B)^{\top}\|_2 \\
 = & \, \|I - (\widehat{B}^{-1}B)(\widehat{B}^{-1}B)^{\top} \|_2\\
@@ -1541,14 +1520,65 @@ On the other hand,
 Thus,
 \begin{equation}
 \label{eq:fBfBhat}
-\frac{1}{12}\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2 \le 2\bar{\xi}. 
+\|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(f(\widehat{B}^{-\top}\phi))\|_2 \le 2\bar{\xi}. 
 \end{equation}
 
-Combine Equation \eqref{eq:fBhatfhatBhat} and and Equation \eqref{eq:fBfBhat},
+Combine Equation \eqref{eq:fBhatfhatBhat} and Equation \eqref{eq:fBfBhat},
 \[
-\frac{1}{12}\|\nabla^2(f(B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
+\|\nabla^2(f(B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
 \le 
- \frac{d^5}{(1-\bar{\xi})^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi}.
+\frac{4d^9}{(1-\bar{\xi})^2\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi}.
+\]
+\end{proof}
+
+\begin{lemma}
+sssssss
+\end{lemma}
+
+\begin{proof}
+
+\begin{align*}
+\|T - \widehat{T}\|_2  = & \| H^{\top}T_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2 \\
+ \le & 	\| H^{\top}T_2^{-1}H - \widehat{H}^{\top}T_2^{-1}\widehat{H}\|_2  
+ 		+ \|\widehat{H}^{\top}T_2^{-1}\widehat{H} - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2\\
+ \le & 	\|\widehat{H}\|_2^2\|T_2^{-1} - \widehat{T}_2^{-1}\|_2 +
+ 		 \| H^{\top}T_2^{-1}H - \widehat{H}^{\top}T_2^{-1}H\|_2 +
+ 		 \| \widehat{H}^{\top}T_2^{-1}H - \widehat{H}^{\top}T_2^{-1}\widehat{H}\|_2 \\
+ \le &  \|\widehat{H}\|_2^2\|T_2^{-1} - \widehat{T}_2^{-1}\|_2 + 
+ 		\|H\|_2^2\|T_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2 + 
+ 		\|H\|_2\|\widehat{H}\|_2\|T_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2
+\end{align*}
+
+\if0
+\begin{align*}
+\|T - \widehat{T}\|_2  = & \| H^{\top}T_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2 \\
+ \le & 	\| H^{\top}T_2^{-1}H - H^{\top}\widehat{T}_2^{-1}H\|_2  
+ 		+ \| H^{\top}\widehat{T}_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2\\
+ \le & 	\|H\|_2^2\|T_2^{-1} - \widehat{T}_2^{-1}\|_2 +
+ 		 \| H^{\top}\widehat{T}_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}H\|_2 +
+ 		 \| \widehat{H}^{\top}\widehat{T}_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2 \\
+ \le &  \|H\|_2^2\|T_2^{-1} - \widehat{T}_2^{-1}\|_2 + 
+ 		\|H\|_2^2\|\widehat{T}_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2 + 
+ 		\|H\|_2\|\widehat{H}\|_2\|\widehat{T}_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2
+\end{align*}
+\fi
+\[
+\|H^{-1}\|_2 = \|K^{-1}D_{\psi}^{-2}\Lambda_1\|_2 \le 
+\]
+\[
+\|\widehat{H}\|_2 \le \|H\|_2\|H^{-1}\widehat{H}\|_2
+\]
+\[
+\|H\|_2
+\]
+\[
+\|T_2^{-1} - \widehat{T}_2^{-1}\|_2
+\]
+\[
+\|T_2^{-1}\|_2
+\]
+\[
+\|I - H^{-1}\widehat{H}\|_2
 \]
 \end{proof}
 \begin{proof}[{\bf Proof of Theorem \ref{thm:Modefficiency}}]
