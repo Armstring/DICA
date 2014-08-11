@@ -94,6 +94,8 @@
 \usepackage{algorithmic}
 \usepackage{babel}
 
+\newcommand{\Ephione}{\mathbb{E}_{\phi_1}}
+\newcommand{\Ephitwo}{\mathbb{E}_{\phi_2}}
 \newcommand{\Epsi}{\mathbb{E}_{\psi}}
 \newcommand{\cN}{\cal{N}}
 \renewcommand{\P}{{\mathcal P}}
@@ -887,22 +889,27 @@ Let
 \label{def:kappa}
 \gamma =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert. 
 \end{equation}
-The performance of \citet{DHsu2012}'s algorithm depends on this parameter, as shown in the following theorem.
+The following lemma investigate the behavior of $\min_i |\psi^{\top}A_i|$.
+\begin{lemma}
+\label{lem:dmin}
+$\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
+\end{lemma}
+Denote this event by $\Epsi$. The performance of \citet{DHsu2012}'s algorithm depends on this parameter, as shown in the following theorem.
 
  \begin{thm}
  \label{thm:efficiency}
 Let 
  \[ 
- Q= \frac{2d^5A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2d^5A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
+ Q= \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2}\sqrt{\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
  \] 
  Assume the following conditions hold:
  \begin{enumerate}
  \item $\widehat{M}$ has distinct eigenvalues;
  \item $\gamma > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
  \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } Q$;
- \item $\xi \le \frac12\frac{\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{d^5 A_{(2,\max)}^2A_{\max}^2}$.
+ \item $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$.
   \end{enumerate}
- Then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
+ Then on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
  \[
   \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4}{\gamma} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q .
   \]
@@ -948,7 +955,7 @@ WLOG, assume that $\phi^{\top}A_i$ and $\phi^{\top}A_j$ are both positive. Thus,
 \end{align*}
 where the last inequality is by Lemma C.6 of \citep{anandkumar2012method}.
 
-Thus by lemma \ref{lem:dmin}, with probability at least $1/2\times 1/4 = 1/8$,
+Thus on the event $\Epsi$, with probability at least $1/2$,
 \[
 \gamma \ge \frac{\sqrt{2\pi}A_{(2,\min)}\min_{i\neq j}\|A_i-A_j\|_2}{\sqrt{ed}(d^3+d^2)}.
 \]
@@ -994,7 +1001,7 @@ We summarize the results above, as the following theorem.
  \label{thm:probEfficiency}
 Let 
  \[ 
- Q= \frac{2d^5A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2d^5A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
+ Q= \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2}\sqrt{\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
  \] 
  Assume the following conditions hold:
  \begin{enumerate}
@@ -1023,15 +1030,16 @@ Note that $M$ and $\widehat{M}$ are not symmetric. Thus in practice the algorith
 Intuitively, the chance of such $\widehat{M}$ happens will also depend on $\gamma$ (the minimal gaps between eigenvalues). 
 We modify \citet{DHsu2012}'s algorithm to avoid this problem in this section.
 
-Let $B$ be the matrix such that $\nabla^2f(\phi) = BB^{\top}$, thus $B = AK^{1/2}D_\phi^{1/2}R^{\top}$ for some orthonormal matrix $R$, where $D_{\phi} = \text{diag}\left((\phi^{\top}A_1)^2,\cdots, (\phi^{\top}A_d)^2\right)$.
+Assume $B$ is a matrix such that $\nabla^2 (f(\psi)) = AKD_{\psi}A^{\top}\stackrel{\Delta}{=:}BB^{\top}$. 
+So there exists an orthonormal matrix $R$ such that $B =AK^{1/2}D_{\psi}^{1/2}R^{\top}$, where $D_{\psi} = \text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$.
 Then we define $M$ in a new way:
 \[
-M = B^{\top}\nabla^2f(\psi)^{-1}B = R
+M = B^{-1}\nabla^2f(\phi)B^{-\top} = R
 \left(
 \begin{array}{ccc}
-\lambda_1 & & \\ %\left(\frac{\phi^{\top}A_1}{\psi^{\top}A_1}\right)^2 & &\\
+\lambda_1 & & \\ 
     & \ddots & \\
-    & & \lambda_d %\left(\frac{\phi^{\top}A_d}{\psi^{\top}A_d}\right)^2\\
+    & & \lambda_d 
 \end{array} 
 \right) 
 R^{\top}.
@@ -1046,15 +1054,15 @@ Thus the modified algorithm is as follows.
 \STATE Sample $\psi$ from the unit sphere of $\real^d$;
 \STATE Evaluate $\nabla^2\widehat{f}(\psi)$, \\
 \quad where $\widehat{m_p}(\eta) = \frac{1}{t}\sum_{k=1}^{t} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
+\STATE Compute $\widehat{B}$ such that $\nabla^2\widehat{f}(\psi) = \widehat{B}\widehat{B}^{\top}$;
 \STATE Sample $\phi$ from the unit sphere of $\real^d$;
-\STATE Compute $\widehat{B}$ such that $\nabla^2\widehat{f}(\phi) = \widehat{B}\widehat{B}^{\top}$;
-\STATE Compute $\widehat{M} = \widehat{B}^{\top}(\nabla^2\widehat{f}(\psi))^{-1}\widehat{B}$;
+\STATE Compute $\widehat{M} = \widehat{B}^{-1}(\nabla^2\widehat{f}(\phi))\widehat{B}^{-\top}$;
 \STATE Compute all the eigenvectors of $\widehat{M}$, $\widehat{R} = \{\mu_1,\ldots,\mu_d\}$;
 \STATE Return $\widehat{A} = \widehat{B}\widehat{R}$.
 \end{algorithmic}
 \end{algorithm}
 Note that $\widehat{M}$ is always symmetric, so it solves the complex output problem of \citet{DHsu2012}'s algorithm. However, the modified version still requires an eigen-decompostion of a matrix whose eigenvalues are $\lambda_i$'s. 
-Thus, Theoretical results similar to Theorem \ref{thm:efficiency} will still depend on $\gamma$.
+Thus, we will still have a theoretical result depending on $\gamma$.
 
 
 \subsection{Modified \citet{DHsu2012}'s algorithm}
@@ -1080,39 +1088,53 @@ The new algorithm, called Determined ICA, is as follows.
 \end{algorithm}
 
 Let 
-\[
-\bar{\xi} =  \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi
-\] 
+\begin{align*}
+& \bar{\xi} =   \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi, \\
+& \widehat{\xi} = \frac{16d^9}{\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi},
+\end{align*} 
 and 
 \begin{equation}
 \label{def:gammaR}
-\gamma_R =  \min_{i,j: i\neq j} \left\vert (\frac{\phi_1^{\top}(R^*R)_i}{\phi_2^{\top}(R^*R)_i})^2 - (\frac{\phi_1^{\top}(R^*R)_j}{\phi_2^{\top}(R^*R)_j})^2 \right\vert. 
+\gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi_1^{\top}(R^*R)_i}{\phi_2^{\top}(R^*R)_i}\right)^2 - \left(\frac{\phi_1^{\top}(R^*R)_j}{\phi_2^{\top}(R^*R)_j}\right)^2 \right\vert. 
 \end{equation}
-Similarly, the performance of the algorithm is guaranteed by the following theorem.
+Similar to Lemma \ref{lem:dmin}, with probability at least $1/4$, $\text{min}_i |\phi_1^{\top}R^*R_i| \ge \frac{\sqrt{2\pi}}{2d}$ (respectively $\text{min}_i |\phi_2^{\top}R^*R_i| \ge \frac{\sqrt{2\pi}}{2d}$). 
+Denote this event by $\Ephione$ (respectively $\Ephitwo$).
+The performance of the algorithm is guaranteed by the following theorem.
 \begin{thm}
 \label{thm:Modefficiency}
 Let 
  \[ 
- Q=  \frac{4d^5}{\tilde{\kappa}_{\min}^2}\xi + 2\bar{\xi},
- \]
- and $\delta_R = \gamma_R - 2Q$. 
+ Q=  \frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}}.
+ \] 
  Assume the following conditions hold:
  \begin{itemize}
  \item $\widehat{T}$ has distinct eigenvalues;
  \item $\gamma_R > 4\sqrt{2}Q$;
- \item $\xi \le \frac{\sigma_{\min}^2(A)\tilde{\kappa}_{\min}}{2d^5A_{(2,\max)}^2A_{\max}^2}$ (so $\bar{\xi} \le 1/2$).
+ \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{2\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$ (so $\bar{\xi} \le 1/2$);
+ \item $\widehat{\xi} \le \frac{\pi}{4d^2\kappa_{\max}A^4_{(2,\max)}}$.
  \end{itemize}
-There exists a permutation matrix $\Pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+Then on the event $\Epsi \cap \Ephione \cap \Ephitwo$, there exists a permutation matrix $\Pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
 \|\widehat{A}\Pi D(c) - A\|_2 
 \le 
-\sqrt{2}\sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2}\left( \bar{\xi} + \frac{4\sqrt{d}}{\gamma_R}Q\right). 
+\sqrt{2} A_{(2,\max)}\sigma_{\max}(A)\kappa_{\max}^{1/2} \left( \bar{\xi} + \frac{4\sqrt{d}}{\gamma_R}Q\right). 
 \]
 \end{thm}
-\begin{remark}
-The upper bound now depends on $\gamma_R$ rather than $\gamma$.
-Note that it can be bounded from below by $\frac{4}{\sqrt{ed}(d^2+d)}$ with probability at least $1/2$. The proof is similar to the proof of theorem \ref{thm:gammabound}.
-\end{remark}
+\subsubsection{Behavior of $\gamma_R$}
+Even though the behavior of $\gamma$ is unknown, we can analyze the behavior of $\gamma_R$. 
+Note that we can assume $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
+Thus, $\{\phi_1^{\top}R^*R_1, \cdots, \phi_1^{\top}R^*R_d,$ $\phi_2^{\top}R^*R_1, \cdots, \phi_2^{\top}R^*R_d\}$ are $2d$ independent standard normal random variables. 
+Let $Z_i = \frac{\phi_1^{\top}(R^*R)_i}{\phi_2^{\top}(R^*R)_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
+
+Moreover for any $1\le i, j \le d$, to analyze $\left\vert Z_i^2 - Z_j^2\right\vert
+$, WLOG we can assume both $Z_i$ and $Z_j$ are positive. Then, 
+\begin{align*}
+\gamma_R =	& \min_{i\neq j} \left\vert Z_i^2 - Z_j^2 \right\vert \\
+	=		& \min_{i\neq j}\left\vert Z_i - Z_i \right\vert	\left\vert Z_i + Z_i \right\vert \\
+	\ge 	& 2\min_i\vert Z_i\vert\min_{i\neq j} \left\vert Z_i - Z_j \right\vert.
+\end{align*}
+Recall that on the event $\Ephione$, $\min_i\vert Z_i \vert \ge \frac{\sqrt{2\pi}}{2d}$. 
+Also note that $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$ is the distribution of the minimal spacing of Cauchy random variables.
 
 \section{Simulation results}
 We investigate the performances of different ICA algorithms in a simulation setting. In particular, four algorithms are tested: 
@@ -1246,7 +1268,7 @@ If $\gamma > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j
 \]
 and therefore
 \[
-\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A) } \|E\|_2\,,
+\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A)} \|E\|_2\,,
 \]
 where $\widehat{A}$ is the matrix of eigenvectors of $\widehat{M}$. 
 \end{lemma}
@@ -1328,12 +1350,6 @@ Applying \cref{lem:inversevariation},
 
 Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top} = AKD_{\psi}A^{\top}$,  where $D_{\psi} = \text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$. 
 Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$. 
-The following lemma investigate the behavior of $\min_i |\psi^{\top}A_i|$.
-\begin{lemma}
-\label{lem:dmin}
-$\max_i |\psi^{\top}A_i| \le \max_i\|A_i\|_2 = A_{(2,\max)}$. Also, with probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
-\end{lemma}
-Denote this event by $\Epsi$.
 \begin{lemma}
 \label{lem:boundsigmaminnabla}
 $\sigma_{\max}(\nabla^2f(\psi)) \le \kappa_{\max}A^2_{(2,\max)}\sigma_{\max}^2(A)$. 
@@ -1346,7 +1362,7 @@ For any unit vector $v$, $v^{\top}AD_{\psi}KA^{\top}v \ge \frac{\sqrt{2\pi}}{2d}
 Lastly, we still need to bound $\|M - \widehat{M}\|_2$.
 \begin{lemma}
 \label{lem:Mvariation_alg}
-Given that $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$, 
+Given that $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$, then on the event $\Epsi$, 
 \[ 
 \|M - \widehat{M}\|_2 \le \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2}\sqrt{\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
 \]
@@ -1372,19 +1388,17 @@ Thus,
 \begin{proof}[{\bf Proof of Theorem  \ref{thm:efficiency}}]
  By \cref{lem:eigenvectorvariation}, 
   \[
-  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 2 \frac{\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|M - \widehat{M} \|_2, 
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A)}\|M - \widehat{M} \|_2, 
   \]
  and 
  \[
- \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 2d  \frac{\sigma_{\max}^2(A)}{\delta \sigma_{\min}(A) } \|M - \widehat{M} \|_2. 
+ \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d\frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A)}\|M - \widehat{M} \|_2. 
  \]
- Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by \cref{lem:Mvariation_alg}, $\|M-\widehat{M}\|_2 \le Q$. Also note that $\delta \ge \frac12 \gamma$.
+ Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by \cref{lem:Mvariation_alg}, $\|M-\widehat{M}\|_2 \le Q$.
 \end{proof}
 
 \subsection{Proof of Theorem \ref{thm:Modefficiency}}
 We need to introduce some lemmas before we can prove the theorem. Without loss of generality, we assume $\kappa_i>0$ for $1\le i \le d$.
-Assume $B$ is a matrix such that $\nabla^2 (f(\psi)) = AKD_{\psi}A^{\top}\stackrel{\Delta}{=:}BB^{\top}$. 
-So there exists an orthonormal matrix $R$ such that $B =AK^{1/2}D_{\psi}^{1/2}R^{\top}$. 
 Similarly, we have the stability of the eigen-decomposition, as follows. 
 \begin{lemma}
 \label{lem:Teigenvectorvariation}
@@ -1406,8 +1420,8 @@ The rest of the proof is by Lemma \ref{lem:eigenvectorvariation}.
 It still remains to bound $\|E\|_2$. The following lemma shows the stability of the square root of matrix.
 \begin{lemma}
 \label{lem:matrixsquareroot}
-Given two symmetric matrices $X$ and $\widehat{X} = X + E$, where $X = HH^{\top}$ and $\widehat{X} = \widehat{H}\widehat{H}^{\top}$, such that $|X^{-1}\|_2 \|E\|_2 < 1$, then every singular value of $H^{-1}\widehat{H}$ is bounded between $1- \|X^{-1}\|_2 \|E\|_2$ and $1+ \|X^{-1}\|_2 \|E\|_2$, 
-and every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{1 + \|X^{-1}\|_2 \|E\|_2}$ and $\frac{1}{1 - \|X^{-1}\|_2 \|E\|_2}$. 
+Given two symmetric matrices $X$ and $\widehat{X} = X + E$, where $X = HH^{\top}$ and $\widehat{X} = \widehat{H}\widehat{H}^{\top}$, such that $|X^{-1}\|_2 \|E\|_2 < 1$, then every singular value of $H^{-1}\widehat{H}$ is bounded between $\sqrt{1- \|X^{-1}\|_2 \|E\|_2}$ and $\sqrt{1+ \|X^{-1}\|_2 \|E\|_2}$, 
+and every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1 + \|X^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|X^{-1}\|_2 \|E\|_2}}$. 
 \end{lemma}
 \begin{proof}
 For any unit vector $x$,
@@ -1417,13 +1431,14 @@ For any unit vector $x$,
 & \quad \le \|H^{-\top}x\|^2_2 \|E\|_2 \\
 & \quad \le \|X^{-1}\|_2 \|E\|_2.
 \end{align*}
-Thus every singular value of $H^{-1}\widehat{H}$ is bounded between $1- \|X^{-1}\|_2 \|E\|_2$ and $1+ \|X^{-1}\|_2 \|E\|_2$, 
-and every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{1 + \|X^{-1}\|_2 \|E\|_2}$ and $\frac{1}{1 - \|X^{-1}\|_2 \|E\|_2}$.
+Thus every singular value of $H^{-1}\widehat{H}$ is bounded between $\sqrt{1- \|X^{-1}\|_2 \|E\|_2}$ and $\sqrt{1+ \|X^{-1}\|_2 \|E\|_2}$, 
+and every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1 + \|X^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|X^{-1}\|_2 \|E\|_2}}$.
 \end{proof}
 Applying Lemma \ref{lem:matrixsquareroot}, we can get the stability of $B$, as follows.
 \begin{lemma}
 \label{lem:BhatinverseB}
-Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{2\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$, under the event $\Epsi$ there exists an orthonormal matrix $R^*$ such that 
+Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{2\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
+(so $\bar{\xi} \le 1/2$), under the event $\Epsi$ there exists an orthonormal matrix $R^*$ such that 
 \[
 \|\widehat{B}^{-1}B - R^*\|_2 \le \bar{\xi}.
 \]
@@ -1449,14 +1464,16 @@ Define $T$ as follows. For $i = 1,2$,
 T_i = \frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi_i)) = R^*RK^{-1}D_{\psi}^{-2}\Lambda_i(R^*R)^{\top},
 \end{equation}
 where $\Lambda_i = \text{diag}\left((\phi_i^{\top}R^*R_1)^2, \cdots, (\phi_i^{\top}R^*R_d)^2\right)$. 
-Then $T = R^*R \Lambda_1 \Lambda_2^{-1} (R^*R)^{\top} = R^*R \Lambda (R^*R)^{\top}$, where $\Lambda = \text{diag}\left((\frac{\phi_1^{\top}R^*R_1}{\phi_2^{\top}R^*R_1})^2, \cdots, (\frac{\phi_1^{\top}R^*R_d}{\phi_2^{\top}R^*R_d})^2\right)$.
+Then $T = R^*R \Lambda_1 \Lambda_2^{-1} (R^*R)^{\top} = R^*R \Lambda (R^*R)^{\top}$, where $\Lambda = \text{diag}\left((\frac{\phi_1^{\top}R^*R_1}{\phi_2^{\top}R^*R_1})^2, \cdots, (\frac{\phi_1^{\top}R^*R_d}{\phi_2^{\top}R^*R_d})^2\right)$. 
+
 \begin{lemma}
 \label{lem:Binversenablavariation}
-Given that $\bar{\xi}\le 1/2$, then under the event $\Epsi$ for $\phi \in \{\phi_1, \phi_2\}$,
+Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{2\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
+(so $\bar{\xi} \le 1/2$), then under the event $\Epsi$ for $\phi \in \{\phi_1, \phi_2\}$,
 \[
 \|\nabla^2(f(R^*B^{-\top}\phi)) - \nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
 \le \frac{4d^9}{(1-\bar{\xi})^2\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi} 
-\le\frac{16d^9}{\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi} .
+\le\frac{16d^9}{\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi} = \widehat{\xi}.
 \]
 \end{lemma}
 \begin{proof}
@@ -1532,11 +1549,38 @@ Combine Equation \eqref{eq:fBhatfhatBhat} and Equation \eqref{eq:fBfBhat},
 \end{proof}
 
 \begin{lemma}
-sssssss
+\label{lem:Tvariantion}
+On the event $\Epsi$, $\Ephione$, and $\Ephitwo$, assume that $\widehat{\xi} \le \frac{\pi}{4d^2\kappa_{\max}A^4_{(2,\max)}}$, then 
+\[
+\|T - \widehat{T}\|_2 \le \frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}} = Q.
+\]
 \end{lemma}
 
 \begin{proof}
-
+On the event $\Epsi$, $\Ephione$, and $\Ephitwo$,
+\begin{align*}
+& \|H\|_2 \le \|K^{-1/2}D_{\psi}^{-1}\Lambda_1^{1/2}\|_2 \le \frac{2d}{\sqrt{2\pi}\kappa_{\min}^{1/2}A^2_{(2,\min)}}; \\
+& \|H^{-1}\|_2 = \|K^{1/2}D_{\psi}\Lambda_1^{-1/2}\|_2 \le \frac{2d\kappa_{\max}^{1/2}A^2_{(2,\max)}}{\sqrt{2\pi}}; \\
+& \|T_1^{-1}\|_2 \le \frac{2d^2\kappa_{\max}A^4_{(2,\max)}}{\pi}; \quad \|T_2^{-1}\|_2 \le \frac{2d^2\kappa_{\max}A^4_{(2,\max)}}{\pi}; \\
+& \sigma_{\min}(T_2) \ge \frac{\pi}{2d^2\kappa_{\max}A^4_{(2,\max)}}.
+\end{align*}
+Note that given $\widehat{\xi} \le \frac{\pi}{4d^2\kappa_{\max}A^4_{(2,\max)}}$, $\sigma_{\min}(T_2) \ge 2\|T_2 - \widehat{T}_2\|_2$, then by Lemma \ref{lem:inversevariation},
+\[
+\|T_2^{-1} - \widehat{T}_2^{-1}\|_2 \le \frac{2}{\sigma_{\min}^2(T_2)}\|T_2 - \widehat{T}_2\|_2 
+\le \frac{8d^4\kappa_{\max}^2A^8_{(2,\max)}}{\pi^2}\widehat{\xi}.
+\]
+Also, 
+\begin{align*}
+\|\widehat{H}\|_2 \le & \|H\|_2\|H^{-1}\widehat{H}\|_2 \\
+	\le & \|H\|_2\sqrt{1 + \|T_1^{-1}\|_2\|\widehat{T}_1 - T_1\|_2} \\
+	\le & \frac{2d}{\sqrt{2\pi}\kappa_{\min}^{1/2}A^2_{(2,\min)}} \sqrt{1 + \frac{2d^2\kappa_{\max}A^4_{(2,\max)}}{\pi}\widehat{\xi}} \\
+	\le & \frac{2d}{\sqrt{\pi}\kappa_{\min}^{1/2}A^2_{(2,\min)}}.
+\end{align*}
+Moreover, by Lemma \ref{lem:matrixsquareroot},
+\[
+\|I - H^{-1}\widehat{H}\|_2 \le \sqrt{\|T_1^{-1}\|_2\|T_1 - \widehat{T}_1\|_2} \le \sqrt{\frac{2d^2\kappa_{\max}A^4_{(2,\max)}}{\pi}\widehat{\xi}}.
+\]
+By triangular inequality,
 \begin{align*}
 \|T - \widehat{T}\|_2  = & \| H^{\top}T_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2 \\
  \le & 	\| H^{\top}T_2^{-1}H - \widehat{H}^{\top}T_2^{-1}\widehat{H}\|_2  
@@ -1546,80 +1590,41 @@ sssssss
  		 \| \widehat{H}^{\top}T_2^{-1}H - \widehat{H}^{\top}T_2^{-1}\widehat{H}\|_2 \\
  \le &  \|\widehat{H}\|_2^2\|T_2^{-1} - \widehat{T}_2^{-1}\|_2 + 
  		\|H\|_2^2\|T_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2 + 
- 		\|H\|_2\|\widehat{H}\|_2\|T_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2
+ 		\|H\|_2\|\widehat{H}\|_2\|T_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2 \\
+ \le & \frac{32d^6\kappa_{\max}^2A^8_{(2,\max)}}{\pi^3\kappa_{\min}A^4_{(2,\min)}}\widehat{\xi} +
+ 		\frac{4\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}} + 
+ 		\frac{8d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}} \\
+ \le & \frac{16d^5\kappa_{\max}^{3/2}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}}\sqrt{\widehat{\xi} }+
+  		\frac{4\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}} + 
+  		\frac{8d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}} \\
+ \le & \frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}} = Q.  		
 \end{align*}
 
-\if0
-\begin{align*}
-\|T - \widehat{T}\|_2  = & \| H^{\top}T_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2 \\
- \le & 	\| H^{\top}T_2^{-1}H - H^{\top}\widehat{T}_2^{-1}H\|_2  
- 		+ \| H^{\top}\widehat{T}_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2\\
- \le & 	\|H\|_2^2\|T_2^{-1} - \widehat{T}_2^{-1}\|_2 +
- 		 \| H^{\top}\widehat{T}_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}H\|_2 +
- 		 \| \widehat{H}^{\top}\widehat{T}_2^{-1}H - \widehat{H}^{\top}\widehat{T}_2^{-1}\widehat{H}\|_2 \\
- \le &  \|H\|_2^2\|T_2^{-1} - \widehat{T}_2^{-1}\|_2 + 
- 		\|H\|_2^2\|\widehat{T}_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2 + 
- 		\|H\|_2\|\widehat{H}\|_2\|\widehat{T}_2^{-1}\|_2\|I - H^{-1}\widehat{H}\|_2
-\end{align*}
-\fi
-\[
-\|H^{-1}\|_2 = \|K^{-1}D_{\psi}^{-2}\Lambda_1\|_2 \le 
-\]
-\[
-\|\widehat{H}\|_2 \le \|H\|_2\|H^{-1}\widehat{H}\|_2
-\]
-\[
-\|H\|_2
-\]
-\[
-\|T_2^{-1} - \widehat{T}_2^{-1}\|_2
-\]
-\[
-\|T_2^{-1}\|_2
-\]
-\[
-\|I - H^{-1}\widehat{H}\|_2
-\]
 \end{proof}
 \begin{proof}[{\bf Proof of Theorem \ref{thm:Modefficiency}}]
-Note that by Lemma \ref{lem:Binversenablavariation}, for $i = 1,2$
+Note that by Lemma \ref{lem:Tvariantion},
 \[
-\|\widehat{T}_i - T_i\|_2 = \|\frac{1}{12}\nabla^2(f(R^*B^{-\top}\phi)) - \frac{1}{12}\nabla^2(\widehat{f}(\widehat{B}^{-\top}\phi))\|_2
-\le  \frac{4d^5}{\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi} = Q.
+\|\widehat{T} - T\|_2 \le Q.
 \]
-Also  note that 
-$
-\sigma_{\min}(T_i) = \frac{\min_i (\phi^{\top}R^*R_i)^2}{\kappa_{\max}A_{(2,\max)}}.
-$
-By Lemma \ref{lem:dmin}, with probability at least $\frac14$, $\min_i (\phi^{\top}R^*R_i)^2 \ge \frac{\pi}{2d^2}$, thus 
+Then by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$
 \[
-Q\le \frac{\pi}{4d^2\kappa_{\max}A_{(2,\max)}} \le \frac{\min_i (\phi^{\top}R^*R_i)^2}{2\kappa_{\max}A_{(2,\max)}} =\frac12 \sigma_{\min}(T_i).
-\]
-Then by lemma \ref{lem:Mvariation}, since$\|T_i\|_2 = \|K^{-1}D_{\psi}^{-2}\Lambda_i\|_2 \le \frac{1}{\kappa_{\min}A_{(2,\min)}}$,
-\[
-\|\widehat{T} - T\|_2 \le \frac{2\|X\|_2}{\sigma_{\min}^2(Y)}\|E_2\|_2 + \frac{2}{\sigma_{\min}(Y)}\|E_1\|_2 \le 
-\]
-by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$
-\[
-\|c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{2}{\delta_R} \|\widehat{T} - T\|_2\,,
+\|c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\widehat{T} - T\|_2\,,
 \]
 where $\widehat{R}$ is the matrix of eigenvectors of $\widehat{T}$. 
 Denote $\text{diag}(c_1, \cdots, c_d )$ by $D(c)$ and the permutation matrix corresponding to $\pi$ by $\Pi$.
 Therefore, 
 \begin{align*}
 \|\hat{A}\Pi D(c) - A\tilde{K}^{1/2} \|_2 & = \| \hat{B}\hat{R}\Pi D(c) - BR \|_2 \\
-& \le \|\widehat{B}\widehat{R}\Pi D(c) - \widehat{B}R^*R \|_2 + \|\widehat{B}R^*R - B(R^*)^{\top}R^*R \|_2 \\
-& \le \|B\|_2\|B^{-1}\widehat{B}\|_2\|\widehat{R}\Pi D(c) - R^*R\|_2 + \|B\|_2\|B^{-1}\widehat{B}\|_2\|R^* - \widehat{B}^{-1}B\|_2 \\
-& \le \sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2}(1+\bar{\xi})^{1/2} \frac{2\sqrt{d}}{\delta_R}\|\widehat{T} - T\|_2 + \sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2}(1+\bar{\xi})^{1/2}\bar{\xi}\\
-& \le  \sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2}(1+\bar{\xi})^{1/2} \left( \bar{\xi} + \frac{2\sqrt{d}}{\delta_R}Q\right). \\
-%& \le 2\sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2} 
-%\left( \frac{d^5A_{(2,\max)}^2A_{\max}^2}{\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} + \frac{4d^{5\frac12}A_{(2,\max)}^2A_{\max}^2}{\delta_R\sigma_{\min}(A)\tilde{\kappa}_{\min}^{1/2}} + \frac{8d^{5\frac12}}{\delta_R\tilde{\kappa}_{\min}^2}\right)\xi
+\le & \|\widehat{B}\widehat{R}\Pi D(c) - \widehat{B}R^*R \|_2 + \|\widehat{B}R^*R - B(R^*)^{\top}R^*R \|_2 \\
+\le & \|B\|_2\|B^{-1}\widehat{B}\|_2\|\widehat{R}\Pi D(c) - R^*R\|_2 + \|B\|_2\|B^{-1}\widehat{B}\|_2\|R^* - \widehat{B}^{-1}B\|_2 \\
+\le & A_{(2,\max)}\sigma_{\max}(A)\kappa_{\max}^{1/2}(1+\bar{\xi})^{1/2} \frac{4\sqrt{d}}{\gamma_R}\|\widehat{T} - T\|_2 + A_{(2,\max)}\sigma_{\max}(A)\kappa_{\max}^{1/2}(1+\bar{\xi})^{1/2}\bar{\xi}\\
+\le & A_{(2,\max)}\sigma_{\max}(A)\kappa_{\max}^{1/2}(1+\bar{\xi})^{1/2} \left( \bar{\xi} + \frac{4\sqrt{d}}{\gamma_R}Q\right). \\
 \end{align*}
-Similarly, note that $\bar{\xi} \le 1/2$ and $\delta_R \le \frac12 \gamma_R$, thus
+Similarly, note that $\bar{\xi} \le 1/2$, thus
 \[
 \|\hat{A}\Pi D(c) - A\tilde{K}^{1/2} \|_2 
 \le 
-\sqrt{2}\sigma_{\max}(A)\tilde{\kappa}_{\max}^{1/2}\left( \bar{\xi} + \frac{4\sqrt{d}}{\gamma_R}Q\right).
+\sqrt{2} A_{(2,\max)}\sigma_{\max}(A)\kappa_{\max}^{1/2} \left( \bar{\xi} + \frac{4\sqrt{d}}{\gamma_R}Q\right).
 \]
 \end{proof}
 %=========================================================================================
