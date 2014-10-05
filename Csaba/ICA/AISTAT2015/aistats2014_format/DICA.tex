@@ -226,7 +226,7 @@ Recently, a series of more promising methods which manipulates the forth order m
 This idea is then greatly developed by \citep{anandkumar2012tensordecomposition,anandkumar2012method,goyal2014fourier} in a general tensor perspective of the moment method. 
 These works are all well analyzed using matrix perturbation tools. 
 However, the results exponentially depend on the number of source signals $d$.
-Note that these methods all require an eigen-decomposition of some flatten tensor where the minimal gap between the eigenvalues plays an essential role. 
+In particular, these methods all require an eigen-decomposition of some flatten tensor where the minimal gap between the eigenvalues plays an essential role. 
 A naive analysis of this gap will introduce an exponential dependence on the dimension of the flatten tensor $d$. 
 This dependence is also observed in Theorem 4.11 of \citep{goyal2014fourier}.
 One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flatten procedure, as in \citep{anandkumar2014guaranteed}. 
@@ -508,7 +508,7 @@ The eigen-spaces of $A+E$ will stay as $[1,0]$ and $[0,1]$ for $\eps < b-a$, but
 Due to such discontinuity of the eigen-spaces, the dependence on $\gamma$ is necessary once the algorithm takes the eigen-decomposition step. 
 \end{remark}
 \begin{remark}
-Despite the important role that $\gamma$ plays in the efficiency of HK algorithm, it seems that the behavior of the parameter $\gamma$ is difficult to analyze. Even a polynomial(in the dimension $d$) lower bound of $\gamma$ is not yet available. 
+Despite the important role that $\gamma$ plays in the efficiency of HK algorithm, we have no clue about the behavior of the parameter $\gamma$. Even a polynomial(in the dimension $d$) lower bound of $\gamma$ is not yet available. 
 To overcome this problem, we refine the HK algorithm by a quasi-whitening procedure, inspired by \citep{arora2012provable} and \citep{frieze1996learning}, as shown in the next Subsubsection.
 \end{remark}
 \begin{remark}
@@ -542,9 +542,10 @@ Let
 and 
 \begin{equation}
 \label{def:gammaR}
-\gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi_1^{\top}(R^*R)_i}{\phi_2^{\top}(R^*R)_i}\right)^2 - \left(\frac{\phi_1^{\top}(R^*R)_j}{\phi_2^{\top}(R^*R)_j}\right)^2 \right\vert. 
+\gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2 - \left(\frac{\phi_1^{\top}R_j}{\phi_2^{\top}R_j}\right)^2 \right\vert, 
 \end{equation}
-Similar to Lemma \ref{lem:dmin}, with probability at least $1/4$, $\text{min}_i |\phi_1^{\top}R^*R_i| \ge \frac{\sqrt{2\pi}}{2d}$ (respectively $\text{min}_i |\phi_2^{\top}R^*R_i| \ge \frac{\sqrt{2\pi}}{2d}$). 
+for some orthonormal matrix $R$.
+Similar to Lemma \ref{lem:dmin}, with probability at least $1/4$, $\text{min}_i |\phi_1^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$ (respectively $\text{min}_i |\phi_2^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$). 
 Denote this event by $\Ephione$ (respectively $\Ephitwo$).
 The performance of the algorithm is guaranteed by the following theorem.
 \begin{thm}
@@ -569,10 +570,10 @@ Then on the event $\Epsi \cap \Ephione \cap \Ephitwo$, there exists a permutatio
 \end{thm}
 \subsection{Behavior of $\gamma_R$}
 \label{subsec:gammaR}
-Even though the behavior of $\gamma$ is unknown, we can calculate a constant-probability  lower bound for $\gamma_R$. 
+Even though the behavior of $\gamma$ is unknown, we can calculate a constant-probability lower bound for $\gamma_R$. 
 Note that we can assume $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
-Thus, $\{\phi_1^{\top}R^*R_1, \cdots, \phi_1^{\top}R^*R_d,$ $\phi_2^{\top}R^*R_1, \cdots, \phi_2^{\top}R^*R_d\}$ are $2d$ independent standard normal random variables. 
-Let $Z_i = \frac{\phi_1^{\top}(R^*R)_i}{\phi_2^{\top}(R^*R)_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
+Thus, $\{\phi_1^{\top}R_1, \cdots, \phi_1^{\top}R_d,$ $\phi_2^{\top}R_1, \cdots, \phi_2^{\top}R_d\}$ are $2d$ independent standard normal random variables. 
+Let $Z_i = \frac{\phi_1^{\top}(R)_i}{\phi_2^{\top}(R)_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
 
 Moreover for any $1\le i, j \le d$, to analyze $\left\vert Z_i^2 - Z_j^2\right\vert
 $, WLOG we can assume both $Z_i$ and $Z_j$ are positive. Then, 
