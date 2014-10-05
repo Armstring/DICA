@@ -9,8 +9,8 @@
 \usepackage{algorithm}
 \usepackage{array}
 
-\newcommand{\xcom}[1]{x^{(#1)}}
-\newcommand{\scom}[1]{s^{(#1)}}
+\newcommand{\xcom}[1]{x_{#1}}
+\newcommand{\scom}[1]{s_{#1}}
 \newcommand{\cset}[2]{\left\{#1\,:\,#2\right\}}
 \newcommand{\Ephione}{\mathbb{E}_{\phi_1}}
 \newcommand{\Ephitwo}{\mathbb{E}_{\phi_2}}
@@ -195,7 +195,7 @@ A detailed analysis shows that its performance depends on the minimal gap of the
 Unfortunately we have difficult in achieving any meaningful lower bound (polynomial in the parameters of the ICA model) for this minimal gap.
 The lack of such lower bound essentially impair the soundness of the algorithm. 
 Another contribution of this paper is a refined provably polynomial-time algorithm that avoids the minimal gap problem. 
-We will discuss the most related ICA methods and then briefly introduce our algorithm in Subsection \ref{subsec:RelatedWorks}.
+We will discuss the most related ICA works in the literature and then briefly introduce our algorithm in Subsection \ref{subsec:RelatedWorks}.
 
 The rest of this paper is organized in this way: 
 in Section \ref{sec:DeterFrame} we will propose our deterministic framework. 
@@ -252,17 +252,17 @@ Assume we are given a $d$-dimensional observed function $x(t)$ defined by
 x(t) = As(t), \quad t\ge0
 \end{equation}
 where $A$ is a $d\times d$ nonsingular matrix and  $s$ is a $d$-dimensional signal function. 
-The goal of the present paper is to investigate under what conditions $A$ can be reconstructed(within small error in polynomial time).
+The goal of the present paper is to investigate under what conditions $A$ can be reconstructed(with `small' error in polynomial time).
 
-Note that the above deterministic setting does not lose the generality of the traditional stochastic setting of ICA with Gaussian noise, given that we can rewrite the stochastic setting as 
+Note that the above deterministic setting does not lose any generality to the traditional stochastic setting of ICA with Gaussian noise, given that we can rewrite the stochastic setting as 
 \[
 x = As+\eps = A(s+A^{-1}\eps),
 \] 
 where $\eps$ is the Gaussian noise. In practice, we are not going to observe the true distribution of $x$, but $x(t)$, $t\ge 0$, which leads to Equation \eqref{equ:ICA}.
 
-Clearly, no meaningful results will be achieved if we allow $s$ to go arbitrarily wild. 
-In the stochastic setting, previous works assume the independence of the signals and the Gaussianity of the noise. 
-In this section, we propose a definition of the independence of signal functions in an analogous way, which is compatible with the stochastic setting but much more general.
+Clearly, no meaningful results will be achieved if $s$ is allowed to go arbitrarily wild. 
+In the stochastic setting, ICA assumes the independence of the signals and the Gaussianity of the noise. 
+In this section, we propose a natural notion fot the independence of signal functions in an analogous way, which is compatible with the stochastic setting but much more general.
 
 \subsection{Independent Components}
 \label{subsec:IndeComp}
@@ -274,7 +274,9 @@ In particular, for any Borel set $A\subset \real^d$,
 \]
 Note that if $\Omega = \natural$, $\AA = 2^\natural$ and $\mu_t$ is the uniform probability distribution on $\{0,\ldots,t\}$, then $\nu_t$ is the empirical probability.
 
-In what follows we fix $\Omega$ and $(\mu_t)$ and define all the concepts that follow relative to these. When the limit of $(\nu_t)$ exists, it will be denoted by $\nu$.
+In what follows we fix $\Omega$ and $(\mu_t)$ and define all the concepts that follow relative to these. 
+In this paper we only consider about real functions.
+When the limit of $(\nu_t)$ exists, it will be denoted by $\nu$.
 Also, if we want to emphasize the dependence on $s$ then we will use $\nu^{(s)}$.
 Similarly, when the dependence of $\nu_t$ on $s$ is important, we will use $\nu^{(s)}_t$.
 
@@ -284,20 +286,25 @@ A function $s:\Omega \rightarrow \real^d$ is called \emph{ergodic} w.r.t. $(\mu_
 if the sequence of  induced probability measures $(\nu_t)_{t\ge 0}$ is weakly convergent.
 \end{definition}
 A simple example of an ergodic function is a real periodic function.
-The following lemma shows that $\nu$ is a probability measure. 
+The following lemma shows that once $\nu$ exists, it is a probability measure. 
 \begin{prop}
 \label{lem:ergodicfunction}
-Let $s^{(i)}$ denote the $i$th coordinate function of $s$. Assume that
+Let $\scom{i}$ denote the $i$th coordinate function of $s$. Assume that
 \begin{equation}
 \label{eq:ergodicproperty}
-\lim_{t\to\infty} \int |s^{(i)}(x)|\, d\mu_t(x) 
+\lim_{t\to\infty} \int |\scom{i}(x)|\, d\mu_t(x) 
 \end{equation}
-exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |s^{(i)}|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
+exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |\scom{i}|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
 Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
 \end{prop}
 
-Despite the intuitiveness of the definition of ergodic function, the space of ergodic functions is not closed under addition, as shown in the following example.
+Despite the perceptual intuitiveness of the definition of ergodic function, the space of ergodic functions is, unexpectedly, not closed under addition, as shown in Example \ref{eg:ergodic}. 
+We provide a sufficient and necessary condition for a linear combination 
+of ergodic functions to be ergodic in Proposition \ref{prop:comp}. 
+It turns out the space spanned by the components of an ergodic function is a space of ergodic functions.
+Such observation leads to our definition of independence of components, and build the foundation of the rest work of our paper.
 \begin{example}
+\label{eg:ergodic}
 Let $f,g:\natural \rightarrow \{-1,+1\}$ and $(\mu_t)$ be defined as follows: 
 \[
 f(t) = \begin{cases} +1, & t \equiv 0 \pmod 4; \\
@@ -324,22 +331,21 @@ Then, $\nu^{(f)}_t$, $\nu^{(g)}_t$ are both the uniform  distribution on $\{-1,+
 However, while $\nu^{(f+g)}_{2t+1}$ is the uniform  distribution on $\{-2,+2\}$,  $\nu^{(f+g)}_{2t}$ is the degenerate
 distribution that puts all the mass at $0$. Thus, $\nu^{(f+g)}_{t}$ fails to be convergent. 
 \end{example}
-However, the space spanned by the components of an ergodic function is a space of ergodic functions, as in the following proposition. 
-Such observation lead to our definition of independence of components, and build the foundation of the rest work of our paper.
+
 \begin{prop}\label{prop:comp}
-$s = (s^{(1)},\ldots, s^{(d)})^{\top}$ is a $d$-dimensional ergodic function, if and only if 
+$s = (\scom{1},\ldots,\scom{d})^{\top}$ is a $d$-dimensional ergodic function, if and only if 
  for any $m\times d$ matrix $A$, $x = A s$ is an $m$-dimensional ergodic function.
 \end{prop}  
 Based on Lemma \ref{prop:comp}, we can now define the independence of the components of a multidimensional ergodic function $f$ based on its induced limiting distribution $\nu^{(f)}$:
 \begin{definition}
-Given an ergodic function $s = (s^{(1)},\ldots, s^{(d)})^{\top}:\Omega \rightarrow \real^d$, 
-we say that $\{s^{(1)},\ldots, s^{(d)}\}$ are \emph{independent} components, 
-	if $\nu^{(s^{(1)})}\otimes\ldots\otimes\nu^{(s^{(d)})} = v^{(s)}$.
+Given an ergodic function $s = (\scom{1},\ldots, \scom{d})^{\top}:\Omega \rightarrow \real^d$, 
+we say that $\{\scom{1},\ldots, \scom{d}\}$ are \emph{independent} components, 
+	if $\nu^{(\scom{1})}\otimes\ldots\otimes\nu^{(\scom{d})} = v^{(s)}$.
 \end{definition}
 \begin{remark}
-Note that the existence of $\nu^{(s^{(i)})}$ is guaranteed by \ref{prop:comp}. 
-The definition of independent components is also extended to the independence of ergodic functions. 
-For example, $f$ and $g$ are called independent, if $(f,g)$ is an ergodic function with independent components. 
+Note that the existence of $\nu^{(s^{(i)})}$ is guaranteed by Proposition \ref{prop:comp}. 
+The definition of independent components can also be extended to the independence of ergodic functions: 
+$f$ and $g$ are called independent, if their joint function $(f,g)$ is an ergodic function with independent components. 
 \end{remark}
 \begin{remark}
 Assume that $f = (f_1,f_2)^{\top}:\real\rightarrow\real^2$ is an ergodic function, and both $f_1$ and $f_2$ are periodic with respective periods $T_1$ and $T_2$. 
@@ -351,14 +357,15 @@ Let $\mu_t$ be the uniform probability distribution on $[0,t]$.
 
 \section{Results}
 \label{sec:Results}
-We now analyze the ICA problem in our deterministic setting in the deterministic framework proposed in Section \ref{sec:DeterFrame}.
+We now analyze the ICA problem in our deterministic framework proposed in Section \ref{sec:DeterFrame}.
 
 \subsection{Identifiability}
 \label{subsec:Indentifiability}
-Our first result requires the minimal assumption that each component $s^{(i)}$ is non-Gaussian\footnote{this result could be extended to allow one Gaussian.}, which is the same as that of stochastic setting.
+The first essential question is the identifiability of the ICA model.
+Our result requires the minimal assumption that each component $s_i$ is non-Gaussian\footnote{this result could be extended to allow one Gaussian.}, which is the same as that of stochastic setting.
 \begin{thm}
 \label{thm:CorofICA}
-Let $s = (\scom{1},\ldots,\scom{d})^{\top}$ be an ergodic function with independent components and %\todoc{We always have real-valued functions, right? So maybe mention this always or nowhere} 
+Let $s = (\scom{1},\ldots,\scom{d})^{\top}$ be an ergodic function with independent components and
 assume that neither of $\nu_{\scom{i}}$, $i=1,\ldots,d$ is a Gaussian distribution. If
 \begin{equation}
 \left(
@@ -384,29 +391,22 @@ are independent, then $A$ is equivalent to a permutation matrix up to scaling.
 
 Standard results about the reconstruction of $A$ can be phrased as follows:
 Let $S$ be a random $d$-dimensional vector, whose components are independent of each other.
-Let $X = A S$, where $A$ is a nonsingular $d\times d$ matrix. Then, given the empirical distribution of $X$, assuming that the joint of $S$ satisfies some additional assumption, the matrix $A$ can be approximately reconstructed up to permutation and scaling.
+Let $X = A S$, where $A$ is a nonsingular $d\times d$ matrix. Then, given the empirical distribution of $X$, assuming that the joint of $S$ satisfies some additional assumptions, the matrix $A$ can be approximately reconstructed up to permutation and scaling, with provable error.
 
-In general, we believe these results carry through to the deterministic setting, where the empirical distribution of $S$ is replaced by $\nu^{(s)}$, where $s$ is a $d$-dimensional deterministic signal.
-In this paper, we analyze the randomized algorithm of \citep{DHsu2012}(HK algorithm) as an example. 
+In general, we believe these results carry through to the deterministic setting, by replacing the empirical distribution of $S$ with $\nu^{(s)}$ where $s$ is a $d$-dimensional deterministic signal.
+In this paper, we analyze a randomized ICA algorithm of \citep{DHsu2012}(HK algorithm) as an example. 
 In the deterministic setting, it clearly shows that the sample procedure plays an important role in the performance.
-However, it seems difficult to analyze how the performance of HK algorithm depends on this sample procedure, which leads to a vacuous theoretical result.
-To solve this problem, we proposed a refinement for the HK algorithm. 
-We believe this is the first real polynomial time moment-based algorithm for ICA, which is also the other main contribution of the present paper. 
-Details will put discussed in the next section due to its complexity.  
+However, we have difficult in analyzing the behavior of this sample procedure, which leads to a vacuous theoretical result.
+To solve this problem, we proposed a refined version of the HK algorithm, called deterministic ICA algorithm. 
+This is the first `real' polynomial time moment-based algorithm for ICA. 
+Details will be discussed in the next section due to its complexity.  
 
 \section{Deterministic ICA}
 \label{sec:DICA}
-Our algorithm is presented in this section, based on the discussion about the performance of \citet{hsu2013learning}'s ICA algorithm.
+We analyze and discuss the performance of \citet{hsu2013learning}'s algorithm. Then based on the discussion, we propose our algorithm as a refinement.
 
-\subsection{HK algorithm}
+\subsection{\citet{hsu2013learning}'s algorithm (HK)}
 \label{subsec:HKalg}
-Assume the independent ergodic component functions $s_1,\ldots,s_d:\natural \ra \real$ are bounded by a constant $C$, and satisfy $\E_{Y\sim\nu^{(s_i)}}[Y]=0$ and $\kappa_i := \E_{Y\sim \nu^{(s_i)}}[Y^4] - 3\left(\E_{Y\sim \nu^{(s_i)}}[Y^2]\right)^2\neq 0$.
-\footnote{In this section, we will denote the sources by $s_i$ to avoid a clash with the function $f$ used by  \citet{DHsu2012} for a different purpose.}
-Note that sample a vector $\psi$ from a unit sphere, $\min_i |\psi^{\top}A_i|\neq 0$ with probability~1.  
-
-Denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$ by $K$. 
-Also, denote $\max_{i} \kappa_i$ by $\kappa_{\max}$ and $\min_{i} \kappa_i$ by $\kappa_{\min}$.
-
 For $p\ge 1$, $\eta\in \real^d$, 
 let 
 \begin{equation}
@@ -417,30 +417,46 @@ m_p(\eta) = \E_{Y\sim \nu^{(s)}}[ (\eta^\top A Y)^p ]
 \begin{equation}\label{eq:fdef}
 f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
 \end{equation}
-\citet{DHsu2012} proposed an algorithm as follows, and claimed that it has a provable performance without proof. 
+\citet{DHsu2012} proposed an algorithm as follows, and claimed without proof that it has a provable performance. 
+In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
 \begin{algorithm}[H]
 \caption{HK algorithm}
 \begin{algorithmic}[1]
 \INPUT $g(k)$ for $0\le k \le T$. 
 \OUTPUT An estimation of the mixing matrix $A$. 
 \STATE Sample $\phi$ from the unit sphere of $\real^d$;
-\STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, \\
-\quad where $\widehat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
+\STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, 
+%\quad where $\widehat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
 \STATE Compute $\widehat{M} = (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1}$;
 \STATE Compute all the eigenvectors of $\widehat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
 \STATE Return $\widehat{A} = (\mu_1,\ldots,\mu_d)$.
 \end{algorithmic}
 \end{algorithm}
-In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
+In particular, $\nabla^2\widehat{f}(\eta)$  is evaluated from the observations by
+\[
+\nabla^2 \widehat{f}(\eta) = \widehat{G}(\eta):= \widehat{G_1}(\eta) - \widehat{G_2}(\eta) -2\widehat{G_3}(\eta),
+\]
+where 
+\begin{align*}
+&\widehat{ G_1}(\eta) = \frac1n\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)^2x(t)x(t)^{\top}; \\
+& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)^2 \sum_{t=1}^{n}x(t)x(t)^{\top}; \\
+& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
+\end{align*} 
 
 \subsection{Reconstruction error of HK algorithm}
 \label{subsec:errorHK}
+Assume the independent ergodic component functions $\scom{1},\ldots,\scom{d}:\natural \ra \real$ are bounded by a constant $C$, and satisfy $\E_{Y\sim\nu^{(\scom{i})}}[Y]=0$ and $\kappa_i := \E_{Y\sim \nu^{(\scom{i})}}[Y^4] - 3\left(\E_{Y\sim \nu^{(\scom{i})}}[Y^2]\right)^2\neq 0$.
+%\footnote{In this section, we will denote the sources by $s_i$ to avoid a clash with the function $f$ used by  \citet{DHsu2012} for a different purpose.}
+%Note that sample a vector $\psi$ from a unit sphere, $\min_i |\psi^{\top}A_i|\neq 0$ with probability~1.  
+Denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$ by $K$. 
+Also, denote $\max_{i} \kappa_i$ by $\kappa_{\max}$ and $\min_{i} \kappa_i$ by $\kappa_{\min}$.
+
 Although $A$ is identifiable under the conditions of Theorem \ref{thm:CorofICA}, in practice the unobserved signal function $s$ will never have independent components (especially in a noisy setting). 
 Hence we still need a `dependence measure' for the components of $s$.
 \begin{definition}
 Given two distributions $F_1$ and $F_2$ in $\real^d$, let $D_k(F_1,F_2) = \sup_{f\in\mathcal{F}} |\int f(x)dF_1(x) - \int f(x)dF_2(x)|$, where $\mathcal{F}$ is the set of all monomials up to degree $k$.
 \end{definition} 
-The following lemma investigate the behavior of $\min_i |\psi^{\top}A_i|$.
+The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
 With probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
@@ -452,7 +468,7 @@ Denote the event of Lemma \ref{lem:dmin} by $\Epsi$. Let
 \end{equation}
 and 
 \[
-\xi = \left( 6C^2D_2(\nu, \nu_T) + D_4(\nu, \nu_T)\right)
+\xi = \left( 6C^2D_2(\nu, \nu_T) + D_4(\nu, \nu_T)\right).
 \]
 The performance of \citet{DHsu2012}'s algorithm depends on these parameters, as shown in the following theorem.
 
@@ -480,6 +496,10 @@ Let
  \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d}{\gamma} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q .
  \]
  \end{thm}
+\begin{remark}
+Note that the first condition holds with probability 1. Also, the other three conditions will hold when $\xi$ is small enough. However, condition 2 and 3 are rarely satisfied in practice. 
+More discussion about this problem and weaker conditions are discussed in Section \ref{sec:ExpRes}. 
+\end{remark}
 
 \begin{remark}
 Note that $\gamma$ is actually the minimal gap of the eigenvalues of $M$.
@@ -504,16 +524,13 @@ The new algorithm, called Determined ICA, is as follows.
 \INPUT $g(k)$ for $1\le k \le T$. 
 \OUTPUT An estimation of the mixing matrix $A$. 
 \STATE Evaluate $\nabla^2\widehat{f}(\psi)$, \\
-\quad where $\widehat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
+%\quad where $\widehat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
 \STATE Compute $\widehat{B}$ such that $\nabla^2\widehat{f}(\psi) = \widehat{B}\widehat{B}^{\top}$;
-\STATE Sample $\phi_1$ from the unit sphere of $\real^d$;
-\STATE Compute $\widehat{T}_1 = \nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi_1))$;
-\STATE Compute $\widehat{B}$ such that $\widehat{T_1} = \widehat{H}\widehat{H}^{\top}$;
-\STATE Sample $\phi_2$ from the unit sphere of $\real^d$;
-\STATE Compute $\widehat{T}_2 =\nabla^2 (\widehat{f}(\widehat{B}^{-\top}\phi_2))$;
+\STATE Sample $\phi_1$ and $\phi_2$ from the unit sphere of $\real^d$;
+\STATE Compute $\widehat{T}_1 = \widehat{G}(\widehat{B}^{-\top}\phi_1)$ and  $\widehat{T}_2 =\widehat{G}(\widehat{B}^{-\top}\phi_2)$;
 
-\STATE Compute all the eigenvectors of $\widehat{T} = \widehat{H}^{\top}\left(\widehat{T}_2\right)^{-1}\widehat{H}$, $\widehat{R} = \{\mu_1,\ldots,\mu_d\}$;
-\STATE Return $\widehat{A} = \widehat{B}\widehat{R}$.
+\STATE Compute all the eigenvectors of $\widehat{T} = \widehat{T}_1\left(\widehat{T}_2\right)^{-1}$, $\{\mu_1,\ldots,\mu_d\}$;
+\STATE Return $\widehat{A} = \{\mu_1,\ldots,\mu_d\}$.
 \end{algorithmic}
 \end{algorithm}
 
