@@ -167,105 +167,71 @@ X = AS+\epsilon,
 where $\epsilon$ is a $d$-dimensional Gaussian noise, and $A$ is a nonsingular mixing matrix.
 Our interest is to reconstruct $A$ given observations of $X$ with rigorous guarantee.
 
-The literature of the ICA model is vast, varying from parametric models to semi-parametric ones
-\citep{comon1994independent,pham1997blind,lee1999independent,HyvOja00,samarov2004nonparametric,eriksson2003characteristic,chen2005consistent,chen2006efficient}. 
-In the theoretical side, \citet{samarov2004nonparametric} for the fist time, to our best knowledge, proposed a $\sqrt{n}$-consistent estimator for $A$ in a noise-free setting (i.e. $X= AS$). 
-Then other more efficient estimators are proposed later in \citep{chen2005consistent,chen2006efficient}. 
-In the noisy setting, the first algorithm with rigorous performance guarantee is attributed to \cite{arora2012provable}. 
-Recently as the progress that has been made in tensor decomposition, tensor-based algorithms are developed, rigorously analyzed, and becoming more and more popular because of its user friendliness in practice \citep{hsu2013learning,anandkumar2012tensordecomposition,anandkumar2014provable,goyal2014fourier}.  
-A more detailed discussion about the ICA literature is introduced later in Subsection \ref{subsec:RelatedWorks}.
+The literature of the ICA model is vast in both practical algorithms and theoretical analysis. 
+We refer to \citep{comon2010handbook} for a comprehensive survey.
+Perhaps the most popular ICA algorithm in engineering application would be the FastICA \citep{hyvarinen1999fast}. 
+In general, FastICA tries to find a linear transformation $W$ for $X$ by optimizing a particular designed contrast function, 
+such that the resulted coordinates of $WX$ are as independent as possible. 
+The optimal $W$ would be $A^{-1}$ under additional assumptions about the sources, thereby $A$ is recovered.  
+Theoretical analysis of the FastICA algorithm has been conducted in many aspects, 
+but as far as we know, finite sample bound for FastICA is still not available.
+Besides, consistency of the estimation of $A$ can only be guaranteed for a particular forth-moments-based contrast function with noise-less observations(i.e. $X = AS$) \citep{miettinen2014fourth}. 
 
-Despite all the progresses that have been made, all the present works are conducted in some stochastic setting.
-However, in practice ICA is also known to work well for unmixing the mixture of various deterministic signals. 
+Another class of ICA methods views ICA in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source. 
+Under additional statistical assumptions about the source signals, consistent estimators have been proposed for various settings. The first  $\sqrt{n}$-consistent estimator of $A$ (which implies a finite sample bound in the rate of $\sqrt{n}$), to our best knowledge, is proposed and analyzed in \citet{samarov2004nonparametric}.  
+Later \citep{chen2005consistent} showed that the estimator proposed in \citet{eriksson2003characteristic} is also $\sqrt{n}$-consistent. Another estimator which is more efficient is also proposed by the same authors in \citep{chen2006efficient}.
+However, these results also assume a noise-free setting. 
+Moreover, they involve an intermediate procedure of estimating a probability function or a score function, which consequentially invites extra technical conditions. 
+
+The first provable ICA method that can deal with the noisy case is by \citep{arora2012provable}. 
+The idea is still based on the forth moments. 
+After a quasi-whitening procedure, \citep{arora2012provable} reduced the ICA problem into a problem of finding all the local optimizer of a specific function defined using the forth order cumulant. Then a polynomial-time algorithm is proposed to find all the local optimizers with theoretical guarantee.
+Despite its great progress in theory, \citep{arora2012provable}'s algorithm requires a exhaustive search for an input parameter ($\beta$ in the paper) that is not yet well understood, which impairs its usage in practice.
+
+The forth moment statics are also used in many other ICA related works. 
+Recently, a series of more promising methods are proposed based on the algebraic structure of the model \citep{hsu2013learning,anandkumar2012tensordecomposition,anandkumar2012method}. 
+In fact, this idea is also discussed by \citet{cardoso1999high} as a intuitive argument to construct a contrast function. 
+The first rigorous proof of this idea is developed using matrix perturbation tools in \citep{anandkumar2012tensordecomposition,anandkumar2012method,goyal2014fourier} in a general tensor perspective. 
+However, these results exponentially depend on the number of source signals $d$.
+In particular, these methods all require an eigen-decomposition of some flatten tensor where the minimal gap between the eigenvalues plays an essential role. 
+A naive analysis of this gap will introduce an exponential dependence on the dimension of the flatten tensor $d$. 
+This dependence is also observed in \citep{cardoso1999high,goyal2014fourier}.
+One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flatten procedure, as in \citep{anandkumar2014guaranteed}. 
+However, it is well known that power method is unstable in practice for high order tensor. 
+Another drawback is that this method, when applied to the ICA problem, introduces an error term that does not approach 0 as the sample size approaches infinity. 
+
+In this paper we proposed a practical method for ICA which also has meaningful theoretical guarantee (polynomial-time; with constant probability the reconstruction error of $A$ polynomially depends on all the parameters and vanishes as the sample size going to infinity).
+Our algorithm is a refined version of \cite{hsu2013learning}'s algorithm.  
+Another contribution of the present paper is that the theoretical analysis is conducted in a deterministic manner. 
+In practice ICA is also known to work well for unmixing the mixture of various deterministic signals. 
 One of the classic demonstrations of ICA is showing that the periodic signals can be well recovered from their mixtures. \citep{HyvOja00}.
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
-The goal of this paper is to propose a deterministic framework to investigate this curious phenomenon. 
+Our deterministic analysis help investigate this curious phenomenon without losing any generality to the traditional stochastic setting. 
 
-Formally, let $s:\natural \ra \real^d$ be a $d$-dimensional deterministic ``signal''. We denote by $s_i$ the $i$th component of $s$.
-The ICA model is presented as a linear mixture of functions (details will be introduced later).
-We then define the `independence' for functions (sequences) based on their induced probability, which is a fundamental notion in the ICA model.
-Compared to the traditional stochastic setting, our deterministic framework is more general to cover not only stochastic signals but also deterministic ones. 
-In fact, Most of the results that hold in the stochastic setting should also go through in our deterministic framework.
-We prove a same identifiability result as that in the stochastic setting to demonstrate this claim.
-
-Moreover, concentration property of the random samples in the stochastic setting of ICA model is now replaced by deterministic conditions in terms of `functional distance'.
-Such replacement provides us a deeper understanding about the ICA model and help separate the sampling randomness and the randomness of the algorithm itself in the theoretical analysis of ICA methods.
-We take the ICA algorithm of \citep{hsu2013learning} as an example in our paper.
+Formally, let $s:\natural \ra \real^d$ be a $d$-dimensional deterministic ``signal''. 
+Denote by $s_i$ the $i$th component of $s$.
+We present the ICA model as a linear mixture of functions (details will be introduced later).
+Then under a measure of functional dependence, we analyze  \citep{hsu2013learning}'s algorithm.
 A detailed analysis shows that its performance depends on the minimal gap of the eigenvalues (of some random matrix. The exact form is presented later).
-Unfortunately we have difficult in achieving any meaningful lower bound (polynomial in the parameters of the ICA model) for this minimal gap.
-The lack of such lower bound essentially impair the soundness of the algorithm. 
-Another contribution of this paper is a refined provably polynomial-time algorithm that avoids the minimal gap problem. 
-We will discuss the most related ICA works in the literature and then briefly introduce our algorithm in Subsection \ref{subsec:RelatedWorks}.
+A meaningful lower bound  (polynomial in the parameters of the ICA model) for this gap is essential for the soundness of the algorithm, but not yet available \citep{cardoso1999high}.
+A key step of our algorithm is reducing the minimal eigenvalue gap problem to the problem of minimal spacing of i.i.d. Cauchy random variables, for which a polynomial lower bound is available, by the quasi-whitening procedure.
+This idea is also used in \citep{frieze1996learning} and \citep{arora2012provable}.
+With this lower bound, we then show that the new algorithm has provable guarantee on the reconstruction error of $A$. 
 
-The rest of this paper is organized in this way: 
+The rest of this paper is organized as follows: 
 in Section \ref{sec:DeterFrame} we will propose our deterministic framework. 
 Then an identifiability result framework is presented in Subsection \ref{subsec:Indentifiability}.
 We analyze the algorithm of \cite{hsu2013learning} and discussed the exponential dependence problem in Subsection \ref{subsec:HKalg} and \ref{subsec:errorHK}. 
 Based on the above discussion, our algorithm is proposed in Subsection \ref{subsec:DICA} and its theoretical result is presented in Subsection \ref{subsec:gammaR}.
 Lastly, simulation results are reported in Section \ref{sec:ExpRes}.
 
-\subsection{Related Works}
-\label{subsec:RelatedWorks}
-One class of ICA methods is to find a linear transformation $W$ for $X$, such that the resulted coordinates of $WX$ are as independent as possible \citep{comon1994independent,HyvOja00}.
-The optimal $W$ would be $A^{-1}$ under additional assumptions about the sources, thereby $A$ is recovered. 
-An ICA method following this idea would maximize some designed contrast function measuring likelihood or negative mutual information, under the assumption of a particular parametric model \citep{comon1994independent,pham1997blind,lee1999independent,HyvOja00}. 
-Typically theoretical analysis of these methods are limited, due to the difficulty in understanding the statical properties of those proposed contrast functions[********].  
-
-Another class of ICA methods is viewing ICA in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source. 
-Under additional statistical assumptions about the source signals, consistent estimators have been proposed for various settings. The first  $\sqrt{n}$-consistent estimator of $A$, to our best knowledge, is proposed and analyzed in \citet{samarov2004nonparametric}.  
-Later \citep{chen2005consistent} showed that the estimator proposed in \citet{eriksson2003characteristic} is also $\sqrt{n}$-consistent. Another estimator which is more efficient is also proposed by the same authors in \citep{chen2006efficient}.
-However, all these results can only work for a noise-free setting (i.e. $X = AS$). 
-Also, they all involves a intermediate procedure of estimating a probability function or a score function, which consequentially invites additional technical conditions so that the consistency could be maintained. 
-
-The first provable ICA method that can deal with the noisy case is by \citep{arora2012provable}. After a quasi-whitening procedure, \citep{arora2012provable} reduced the ICA problem into a problem of finding all the local optimizer of a specific function defined using the forth order cumulant. Then a polynomial-time algorithm is proposed to find all the local optimizers with theoretical guarantee.
-Despite its great progress in theory, \citep{arora2012provable}'s algorithm involves a tuning procedure for an input parameter ($\beta$ in the paper) that is not well understood, which impairs its usage in practice.
-
-The forth moment statics are also used in many other ICA related works. 
-Recently, a series of more promising methods which manipulates the forth order moment are proposed based on the idea of moment method \citep{hsu2013learning,anandkumar2012tensordecomposition,anandkumar2012method}. 
-\citep{hsu2013learning} firstly apply the moment method to the ICA problem. The algorithm is claimed to have provable performance without rigorous proof. 
-This idea is then greatly developed by \citep{anandkumar2012tensordecomposition,anandkumar2012method,goyal2014fourier} in a general tensor perspective of the moment method. 
-These works are all well analyzed using matrix perturbation tools. 
-However, the results exponentially depend on the number of source signals $d$.
-In particular, these methods all require an eigen-decomposition of some flatten tensor where the minimal gap between the eigenvalues plays an essential role. 
-A naive analysis of this gap will introduce an exponential dependence on the dimension of the flatten tensor $d$. 
-This dependence is also observed in Theorem 4.11 of \citep{goyal2014fourier}.
-One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flatten procedure, as in \citep{anandkumar2014guaranteed}. 
-However, it is well known that power method is unstable in practice for high order tensor. 
-Another drawback is when applied to the ICA problem, this method introduces a constant term in its theoretical result which does not approach 0 as the sample size approaches infinity. 
-
-In this paper we proposed a practical method for ICA which has meaningful theoretical guarantee(polynomial-time; with constant probability the reconstruction error of $A$ polynomially depends on all the parameters and vanishes as the sample size going to infinity).      
-A key step of our algorithm is reducing the minimal gap problem as the problem of minimal spacing of i.i.d. Cauchy random variables, for which a polynomial lower bound is available.
-This reduction is by the quasi-whitening procedure, which is also used in \citep{frieze1996learning} and \citep{arora2012provable}.
-With such lower bound, we then show that the new algorithm has provable and meaningful guarantee on the reconstruction error of $A$. 
-Our algorithm does not need any parameter tuning.
-
 \subsection{Notations}
 Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$.
 
-\section{Deterministic Framework}
-\label{sec:DeterFrame}
-%In this section we will first define a natural notion of independence for functions. Then a deterministic framework is proposed based on the defined `independence'. 
-
-Assume we are given a $d$-dimensional observed function $x(t)$ defined by  
-\begin{equation}
-\label{equ:ICA}
-x(t) = As(t), \quad t\ge0
-\end{equation}
-where $A$ is a $d\times d$ nonsingular matrix and  $s$ is a $d$-dimensional signal function. 
-The goal of the present paper is to investigate under what conditions $A$ can be reconstructed(with `small' error in polynomial time).
-
-Note that the above deterministic setting does not lose any generality to the traditional stochastic setting of ICA with Gaussian noise, given that we can rewrite the stochastic setting as 
-\[
-x = As+\eps = A(s+A^{-1}\eps),
-\] 
-where $\eps$ is the Gaussian noise. In practice, we are not going to observe the true distribution of $x$, but $x(t)$, $t\ge 0$, which leads to Equation \eqref{equ:ICA}.
-
-Clearly, no meaningful results will be achieved if $s$ is allowed to go arbitrarily wild. 
-In the stochastic setting, ICA assumes the independence of the signals and the Gaussianity of the noise. 
-In this section, we propose a natural notion fot the independence of signal functions in an analogous way, which is compatible with the stochastic setting but much more general.
-
-\subsection{Independent Components}
-\label{subsec:IndeComp}
+\section{Preliminaries}
+\label{sec:Preliminaries}
+\subsection{Induced Probability}
+\label{subsec:InducesProb}
 Given arbitrary measurable domains $(\Omega,\AA)$ and a sequence of probability measures $(\mu_t)_{t\ge0}$ over it, we define $\nu_t$ to be the probability measure over $\real^d$ that is induced by $s$ and $\mu_t$ for any function $s: \Omega \ra \real^d$ and $t\ge 0$:
 In particular, for any Borel set $A\subset \real^d$,
 \[
@@ -279,8 +245,6 @@ In this paper we only consider about real functions.
 When the limit of $(\nu_t)$ exists, it will be denoted by $\nu$.
 Also, if we want to emphasize the dependence on $s$ then we will use $\nu^{(s)}$.
 Similarly, when the dependence of $\nu_t$ on $s$ is important, we will use $\nu^{(s)}_t$.
-
-
 \begin{definition}
 A function $s:\Omega \rightarrow \real^d$ is called \emph{ergodic} w.r.t. $(\mu_t)_{t\ge0}$
 if the sequence of  induced probability measures $(\nu_t)_{t\ge 0}$ is weakly convergent.
@@ -290,14 +254,32 @@ The following lemma shows that once $\nu$ exists, it is a probability measure.
 \begin{prop}
 \label{lem:ergodicfunction}
 Let $\scom{i}$ denote the $i$th coordinate function of $s$. Assume that
-\begin{equation}
-\label{eq:ergodicproperty}
+\[
 \lim_{t\to\infty} \int |\scom{i}(x)|\, d\mu_t(x) 
-\end{equation}
+\]
 exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |\scom{i}|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
 Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
 \end{prop}
+\subsection{ICA}
+\label{subsec:ICA}
+Assume we are given a $d$-dimensional observed function $x(t)$ defined by  
+\begin{equation}
+\label{equ:ICA}
+x(t) = As(t), \quad t\ge0
+\end{equation}
+where $A$ is a $d\times d$ nonsingular matrix and  $s$ is a $d$-dimensional signal function. 
+Note that the above deterministic setting does not lose any generality to the traditional stochastic setting of ICA with Gaussian noise, given that we can rewrite the stochastic setting as 
+\[
+x = As+\eps = A(s+A^{-1}\eps),
+\] 
+where $\eps$ is the Gaussian noise. In practice, we are not going to observe the true distribution of $x$, but $x(t)$, $t\ge 0$, which leads to Equation \eqref{equ:ICA}.
 
+
+
+\if0
+In this section, we propose a natural notion fot the independence of signal functions in an analogous way, which is compatible with the stochastic setting but much more general.
+\subsection{Independent Components}
+\label{subsec:IndeComp}
 Despite the perceptual intuitiveness of the definition of ergodic function, the space of ergodic functions is, unexpectedly, not closed under addition, as shown in Example \ref{eg:ergodic}. 
 We provide a sufficient and necessary condition for a linear combination 
 of ergodic functions to be ergodic in Proposition \ref{prop:comp}. 
@@ -354,9 +336,12 @@ Let $\mu_t$ be the uniform probability distribution on $[0,t]$.
  If $T_1/T_2$ is irrational, then it is easy to show that $f_1$ and $f_2$ are independent. 
  This example shows how period signals can be fitted into our framework.
 \end{remark}
+\fi
 
-\section{Results}
+\section{Reconstruction Error of \citet{hsu2013learning}'s Algorithm}
 \label{sec:Results}
+
+\if0
 We now analyze the ICA problem in our deterministic framework proposed in Section \ref{sec:DeterFrame}.
 
 \subsection{Identifiability}
@@ -400,23 +385,21 @@ However, we have difficult in analyzing the behavior of this sample procedure, w
 To solve this problem, we proposed a refined version of the HK algorithm, called deterministic ICA algorithm. 
 This is the first `real' polynomial time moment-based algorithm for ICA. 
 Details will be discussed in the next section due to its complexity.  
+\fi
 
-\section{Deterministic ICA}
-\label{sec:DICA}
-We analyze and discuss the performance of \citet{hsu2013learning}'s algorithm. Then based on the discussion, we propose our algorithm as a refinement.
+We analyze and discuss the performance of \citet{hsu2013learning}'s algorithm in this section.
 
-\subsection{\citet{hsu2013learning}'s algorithm (HK)}
+\subsection{ HK algorithm}
 \label{subsec:HKalg}
 For $p\ge 1$, $\eta\in \real^d$, 
 let 
-\begin{equation}
-\label{eq:mpdef}
+\[
 m_p(\eta) = \E_{Y\sim \nu^{(s)}}[ (\eta^\top A Y)^p ]
-\end{equation}
+\]
  and let
-\begin{equation}\label{eq:fdef}
+\[
 f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
-\end{equation}
+\]
 \citet{DHsu2012} proposed an algorithm as follows, and claimed without proof that it has a provable performance. 
 In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
 \begin{algorithm}[H]
@@ -443,19 +426,16 @@ where
 & \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
 \end{align*} 
 
-\subsection{Reconstruction error of HK algorithm}
+\subsection{Reconstruction error}
 \label{subsec:errorHK}
-Assume the independent ergodic component functions $\scom{1},\ldots,\scom{d}:\natural \ra \real$ are bounded by a constant $C$, and satisfy $\E_{Y\sim\nu^{(\scom{i})}}[Y]=0$ and $\kappa_i := \E_{Y\sim \nu^{(\scom{i})}}[Y^4] - 3\left(\E_{Y\sim \nu^{(\scom{i})}}[Y^2]\right)^2\neq 0$.
-%\footnote{In this section, we will denote the sources by $s_i$ to avoid a clash with the function $f$ used by  \citet{DHsu2012} for a different purpose.}
-%Note that sample a vector $\psi$ from a unit sphere, $\min_i |\psi^{\top}A_i|\neq 0$ with probability~1.  
+ We assume $s_i$, the $i$th component of the function $s$, is bounded by a constant $C$, , and satisfy $\E_{Y\sim\nu^{(\scom{i})}}[Y]=0$ and $\kappa_i := \E_{Y\sim \nu^{(\scom{i})}}[Y^4] - 3\left(\E_{Y\sim \nu^{(\scom{i})}}[Y^2]\right)^2\neq 0$.
 Denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$ by $K$. 
 Also, denote $\max_{i} \kappa_i$ by $\kappa_{\max}$ and $\min_{i} \kappa_i$ by $\kappa_{\min}$.
-
-Although $A$ is identifiable under the conditions of Theorem \ref{thm:CorofICA}, in practice the unobserved signal function $s$ will never have independent components (especially in a noisy setting). 
-Hence we still need a `dependence measure' for the components of $s$.
+Clearly, no meaningful results will be achieved if $s$ is allowed to go arbitrarily wild. 
+We define a `dependence measure' for the components of $s$ as follows. 
 \begin{definition}
-Given two distributions $F_1$ and $F_2$ in $\real^d$, let $D_k(F_1,F_2) = \sup_{f\in\mathcal{F}} |\int f(x)dF_1(x) - \int f(x)dF_2(x)|$, where $\mathcal{F}$ is the set of all monomials up to degree $k$.
-\end{definition} 
+Given two ergodic functions $g_1$ and $g_2$, let $D_k(g_1,g_2) = \sup_{f\in\mathcal{F}} |\int f(x)d\nu^{(g_1)}(x) - \int f(x)d\nu^{(g_2)}(x)|$, where $\mathcal{F}$ is the set of all monomials up to degree $k$.
+\end{definition}  
 The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
@@ -515,8 +495,8 @@ To overcome this problem, we refine the HK algorithm by a quasi-whitening proced
 In practice, HK algorithm may generate complex output, even for real input. This occurs only when $\nabla^2\widehat{f}(\psi)$ is singular due to numerical precision. Note that theoretically this happens with probability 0. One way of fixing this problem is sampling a new pair of $\phi$ and $\psi$.
 \end{remark}
 
-\subsection{Refined HK algorithm}
-\label{subsec:DICA}
+\section{Refined HK Algorithm}
+\label{sec:DICA}
 The new algorithm, called Determined ICA, is as follows. 
 \begin{algorithm}[H]
 \caption{Determined ICA}
