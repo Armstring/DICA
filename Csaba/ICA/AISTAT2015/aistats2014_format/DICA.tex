@@ -186,7 +186,8 @@ Moreover, they involve an intermediate procedure of estimating a probability fun
 The first provable ICA method that can deal with the noisy case is by \citep{arora2012provable}. 
 The idea is still based on the forth moments. 
 After a quasi-whitening procedure, \citep{arora2012provable} reduced the ICA problem into a problem of finding all the local optimizer of a specific function defined using the forth order cumulant. Then a polynomial-time algorithm is proposed to find all the local optimizers with theoretical guarantee.
-Despite its great progress in theory, \citep{arora2012provable}'s algorithm requires a exhaustive search for an input parameter ($\beta$ in the paper) that is not yet well understood, which impairs its usage in practice.
+Despite its great progress in theory, \citep{arora2012provable}'s algorithm requires an exhaustive search for an input parameter, $\beta$ in the paper.
+The interval of the valid $\beta$s is not yet well understood, which impairs the usefulness of the algorithm in practice.
 
 The forth moment statics are also used in many other ICA related works. 
 Recently, a series of more promising methods are proposed based on the algebraic structure of the model \citep{hsu2013learning,anandkumar2012tensordecomposition,anandkumar2012method}. 
@@ -219,11 +220,7 @@ This idea is also used in \citep{frieze1996learning} and \citep{arora2012provabl
 With this lower bound, we then show that the new algorithm has provable guarantee on the reconstruction error of $A$. 
 
 The rest of this paper is organized as follows: 
-in Section \ref{sec:DeterFrame} we will propose our deterministic framework. 
-Then an identifiability result framework is presented in Subsection \ref{subsec:Indentifiability}.
-We analyze the algorithm of \cite{hsu2013learning} and discussed the exponential dependence problem in Subsection \ref{subsec:HKalg} and \ref{subsec:errorHK}. 
-Based on the above discussion, our algorithm is proposed in Subsection \ref{subsec:DICA} and its theoretical result is presented in Subsection \ref{subsec:gammaR}.
-Lastly, simulation results are reported in Section \ref{sec:ExpRes}.
+Lastly, experimental results are reported in Section \ref{sec:ExpRes}.
 
 \subsection{Notations}
 Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$.
@@ -338,7 +335,7 @@ Let $\mu_t$ be the uniform probability distribution on $[0,t]$.
 \end{remark}
 \fi
 
-\section{Reconstruction Error of \citet{hsu2013learning}'s Algorithm}
+\section{Analysis of \citet{hsu2013learning}'s Algorithm}
 \label{sec:Results}
 
 \if0
@@ -387,19 +384,21 @@ This is the first `real' polynomial time moment-based algorithm for ICA.
 Details will be discussed in the next section due to its complexity.  
 \fi
 
-We analyze and discuss the performance of \citet{hsu2013learning}'s algorithm in this section.
+We analyze the performance of \citet{hsu2013learning}'s algorithm (HK) in this section.
 
 \subsection{ HK algorithm}
 \label{subsec:HKalg}
 For $p\ge 1$, $\eta\in \real^d$, 
 let 
-\[
+\begin{equation}
+\label{eq:momnent}
 m_p(\eta) = \E_{Y\sim \nu^{(s)}}[ (\eta^\top A Y)^p ]
-\]
- and let
-\[
+\end{equation}
+and let
+\begin{equation}
+\label{eq:funcf}
 f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
-\]
+\end{equation}
 \citet{DHsu2012} proposed an algorithm as follows, and claimed without proof that it has a provable performance. 
 In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
 \begin{algorithm}[H]
@@ -409,7 +408,6 @@ In general, we denote by adding a ``hat'' on the top of a symbol its empirical e
 \OUTPUT An estimation of the mixing matrix $A$. 
 \STATE Sample $\phi$ from the unit sphere of $\real^d$;
 \STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, 
-%\quad where $\widehat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
 \STATE Compute $\widehat{M} = (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1}$;
 \STATE Compute all the eigenvectors of $\widehat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
 \STATE Return $\widehat{A} = (\mu_1,\ldots,\mu_d)$.
@@ -455,11 +453,11 @@ The performance of \citet{DHsu2012}'s algorithm depends on these parameters, as 
  \begin{thm}
  \label{thm:efficiency}
 Let 
- \begin{align}
+ \begin{align*}
  Q = &\Big(\frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) }{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \\
  & + \frac{2\sqrt{2}\sqrt{\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \Big)
   \xi.
- \end{align}
+ \end{align*}
  Assume the following conditions hold:
  \begin{enumerate}
  \item $\widehat{M}$ has distinct eigenvalues;
@@ -517,7 +515,7 @@ The new algorithm, called Determined ICA, is as follows.
 Let 
 \begin{align*}
 & \bar{\xi} =   \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi, \\
-& \widehat{\xi} = \frac{16d^9}{\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + 2\bar{\xi},
+& \widehat{\xi} = \frac{16d^7}{\pi^2\kappa_{\min}^2A^4_{(2,\min)}}\xi + \frac{\sigma_{\max}^2(A)}{\kappa_{\min}A^2_{(2,\min)}}\bar{\xi},
 \end{align*} 
 and 
 \begin{equation}
@@ -647,4 +645,7 @@ Soma             &Cell body (contains cell nucleus) \\
 
 \bibliography{DICA}
 \bibliographystyle{plainnat}
+
+\newpage
+\include{appendix}
 \end{document}
