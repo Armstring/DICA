@@ -249,7 +249,7 @@ if the sequence of  induced probability measures $(\nu_t)_{t\ge 0}$ is weakly co
 A simple example of an ergodic function is a real periodic function.
 The following lemma shows that once $\nu$ exists, it is a probability measure. 
 \begin{prop}
-\label{lem:ergodicfunction}
+\label{prop:ergodicfunction}
 Let $\scom{i}$ denote the $i$th coordinate function of $s$. Assume that
 \[
 \lim_{t\to\infty} \int |\scom{i}(x)|\, d\mu_t(x) 
@@ -386,8 +386,9 @@ Details will be discussed in the next section due to its complexity.
 
 We analyze the performance of \citet{hsu2013learning}'s algorithm (HK) in this section.
 
-\subsection{ HK algorithm}
+\subsection{HK algorithm}
 \label{subsec:HKalg}
+\citet{DHsu2012} proposed an algorithm for ICA based on the idea of moment methods.
 For $p\ge 1$, $\eta\in \real^d$, 
 let 
 \begin{equation}
@@ -399,12 +400,11 @@ and let
 \label{eq:funcf}
 f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
 \end{equation}
-\citet{DHsu2012} proposed an algorithm as follows, and claimed without proof that it has a provable performance. 
 In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
 \begin{algorithm}[H]
 \caption{HK algorithm}
 \begin{algorithmic}[1]
-\INPUT $g(k)$ for $0\le k \le T$. 
+\INPUT $x(t)$ for $0\le k \le T$. 
 \OUTPUT An estimation of the mixing matrix $A$. 
 \STATE Sample $\phi$ from the unit sphere of $\real^d$;
 \STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, 
@@ -423,17 +423,27 @@ where
 & \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)^2 \sum_{t=1}^{n}x(t)x(t)^{\top}; \\
 & \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
 \end{align*} 
+Even though the authors believed that the algorithm has provable guarantee, no rigorous analysis is provided. 
+We try to fill the gap in the next subsection. 
+A detailed analysis shows that the performance of the algorithm may be not as trivial as it is claimed.
 
 \subsection{Reconstruction error}
 \label{subsec:errorHK}
+Our analysis is developed in the deterministic setting.
  We assume $s_i$, the $i$th component of the function $s$, is bounded by a constant $C$, , and satisfy $\E_{Y\sim\nu^{(\scom{i})}}[Y]=0$ and $\kappa_i := \E_{Y\sim \nu^{(\scom{i})}}[Y^4] - 3\left(\E_{Y\sim \nu^{(\scom{i})}}[Y^2]\right)^2\neq 0$.
 Denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$ by $K$. 
 Also, denote $\max_{i} \kappa_i$ by $\kappa_{\max}$ and $\min_{i} \kappa_i$ by $\kappa_{\min}$.
 Clearly, no meaningful results will be achieved if $s$ is allowed to go arbitrarily wild. 
 We define a `dependence measure' for the components of $s$ as follows. 
 \begin{definition}
-Given two ergodic functions $g_1$ and $g_2$, let $D_k(g_1,g_2) = \sup_{f\in\mathcal{F}} |\int f(x)d\nu^{(g_1)}(x) - \int f(x)d\nu^{(g_2)}(x)|$, where $\mathcal{F}$ is the set of all monomials up to degree $k$.
-\end{definition}  
+Given two distributions $\nu_1$ and $\nu_2$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(x)d\nu_1(x) - \int f(x)d\nu_2(x)|$, where $\mathcal{F}$ is the set of all monomials up to degree $k$.
+\end{definition} 
+\begin{remark}
+In general, we will need a condition that $D_k(\nu_{T}, \mu)$ is small enough for some $k$ and some product probability measure $\mu$.
+In a stochastic setting where the observations are i.i.d, the empirical distribution will weakly converge to the popular distribution, which based on the independence assumption is a product probability measure. 
+Therefore, this condition is satisfied given enough observations.
+   
+\end{remark} 
 The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
@@ -465,29 +475,27 @@ Let
  \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } Q$;
  \item $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$.
   \end{enumerate}
- Then on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that
+ Then on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for any $k$,
  \[
-  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4}{\gamma} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q .
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4}{\gamma} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q.
   \]
-  and therefore,
- \[
- \sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4d}{\gamma} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q .
- \]
  \end{thm}
 \begin{remark}
 Note that the first condition holds with probability 1. Also, the other three conditions will hold when $\xi$ is small enough. However, condition 2 and 3 are rarely satisfied in practice. 
-More discussion about this problem and weaker conditions are discussed in Section \ref{sec:ExpRes}. 
+%More discussion about this problem and weaker conditions are discussed in Section \ref{sec:ExpRes}. 
 \end{remark}
 
 \begin{remark}
-Note that $\gamma$ is actually the minimal gap of the eigenvalues of $M$.
+Note that $\gamma$ is the minimal gap of the eigenvalues of $M$.
 Consider perturbing a $2\times 2$ matrix $A = \text{diag}([a,b])$ where $a<b$ by $E = \text{diag}([\eps,0])$. 
 The eigen-spaces of $A+E$ will stay as $[1,0]$ and $[0,1]$ for $\eps < b-a$, but then can be arbitrary vectors when $\eps = b-a$.  
-Due to such discontinuity of the eigen-spaces, the dependence on $\gamma$ is necessary once the algorithm takes the eigen-decomposition step. 
+Due to such discontinuity of the eigen-spaces, the dependence on $\gamma$ is necessary for HK algorithm. 
 \end{remark}
 \begin{remark}
-Despite the important role that $\gamma$ plays in the efficiency of HK algorithm, we have no clue about the behavior of the parameter $\gamma$. Even a polynomial(in the dimension $d$) lower bound of $\gamma$ is not yet available. 
-To overcome this problem, we refine the HK algorithm by a quasi-whitening procedure, inspired by \citep{arora2012provable} and \citep{frieze1996learning}, as shown in the next Subsubsection.
+Despite the important role that $\gamma$ plays in the efficiency of HK algorithm, we have no clue about the behavior of the parameter $\gamma$. 
+Even a polynomial(in the dimension $d$) lower bound of $\gamma$ is not yet available. 
+\citet{goyal2014fourier} provides a lower bound for $\gamma$ that is exponential in $d$.
+To overcome this problem, we refine the HK algorithm by a quasi-whitening procedure, inspired by the ideas of \citep{arora2012provable} and \citep{frieze1996learning}, as shown in the next Subsubsection.
 \end{remark}
 \begin{remark}
 In practice, HK algorithm may generate complex output, even for real input. This occurs only when $\nabla^2\widehat{f}(\psi)$ is singular due to numerical precision. Note that theoretically this happens with probability 0. One way of fixing this problem is sampling a new pair of $\phi$ and $\psi$.
