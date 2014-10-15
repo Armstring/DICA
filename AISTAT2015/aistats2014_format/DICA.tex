@@ -16,6 +16,7 @@
 \newcommand{\Ephitwo}{\mathbb{E}_{\phi_2}}
 \newcommand{\Epsi}{\mathbb{E}_{\psi}}
 \newcommand{\Ephi}{\mathbb{E}_{\phi}}
+\newcommand{\EZ}{\mathbb{E}_{Z}}
 \newcommand{\cN}{\cal{N}}
 \renewcommand{\P}{{\mathcal P}}
 \newcommand{\E}{\mathbb{E}}
@@ -221,6 +222,7 @@ This idea is also used in \citep{frieze1996learning} and \citep{arora2012provabl
 With this lower bound, we then show that the new algorithm has provable guarantee on the reconstruction error of $A$. 
 
 The rest of this paper is organized as follows: 
+We introduce some preliminaries in Section \ref{sec:Preliminaries}. Section \ref{sec:AnalysisHK} is devoted to the analysis of HK algorithm. Then in section \ref{sec:DICA} we propose our algorithm and show that it has the 'real' provable guarantee.
 Lastly, experimental results are reported in Section \ref{sec:ExpRes}.
 
 \subsection{Notations}
@@ -337,7 +339,7 @@ Let $\mu_t$ be the uniform probability distribution on $[0,t]$.
 \fi
 
 \section{Analysis of \citet{hsu2013learning}'s Algorithm}
-\label{sec:Results}
+\label{sec:AnalysisHK}
 
 \if0
 We now analyze the ICA problem in our deterministic framework proposed in Section \ref{sec:DeterFrame}.
@@ -407,7 +409,7 @@ In general, we denote by adding a ``hat'' on the top of a symbol its empirical e
 \begin{algorithmic}[1]
 \INPUT $x(t)$ for $0\le t \le T$. 
 \OUTPUT An estimation of the mixing matrix $A$. 
-\STATE Sample $\phi$ and $\psi$ uniformly from the unit sphere of $\real^d$;
+\STATE Sample $\phi$ and $\psi$ independently from a standard Gaussian distribution of dimension $d$;
 \STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, 
 \STATE Compute $\widehat{M} = (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1}$;
 \STATE Compute all the eigenvectors of $\widehat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
@@ -516,45 +518,50 @@ The idea is inspired by the ideas of \citep{arora2012provable} and \citep{frieze
 
 \section{Refined HK Algorithm}
 \label{sec:DICA}
-The new algorithm, called Determined ICA, is as follows. 
+The new algorithm, called Determined ICA (DICA), is as follows. 
 \begin{algorithm}[H]
-\caption{Determined ICA}
+\caption{Determined ICA (DICA)}
 \begin{algorithmic}[1]
 \INPUT $x(t)$ for $1\le t \le T$. 
 \OUTPUT An estimation of the mixing matrix $A$. 
-\STATE Sample $\psi$ uniformly from the unit sphere of $\real^d$;
+\STATE Sample $\psi$ from a $d$-dimensional standard Gaussian distribution;
 \STATE Evaluate $\nabla^2\widehat{f}(\psi)$, \\
 %\quad where $\widehat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\widehat{f}(\eta) = \frac{1}{12}\big(\widehat{m_4}(\eta) - 3\widehat{m_2}(\eta)^2 \big)$;
 \STATE Compute $\widehat{B}$ such that $\nabla^2\widehat{f}(\psi) = \widehat{B}\widehat{B}^{\top}$;
 \STATE Sample $\phi_1$ and $\phi_2$ independently from the standard normal distribution;
 \STATE Compute $\widehat{T}_1 = \widehat{G}(\widehat{B}^{-\top}\phi_1)$ and  $\widehat{T}_2 =\widehat{G}(\widehat{B}^{-\top}\phi_2)$;
 
-\STATE Compute all the eigenvectors of $\widehat{T} = \widehat{T}_1\left(\widehat{T}_2\right)^{-1}$, $\{\mu_1,\ldots,\mu_d\}$;
+\STATE Compute all the eigenvectors of $\widehat{M} = \widehat{T}_1\left(\widehat{T}_2\right)^{-1}$, $\{\mu_1,\ldots,\mu_d\}$;
 \STATE Return $\widehat{A} = \{\mu_1,\ldots,\mu_d\}$.
 \end{algorithmic}
 \end{algorithm}
-Note that $\phi_1$ and $\phi_2$ are sampled independently from standard normal distribution. 
-The following lemma shows that with high probability, $\|\phi_1\|_2$ and $\|\phi_2\|_2$ are bounded.
-\begin{lemma}
-\label{lem:lengthofphi}
-For $L_1 \le L_2$, with probability $\left(\exp(-1/2L_1^2)-\exp(-1/2L_2^2)\right)^2$, $L_1 \le\|\phi_1\|_2 \le L_2$ and $L_1\le\|\phi_2\|_2 \le L_2$. 
-\end{lemma} 
-Thus, picking $L_1 =1$ and $L_1 =1$, we have $ 1\le \|\phi_1\|_2\le 2$ and $ 1\le \|\phi_2\|_2\le 2$ with probability $\left(\exp(-1/2) - \exp(-2)\right)^2 > 0.2$.
-Denote this event by $\Ephi$.
-Recall that $\widehat{G}$ is defined in Equation \ref{eq:G}.
+
+The DICA algorithm can be showed to have provable performance under some good event defined as follows:
+\begin{definition}
+We denote by $\Ephi$ the following event:
+For some fixed constant $L_u$ and $\ell_l$ such that $\ell_l \le \frac{1}{5}\frac{\sqrt{\pi}}{\sqrt{2}d}$ and $L_u \ge 4\sqrt{d}$,
+\begin{itemize}
+\item $\|\phi_1\|_2 \le L_u$;
+\item $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l$ where $R_i$ is the $i$th column of some orthonormal matrix $R$ (specified in the Appendix);
+\end{itemize} 
+\end{definition}  
+%Note that $\phi_1$ and $\phi_2$ are sampled independently from standard normal distribution. 
+Note that on the event $\Ephi$, $\|\phi_j^{\top}R\|_2\le L_u$ for $j\in\{1,2\}$. 
+We will show later that this event $\Ephi$, as well as other events defined later, will hold simultaneously for at least a constant probability.
+Recall that $\widehat{G}$ is defined in Equation \eqref{eq:G}.
 Let 
 \begin{align*}
 & \bar{\xi} =   \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi, \\
-& \widehat{\xi} = \frac{12d^7A^2_{\max}}{\pi\kappa_{\min}A^2_{(2,\min)}}\xi + \frac{4\sqrt{6}\sigma_{\max}^2(A)}{A^2_{(2,\min)}}\bar{\xi},
+& \widehat{\xi} = \frac{3L_u^2d^7A^2_{\max}}{\pi\kappa_{\min}A^2_{(2,\min)}}\xi + \frac{2\sqrt{6}L_u^2d^2\sigma_{\max}^2(A)}{\pi A^2_{(2,\min)}}\bar{\xi},
 \end{align*} 
 and 
 \begin{equation}
 \label{def:gammaR}
 \gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2 - \left(\frac{\phi_1^{\top}R_j}{\phi_2^{\top}R_j}\right)^2 \right\vert, 
 \end{equation}
-for some orthonormal matrix $R$.
-Similar to Lemma \ref{lem:dmin}, on the event $\Ephi$ with probability at least $1/4$, $\text{min}_i |\phi_1^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$ (respectively $\text{min}_i |\phi_2^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$). 
-Denote this event by $\Ephione$ (respectively $\Ephitwo$).
+for the same orthonormal matrix $R$ in the event $\Ephi$.
+%Similar to Lemma \ref{lem:dmin}, on the event $\Ephi$ with probability at least $1/4$, $\text{min}_i |\phi_1^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$ (respectively $\text{min}_i |\phi_2^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$). 
+%Denote this event by $\Ephione$ (respectively $\Ephitwo$).
 The performance of the algorithm is guaranteed by the following theorem.
 \begin{thm}
 \label{thm:Modefficiency}
@@ -562,7 +569,7 @@ Let
  \[ 
  Q=  
  %\frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}}.
- \frac{128d^6A^6_{(2,\max)}}{\pi^3 A^6_{(2,\min)}}\widehat{\xi}.
+ \frac{4L_u^2A^6_{(2,\max)}}{l_l^4 A^6_{(2,\min)}}\widehat{\xi}.
  \] 
  Assume the following conditions hold:
  \begin{enumerate}
@@ -571,23 +578,23 @@ Let
  \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$;
  \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{3\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
  (so $\bar{\xi} \le 1/3$);
- \item $\widehat{\xi} \le \frac{\pi A^2_{(2,\min)}}{4d^2A^2_{(2,\max)}}$.
+ \item $\widehat{\xi} \le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$.
  \end{enumerate}
-Then on the event $\Epsi \cap\Ephi\cap \Ephione \cap \Ephitwo$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
 %\|c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\widehat{T} - T\|_2\,,
 \| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} Q.
 \]
 \end{thm}
 \begin{remark}
-The 4th condition in fact can be implied by the 5th condition.
+The 4th condition in fact could be implied by the 5th condition, if $\ell_l \ge 1$.
 \end{remark}
 
 \subsection{Behavior of $\gamma_R$}
 \label{subsec:gammaR}
 Similarly, the result of Theorem \ref{thm:Modefficiency} essentially depends on $\gamma_R$. 
-However, we can calculate a constant-probability lower bound for it, which makes Theorem \ref{thm:Modefficiency} more meaningful. 
-Note that we can assume $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
+However, a constant-probability lower bound for $\gamma_R$ can be developed (while it is not the case for $\gamma$), which makes Theorem \ref{thm:Modefficiency} more meaningful. 
+Note that $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
 Thus, $\{\phi_1^{\top}R_1, \cdots, \phi_1^{\top}R_d,$ $\phi_2^{\top}R_1, \cdots, \phi_2^{\top}R_d\}$ are $2d$ independent standard normal random variables. 
 Let $Z_i = \frac{\phi_1^{\top}(R)_i}{\phi_2^{\top}(R)_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
 
@@ -598,34 +605,57 @@ $, WLOG we can assume both $Z_i$ and $Z_j$ are positive. Then,
 	=		& \min_{i\neq j}\left\vert Z_i - Z_i \right\vert	\left\vert Z_i + Z_i \right\vert \\
 	\ge 	& 2\min_i\vert Z_i\vert\min_{i\neq j} \left\vert Z_i - Z_j \right\vert.
 \end{align*}
-Recall that on the event $\Ephione$, $\min_i\vert Z_i \vert \ge \frac{\sqrt{2\pi}}{2d}$. 
+%Recall that on the event $\Ephione$, $\min_i\vert Z_i \vert \ge \frac{\sqrt{2\pi}}{2d}$. 
 Also note that $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$ is the distribution of the minimal spacing of Cauchy random variables.
 
 \begin{lemma}
 \label{lem:CauchyGap}
-With probability at least $1/4$,
+Let $C = \frac{\pi}{2d^2}h$ for $0\le h\le 1$. 
+With probability at least $1-h$,
 \[
-\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge \frac{\pi}{2d^2}.
+\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge C, \text{and} \,  \min_i\vert Z_i\vert \ge C.
 \]
 \end{lemma}
-Thus, by Lemma \ref{lem:CauchyGap}, $\gamma_R \ge \frac{\sqrt{2\pi^3}}{2d^3}$ with probability at least $1/4$.
-
+Thus, $\gamma_R \ge C^2$ with probability at least $1-h$.
+Denote this event by $\EZ$.
+Let  
+\[
+\E = \Epsi \cap\Ephi \cap \EZ.
+\]
+It remains to argue that the probability of $\E$ is a constant.
+\begin{thm}
+\label{thm:ConstantProb}
+The event $\E$ holds with probability at least $1/4\left(1-h-\ell-2\exp(-x) \right)$. 
+Thus, picking $\ell_l = \frac{1}{5}\frac{\sqrt{\pi}}{\sqrt{2}d}$, $L_u = 4\sqrt{d}$ and $C = \frac{\pi}{10d^2}$, $\Prob{\E}\ge 1/20$.
+\end{thm}
+\begin{remark}
+Note that all the constants in Lemma \ref{thm:ConstantProb} are polynomial in $d$(or $d^{-1}$ for the lower bound), thus the result of Theorem \ref{thm:Modefficiency} is polynomial in $d$ with at probability at $1/20$.
+\end{remark}
+ 
 \section{Experimental Results}
 \label{sec:ExpRes}
 \subsection{Comparison of $\gamma$ and $\gamma_R$}
-Even though we can't develop any theoretical results for $\gamma$, we can compare it with $\gamma_R$ empirically.
+\label{subsec:comparisonGamma}
+Even though theoretical result for $\gamma$ is not available, we compare its behavior and that of $\gamma_R$ empirically. 
+In this section, we test the expected values of $1/\gamma$ and $1/\gamma_R$ for general $A_1$ and high coherent matrix $A_2$. 
+In particular, we generate $A_1$ by standard normal distribution, and $A_2 = v_b*\emph{1}' + 0.3*P$ where $\emph{1}$ is the column vector with all entries being 1, and both $v_b$ and the matrix $P$ are generated from standard normal distribution (with different dimensions). 
+Another orthonormal matrix R is generated by computing the left column space of a non-singular matrix $N$ that is also generated from  standard normal distribution.  
 
 \subsection{Simulations}
-We investigate the performances of different ICA algorithms in a simulation setting. In particular, four algorithms are tested: 
+We investigate the performances of different ICA algorithms in a simulation setting. In particular, 3 algorithms are tested: 
 \begin{itemize}
 \item \citet{DHsu2012}'s algorithm(HK);
 \item The refined \citet{DHsu2012}'s algorithm (DICA);
 \item The default FastICA algorithm in the 'ITE' toolbox \cite{szabo12separation} (FICA). 
 \end{itemize}
+We do not test the algorithm of \citep{anandkumar2012tensordecomposition} because the tensor decomposition takes too long to converge and achieve a valid solution. 
 \subsubsection{Data generation}
-In the simulation, a common mixing matrix $A$ is generated, then we sample $k$ groups of $n$ observations. 
-For each observation $y$, $y = Ax+ 0.3\times\eps$ where the signal $x$ is generated from a product measure of $d$ uniform distributions $\text{Unif}(-\frac12, \frac12)$, and $\eps$ is generated from a standard $d$-dimensional Gaussian distribution. 
+In the simulation, a common mixing matrix $A$ is generated in a same way as that for $A_1$ or $A_2$ in Subsection \ref{subsec:comparisonGamma}. 
+Then we sample $k$ groups of observations, each having size $n$. 
+For each observation $y$, $y = Ax+ c\times\eps$ where the signal $x$ is generated from either a product measure of $d$ uniform distributions $\text{Unif}(-\frac12, \frac12)$ or a BPSK signal with different frequency for each component, and $\eps$ is generated from a standard $d$-dimensional Gaussian distribution. 
+When $x$ is a BPSK signal, in order to have the components of $x$ are close to independent, we need the ratio of their frequencies are irrational.
 All the algorithms will be evaluated on these common $k$ group of observations.
+We test the noise ratio $c$ from 0(noiseless) to 1(heavily noisy). 
 \subsubsection{Error measures}
 We measure the performances of the algorithms on three different measures for different purposes.
 
@@ -681,6 +711,7 @@ Soma             &Cell body (contains cell nucleus) \\
 \subsubsection*{Acknowledgements}
 
 
+%\newpage 
 \bibliography{DICA}
 \bibliographystyle{plainnat}
 
