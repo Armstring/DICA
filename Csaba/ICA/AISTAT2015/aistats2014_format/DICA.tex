@@ -535,6 +535,15 @@ The new algorithm, called Determined ICA (DICA), is as follows.
 \STATE Return $\widehat{A} = \{\mu_1,\ldots,\mu_d\}$.
 \end{algorithmic}
 \end{algorithm}
+\begin{remark}
+The difficult in analyzing $\gamma$ of the HK algorithm is due to its dependence on the unknown mixing matrix $A$. 
+DICA can be viewed in the tensor perspective. 
+Instead of flattening two $4$-dimensional tensors into matrices simply by marginalizing in a random direction, in DICA we marginalize in a special direction of structure $\psi^{\top}A^{-1}$ for a random $\psi$. 
+Another interpretation of DICA could be in a  probabilistic perspective, as sampling based on an estimation of the variance matrix. 
+In particular, in order for $\{v^{\top}A_1, \ldots, v^{\top}A_d \}$ to be independent for some direction $v$ from a Gaussian distribution $N(0,V)$(so that $\gamma$ could be easier to analyze), we would like to have $V = A^{-\top}A^{-1}$. 
+Despite the true value of $A^{-\top}A^{-1}$ is not available, we can estimate it up to permutation and scaling (which can still maintain the independence of $\{v^{\top}A_1, \ldots, v^{\top}A_d \}$) by $\left(\nabla^2\widehat{f}(\psi)\right)^{-1}$. Then in DICA, $\widehat{B}^{-\top}\phi$ is a way of sampling such direction $v$.
+This perspective also suggest that a better estimation of $A^{-\top}A^{-1}$ would help improving DICA.
+\end{remark}
 
 The DICA algorithm can be showed to have provable performance under some good event defined as follows:
 \begin{definition}
