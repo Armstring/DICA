@@ -204,7 +204,7 @@ However, it is well known that power method is unstable in practice for high ord
 Another drawback is that this method, when applied to the ICA problem, introduces an error term that does not approach 0 as the sample size approaches infinity. 
 
 In this paper we proposed a practical method for ICA which also has meaningful theoretical guarantee (polynomial-time; with constant probability the reconstruction error of $A$ polynomially depends on all the parameters and vanishes as the sample size going to infinity).
-Our algorithm is a refined version of the algorithm of \cite{hsu2013learning} (HKICA).  
+Our algorithm is a refined version of the ICA algorithm proposed by \cite{hsu2013learning} (HKICA).  
 Another contribution of the present paper is that our theoretical analysis is conducted in a deterministic manner. 
 In practice ICA is also known to work well for unmixing the mixture of various deterministic signals. 
 One of the classic demonstrations of ICA is showing that the periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
@@ -214,7 +214,7 @@ Our deterministic analysis helps investigate this curious phenomenon without los
 Formally, let $s:\natural \ra \real^d$ be a $d$-dimensional deterministic ``signal''. 
 Denote by $s_i$ the $i$th component of $s$.
 We present the ICA model as a linear mixture of functions (details will be introduced later).
-Then HKICA \citep{hsu2013learning} is analyzed in this presentation using a measure of functional dependence.
+Then we analyze the HKICA algorithm \citep{hsu2013learning} under this presentation using a measure of functional dependence.
 A detailed analysis shows that its performance depends on the minimal gap of the eigenvalues (of some random matrix. The exact form is presented later.).
 A meaningful lower bound  (polynomial in the parameters of the ICA model) for this gap is essential for the soundness of this algorithm, but not yet available \citep{cardoso1999high}.
 A key step of our algorithm is reducing such minimal eigenvalue gap problem to the problem of minimal spacing of i.i.d. Cauchy random variables, for which a polynomial lower bound is available, by the quasi-whitening procedure.
@@ -222,7 +222,7 @@ This idea is inspired by \citet{frieze1996learning} and \citet{arora2012provable
 With this lower bound, we then show that the new algorithm has provable guarantee on the reconstruction error of $A$. 
 
 The rest of this paper is organized as follows: 
-We introduce some preliminaries in Section \ref{sec:Preliminaries}. Section \ref{sec:AnalysisHK} is devoted to the analysis of the HK algorithm. Then in section \ref{sec:DICA} we propose our algorithm and show that it has the 'real' provable guarantee.
+We introduce some preliminaries in Section \ref{sec:Preliminaries}. Section \ref{sec:AnalysisHK} is devoted to the analysis of the HKICA algorithm. Then in section \ref{sec:DICA} we propose our algorithm and show that it has the 'real' provable guarantee.
 Lastly, experimental results are reported in Section \ref{sec:ExpRes}.
 
 \subsection{Notations}
@@ -274,7 +274,7 @@ Note that the above deterministic setting does not lose any generality to the tr
 \[
 x = As+\eps = A(s+A^{-1}\eps),
 \] 
-where $\eps$ is the Gaussian noise. In practice, we are not going to observe the true distribution of $x$, but $x(t)$, $t\ge 0$, which leads to Equation \eqref{equ:ICA}.
+where $\eps$ is a Gaussian noise. In practice, we are not going to observe the true distribution of $x$, but $x(t)$, $t\ge 0$, which leads to Equation \eqref{equ:ICA}.
 
 
 
@@ -342,53 +342,6 @@ Let $\mu_t$ be the uniform probability distribution on $[0,t]$.
 
 \section{Analysis of the HKICA Algorithm}
 \label{sec:AnalysisHK}
-
-\if0
-We now analyze the ICA problem in our deterministic framework proposed in Section \ref{sec:DeterFrame}.
-
-\subsection{Identifiability}
-\label{subsec:Indentifiability}
-The first essential question is the identifiability of the ICA model.
-Our result requires the minimal assumption that each component $s_i$ is non-Gaussian\footnote{this result could be extended to allow one Gaussian.}, which is the same as that of stochastic setting.
-\begin{thm}
-\label{thm:CorofICA}
-Let $s = (\scom{1},\ldots,\scom{d})^{\top}$ be an ergodic function with independent components and
-assume that neither of $\nu_{\scom{i}}$, $i=1,\ldots,d$ is a Gaussian distribution. If
-\begin{equation}
-\left(
-\begin{array}{ccc}
-\xcom{1} \\
-\vdots \\
-\xcom{d}
-\end{array}
-\right) = A
-\left(
-\begin{array}{ccc}
-\scom{1} \\
-\vdots \\
-\scom{d}
-\end{array}
-\right)
-\end{equation}
-are independent, then $A$ is equivalent to a permutation matrix up to scaling.
-\end{thm}
-
-\subsection{Reconstruction Error}
-\label{subsec:HowDifficult}
-
-Standard results about the reconstruction of $A$ can be phrased as follows:
-Let $S$ be a random $d$-dimensional vector, whose components are independent of each other.
-Let $X = A S$, where $A$ is a nonsingular $d\times d$ matrix. Then, given the empirical distribution of $X$, assuming that the joint of $S$ satisfies some additional assumptions, the matrix $A$ can be approximately reconstructed up to permutation and scaling, with provable error.
-
-In general, we believe these results carry through to the deterministic setting, by replacing the empirical distribution of $S$ with $\nu^{(s)}$ where $s$ is a $d$-dimensional deterministic signal.
-In this paper, we analyze a randomized ICA algorithm of \citep{DHsu2012}(HK algorithm) as an example. 
-In the deterministic setting, it clearly shows that the sample procedure plays an important role in the performance.
-However, we have difficult in analyzing the behavior of this sample procedure, which leads to a vacuous theoretical result.
-To solve this problem, we proposed a refined version of the HK algorithm, called deterministic ICA algorithm. 
-This is the first `real' polynomial time moment-based algorithm for ICA. 
-Details will be discussed in the next section due to its complexity.  
-\fi
-
 We analyze the performance of the HKICA algorithm in this section.
 
 \subsection{the HKICA algorithm}
@@ -409,7 +362,7 @@ In general, we denote by adding a ``hat'' on the top of a symbol its empirical e
 \begin{algorithm}[H]
 \caption{the HKICA algorithm}
 \begin{algorithmic}[1]
-\INPUT $x(t)$ for $0\le t \le T$. 
+\INPUT $x(t)$ for $1\le t \le T$. 
 \OUTPUT An estimation of the mixing matrix $A$. 
 \STATE Sample $\phi$ and $\psi$ independently from a standard Gaussian distribution of dimension $d$;
 \STATE Evaluate $\nabla^2\widehat{f}(\phi)$ and $\nabla^2\widehat{f}(\psi)$, 
@@ -430,7 +383,8 @@ where
 & \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
 \end{align*} 
 \begin{remark}
-In practice, HKICA algorithm may generate complex output. 
+\label{rmk:symmetrization}
+In practice, the HKICA algorithm may generate complex output. 
 This occurs only when $\nabla^2\widehat{f}(\psi)$ is singular. 
 Otherwise, the eigenvalues of $\widehat{M}$ would be the same as those of
 $\widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ which is symmetric and thus has all real eigenvalues, where $\widehat{B} $ is the square root of $\nabla^2\widehat{f}(\psi)$. 
@@ -445,8 +399,8 @@ Then $A$ can be reconstructed, up to permutation and scaling of columns, by $\wi
 Note that $ \widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ is always symmetric, thus yields a real eigen-decomposition. \qed
 \end{remark}
 
-Even though the authors believed that the algorithm has provable guarantee, no rigorous analysis is provided. 
-We try to fill the gap in next section. 
+Even though the authors believed that the HKICA algorithm has provable guarantee, no rigorous analysis is provided. 
+We try to fill the gap in the next section. 
 A detailed analysis shows that the performance of the algorithm may be not as trivial as it is claimed.
 
 \subsection{Reconstruction error}
@@ -464,9 +418,9 @@ We define a `distance' for two distributions, as follows.
 Given two distributions $\nu_1$ and $\nu_2$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(x)d\nu_1(x) - \int f(x)d\nu_2(x)|$, where $\mathcal{F}$ is the set of all monomials up to degree $k$.
 \end{definition} 
 Let 
-\[
+\begin{equation}
 \xi = \left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right),
-\]
+\end{equation}
 which serves as a measure of how dependent the  component signals of $s$ are.
 
 \begin{remark}
@@ -479,16 +433,16 @@ Therefore, this condition will be satisfied given the sample size is large enoug
 The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
-With probability at least $1/4$, $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}$.  
+Let $c = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$ for $0\le \ell \le 1$. Then with probability at least $(1-\frac{\ell}{2})^2$, 
+$\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}\ell$. 
 \end{lemma}
 Denote the event of Lemma \ref{lem:dmin} by $\Epsi$.
 Let 
 \begin{equation}
 \label{def:kappa}
-\gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert, 
+\gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert. 
 \end{equation}
-
-The performance of \citet{DHsu2012}'s algorithm depends on this parameters, as shown in the following theorem.
+The performance of the HKICA algorithm depends on this parameters, as shown in the following theorem.
 \begin{thm}
  \label{thm:efficiency}
 Let 
@@ -512,29 +466,30 @@ Let
  \end{thm}
 \begin{remark}
 Note that the first condition holds with probability 1. Also, the other three conditions will be satisfied when $\xi$ is small enough (for a fixed $\gamma_A$).
-As mentioned in the Remark \ref{rmk:xi}, these conditions will be satisfied in the traditional stochastic setting of ICA (for a fixed $\gamma_A$), given large enough sample size. \qed
+In particular, as mentioned in the Remark \ref{rmk:xi}, these conditions will be satisfied in the traditional stochastic setting of ICA (for a fixed $\gamma_A$), given large enough sample size. \qed
 %However, condition 2 and 3 are rarely satisfied in practice. 
 %More discussion about this problem and weaker conditions are discussed in Section \ref{sec:ExpRes}. 
 \end{remark}
 \begin{remark}
 The parameter $1/\gamma_A$ is essential in the result of the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the conditions, under which such bound is guaranteed, also require a small $1/\gamma_A$.
 
-Note that $\gamma_A$ is the minimal gap of the eigenvalues of $M$.
+Note that $\gamma_A$ is actually the minimal gap of the eigenvalues of $M$.
 Consider perturbing a $2\times 2$ matrix $A = \text{diag}([a,b])$ where $a<b$ by $E = \text{diag}([\eps,0])$. 
 The eigen-spaces of $A+E$ will stay as $[1,0]$ and $[0,1]$ for $\eps < b-a$, but then they can be arbitrary vectors when $\eps = b-a$.  
-Such discontinuity of the eigen-spaces suggests that the dependence on $\gamma_A$ is necessary for HK algorithm. 
+Such discontinuity of the eigen-spaces suggests that the dependence on $\gamma_A$ is necessary for the HKICA algorithm because of the eigen-decomposition involved. 
 
-Despite the important role that $\gamma_A$ plays in the efficiency of HK algorithm, we have no clue about its behavior. 
+Despite the important role that $\gamma_A$ plays in the efficiency of the HKICA algorithm, we have no clue about its behavior. 
 Even a polynomial (in the dimension $d$) lower bound of $\gamma_A$ is not yet available, to our best knowledge, in the literature. 
 \citet{goyal2014fourier} provided a lower bound for $\gamma_A$ that is exponential in $d$.
-This problem motivates us to refine the HK algorithm.
-The idea is inspired by the ideas of \citep{arora2012provable} and \citep{frieze1996learning} using a quasi-whitening procedure, as shown in the next section. \qed
+This problem motivates us to refine the HKICA algorithm.
+The idea is inspired by the ideas of \citet{arora2012provable} and \citet{frieze1996learning} using a quasi-whitening procedure, as shown in the next section. \qed
 \end{remark}
 
 
-\section{Refined HK Algorithm}
+\section{A Refined HKICA Algorithm}
 \label{sec:DICA}
-The new algorithm, called Determined ICA (DICA), is as follows. 
+Recall that $\widehat{G}$ is defined in Equation \eqref{eq:G}.
+Our new algorithm, named as Determined ICA (DICA), is as follows. 
 \begin{algorithm}[H]
 \caption{Determined ICA (DICA)}
 \begin{algorithmic}[1]
@@ -552,16 +507,22 @@ The new algorithm, called Determined ICA (DICA), is as follows.
 \end{algorithmic}
 \end{algorithm}
 \begin{remark}
-The difficult in analyzing $\gamma_A$ of the HK algorithm is due to its dependence on the unknown mixing matrix $A$. 
-DICA can be viewed in the tensor perspective. 
-Instead of flattening two $4$-dimensional tensors into matrices simply by marginalizing in a random direction, in DICA we marginalize in a special direction of structure $\psi^{\top}A^{-1}$ for a random $\psi$. 
-Another interpretation of DICA could be in a  probabilistic perspective, as sampling based on an estimation of the variance matrix. 
-In particular, in order for $\{v^{\top}A_1, \ldots, v^{\top}A_d \}$ to be independent for some direction $v$ from a Gaussian distribution $N(0,V)$(so that $\gamma_A$ could be easier to analyze), we would like to have $V = A^{-\top}A^{-1}$. 
-Despite the true value of $A^{-\top}A^{-1}$ is not available, we can estimate it up to permutation and scaling (which can still maintain the independence of $\{v^{\top}A_1, \ldots, v^{\top}A_d \}$) by $\left(\nabla^2\widehat{f}(\psi)\right)^{-1}$. Then in DICA, $\widehat{B}^{-\top}\phi$ is a way of sampling such direction $v$.
+The difficult in analyzing $\gamma_A$ of the HKICA algorithm is due to its dependence on the unknown mixing matrix $A$. 
+The way of DICA to avoid this problem can be viewed in a tensor perspective. 
+Instead of flattening two $4$-dimensional tensors into matrices simply by marginalizing in a random direction, in DICA we marginalize in a structured direction as $\psi^{\top}A^{-1}$ for a random $\psi$. 
+Another possible interpretation could be in a  probabilistic perspective, as sampling $\phi_1$ and $\phi_2$ based on an estimation of the variance matrix. 
+In particular, we would like to sample $\phi$ from a Gaussian distribution $N(0,V)$ where $V = A^{-\top}A^{-1}$, so that $\{\phi^{\top}A_1, \ldots, \phi^{\top}A_d \}$ is independent and hence $\gamma_A$ could be easier to analyze. 
+Despite the true value of $A^{-\top}A^{-1}$ is not available, we can estimate it by $\left(\nabla^2\widehat{f}(\psi)\right)^{-1}$ up to permutation and scaling,
+which can still maintain the independence of $\{\phi^{\top}A_1, \ldots, \phi^{\top}A_d \}$). 
+%Then in DICA, $\widehat{B}^{-\top}\phi$ is a way of sampling such direction $v$.
 This perspective also suggest that a better estimation of $A^{-\top}A^{-1}$ would help improve DICA. \qed
 \end{remark}
+\begin{remark}
+Similarly, the DICA algorithm also suffers the complex output. 
+A same symmetrizing trick can be applied again, as in Remark \ref{rmk:symmetrization}. \qed 
+\end{remark}
 
-The DICA algorithm can be showed to have provable performance under some good event defined as follows:
+The DICA algorithm can be showed to have provable performance under some good events defined as follows:
 \begin{definition}
 We denote by $\Ephi$ the following event:
 For some fixed constant $L_u$ and $\ell_l$ such that $\ell_l \le \frac{1}{5}\frac{\sqrt{\pi}}{\sqrt{2}d}$ and $L_u \ge 4\sqrt{d}$,
@@ -571,9 +532,8 @@ For some fixed constant $L_u$ and $\ell_l$ such that $\ell_l \le \frac{1}{5}\fra
 \end{itemize} 
 \end{definition}  
 %Note that $\phi_1$ and $\phi_2$ are sampled independently from standard normal distribution. 
-Note that on the event $\Ephi$, $\|\phi_j^{\top}R\|_2\le L_u$ for $j\in\{1,2\}$. 
-We will show later that this event $\Ephi$, as well as other events defined later, will hold simultaneously for at least a constant probability.
-Recall that $\widehat{G}$ is defined in Equation \eqref{eq:G}.
+Note that on the event $\Ephi$, $\|\phi_j^{\top}R\|_2\le L_u$, $j\in\{1,2\}$ for any orthonormal matrix $R$. 
+We will show later that this event $\Ephi$, as well as other events defined later, will hold simultaneously with high probability.
 Let 
 \begin{align*}
 & \bar{\xi} =   \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi, \\
@@ -669,8 +629,8 @@ Another orthonormal matrix R is generated by computing the left column space of 
 \subsection{Simulations}
 We investigate the performances of different ICA algorithms in a simulation setting. In particular, 3 algorithms are tested: 
 \begin{itemize}
-\item \citet{DHsu2012}'s algorithm(HK);
-\item The refined \citet{DHsu2012}'s algorithm (DICA);
+\item The HKICA algorithm \citep{hsu2013learning};
+\item Our refined HKICA algorithm (DICA);
 \item The default FastICA algorithm in the 'ITE' toolbox \cite{szabo12separation} (FICA). 
 \end{itemize}
 We do not test the algorithm of \citep{anandkumar2012tensordecomposition} because the tensor decomposition takes too long to converge and achieve a valid solution. 
