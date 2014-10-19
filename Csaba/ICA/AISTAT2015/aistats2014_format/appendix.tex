@@ -484,7 +484,7 @@ Then by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ 
 \]
 \end{proof}
 
-\subsection{Proofs of Lemma \ref{lem:dmin}, Lemma \ref{lem:CauchyGap} and Lemma \ref{thm:ConstantProb}}
+\subsection{Proofs of Lemma \ref{lem:dmin}, Lemma \ref{lem:CauchyGap} and Lemma \ref{lem:ConstantProb}}
 \begin{proof}[Proof of Lemma \ref{lem:dmin}]
 \if0
 For a fixed constant $c \le A_{(2,\max)}$,
@@ -516,14 +516,14 @@ Assigning $\ell=1$ leads to the conclusion.
 
 \begin{proof}[Proof of Lemma \ref{lem:CauchyGap}]
 Since $\{Z_1,\ldots, Z_d\}$ are independent, we can calculate $\Prob{\EZ}$ by sequentially sampling $Z_i$s. 
-Firstly, $\Prob{|Z_1|\ge C} \ge 1-\frac{2C}{\pi}$. 
-Then $\Prob{Z_{k}: |Z_{k}|\ge C, |Z_{k+1}- Z_j|\ge C \text{ for } j\le k-1} \ge 1-\frac{2kC}{\pi}$ for $2 \le k\le d$.
+Firstly, $\Prob{|Z_1|\ge c} \ge 1-\frac{2c}{\pi}$. 
+Then $\Prob{Z_{k}: |Z_{k}|\ge c, |Z_{k+1}- Z_j|\ge c \text{ for } j\le k-1} \ge 1-\frac{2kc}{\pi}$ for $2 \le k\le d$.
 Therefore,
 \begin{equation}
 \label{eq:ProbEZ}
-\Prob{\EZ} \ge (1-\frac{2C}{\pi})\times \ldots \times (1-\frac{2dC}{\pi}) \ge (1-\frac{2dC}{\pi})^d \ge (1-\frac{h}{2})^2 \ge 1-h,
+\Prob{\EZ} \ge (1-\frac{2c}{\pi})\times \ldots \times (1-\frac{2dc}{\pi}) \ge (1-\frac{2dc}{\pi})^d \ge (1-\frac{h}{2})^2 \ge 1-h,
 \end{equation}
-where $h = \frac{2d^2}{\pi}C$. 
+where $h = \frac{2d^2}{\pi}c$. 
 \end{proof}
 
 \begin{proof}[Proof of Lemma \ref{lem:ConstantProb}]

@@ -170,59 +170,59 @@ where $\epsilon$ is a $d$-dimensional Gaussian noise, and $A$ is a nonsingular m
 Our interest is to reconstruct $A$ given observations of $X$ with rigorous guarantee.
 
 The literature of the ICA model is vast in both practical algorithms and theoretical analysis. 
-We refer to \citep{comon2010handbook} for a comprehensive survey.
+We refer to the book of \citet{comon2010handbook} for a comprehensive survey.
 Perhaps the most popular ICA algorithm in engineering application would be the FastICA \citep{hyvarinen1999fast}. 
 In general, FastICA tries to find a linear transformation $W$ for $X$ by optimizing a particular designed contrast function, 
 such that the resulted coordinates of $WX$ are as independent as possible. 
 The optimal $W$ would be $A^{-1}$ under additional assumptions about the sources, thereby $A$ is recovered.  
-Theoretical analysis of the FastICA algorithm has been conducted in many aspects, 
+Theoretical analysis of the FastICA algorithm has been conducted in many aspects \citep{tichavsky2006performance,oja2006fastica,ollila2010deflation,dermoune2013fastica,wei2014convergence}, 
 but as far as we know, finite sample bound for FastICA is still not available.
 Besides, consistency of the estimation of $A$ can only be guaranteed for a particular forth-moments-based contrast function with noise-less observations(i.e. $X = AS$) \citep{miettinen2014fourth}. 
 
 Another class of ICA methods views ICA in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source. 
-Under additional statistical assumptions about the source signals, consistent estimators have been proposed for various settings. The first  $\sqrt{n}$-consistent estimator of $A$ (which implies a finite sample bound in the rate of $\sqrt{n}$), to our best knowledge, is proposed and analyzed in \citet{samarov2004nonparametric}.  
-Later \citep{chen2005consistent} showed that the estimator proposed in \citet{eriksson2003characteristic} is also $\sqrt{n}$-consistent. Another estimator which is more efficient is also proposed by the same authors in \citep{chen2006efficient}.
-However, these results also assume a noise-free setting. 
+Under additional statistical assumptions about the source signals, consistent estimators have been proposed for various settings. The first  $\sqrt{n}$-consistent estimator of $A$ (which implies a finite sample bound in the rate of $\sqrt{n}$), to our best knowledge, is proposed and analyzed by \citet{samarov2004nonparametric}.  
+Later \citet{chen2005consistent} showed that the estimator proposed in \citet{eriksson2003characteristic} is also $\sqrt{n}$-consistent. Another estimator which is more efficient is also proposed by the same authors in \citep{chen2006efficient}.
+However, these results all assume a noise-free setting. 
 Moreover, they involve an intermediate procedure of estimating a probability function or a score function, which consequentially invites extra technical conditions. 
 
-The first provable ICA method that can deal with the noisy case is by \citep{arora2012provable}. 
+The first provable ICA method that can deal with the noisy case is attributed to \citet{arora2012provable}. 
 The idea is still based on the forth moments. 
-After a quasi-whitening procedure, \citep{arora2012provable} reduced the ICA problem into a problem of finding all the local optimizer of a specific function defined using the forth order cumulant. Then a polynomial-time algorithm is proposed to find all the local optimizers with theoretical guarantee.
-Despite its great progress in theory, \citep{arora2012provable}'s algorithm requires an exhaustive search for an input parameter, $\beta$ in the paper.
+After a quasi-whitening procedure, the ICA problem is reduced into a problem of finding all the local optimizer of a specific function defined using the forth order cumulant. Then a polynomial-time algorithm is proposed to find all the local optimizers with theoretical guarantee.
+Despite its soundness in theory, this algorithm requires an exhaustive search for an input parameter, $\beta$ in the paper.
 The interval of the valid $\beta$s is not yet well understood, which impairs the usefulness of the algorithm in practice.
 
 The forth moment statics are also used in many other ICA related works. 
 Recently, a series of more promising methods are proposed based on the algebraic structure of the model \citep{hsu2013learning,anandkumar2012tensordecomposition,anandkumar2012method}. 
-In fact, this idea is also discussed by \citet{cardoso1999high} as a intuitive argument to construct a contrast function. 
-The first rigorous proof of this idea is developed using matrix perturbation tools in \citep{anandkumar2012tensordecomposition,anandkumar2012method,goyal2014fourier} in a general tensor perspective. 
+In fact, this idea has been discussed earlier as a intuitive argument to construct a contrast function \citep{cardoso1999high}. 
+The first rigorous proof of this idea is developed using matrix perturbation tools in a general tensor perspective \citep{anandkumar2012tensordecomposition,anandkumar2012method,goyal2014fourier}. 
 However, these results exponentially depend on the number of source signals $d$.
-In particular, these methods all require an eigen-decomposition of some flatten tensor where the minimal gap between the eigenvalues plays an essential role. 
+More specifically, these methods all require an eigen-decomposition of some flatten tensor where the minimal gap between the eigenvalues plays an essential role. 
 A naive analysis of this gap will introduce an exponential dependence on the dimension of the flatten tensor $d$. 
-This dependence is also observed in \citep{cardoso1999high,goyal2014fourier}.
-One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flatten procedure, as in \citep{anandkumar2014guaranteed}. 
-However, it is well known that power method is unstable in practice for high order tensor. 
+This dependence is also observed in the papers of \citet{cardoso1999high} and \citet{goyal2014fourier}.
+One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flatten procedure \citep{anandkumar2014guaranteed}. 
+However, it is well known that power method is unstable in practice for high order tensors. 
 Another drawback is that this method, when applied to the ICA problem, introduces an error term that does not approach 0 as the sample size approaches infinity. 
 
 In this paper we proposed a practical method for ICA which also has meaningful theoretical guarantee (polynomial-time; with constant probability the reconstruction error of $A$ polynomially depends on all the parameters and vanishes as the sample size going to infinity).
-Our algorithm is a refined version of \cite{hsu2013learning}'s algorithm.  
-Another contribution of the present paper is that the theoretical analysis is conducted in a deterministic manner. 
+Our algorithm is a refined version of the algorithm of \cite{hsu2013learning} (HKICA).  
+Another contribution of the present paper is that our theoretical analysis is conducted in a deterministic manner. 
 In practice ICA is also known to work well for unmixing the mixture of various deterministic signals. 
-One of the classic demonstrations of ICA is showing that the periodic signals can be well recovered from their mixtures. \citep{HyvOja00}.
+One of the classic demonstrations of ICA is showing that the periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
-Our deterministic analysis help investigate this curious phenomenon without losing any generality to the traditional stochastic setting. 
+Our deterministic analysis helps investigate this curious phenomenon without losing any generality to the traditional stochastic setting. 
 
 Formally, let $s:\natural \ra \real^d$ be a $d$-dimensional deterministic ``signal''. 
 Denote by $s_i$ the $i$th component of $s$.
 We present the ICA model as a linear mixture of functions (details will be introduced later).
-Then under a measure of functional dependence, we analyze  \citep{hsu2013learning}'s algorithm.
-A detailed analysis shows that its performance depends on the minimal gap of the eigenvalues (of some random matrix. The exact form is presented later).
-A meaningful lower bound  (polynomial in the parameters of the ICA model) for this gap is essential for the soundness of the algorithm, but not yet available \citep{cardoso1999high}.
-A key step of our algorithm is reducing the minimal eigenvalue gap problem to the problem of minimal spacing of i.i.d. Cauchy random variables, for which a polynomial lower bound is available, by the quasi-whitening procedure.
-This idea is also used in \citep{frieze1996learning} and \citep{arora2012provable}.
+Then HKICA \citep{hsu2013learning} is analyzed in this presentation using a measure of functional dependence.
+A detailed analysis shows that its performance depends on the minimal gap of the eigenvalues (of some random matrix. The exact form is presented later.).
+A meaningful lower bound  (polynomial in the parameters of the ICA model) for this gap is essential for the soundness of this algorithm, but not yet available \citep{cardoso1999high}.
+A key step of our algorithm is reducing such minimal eigenvalue gap problem to the problem of minimal spacing of i.i.d. Cauchy random variables, for which a polynomial lower bound is available, by the quasi-whitening procedure.
+This idea is inspired by \citet{frieze1996learning} and \citet{arora2012provable}.
 With this lower bound, we then show that the new algorithm has provable guarantee on the reconstruction error of $A$. 
 
 The rest of this paper is organized as follows: 
-We introduce some preliminaries in Section \ref{sec:Preliminaries}. Section \ref{sec:AnalysisHK} is devoted to the analysis of HK algorithm. Then in section \ref{sec:DICA} we propose our algorithm and show that it has the 'real' provable guarantee.
+We introduce some preliminaries in Section \ref{sec:Preliminaries}. Section \ref{sec:AnalysisHK} is devoted to the analysis of the HK algorithm. Then in section \ref{sec:DICA} we propose our algorithm and show that it has the 'real' provable guarantee.
 Lastly, experimental results are reported in Section \ref{sec:ExpRes}.
 
 \subsection{Notations}
@@ -230,6 +230,8 @@ Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\s
 
 \section{Preliminaries}
 \label{sec:Preliminaries}
+We discuss the induced probability measure of a function in this section, which serves as the basis of our deterministic analysis. 
+Then we propose the ICA problem in a deterministic manner. 
 \subsection{Induced Probability}
 \label{subsec:InducesProb}
 Given arbitrary measurable domains $(\Omega,\AA)$ and a sequence of probability measures $(\mu_t)_{t\ge0}$ over it, we define $\nu_t$ to be the probability measure over $\real^d$ that is induced by $s$ and $\mu_t$ for any function $s: \Omega \ra \real^d$ and $t\ge 0$:
@@ -338,7 +340,7 @@ Let $\mu_t$ be the uniform probability distribution on $[0,t]$.
 \end{remark}
 \fi
 
-\section{Analysis of \citet{hsu2013learning}'s Algorithm}
+\section{Analysis of the HK Algorithm}
 \label{sec:AnalysisHK}
 
 \if0
@@ -387,9 +389,9 @@ This is the first `real' polynomial time moment-based algorithm for ICA.
 Details will be discussed in the next section due to its complexity.  
 \fi
 
-We analyze the performance of \citet{hsu2013learning}'s algorithm (HK) in this section.
+We analyze the performance of the HK algorithm in this section.
 
-\subsection{HK algorithm}
+\subsection{the HK algorithm}
 \label{subsec:HKalg}
 \citet{DHsu2012} proposed an algorithm for ICA based on the idea of moment methods.
 For $p\ge 1$, $\eta\in \real^d$, 
@@ -542,7 +544,7 @@ Instead of flattening two $4$-dimensional tensors into matrices simply by margin
 Another interpretation of DICA could be in a  probabilistic perspective, as sampling based on an estimation of the variance matrix. 
 In particular, in order for $\{v^{\top}A_1, \ldots, v^{\top}A_d \}$ to be independent for some direction $v$ from a Gaussian distribution $N(0,V)$(so that $\gamma$ could be easier to analyze), we would like to have $V = A^{-\top}A^{-1}$. 
 Despite the true value of $A^{-\top}A^{-1}$ is not available, we can estimate it up to permutation and scaling (which can still maintain the independence of $\{v^{\top}A_1, \ldots, v^{\top}A_d \}$) by $\left(\nabla^2\widehat{f}(\psi)\right)^{-1}$. Then in DICA, $\widehat{B}^{-\top}\phi$ is a way of sampling such direction $v$.
-This perspective also suggest that a better estimation of $A^{-\top}A^{-1}$ would help improving DICA.
+This perspective also suggest that a better estimation of $A^{-\top}A^{-1}$ would help improve DICA.
 \end{remark}
 
 The DICA algorithm can be showed to have provable performance under some good event defined as follows:
@@ -619,26 +621,26 @@ Also note that $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$ is the distribu
 
 \begin{lemma}
 \label{lem:CauchyGap}
-Let $C = \frac{\pi}{2d^2}h$ for $0\le h\le 1$. 
+Let $c = \frac{\pi}{2d^2}h$ for $0\le h\le 1$. 
 With probability at least $1-h$,
 \[
-\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge C, \text{and} \,  \min_i\vert Z_i\vert \ge C.
+\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge c, \text{and} \,  \min_i\vert Z_i\vert \ge c.
 \]
 \end{lemma}
-Thus, $\gamma_R \ge C^2$ with probability at least $1-h$.
+Thus, $\gamma_R \ge c^2$ with probability at least $1-h$.
 Denote this event by $\EZ$.
 Let  
 \[
 \E = \Epsi \cap\Ephi \cap \EZ.
 \]
 It remains to argue that the probability of $\E$ is a constant.
-\begin{thm}
-\label{thm:ConstantProb}
+\begin{lemma}
+\label{lem:ConstantProb}
 The event $\E$ holds with probability at least $1/4\left(1-h-\ell-2\exp(-x) \right)$. 
 Thus, picking $\ell_l = \frac{1}{5}\frac{\sqrt{\pi}}{\sqrt{2}d}$, $L_u = 4\sqrt{d}$ and $C = \frac{\pi}{10d^2}$, $\Prob{\E}\ge 1/20$.
-\end{thm}
+\end{lemma}
 \begin{remark}
-Note that all the constants in Lemma \ref{thm:ConstantProb} are polynomial in $d$(or $d^{-1}$ for the lower bound), thus the result of Theorem \ref{thm:Modefficiency} is polynomial in $d$ with at probability at $1/20$.
+Note that all the constants in Lemma \ref{lem:ConstantProb} are polynomial in $d$(or $d^{-1}$ for the lower bound), thus the result of Theorem \ref{thm:Modefficiency} is polynomial in $d$ with at probability at $1/20$.
 \end{remark}
  
 \section{Experimental Results}
