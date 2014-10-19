@@ -196,10 +196,10 @@ Recently, a series of more promising methods are proposed based on the algebraic
 In fact, this idea has been discussed earlier as a intuitive argument to construct a contrast function \citep{cardoso1999high}. 
 The first rigorous proof of this idea is developed using matrix perturbation tools in a general tensor perspective \citep{anandkumar2012tensordecomposition,anandkumar2012method,goyal2014fourier}. 
 However, these results exponentially depend on the number of source signals $d$.
-More specifically, these methods all require an eigen-decomposition of some flatten tensor where the minimal gap between the eigenvalues plays an essential role. 
+More specifically, these methods all require an eigen-decomposition of some flattened tensor where the minimal gap between the eigenvalues plays an essential role. 
 A naive analysis of this gap will introduce an exponential dependence on the dimension of the flatten tensor $d$. 
 This dependence is also observed in the papers of \citet{cardoso1999high} and \citet{goyal2014fourier}.
-One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flatten procedure \citep{anandkumar2014guaranteed}. 
+One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flattening procedure \citep{anandkumar2014guaranteed}. 
 However, it is well known that power method is unstable in practice for high order tensors. 
 Another drawback is that this method, when applied to the ICA problem, introduces an error term that does not approach 0 as the sample size approaches infinity. 
 
@@ -419,6 +419,7 @@ Given two distributions $\nu_1$ and $\nu_2$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\
 \end{definition} 
 Let 
 \begin{equation}
+\label{eq:xi}
 \xi = \left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right),
 \end{equation}
 which serves as a measure of how dependent the  component signals of $s$ are.
@@ -449,9 +450,9 @@ Let
  \begin{align*}
  Q = &\Big(\frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) }{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \\
  & + \frac{2\sqrt{2\pi}d^6A_{(2,\max)}^2A_{\max}^2}{\pi\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)} \Big)
-  \xi.
+  \xi,
  \end{align*}
- Assume the following conditions hold:
+ where $\xi$ is defined in Equation \eqref{eq:xi}. Assume the following conditions hold:
  \begin{enumerate}
  \vspace{-3mm}
  \item $\widehat{M}$ has distinct eigenvalues;
@@ -532,7 +533,7 @@ For some fixed constant $L_u$ and $\ell_l$ such that $\ell_l \le \frac{1}{5}\fra
 \end{itemize} 
 \end{definition}  
 %Note that $\phi_1$ and $\phi_2$ are sampled independently from standard normal distribution. 
-Note that on the event $\Ephi$, $\|\phi_j^{\top}R\|_2\le L_u$, $j\in\{1,2\}$ for any orthonormal matrix $R$. 
+Note that on the event $\Ephi$, $\|\phi_j^{\top}R\|_2\le L_u$, $j\in\{1,2\}$. 
 We will show later that this event $\Ephi$, as well as other events defined later, will hold simultaneously with high probability.
 Let 
 \begin{align*}
@@ -559,8 +560,8 @@ Let
  Assume the following conditions hold:
  \begin{enumerate}
  \item $\widehat{T}$ has distinct eigenvalues;
- \item $\gamma_R > 4 \frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) }\|E\|_2$; 
- \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$;
+ \item $\gamma_R > 4 \frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) }Q$; 
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } Q$;
  \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{3\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
  (so $\bar{\xi} \le 1/3$);
  \item $\widehat{\xi} \le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$.
@@ -572,7 +573,8 @@ Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and consta
 \]
 \end{thm}
 \begin{remark}
-The 4th condition in fact could be implied by the 5th condition, if $\ell_l \ge 1$. \qed
+The 4th condition in fact could be implied by the 5th condition, if $\ell_l \ge 1$.
+A detailed discussion of the validness of these conditions is postponed to Section \ref{subsec:validnessCond}. \qed
 \end{remark}
 
 \subsection{Behavior of $\gamma_R$}
@@ -614,8 +616,10 @@ The event $\E$ holds with probability at least $1/4\left(1-h-\ell-2\exp(-x) \rig
 Thus, picking $\ell_l = \frac{1}{5}\frac{\sqrt{\pi}}{\sqrt{2}d}$, $L_u = 4\sqrt{d}$ and $C = \frac{\pi}{10d^2}$, $\Prob{\E}\ge 1/20$.
 \end{lemma}
 \begin{remark}
-Note that all the constants in Lemma \ref{lem:ConstantProb} are polynomial in $d$(or $d^{-1}$ for the lower bound), thus the result of Theorem \ref{thm:Modefficiency} is polynomial in $d$ with at probability at $1/20$.
+Note that all the constants in Lemma \ref{lem:ConstantProb} are polynomial in $d$(or $d^{-1}$ for the lower bound), thus the result of Theorem \ref{thm:Modefficiency} is polynomial in $d$ with at probability at $1/20$. \qed
 \end{remark}
+\subsection{Validness of the conditions in Theorem \ref{thm:Modefficiency}}
+ \label{subsec:validnessCond}
  
 \section{Experimental Results}
 \label{sec:ExpRes}
