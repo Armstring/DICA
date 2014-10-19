@@ -160,13 +160,13 @@ The following lemma shows that a small perturbation of $M$ will only result in a
 \label{lem:eigenvectorvariation}
 Denote $\widehat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in  \eqref{eq:M2}. 
 Assume $\widehat{M}$ has distinct eigenvalues. 
-If $\gamma > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+If $\gamma_A > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_A}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
-\max_{1\le k\le d} \| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4  \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A) } \|E\|_2\,,
+\max_{1\le k\le d} \| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4  \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A) } \|E\|_2\,,
 \]
 and therefore
 \[
-\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A)} \|E\|_2\,,
+\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)} \|E\|_2\,,
 \]
 where $\widehat{A}$ is the matrix of eigenvectors of $\widehat{M}$. 
 \end{lemma}
@@ -195,7 +195,7 @@ Note that by definition, $\gamma_k = \|F_{3k}\|_2\le\|A_{(k)}^{-1}EA_{k}\|_2\le\
 \delta_k & = \min_{j:j\neq k} 
 	\left\vert \left(\frac{\phi^{\top}A_k}{\psi^{\top}A_k}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
 	& \ge \min_{j:j\neq k} \left\vert \left(\frac{\phi^{\top}A_k}{\psi^{\top}A_k}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert - 2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2\\
-	& \ge  \gamma -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 \\
+	& \ge  \gamma_A -  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 \\
 	& >  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 >0,
 \end{align*}
 and $\delta_k^2 > 4\gamma_k\eta_k$. 
@@ -203,9 +203,9 @@ Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a
  \[
  \|\widehat{A_k} - A_k\|_2 \le \|A_{ct}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_k}{\delta_k}
  \le 
- \frac{4\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A) } \|E\|_2.
+ \frac{4\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A) } \|E\|_2.
  \]
- By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \widehat{A_i}\|_2 + \|A_j - \widehat{A_i}\|_2$, thus $\widehat{A_i} \neq \widehat{A_j}$.  Summing up the upper bound gets the result. 
+ By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \widehat{A_i}\|_2 + \|A_j - \widehat{A_i}\|_2$, thus $\widehat{A_i} \neq \widehat{A_j}$.  Summing up the upper bound gets the result. 
 \end{proof}
 The next lemma shows that $\widehat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix $2$-norm.
 \begin{lemma}
@@ -284,11 +284,11 @@ Thus,
 Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$,  then by Lemma \ref{lem:Mvariation_alg}, $\|M-\widehat{M}\|_2 \le Q$.
 Therefore, by lemma \ref{lem:eigenvectorvariation}, 
   \[
-  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A)}\|M - \widehat{M} \|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A)} Q. 
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)}\|M - \widehat{M} \|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)} Q. 
   \]
  %and 
  %\[
- %\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d\frac{\sigma_{\max}^2(A)}{\gamma \sigma_{\min}(A)}\|M - \widehat{M} \|_2. 
+ %\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d\frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)}\|M - \widehat{M} \|_2. 
 % \]
  
 \end{proof}
