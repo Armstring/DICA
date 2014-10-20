@@ -226,7 +226,9 @@ We introduce some preliminaries in Section \ref{sec:Preliminaries}. Section \ref
 Lastly, experimental results are reported in Section \ref{sec:ExpRes}.
 
 \subsection{Notations}
-Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$.
+Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$. 
+Clearly, $\sigma_{\max}(A) \ge A_{(2,\max)} \ge A_{\max}$, and $\sigma_{\min}(A) \le A_{(2,\min)}$.
+
 
 \section{Preliminaries}
 \label{sec:Preliminaries}
@@ -275,74 +277,13 @@ Note that the above deterministic setting does not lose any generality to the tr
 x = As+\eps = A(s+A^{-1}\eps),
 \] 
 where $\eps$ is a Gaussian noise. In practice, we are not going to observe the true distribution of $x$, but $x(t)$, $t\ge 0$, which leads to Equation \eqref{equ:ICA}.
-
-
-
-\if0
-In this section, we propose a natural notion fot the independence of signal functions in an analogous way, which is compatible with the stochastic setting but much more general.
-\subsection{Independent Components}
-\label{subsec:IndeComp}
-Despite the perceptual intuitiveness of the definition of ergodic function, the space of ergodic functions is, unexpectedly, not closed under addition, as shown in Example \ref{eg:ergodic}. 
-We provide a sufficient and necessary condition for a linear combination 
-of ergodic functions to be ergodic in Proposition \ref{prop:comp}. 
-It turns out the space spanned by the components of an ergodic function is a space of ergodic functions.
-Such observation leads to our definition of independence of components, and build the foundation of the rest work of our paper.
-\begin{example}
-\label{eg:ergodic}
-Let $f,g:\natural \rightarrow \{-1,+1\}$ and $(\mu_t)$ be defined as follows: 
-\[
-f(t) = \begin{cases} +1, & t \equiv 0 \pmod 4; \\
-					-1, & t \equiv 1 \pmod 4; \\
-					+1,  & t \equiv 2  \pmod 4; \\
-					-1, & t \equiv 3  \pmod 4,
-					\end{cases}
-					\]\[
-g(t) = \begin{cases} +1, & t\equiv 0 \pmod 4; \\
-					-1, & t\equiv 1 \pmod 4; \\
-					-1,  & t\equiv 2 \pmod 4; \\
-					+1, & t\equiv 3 \pmod 4.
-					\end{cases}
-\]
-\[
-\quad \mu_{2t+1}(x) = \begin{cases} 1/2, & x=0; \\
-					1/2, & x=1, 
-					\end{cases}
-\mu_{2t}(x) = \begin{cases} 1/2, & x=2; \\
-					1/2, & x=3;.
-					\end{cases}
-\]
-Then, $\nu^{(f)}_t$, $\nu^{(g)}_t$ are both the uniform  distribution on $\{-1,+1\}$, hence they converge and the limit is the same uniform  distribution. 
-However, while $\nu^{(f+g)}_{2t+1}$ is the uniform  distribution on $\{-2,+2\}$,  $\nu^{(f+g)}_{2t}$ is the degenerate
-distribution that puts all the mass at $0$. Thus, $\nu^{(f+g)}_{t}$ fails to be convergent. 
-\end{example}
-
-\begin{prop}\label{prop:comp}
-$s = (\scom{1},\ldots,\scom{d})^{\top}$ is a $d$-dimensional ergodic function, if and only if 
- for any $m\times d$ matrix $A$, $x = A s$ is an $m$-dimensional ergodic function.
-\end{prop}  
-Based on Lemma \ref{prop:comp}, we can now define the independence of the components of a multidimensional ergodic function $f$ based on its induced limiting distribution $\nu^{(f)}$:
-\begin{definition}
-Given an ergodic function $s = (\scom{1},\ldots, \scom{d})^{\top}:\Omega \rightarrow \real^d$, 
-we say that $\{\scom{1},\ldots, \scom{d}\}$ are \emph{independent} components, 
-	if $\nu^{(\scom{1})}\otimes\ldots\otimes\nu^{(\scom{d})} = v^{(s)}$.
-\end{definition}
-\begin{remark}
-Note that the existence of $\nu^{(s^{(i)})}$ is guaranteed by Proposition \ref{prop:comp}. 
-The definition of independent components can also be extended to the independence of ergodic functions: 
-$f$ and $g$ are called independent, if their joint function $(f,g)$ is an ergodic function with independent components. 
-\end{remark}
-\begin{remark}
-Assume that $f = (f_1,f_2)^{\top}:\real\rightarrow\real^2$ is an ergodic function, and both $f_1$ and $f_2$ are periodic with respective periods $T_1$ and $T_2$. 
-Let $\mu_t$ be the uniform probability distribution on $[0,t]$. 
-%$\mu_t((a,b)) = (b-a)/t$ for $0\le a\le b\le t$.
- If $T_1/T_2$ is irrational, then it is easy to show that $f_1$ and $f_2$ are independent. 
- This example shows how period signals can be fitted into our framework.
-\end{remark}
-\fi
+We assume $s_i$, the $i$th component of the function $s$, is bounded by a constant $C\ge 1$.
 
 \section{Analysis of the HKICA Algorithm}
 \label{sec:AnalysisHK}
-We analyze the performance of the HKICA algorithm in this section.
+Even though \citet{hsu2013learning} believed that the HKICA algorithm has provable guarantee, no rigorous analysis is provided. 
+We try to fill the gap in the next section. 
+A detailed analysis shows that the performance of the algorithm may be not as trivial as it is claimed.
 
 \subsection{the HKICA algorithm}
 \label{subsec:HKalg}
@@ -358,9 +299,11 @@ and let
 \label{eq:funcf}
 f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
 \end{equation}
-In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate.
+In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate. 
+The HKICA is shown in Algorithm \ref{alg:HKICA}.
 \begin{algorithm}[H]
 \caption{the HKICA algorithm}
+\label{alg:HKICA}
 \begin{algorithmic}[1]
 \INPUT $x(t)$ for $1\le t \le T$. 
 \OUTPUT An estimation of the mixing matrix $A$. 
@@ -382,7 +325,7 @@ where
 & \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)^2 \sum_{t=1}^{n}x(t)x(t)^{\top}; \\
 & \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
 \end{align*} 
-\begin{remark}
+\begin{remark}[Remark for Algorithm \ref{alg:HKICA}]
 \label{rmk:symmetrization}
 In practice, the HKICA algorithm may generate complex output. 
 This occurs only when $\nabla^2\widehat{f}(\psi)$ is singular. 
@@ -399,16 +342,12 @@ Then $A$ can be reconstructed, up to permutation and scaling of columns, by $\wi
 Note that $ \widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ is always symmetric, thus yields a real eigen-decomposition. \qed
 \end{remark}
 
-Even though the authors believed that the HKICA algorithm has provable guarantee, no rigorous analysis is provided. 
-We try to fill the gap in the next section. 
-A detailed analysis shows that the performance of the algorithm may be not as trivial as it is claimed.
-
 \subsection{Reconstruction error}
 \label{subsec:errorHK}
 Our analysis is developed in a deterministic setting.
 We try to have weaker assumption instead of assuming independent signals. 
 Clearly, no meaningful results will be achieved if $s$ is allowed to go arbitrarily wild. 
-We assume $s_i$, the $i$th component of the function $s$, is bounded by a constant $C$. 
+ 
 In what follows in this paper, we fix $\mu = \mu_1\otimes \ldots \otimes \mu_d$ as some product measure
 satisfying $\E_{Y\sim\mu_i}[Y]=0$ and $\kappa_i := \E_{Y\sim \mu_i}[Y^4] - 3\left(\E_{Y\sim \mu_i}[Y^2]\right)^2\neq 0$.
 Denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$ by $K$. 
@@ -434,8 +373,8 @@ Therefore, this condition will be satisfied given the sample size is large enoug
 The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
-Let $c = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$ for $0\le \ell \le 1$. Then with probability at least $(1-\frac{\ell}{2})^2$, 
-$\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{2\pi}}{2d}A_{(2,\min)}\ell$. 
+Let $C_1 = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$ for $0\le \ell\le 1$. Then with probability at least $\left(1- \frac{w}{d}\right)\exp(-\ell)$, 
+\[\min_i |\psi^{\top}A_i| \ge C_1.\] 
 \end{lemma}
 Denote the event of Lemma \ref{lem:dmin} by $\Epsi$.
 Let 
@@ -485,14 +424,13 @@ Even a polynomial (in the dimension $d$) lower bound of $\gamma_A$ is not yet av
 This problem motivates us to refine the HKICA algorithm.
 The idea is inspired by the ideas of \citet{arora2012provable} and \citet{frieze1996learning} using a quasi-whitening procedure, as shown in the next section. \qed
 \end{remark}
-
-
 \section{A Refined HKICA Algorithm}
 \label{sec:DICA}
 Recall that $\widehat{G}$ is defined in Equation \eqref{eq:G}.
-Our new algorithm, named as Determined ICA (DICA), is as follows. 
-\begin{algorithm}[H]
+Our new algorithm, named as Determined ICA (DICA), is shown in Algorithm \ref{alg:DICA}. 
+\begin{algorithm}
 \caption{Determined ICA (DICA)}
+\label{alg:DICA}
 \begin{algorithmic}[1]
 \INPUT $x(t)$ for $1\le t \le T$. 
 \OUTPUT An estimation of the mixing matrix $A$. 
@@ -507,7 +445,7 @@ Our new algorithm, named as Determined ICA (DICA), is as follows.
 \STATE Return $\widehat{A} = \{\mu_1,\ldots,\mu_d\}$.
 \end{algorithmic}
 \end{algorithm}
-\begin{remark}
+\begin{remark}[Remark for Algorithm \ref{alg:DICA}]
 The difficult in analyzing $\gamma_A$ of the HKICA algorithm is due to its dependence on the unknown mixing matrix $A$. 
 The way of DICA to avoid this problem can be viewed in a tensor perspective. 
 Instead of flattening two $4$-dimensional tensors into matrices simply by marginalizing in a random direction, in DICA we marginalize in a structured direction as $\psi^{\top}A^{-1}$ for a random $\psi$. 
@@ -526,7 +464,7 @@ A same symmetrizing trick can be applied again, as in Remark \ref{rmk:symmetriza
 The DICA algorithm can be showed to have provable performance under some good events defined as follows:
 \begin{definition}
 We denote by $\Ephi$ the following event:
-For some fixed constant $L_u$ and $\ell_l$ such that $\ell_l \le \frac{1}{5}\frac{\sqrt{\pi}}{\sqrt{2}d}$ and $L_u \ge 4\sqrt{d}$,
+For some fixed constant $L_u$ and $\ell_l$ such that $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for $0\le \ell\le 1$ and $ L_u = \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$,
 \begin{itemize}
 \item $\|\phi_1\|_2 \le L_u$;
 \item $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l$ where $R_i$ is the $i$th column of some orthonormal matrix $R$ (specified in the Appendix);
@@ -572,57 +510,104 @@ Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and consta
 \| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} Q.
 \]
 \end{thm}
-\begin{remark}
-The 4th condition in fact could be implied by the 5th condition, if $\ell_l \ge 1$.
-A detailed discussion of the validness of these conditions is postponed to Section \ref{subsec:validnessCond}. \qed
-\end{remark}
+
+Similarly, the result of Theorem \ref{thm:Modefficiency} essentially depends on $\gamma_R$. 
+The main concern about Theorem \ref{thm:Modefficiency} would be the behavior of this quantity. 
+Even though an analytic characterization of $\gamma_R$ is not yet known, a probabilistic lower bound for $\gamma_R$ can be developed (while it is not the case for $\gamma_A$) as shown in Section~\ref{subsec:gammaR}.
+Another two concerns would be: 1. When will these conditions hold? In particular, will these conditions hold in the traditional stochastic setting? 2. What is the probability of these events?
+We show in Section \ref{subsec:gammaR} and \ref{subsec:ThminStocSetting} that answers to these questions are positive, which make Theorem \ref{thm:Modefficiency} meaningful.
 
 \subsection{Behavior of $\gamma_R$}
 \label{subsec:gammaR}
-Similarly, the result of Theorem \ref{thm:Modefficiency} essentially depends on $\gamma_R$. 
-However, a constant-probability lower bound for $\gamma_R$ can be developed (while it is not the case for $\gamma_A$), which makes Theorem \ref{thm:Modefficiency} more meaningful. 
 Note that $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
 Thus, $\{\phi_1^{\top}R_1, \cdots, \phi_1^{\top}R_d,$ $\phi_2^{\top}R_1, \cdots, \phi_2^{\top}R_d\}$ are $2d$ independent standard normal random variables. 
-Let $Z_i = \frac{\phi_1^{\top}(R)_i}{\phi_2^{\top}(R)_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
+Let $Z_i = \frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
 
 Moreover for any $1\le i, j \le d$, to analyze $\left\vert Z_i^2 - Z_j^2\right\vert
-$, WLOG we can assume both $Z_i$ and $Z_j$ are positive. Then, 
+$, WLOG assume both $Z_i$ and $Z_j$ are positive. Then, 
 \begin{align*}
 \gamma_R =	& \min_{i\neq j} \left\vert Z_i^2 - Z_j^2 \right\vert \\
 	=		& \min_{i\neq j}\left\vert Z_i - Z_i \right\vert	\left\vert Z_i + Z_i \right\vert \\
 	\ge 	& 2\min_i\vert Z_i\vert\min_{i\neq j} \left\vert Z_i - Z_j \right\vert.
 \end{align*}
 %Recall that on the event $\Ephione$, $\min_i\vert Z_i \vert \ge \frac{\sqrt{2\pi}}{2d}$. 
-Also note that $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$ is the distribution of the minimal spacing of Cauchy random variables.
+Note that $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$ is the distribution of the minimal spacing of Cauchy random variables.
 
 \begin{lemma}
 \label{lem:CauchyGap}
-Let $c = \frac{\pi}{2d^2}h$ for $0\le h\le 1$. 
-With probability at least $1-h$,
+Let $C_2 = \frac{\pi}{2d^2}\ell$ for $0\le \ell\le 1$. 
+With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$,
 \[
-\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge c, \text{and} \,  \min_i\vert Z_i\vert \ge c.
+\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge C_2, \text{and} \,  \min_i\vert Z_i\vert \ge C_2.
 \]
 \end{lemma}
-Thus, $\gamma_R \ge c^2$ with probability at least $1-h$.
+Thus, $\gamma_R \ge C_2^2$ with probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$.
 Denote this event by $\EZ$.
+\begin{lemma}
+\label{lem:EventphiProb}
+Let $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for any $0\le \ell\le 1$ and $ L_u = \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$. Then
+\[
+\Prob{\Ephi} \ge \left(1- \frac{\ell}{d}\right)\exp(-\ell) - 2\exp(-x).
+\]
+\end{lemma}
 Let  
 \[
-\E = \Epsi \cap\Ephi \cap \EZ.
+\E = \Epsi \cap\Ephi \cap \EZ,
 \]
-It remains to argue that the probability of $\E$ is a constant.
+for some fixed $0\le \ell\le 1$ and $x>0$ that would be picked later.
+It remains to argue that with high probability $\E$ holds.
 \begin{lemma}
 \label{lem:ConstantProb}
-The event $\E$ holds with probability at least $1/4\left(1-h-\ell-2\exp(-x) \right)$. 
-Thus, picking $\ell_l = \frac{1}{5}\frac{\sqrt{\pi}}{\sqrt{2}d}$, $L_u = 4\sqrt{d}$ and $C = \frac{\pi}{10d^2}$, $\Prob{\E}\ge 1/20$.
+With Probability at least $1-\delta$ , the following inequalities holds simultaneously.
+\begin{itemize}
+\item $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{\pi}A_{(2,\min)}}{5\sqrt{2}(d+1)} \delta$;
+\item $\min_i \{|\phi_2^{\top}R_i|\} \ge \frac{\sqrt{\pi}}{5\sqrt{2}(d+1)}\delta$;
+\item $\|\phi_1\|_2, \|\phi_2\|_2 \le \sqrt{2}\left(\sqrt{\log(\frac{5}{\delta})}+\sqrt{d}\right)$;
+\item $\gamma_R \ge\frac{\pi^2}{100d^2(d+1)^2}\delta^2$.
+\end{itemize}
 \end{lemma}
 \begin{remark}
-Note that all the constants in Lemma \ref{lem:ConstantProb} are polynomial in $d$(or $d^{-1}$ for the lower bound), thus the result of Theorem \ref{thm:Modefficiency} is polynomial in $d$ with at probability at $1/20$. \qed
+Note that all the constants in Lemma \ref{lem:ConstantProb} are polynomial in $d$ (or $d^{-1}$ for the lower bound), thus the result of Theorem \ref{thm:Modefficiency} is polynomial in $d$ and $\frac{1}{\delta}$ with at probability at $1-\delta$. \qed
 \end{remark}
-\subsection{Validness of the conditions in Theorem \ref{thm:Modefficiency}}
- \label{subsec:validnessCond}
- 
+\subsection{Theorem \ref{thm:Modefficiency} in the stochastic setting}
+ \label{subsec:ThminStocSetting}
+The last concern of Theorem \ref{thm:Modefficiency} is the validness of its conditions. 
+Note that the first condition holds with probability 1. 
+Moreover, on the event $\E$, all constants $1/\ell_l$, $L_u$ and $\gamma_R$ are upper bounded in polynomial of $\{\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d\}$. 
+Thus, $\widehat{\xi}$  and $Q$ are both linear in $\xi$ with linear coefficient polynomial in these parameters.
+Therefore, the other 4 conditions basically requires:
+\begin{itemize}
+\item $\xi \le 1/ \text{Poly}_1$;
+\item $\xi \le \min_{i,j:i\neq j} \|A_i - A_j\|_2 / \text{Poly}_2$;
+\end{itemize} 
+where $\text{Poly}_1$ and $\text{Poly}_2$ are some polynomials in $\{\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d\}$. 
+We omit the exact degrees of the polynomials.
+Recall Equation~\eqref{eq:xi} that $\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right) \le 7C^2D_4(\mu, \nu_T)$, where $C$ is an upper bound for the signal function $s$.
+In Summary, we have the final result, as follows.
+\begin{thm}
+\label{thm:finalRes}
+ Assume that 
+\begin{itemize}
+\item $D_4(\mu, \nu_T) \le \frac{1}{7C^2\text{Poly}_1}$;
+\item $D_4(\mu, \nu_T) \le \frac{1}{7C^2\text{Poly}_2}\min_{i,j:i\neq j} \|A_i - A_j\|_2$.
+\end{itemize}
+Then with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\[
+\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le 7C^2\text{Poly}_3D_4(\mu, \nu_T).
+\]
+In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the Appendix), with probability at most $1-2\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\[
+\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{7C^6\text{Poly}_3\sqrt{\log(1/\delta)}}{\sqrt{2T}}.
+\]
+Here $\text{Poly}_i$ are all polynomials for $1\le i\le 3$ in $\{\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d\}$.
+\end{thm}
+\begin{remark}
+Note that the result is polynomial in $1/\delta$ which is weaker than being polynomial in $\log(1/\delta)$. \qed
+\end{remark}
+
 \section{Experimental Results}
 \label{sec:ExpRes}
+We test the empirical performance of our algorithm (DICA) in this section. 
 \subsection{Comparison of $\gamma_A$ and $\gamma_R$}
 \label{subsec:comparisonGamma}
 Even though theoretical result for $\gamma_A$ is not available, we compare its behavior and that of $\gamma_R$ empirically. 
