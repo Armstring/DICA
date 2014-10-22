@@ -1,5 +1,7 @@
 \documentclass[twoside]{article}
 \usepackage{aistats2014}
+\usepackage{graphicx}
+\usepackage{epstopdf}
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -227,7 +229,7 @@ Lastly, experimental results are reported in Section \ref{sec:ExpRes}.
 
 \subsection{Notations}
 Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$. 
-Clearly, $\sigma_{\max}(A) \ge A_{(2,\max)} \ge A_{\max}$, and $\sigma_{\min}(A) \le A_{(2,\min)}$.
+Clearly, $\sigma_{\max}(A) \ge A_{(2,\max)} \ge A_{\max}$, and $\sigma_{\min}(A) \le A_{(2,\min)}$. Denote the vector with all the entries being 1 by a bold symbol $\boldsymbol{1}$.
 
 
 \section{Preliminaries}
@@ -321,9 +323,9 @@ In particular, $\nabla^2\widehat{f}(\eta)$  is evaluated from the observations b
 \end{equation}
 where 
 \begin{align*}
-&\widehat{ G_1}(\eta) = \frac1n\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)^2x(t)x(t)^{\top}; \\
-& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)^2 \sum_{t=1}^{n}x(t)x(t)^{\top}; \\
-& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{n} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
+&\widehat{ G_1}(\eta) = \frac1T\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)^2x(t)x(t)^{\top}; \\
+& \widehat{G_2}(\eta) = \frac{1}{T^2}\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)^2 \sum_{t=1}^{T}x(t)x(t)^{\top}; \\
+& \widehat{G_3}(\eta) = \frac{1}{T^2}\Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
 \end{align*} 
 \begin{remark}[Remark for Algorithm \ref{alg:HKICA}]
 \label{rmk:symmetrization}
@@ -339,7 +341,9 @@ Instead of computing $\widehat{M} = (\nabla^2 \widehat{f}(\phi))(\nabla^2\wideha
 Note that $\widehat{B} \approxeq ADR^{\top}$ for some diagonal matrix $D$ and orthonormal matrix $R$. 
 Hence such eigen-decomposition will recover $\widehat{R}\approxeq R$. 
 Then $A$ can be reconstructed, up to permutation and scaling of columns, by $\widehat{A} = \widehat{B}\widehat{R}$.
-Note that $ \widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ is always symmetric, thus yields a real eigen-decomposition. \qed
+Note that $ \widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ is always symmetric, thus yields a real eigen-decomposition. 
+Theoretical analysis of the symmetrizing version of the algorithm would require more steps but similar ideas go through.
+\qed
 \end{remark}
 
 \subsection{Reconstruction error}
@@ -401,8 +405,9 @@ Let
   \end{enumerate}
  Then on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for any $k$,
  \[
-  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4}{\gamma_A} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q.
-  \]
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4}{\gamma_A} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q,
+\]
+where $\widehat{A}$ is the output of the HKICA algorithm.
  \end{thm}
 \begin{remark}
 Note that the first condition holds with probability 1. Also, the other three conditions will be satisfied when $\xi$ is small enough (for a fixed $\gamma_A$).
@@ -507,8 +512,9 @@ Let
 Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
 %\|c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\widehat{T} - T\|_2\,,
-\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} Q.
+\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} Q,
 \]
+where $\widehat{A}$ is the output of the DICA algorithm.
 \end{thm}
 
 Similarly, the result of Theorem \ref{thm:Modefficiency} essentially depends on $\gamma_R$. 
@@ -593,9 +599,15 @@ In Summary, we have the final result, as follows.
 \end{itemize}
 Then with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
-\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le 7C^2\text{Poly}_3D_4(\mu, \nu_T).
+\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le 7C^2\text{Poly}_3D_4(\mu, \nu_T),
 \]
-In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the Appendix), with probability at most $1-2\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+where $\widehat{A}$ is the output of the DICA algorithm.
+
+In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the Appendix),
+ with probability at most $1-2\delta$, 
+ DICA will generate an estimation $\widehat{A}$ of the mixing matrix $A$ in
+ time complexity of $O(d^3T)$, 
+ such that there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
 \| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{7C^6\text{Poly}_3\sqrt{\log(1/\delta)}}{\sqrt{2T}}.
 \]
@@ -607,29 +619,57 @@ Note that the result is polynomial in $1/\delta$ which is weaker than being poly
 
 \section{Experimental Results}
 \label{sec:ExpRes}
-We test the empirical performance of our algorithm (DICA) in this section. 
+We compare the empirical performances of several ICA algorithms in this section. 
 \subsection{Comparison of $\gamma_A$ and $\gamma_R$}
 \label{subsec:comparisonGamma}
 Even though theoretical result for $\gamma_A$ is not available, we compare its behavior and that of $\gamma_R$ empirically. 
-In this section, we test the expected values of $1/\gamma_A$ and $1/\gamma_R$ for general $A_1$ and high coherent matrix $A_2$. 
-In particular, we generate $A_1$ by standard normal distribution, and $A_2 = v_b*\emph{1}' + 0.3*P$ where $\emph{1}$ is the column vector with all entries being 1, and both $v_b$ and the matrix $P$ are generated from standard normal distribution (with different dimensions). 
-Another orthonormal matrix R is generated by computing the left column space of a non-singular matrix $N$ that is also generated from  standard normal distribution.  
+In this section, we test the expected values of $1/\gamma_A$ and $1/\gamma_R$ for mixing matrices $A$ with different coherences.
+In particular, we artificially construct 4 kinds of matrices, as follows:
+Given $v_b$ and the matrix $P$ both are generated from standard normal distribution (with different dimensions).
+\begin{itemize}
+\item $A_1 = P$;
+\item $A_2 = v_b\times\boldsymbol{1}' + 0.3\times P$;
+\item $A_2 = v_b\times\boldsymbol{1}' + 0.05\times P$;
+\item $A_2 = v_b\times\boldsymbol{1}' + 0.005\times P$.
+\end{itemize}
+Another orthonormal matrix R is generated by computing the left column space of a non-singular random matrix $N$ (from standard normal distribution).  
+
+For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values (corresponding to the largest $\gamma_A$ and $\gamma_R$).
+We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
+\begin{figure}[h]
+\label{fig:miniSpacing}
+\centering
+	\includegraphics[width = \columnwidth]{miniSpacing}
+\caption{The values of $\gamma$ for matrices with different coherences}
+\end{figure}
+
+As expected, the value of gamma increases as the coherence of the matrix. 
+But on the other hand, the distinction from that of an orthonormal matrix only happens when $A$ is highly coherence. 
 
 \subsection{Simulations}
-We investigate the performances of different ICA algorithms in a simulation setting. In particular, 3 algorithms are tested: 
+We then investigate the performances of different ICA algorithms in a simulation setting, with mixing matrices of different coherences. In particular, 6 algorithms are tested: 
 \begin{itemize}
-\item The HKICA algorithm \citep{hsu2013learning};
-\item Our refined HKICA algorithm (DICA);
-\item The default FastICA algorithm in the 'ITE' toolbox \cite{szabo12separation} (FICA). 
+\item The re-sampling version of the HKICA algorithm (HKICA\_Re);
+\item The symmetrizing version of the HKICA algorithm (HKICA\_Symm);
+\item The re-sampling version of the DICA algorithm (DICA\_Re);
+\item The symmetrizing version of the DICA algorithm (DICA\_Symm);
+\item The default FastICA algorithm in the 'ITE' toolbox \citep{szabo12separation} (FICA). 
+\item A ****
 \end{itemize}
+Recall the re-sampling version and the symmetrizing version are two different ways for the algorithms to deal with complex (invalid) output, as discussed in Remark \ref{rmk:symmetrization}.
+FastICA, as one of the most popular ICA algorithm in the literature, is evaluated and reported as a base line. 
+We will discuss the intuition of the last algorithm later. 
 We do not test the algorithm of \citep{anandkumar2012tensordecomposition} because the tensor decomposition takes too long to converge and achieve a valid solution. 
+
 \subsubsection{Data generation}
-In the simulation, a common mixing matrix $A$ is generated in a same way as that for $A_1$ or $A_2$ in Subsection \ref{subsec:comparisonGamma}. 
-Then we sample $k$ groups of observations, each having size $n$. 
-For each observation $y$, $y = Ax+ c\times\eps$ where the signal $x$ is generated from either a product measure of $d$ uniform distributions $\text{Unif}(-\frac12, \frac12)$ or a BPSK signal with different frequency for each component, and $\eps$ is generated from a standard $d$-dimensional Gaussian distribution. 
-When $x$ is a BPSK signal, in order to have the components of $x$ are close to independent, we need the ratio of their frequencies are irrational.
-All the algorithms will be evaluated on these common $k$ group of observations.
+In the simulation, a common mixing matrix $A$ is generated in a same way as described in Section \ref{subsec:comparisonGamma}. 
+Then we generate a $d$-dimensional BPSK signal $s$, each component with different frequency. 
+In order to have the components of $s$ are close to independent, we need the ratio of their frequencies are irrational. 
+Lastly, the observed signal is generated by $x = As+c\epsilon$ where $\epsilon$ is noise generated from a $d$-dimensional standard normal distribution. 
+We take $20000$ instances of the observed signal on time stamp $t= 1,\ldots, 20000$.
 We test the noise ratio $c$ from 0(noiseless) to 1(heavily noisy). 
+All the algorithms will be evaluated on a $200$ repetitions.
+
 \subsubsection{Error measures}
 We measure the performances of the algorithms on three different measures for different purposes.
 
@@ -639,35 +679,39 @@ The first measure is the parameter recover error. in particular, we evaluate the
 \min_{\Pi,S} \|\widehat{A}\Pi S - A\|_{\text{Frob}},
 \end{equation}
 where $\Pi$ is a permutation matrix, and $S$ is a column scaling matrix (diagonal).
+The calculation of this measure would require a exhaust search for the optimal permutation.
 
 The second measure we used is an approximation of Equation \eqref{equ:parerror} proposed by \citet{comon1994independent}. 
 Note that to evaluate Equation \eqref{equ:parerror} one has to enumerate all the permutation $\Pi$, which is not affordable in practice for a large dimension $d$. 
 This error helps avoid this computation problem. 
 
-The last measure is the divergence between the joint distribution of the recovered signals and the product of its marginal ones. 
+The last measure is the mutual information between the joint distribution of the recovered sources and the product of its marginal ones. 
 This measure is common in practice when the true mixing matrix $A$ is unknown. 
-Moreover, this measure can be reduced to the sum of the entropies of its marginal distribution, as shown in \cite{Learned-Miller:2003:IUS:945365.964306}. 
+In fact, this measure can be reduced to the sum of the entropies of its marginal distribution \citep{Learned-Miller:2003:IUS:945365.964306}. 
 In particular for an output $\widehat{A}$, we evaluate the following quantity:
 \begin{equation}
 \sum_{i = 1}^{d} \text{Entropy}(\widehat{x_i}) + \log |\widehat{A}|,
 \end{equation}
-where $\widehat{x} = \widehat{A}^{-1}y$, and $|\widehat{A}|$ is the absolute value of the determine of $\widehat{A}$. We also use the entropy estimation function 'HShannon\_kNN\_k\_estimation' in the 'ITE' toolbox \cite{szabo14information}.
-
-%For each algorithm, we also measure its running time. 
+where $\widehat{x} = \widehat{A}^{-1}y$, and $|\widehat{A}|$ is the absolute value of the determine of $\widehat{A}$. We also use the entropy estimation function 'HShannon\_kNN\_k\_estimation' in the 'ITE' toolbox \citep{szabo14information}. 
 \subsubsection{Results}
 
 
 \section{Conclusion}
 
+
+
+\subsubsection*{Acknowledgements}
+
+
+%\newpage 
+\bibliography{DICA}
+\bibliographystyle{plainnat}
+
+\newpage
+\include{appendix}
+\end{document}
+
 \if0
-\begin{figure}[h]
-\vspace{.3in}
-\centerline{\fbox{This figure intentionally left non-blank}}
-\vspace{.3in}
-\caption{Sample Figure Caption}
-\end{figure}
-
-
 \begin{table}[h]
 \caption{Sample Table Title} \label{sample-table}
 \begin{center}
@@ -681,14 +725,3 @@ Soma             &Cell body (contains cell nucleus) \\
 \end{center}
 \end{table}
 \fi
-
-\subsubsection*{Acknowledgements}
-
-
-%\newpage 
-\bibliography{DICA}
-\bibliographystyle{plainnat}
-
-\newpage
-\include{appendix}
-\end{document}
