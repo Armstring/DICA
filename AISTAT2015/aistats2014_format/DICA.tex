@@ -666,8 +666,11 @@ We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of
 As expected, the value of gamma increases as the coherence of the matrix. 
 But on the other hand, the distinction from that of an orthonormal matrix only happens when $A$ is highly coherence. 
 
-\subsection{Simulations}
-We then investigate the performances of different ICA algorithms in a simulation setting, with mixing matrices of different coherences. In particular, 6 algorithms are tested: 
+\subsection{Reconstruction errors}
+We then investigate the performances of different ICA algorithms in a simulation setting, with mixing matrices of different coherences. 
+
+\subsection{Settings}
+In particular, 6 algorithms are tested: 
 \begin{itemize}
 \vspace{-3mm}
 \item Re-sampling version of  HKICA (HKICA\_Re);
@@ -685,7 +688,6 @@ We will discuss the intuition of the DICA\_Int algorithm later.
 The last algorithm is randomly guessing, serving as another baseline.
 We do not test the algorithm of \citep{anandkumar2012tensordecomposition} because the tensor decomposition takes too long to converge and achieve a valid solution. 
 
-\subsubsection{Data generation}
 In the simulation, a common mixing matrix $A$ is generated in a same way as described in Section \ref{subsec:comparisonGamma}. 
 Then we generate a $d$-dimensional BPSK signal $s$, each component with different frequency. 
 In order to have the components of $s$ are close to independent, we need the ratio of their frequencies are irrational. 
@@ -694,7 +696,6 @@ We take $20000$ instances of the observed signal on time stamp $t= 1,\ldots, 200
 We test the noise ratio $c$ from 0(noiseless) to 1(heavily noisy). 
 All the algorithms will be evaluated on a $200$ repetitions.
 
-\subsubsection{Error measures}
 We measure the performances of the algorithms by its actual reconstruction error.
 In particular, we evaluate the following quantity between the true mixing matrix $A$ and the one returned by the algorithms $\widehat{A}$:
 \begin{equation}
@@ -720,12 +721,13 @@ where $\widehat{x} = \widehat{A}^{-1}y$, and $|\widehat{A}|$ is the absolute val
 
 \subsubsection{Results}
 We report the reconstruction errors for different kinds of mixing matrices and noise ratios.
-\begin{figure}[h]
-\label{fig:Error0.3}
+
+\begin{figure*}[pt]
+\label{fig:Error}
 \centering
-	\includegraphics[width = \columnwidth]{error2}
-\caption{Reconstruction Error for different noise ratios; Type of mixing matrix: A2.}
-\end{figure}
+	\includegraphics[width = \linewidth]{error}
+\caption{Reconstruction Error}
+\end{figure*}
 
 Algorithms in the symmetrizing version are consistently outperformed by their re-sampling version, as expected. 
 %We don't include the running time of both versions here, since it is straightforward that the symmetrizing version will take less time because of fewer iterations. 
@@ -741,8 +743,8 @@ However, the experimental results indicate the opposite.
 The reason is when the coherence is extremely high, the estimation error of $M$ in DICA is so much larger than that in HKICA, which is caused by taking the inverse of $T_2$ in DICA, that it overwhelms the error caused by coherence of the mixing matrix.
 We are not yet clear about the relation of the estimation error and the coherence of the mixing matrix.
 
-On the other hand, we propose the following ICA algorithm trying to relieve the estimation error problem of DICA, but still keeps large gap of the eigen-values in the eigen-decomposition. 
-\begin{algorithm}
+On the other hand, we propose the following ICA algorithm, Algorithm \ref{alg:DICA_Mod}, trying to relieve the estimation error problem of DICA, but still keeps large gap of the eigen-values in the eigen-decomposition. 
+\begin{algorithm} 
 \caption{DICA Modified (DICA\_Mod)}
 \label{alg:DICA_Mod}
 \begin{algorithmic}[1]
@@ -769,6 +771,10 @@ In summary, the results suggest these moment methods are comparable to each othe
 while FastICA  is better for the case of low coherence case or mild coherence with low noise.
 If the observations have heavy noise and the mixing matrix is not the case of extremely coherent, then HKICA may be the best choice.
 In the case of extremely coherent mixing matrix, DICA\_Mod performs better.
+
+
+
+
 \if0 
 We would conjecture that if the sample size is extremely large and the mixing matrix is extremely coherent, then DICA (or DICA\_Mod) would outperforms HKICA significantly.
 \fi 
