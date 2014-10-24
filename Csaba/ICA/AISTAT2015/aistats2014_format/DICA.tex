@@ -234,32 +234,39 @@ The rest of this paper is organized as follows:
 We introduce some preliminaries in Section \ref{sec:Preliminaries}. Section \ref{sec:AnalysisHK} is devoted to the analysis of the HKICA algorithm. Then in section \ref{sec:DICA} we propose our algorithm and show that it has the 'real' provable guarantee.
 Lastly, experimental results are reported in Section \ref{sec:ExpRes}.
 
-\subsection{Notations}
-Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$. 
-Clearly, $\sigma_{\max}(A) \ge A_{(2,\max)} \ge A_{\max}$, and $\sigma_{\min}(A) \le A_{(2,\min)}$. 
-Denote the vector with all the entries being 1 by a bold symbol $\boldsymbol{1}$. 
-$v \le C$ for some vector $v$ and quantity $C$ means all the entries of $v$ are less that $C$, and $\vert v \vert$ means apply the absolute value operation to all the entries of $v$. 
-The outer product of vectors $v$ and $u$ is denoted by $v\otimes u$. 
-$u^{\otimes k}$ is used as a notion of the outer product of $k$ $v$'s, $v\otimes v\otimes v \ldots \otimes v$, which is a k-dimensional tensor.
-For a tensor $T$, its Frobenious norm, $\|T\|_F$,  is defined as the square root of the sum of the square of all the entries.  
+\subsection{Notation}
+All vectors, matrices and tensors are real or complex valued, unless otherwise stated; below $K$ denotes either the set of real or complex numbers. We denote the set of real and natural numbers by $\real$ and $\natural$, respectively.
+A vector $v \in K^d$ is assumed to be a column vector.
+Let $\|v\|_2$ denote its $L_2$-norm, and for any matrix $A$ let $\|A\|_2=\max_{v:\|v\|_2=1}{\|A v\|_2}$ denote the corresponding induced norm. Denote the maximal and minimal singular value of $A$ by $\sigma_{\max}(A)$ and  $\sigma_{\min}(A)$, respectively. Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$. 
+Clearly, $\sigma_{\max}(A) =\|A\|_2 \ge A_{(2,\max)} \ge A_{\max}$, and $\sigma_{\min}(A) \le A_{(2,\min)}$. For a tensor (including vectors and matrices) $T$, its Frobenious norm (or $L_2$ norm) $\|T\|_F$  is defined as the square root of the sum of the square of all the entries.  
+For a vector $v=(v_1,\ldots,v_d) \in K^d$, $\vert v \vert$ is defined coordinatewise, that is $\vert v \vert=(\vert v_1 \vert,\ldots,\vert v_d\vert)$. 
+The transpose of a vector/matrix $A$ is denoted by $A^\top$, while the inverse of the transpose is denoted by $A^{-\top}$. 
+The outer product of two vectors $v, u \in K^d$ is denoted by $u\otimes v=u v^\top$. 
+$v^{\otimes k}$ denotes the $k$-fold outer product of $v$ with itself, that is, $v\otimes v\otimes v \ldots \otimes v$, which is a k-dimensional tensor.
+For a real vector $v$ and some real number $C$, $v \le C$ means that all the entries of $v$ are at most $C$. 
+The bold symbol $\boldsymbol{1}$ denotes a vector with all entries being $1$ (the dimension of this vector will always be clear from the context).
+
+
+
 
 \section{Preliminaries}
 \label{sec:Preliminaries}
-We discuss the induced probability measure of a function in this section, which serves as the basis of our deterministic analysis. 
-Then we propose the ICA problem in a deterministic manner. 
+In this section we introduce the ICA problem without the usual stochastic i.i.d.  assumptions on the source signal.
+As preliminaries, we introduce the induced probability measures by the signal, which is a generalization of empirical 
+frequency counts.
 \subsection{Induced Probability}
 \label{subsec:InducesProb}
-Given arbitrary measurable domains $(\Omega,\AA)$ and a sequence of probability measures $(\mu_t)_{t\ge0}$ over it, we define $\nu_t$ to be the probability measure over $\real^d$ that is induced by $s$ and $\mu_t$ for any function $s: \Omega \ra \real^d$ and $t\ge 0$:
-In particular, for any Borel set $A\subset \real^d$,
+Let  $(\mu_t)_{t\ge0}$ be a sequence of probability measures over some measurable domain $(\Omega,\AA)$, 
+and $s: \Omega \ra \real^d$. Then,  for any function and $t\ge 0$, the probability measure $\nu_t$ over $\real^d$ induced by $s$ and $\mu_t$ is defined as
 \[
 \nu_t(A)= \mu_t\Bigl( \cset{z}{s(z)\in A} \Bigr)
 = \mu_t ( s^{-1}(A) ).
 \]
-Note that if $\Omega = \natural$, $\AA = 2^\natural$ and $\mu_t$ is the uniform probability distribution on $\{0,\ldots,t\}$, then $\nu_t$ is the empirical probability.
+for any Borel set $A\subset \real^d$.
+Note that if $\Omega = \natural$, $\AA = 2^\natural$ and $\mu_t$ is the uniform distribution on $\{0,\ldots,t\}$, then $\nu_t$ is the empirical distribution of $s(1),\ldots,s(t)$. For continuous time observations, one can select $\Omega=\R$, $\AA$ as the Borel sets over $\R$, and $\mu_t$ as the uniform distribution on $[0,t]$; then $\nu_t$ is the empirical distribution of $s(\tau), \tau \in [0,t]$.
 
 In what follows we fix $\Omega$ and $(\mu_t)$ and define all the concepts that follow relative to these. 
-In this paper we only consider about real functions.
-if we want to emphasize the dependence on $s$ then we will use $\nu_t^{(s)}$.
+In this paper we only consider about real functions. If we want to emphasize the dependence on $s$ then we will use $\nu_t^{(s)}$.
 \if0
 When the limit of $(\nu_t)$ exists, it will be denoted by $\nu$.
 Also, if we want to emphasize the dependence on $s$ then we will use $\nu^{(s)}$.
@@ -281,7 +288,7 @@ Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topo
 \end{prop}
 \fi
 
-\subsection{ICA}
+\subsection{The ICA Problem}
 \label{subsec:ICA}
 Assume we are given a $d$-dimensional observed function $x(t)$ for $0\le t \le T$ defined by  
 \begin{equation}
