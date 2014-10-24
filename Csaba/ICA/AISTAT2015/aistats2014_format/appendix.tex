@@ -4,37 +4,27 @@
 \section{Appendix}
 \label{sec:Appendix}
 
-\subsection{Proof of Proposition \ref{prop:ergodicfunction}}
-We will prove this proposition by Prokhorov's Theorem. 
-\begin{thm}[Prokhorov's Theorem]
-Let $(S,\rho)$ be a separable metric space, $\KK$ be a set of probability measures over the Borel $\sigma$-algebra $\AA$ of $S$.
-Then $\KK$ is tight iff the closure of $\KK$ is sequentially compact in the space of probability measures over $\AA$ equipped with the topology of weak convergence.
-\end{thm}
-If we show that the set of probability measures $\{\nu_t\}$ is tight, then the statement will follow from Prokhorov's theorem.
-Denote by $m_i\in \mathbb{R}$ the limit of $ m_{t,i} = \int |f_i(x)|\, d\mu_t(x)$.
-Pick any $\eps>0$.
-By the convergence of $m_{t,i}$, there exists some $T>0$ such that
-\begin{equation}
-\label{eq:converge}
-\left| \int |f_i(x)|\, d\mu_t (x)- m_i \right| <\eps
-\end{equation}
-for all $1 \le i \le d$ and $t>T$. Let $u_{i}=\tfrac{m_i+\eps}{\eps}$. Then the marginals
-$\nu_{t,i}$ of $\nu_t$, $1\le i \le d$, satisfy $\nu_{t,i}([-u_{i},u_{i}]) > 1-\eps$ for all $1\le i\le d$ and $t>T$, otherwise \eqref{eq:converge} would be violated. 
-Indeed, $\nu_{t,i}([-u_i,u_i]^c)=\int_{|f_i(x)|>u_i} 1\cdot d\mu_t(x)
-\le \frac{1}{u_i}\int_{|f_i(x)|>u_i} |f_i(x)| d\mu_t(x)
-\le \frac{1}{u_i} \int |f_i(x)| d\mu_t(x) \le \frac{m_i+\eps}{u_i}\le \eps$.
+\subsection{Proof of Lemma \ref{prop:denoise}}
+Let $M = \E_{X\sim \nu_t^{(s)}}[X^{\otimes 4}] - $ as a tensor of dimension 4. 
+Note that 
+\begin{align*}
+& \E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [(AX+Y)^{\otimes 4}]\\
+ = & \,\E_{X\sim \nu_t^{(s)}}[(AX)^{\otimes 4}] \\
+& + \E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [(AX)^{\otimes 3}\otimes Y + (AX)^{\otimes 2}\otimes Y\otimes (AX) + (AX)\otimes Y\otimes (AX)^{\otimes 2} + Y\otimes (AX)^{\otimes 3}] \\
+& + E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [ (AX)^{\otimes 2}\otimes Y^{\otimes 2} + (AX)\otimes Y\otimes (AX)\otimes Y + (AX)\otimes Y^{\otimes 2}\otimes (AX)]\\
+& +  E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [ (Y)^{\otimes 2}\otimes (AX)^{\otimes 2} + (Y)\otimes (AX)\otimes Y\otimes (AX) + Y\otimes (AX)^{\otimes 2}\otimes Y] \\
+& + E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [[Y^{\otimes 3}\otimes (AX) + Y^{\otimes 2}\otimes (AX)\otimes Y + Y\otimes (AX)\otimes Y^{\otimes 2} + (AX)\otimes Y^{\otimes 3}] \\
+& + \E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 4}],
+\end{align*}
+and 
+\begin{align*}
+\E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [(AX+Y)^{\otimes 2}]= & \, \E_{X\sim \nu_t^{(s)}}[(AX)^{\otimes 2}] + \E_{(X,Y)\sim \nu_t^{(s,\epsilon)}}[(AX)\otimes Y + Y\otimes (AX)] + \E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 2}].
+\end{align*}
+Thus 
+We treat $\nabla^2f_{\nu_t^{(x)}}(\eta)$ as a flattened tensor by margin
+Note that 
 
-Let $F_{t,i} = \esssup_{\mu_t} |f_i|$ be the essential supremum of $|f_i|$ w.r.t. $\mu_t$.
-Define 
-$K=\prod_{i=1}^d [-u'_{i},u'_{i}]$ where $u'_{i}=\max\{u_{i},F_{1,i}, \ldots,F_{T,i}$.
-We claim that 
-$\nu_t(K)>1-d \eps$ for all $t \ge 1$, which would show that $\{\nu_t\}$ is tight.
-To lower bound the $\nu_t$-measure of $K$, we upper bound the measure of its complement:
-$\nu_t(K^c) \le \nu_t( \cup_{1\le i \le d} \real^{i-1} \times [-u_i',u_i']^c \times \real^{d-i})
-\le \sum_{i=1}^d \nu_t( \real^{i-1} \times [-u_i',u_i']^c \times \real^{d-i})
-=   \sum_{i=1}^d \nu_{t,i}( [-u_i',u_i']^c )
-\le d \eps$, where the last inequality follows from $u_i'\ge u_i$ and our choice of $u_i$ when $t>T$,
-while it follows from $u_i'\ge \esssup_{\mu_t} |f_i|$ when $t\ge T$.
+Given $\eta \le L_{\eta}$, we have can bound 
 
 \subsection{Proof of Theorem \ref{thm:efficiency}}
 \label{subsec:ProofEfficiency}
@@ -65,41 +55,42 @@ A^{-1},
 where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 \end{thm}
 
+In our deterministic setting, $\nabla^2f(\phi)$ in the above theorem will need to be replaced by $\nabla^2f_{\mu}(A^{\top}\eta)$.
 It follows from this theorem that 
 if $\phi,\psi$ are chosen independently from the uniform distribution on the unit sphere of $\real^d$, with probability one,
 the eigenvalues of  $M$ are all distinct and the corresponding eigenvectors
 determine the rows of $A$ up to permutation and scaling.
-Now since we have a product measure $\mu$ that $\nu_T^{(s)}$ is close to, we can treat $s(t)$ is an empirical instance from the distribution $\mu$.  
+%Now since we have a product measure $\mu$ that $\nu_T^{(s)}$ is close to, we can treat $s(t)$ is an empirical instance from the distribution $\mu$.  
 
-The following lemma bounds $\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta) \|_2$ by $\xi$:
+The following lemma bounds $\|\nabla^2 f_{\mu}(\eta) - \nabla^2 \widehat{f}(\eta) \|_2$ by $\xi$:
 \begin{lemma}
 \label{lem:nablavariation}
-For any $1\le i,j\le d$,
-\begin{align*}
-\left|\left(\nabla^2 f(\eta)\right)_{i,j} - \left(\nabla^2 \widehat{f}(\eta) \right)_{i,j} \right| \le \|\eta\|_2^2 d^4  A_{(2,\max)}^2A_{\max}^2\xi.
-\end{align*}
-Thus,
 \[
-\|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_F\le  \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi.
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta)  \|_2 \le \|\nabla^2 f_{\mu}(\eta) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta)  \|_F\le  \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi.
+\]
+Thus, 
+\[
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2\widehat{f}(\eta)\|_2 \le  \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi + P.
 \]
 \end{lemma}
 \begin{proof}
+Without loss of generality assume $\|\eta\|_2 = 1$.
 Note that  
 \[
-\nabla^2 f(\eta) = G_1(\eta) - G_2(\eta) -2G_3(\eta),
+\nabla^2 f_{\mu}(\eta) = G_1(\eta) - G_2(\eta) -2G_3(\eta),
 \]
 and 
 \[
-\nabla^2 \widehat{f}(\eta) =\widehat{G_1}(\eta) - \widehat{G_2}(\eta) -2\widehat{G_3}(\eta),
+\nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta) =\widehat{G_1}(\eta) - \widehat{G_2}(\eta) -2\widehat{G_3}(\eta),
 \]
 where 
 \begin{align*}
 & G_1(\eta) = \int (\eta^{\top}As)^2Ass^{\top}A^{\top}\,d\mu(s); \\
 & G_2(\eta) = \int (\eta^{\top}As)^2\,d\mu(s) \int Ass^{\top}A^{\top} \,d\mu(s); \\
 & G_3(\eta) = \Big(\int (\eta^{\top}As)As\,d\mu(s)\Big)\Big(\int (\eta^{\top}As)As\,d\mu(s)\Big)^{\top}. \\
-&\widehat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}x(k)\big)^2x(k)x(k)^{\top} = \int (\eta^{\top}As)^2Ass^{\top}A^{\top}\,d\nu_T(s); \\
-& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}x(k)\big)^2 \sum_{k=1}^{n}x(k)x(k)^{\top} = \int (\eta^{\top}As)^2\,d\nu_T(s) \int Ass^{\top}A^{\top} \,d\nu_T(s); \\
-& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}x(k)\big)x(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}x(k)\big)x(k)\Big)^{\top} = \Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)\Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)^{\top}.
+&\widehat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)^2As(k)s(k)^{\top}A^{\top} = \int (\eta^{\top}As)^2Ass^{\top}A^{\top}\,d\nu_T(s); \\
+& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)^2 \sum_{k=1}^{n}As(k)s(k)^{\top}A^{\top} = \int (\eta^{\top}As)^2\,d\nu_T(s) \int Ass^{\top}A^{\top} \,d\nu_T(s); \\
+& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big)^{\top} = \Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)\Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)^{\top}.
 \end{align*}
 
 %Without loss of generality, assume $ \|\eta\|_2 = 1$.
@@ -152,6 +143,10 @@ d^4  A_{(2,\max)}^2A_{\max}^2\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right)
 Therefore, 
 \[
 \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_2 \le \|\nabla^2 f(\eta) - \nabla^2 \widehat{f}(\eta)  \|_F \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right).
+\]
+Lastly, combining with Proposition \ref{prop:denoise}, 
+\[
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2\widehat{f}(\eta)\|_2 \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta)\|_2 + \| \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta) - \nabla^2\widehat{f}(\eta)\|_2 \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi + P.
 \]
 \end{proof}
 Before we can prove the theorem, we need to prove some lemmas.
@@ -242,37 +237,37 @@ Applying Lemma \ref{lem:inversevariation},
 \end{proof}
 
 
-Note that $\nabla^2f(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top} = AKD_{\psi}A^{\top}$,  where $D_{\psi} = \text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$. 
-Thus, $\sigma_{\min}(\nabla^2f(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$. 
+Note that $\nabla^2f_{\mu}(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top} = AKD_{\psi}A^{\top}$,  where $D_{\psi} = \text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$. 
+Thus, $\sigma_{\min}(\nabla^2f_{\mu}(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$. 
 \begin{lemma}
 \label{lem:boundsigmaminnabla}
-$\sigma_{\max}(\nabla^2f(\psi)) \le \kappa_{\max}A^2_{(2,\max)}\sigma_{\max}^2(A)$. 
-Also under the event $\Epsi$, $\sigma_{\min}(\nabla^2f(\psi)) \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$.
+On the event $\Epsi$, $\sigma_{\max}(\nabla^2f_{\mu}(\psi)) \le L_u^2 \kappa_{\max}A^2_{(2,\max)}\sigma_{\max}^2(A)$, and
+ $\sigma_{\min}(\nabla^2f_{\mu}(\psi)) \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$.
 \end{lemma}
 \begin{proof}
-Note that $\nabla^2f(\psi)$ is symmetric. 
+Note that $\nabla^2f_{\mu}(\psi)$ is symmetric. 
 For any unit vector $v$, $v^{\top}AD_{\psi}KA^{\top}v \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min} A^2_{(2,\min)}\|v^{\top}A\|_2^2 \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Similar calculation for the maximum singular value.
 \end{proof}
 
 Lastly, we still need to bound $\|M - \widehat{M}\|_2$.
 \begin{lemma}
 \label{lem:Mvariation_alg}
-Given that $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$, then on the event $\Epsi$, 
+Given that $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$ and $T$  is large enough, but still polynomial in $\{L_\eta, C, \sigma_{\max}(A), L\}$, such that $P \le \frac{\sqrt{2\pi}}{8d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$, then on the event $\Epsi$, 
 \[ 
 \|M - \widehat{M}\|_2 \le \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
 \]
 \end{lemma}
 \begin{proof}
-Let $E_1 = \nabla^2 f(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le d^5 A_{(2,\max)}^2A_{\max}^2\xi$.
+Let $E_1 = \nabla^2 f_{\mu}(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f_{\mu}(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P$.
 Note $\nabla^2f(\phi) = AKD_{\phi} A^{\top}$.
-Given that $\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$, the condition in Lemma \ref{lem:Mvariation} holds on the event $\Epsi$. 
+Given that $\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{8d^6 A_{(2,\max)}^2A_{\max}^2}$ and $P \le \frac{\sqrt{2\pi}}{8d}L_u^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$, the condition in Lemma \ref{lem:Mvariation} holds on the event $\Epsi$. 
 Then apply Lemma \ref{lem:Mvariation} and \ref{lem:nablavariation}, we have
 \begin{align*}
 \|M - \widehat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1} \|_2 \\
 \le \, &\frac{2\|\nabla^2 f(\phi)\|_2}{\sigma_{\min}^2(\nabla^2f(\psi))}\|E_2\|_2 + \frac{2}{\sigma_{\min}(\nabla^2f(\psi))}\|E_1\|_2 \\
 \le \, & 2\left( \frac{2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} + 
 \frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}
-\right)d^5 A_{(2,\max)}^2A_{\max}^2\xi
+\right)\left(d^5 A_{(2,\max)}^2A_{\max}^2\xi + P\right).
 \end{align*}
 
 Thus, 
@@ -511,6 +506,21 @@ Note that $\Prob{|X|\ge C_1'} \ge 1- \frac{\sqrt{2}C_1'}{\sqrt{\pi}}$ for $X\sim
 \label{eq:GaussianLowerBound}
 \Prob{|\psi| \ge C_1'} \ge (1- \frac{\sqrt{2}C_1'}{\sqrt{\pi}})^d = (1-\frac{\ell}{d})^d = \left(1- \frac{\ell}{d}\right)\left(1-\frac{\ell}{d}\right)^{d-1} \ge \left(1- \frac{\ell}{d}\right)\exp(-\ell).
 \end{equation}
+On the other hand, note that $\Prob{\|\psi\|_2 \le L_u} = \Prob{X \le L_u^2}$ where $X \sim \chi_d$.
+Thus by Lemma 1 of \citep{laurent2000adaptive}, picking
+\[
+x = \left(\frac{\sqrt{2}}{2}L_u - \sqrt{d}\right)^2,
+\]
+then $L_u^2 \ge d+2\sqrt{dx}+2x$, and
+\begin{equation}
+\label{eq:ProbEpsi}
+\Prob{\|\psi\|_2 \le L_u} = 1- \Prob{X\ge L_u^2} \ge 1- \Prob{X - d\ge 2\sqrt{dx} +2x} \ge 1-\exp(-x).
+\end{equation}
+Therefore, 
+\begin{equation}
+\label{eq:ProbEpsi2}
+\Prob{\Epsi} \ge (1-\exp(-x))+\left(1- \frac{\ell}{d}\right)\exp(-\ell)-1 = \left(1- \frac{\ell}{d}\right)\exp(-\ell)-\exp(-x).
+\end{equation}
 \end{proof}
 
 \begin{proof}[Proof of Lemma \ref{lem:CauchyGap}]
@@ -531,26 +541,12 @@ For fix $\ell_l\le \frac{\sqrt{\pi}}{\sqrt{2}d}$, $L_u \ge \sqrt{2d}$ and an ort
 \]
 Denote the event $\|\phi_1\|_2\le L_u$ by $\Ephione$ and $\{\|\phi_2\|_2\le L_u, \min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l\}$ by $\Ephitwo$. 
 
-Note that $\Prob{\Ephione} = \Prob{X \le L_u^2}$ where $X \sim \chi_d$.
-Thus by Lemma 1 of \citep{laurent2000adaptive}, picking
-\[
-x = \left(\frac{\sqrt{2}}{2}L_u - \sqrt{d}\right)^2,
-\]
-then $L_u^2 \ge d+2\sqrt{dx}+2x$, and
+By Equation \eqref{eq:ProbEpsi}
 \begin{equation}
 \label{eq:ProbEphi1}
-\Prob{\Ephione} = 1- \Prob{X\ge L_u^2} \ge 1- \Prob{X - d\ge 2\sqrt{dx} +2x} \ge 1-\exp(-x).
+\Prob{\Ephione} \ge 1-\exp(-x).
 \end{equation}
-Similarly, 
-\[
-\Prob{\|\phi_2\|_2\le L_u} \ge 1-\exp(-x). 
-\] 
-On the other hand, given an fixed orthonormal matrix $R$, $\phi_2^{\top}R$ is also a standard Gaussian statistics. 
-By Equation \eqref{eq:GaussianLowerBound}, for $\ell_l =   \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for any $0\le \ell\le 1$,
-\[
-\Prob{\min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l} \ge (1-\frac{\ell}{d})^d\ge\left(1- \frac{\ell}{d}\right)\exp(-\ell).
-\]
-Therefore, 
+Similarly by Equation \eqref{eq:ProbEpsi2},
 \begin{equation}
 \label{eq:ProbEphi2}
 \Prob{\Ephitwo} \ge (1-\exp(-x))+\left(1- \frac{\ell}{d}\right)\exp(-\ell)-1 = \left(1- \frac{\ell}{d}\right)\exp(-\ell)-\exp(-x).

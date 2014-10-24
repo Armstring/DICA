@@ -14,11 +14,11 @@
 \newcommand{\xcom}[1]{x_{#1}}
 \newcommand{\scom}[1]{s_{#1}}
 \newcommand{\cset}[2]{\left\{#1\,:\,#2\right\}}
-\newcommand{\Ephione}{\mathbb{E}_{\phi_1}}
-\newcommand{\Ephitwo}{\mathbb{E}_{\phi_2}}
-\newcommand{\Epsi}{\mathbb{E}_{\psi}}
-\newcommand{\Ephi}{\mathbb{E}_{\phi}}
-\newcommand{\EZ}{\mathbb{E}_{Z}}
+\newcommand{\Ephione}{\mathcal{E}_{\phi_1}}
+\newcommand{\Ephitwo}{\mathcal{E}_{\phi_2}}
+\newcommand{\Epsi}{\mathcal{E}_{\psi}}
+\newcommand{\Ephi}{\mathcal{E}_{\phi}}
+\newcommand{\EZ}{\mathcal{E}_{Z}}
 \newcommand{\cN}{\cal{N}}
 \renewcommand{\P}{{\mathcal P}}
 \newcommand{\E}{\mathbb{E}}
@@ -236,8 +236,12 @@ Lastly, experimental results are reported in Section \ref{sec:ExpRes}.
 
 \subsection{Notations}
 Denote the maximal (respectively minimal) singular value of a matrix $A$ by  $\sigma_{\max}(A)$ (respectively $\sigma_{\min}(A)$). Also, let $A_{(2,\min)} = \min_{i} \|A_i\|_2$, $A_{(2,\max)} = \max_{i} \|A_i\|_2$, and $A_{\max} = \max_{i,j} |A_{i,j}|$. 
-Clearly, $\sigma_{\max}(A) \ge A_{(2,\max)} \ge A_{\max}$, and $\sigma_{\min}(A) \le A_{(2,\min)}$. Denote the vector with all the entries being 1 by a bold symbol $\boldsymbol{1}$.
-
+Clearly, $\sigma_{\max}(A) \ge A_{(2,\max)} \ge A_{\max}$, and $\sigma_{\min}(A) \le A_{(2,\min)}$. 
+Denote the vector with all the entries being 1 by a bold symbol $\boldsymbol{1}$. 
+$v \le C$ for some vector $v$ and quantity $C$ means all the entries of $v$ are less that $C$, and $\vert v \vert$ means apply the absolute value operation to all the entries of $v$. 
+The outer product of vectors $v$ and $u$ is denoted by $v\otimes u$. 
+$u^{\otimes k}$ is used as a notion of the outer product of $k$ $v$'s, $v\otimes v\otimes v \ldots \otimes v$, which is a k-dimensional tensor.
+For a tensor $T$, its Frobenious norm, $\|T\|_F$,  is defined as the square root of the sum of the square of all the entries.  
 
 \section{Preliminaries}
 \label{sec:Preliminaries}
@@ -255,6 +259,8 @@ Note that if $\Omega = \natural$, $\AA = 2^\natural$ and $\mu_t$ is the uniform 
 
 In what follows we fix $\Omega$ and $(\mu_t)$ and define all the concepts that follow relative to these. 
 In this paper we only consider about real functions.
+if we want to emphasize the dependence on $s$ then we will use $\nu_t^{(s)}$.
+\if0
 When the limit of $(\nu_t)$ exists, it will be denoted by $\nu$.
 Also, if we want to emphasize the dependence on $s$ then we will use $\nu^{(s)}$.
 Similarly, when the dependence of $\nu_t$ on $s$ is important, we will use $\nu^{(s)}_t$.
@@ -273,20 +279,73 @@ Let $\scom{i}$ denote the $i$th coordinate function of $s$. Assume that
 exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |\scom{i}|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
 Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
 \end{prop}
+\fi
+
 \subsection{ICA}
 \label{subsec:ICA}
-Assume we are given a $d$-dimensional observed function $x(t)$ defined by  
+Assume we are given a $d$-dimensional observed function $x(t)$ for $0\le t \le T$ defined by  
 \begin{equation}
 \label{equ:ICA}
-x(t) = As(t), \quad t\ge0
+x(t) = As(t)+\epsilon(t), \quad 0\le  t\le T
 \end{equation}
-where $A$ is a $d\times d$ nonsingular matrix and  $s$ is a $d$-dimensional signal function. 
+where $A$ is a $d\times d$ nonsingular mixing matrix,  $s$ is a $d$-dimensional deterministic source function, and $\epsilon$ is the noise function. 
+We assume $s_i$, the $i$th component of the function $s$, is bounded by a constant $C\ge 1$.
+Moreover, we assume there exists a constant $L$, such that $\| \E_{Y\sim \nu_t^{(s_i)}} [Y] \|_F\le L/\sqrt{t}$, $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$, and $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - 3(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^2 \|_F\le L/\sqrt{t}$.
+The first two statements force the average of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
+The last assumption is basically saying the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit. 
+Moreover, we assume the source signal function and the noise function are 'independent' in the sense that for positive $i,j$ that $i+j \le 4$,  
+$\vert \E_{X\sim \nu_t^{(s)}} [X^{\otimes i}] \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j}]  - \E_{(X, Y)\sim \nu_t^{(s, \epsilon)}} [X^{\otimes i}\otimes Y^{\otimes j}]  \vert \le L/\sqrt{t}$, where $(s,\epsilon)$ is the function by concatenating $s$ and $\epsilon$ together.  
+Note that the above assumptions does not lose any generality to the traditional stochastic setting of the ICA model with Gaussian noise. 
+
+\subsection{Quasi-Whitening}
+For $p\ge 1$, $\eta\in \real^d$, 
+let 
+\begin{equation}
+\label{eq:momnent}
+m_p^{(\nu)}(\eta) = \E_{Y\sim \nu}[ (\eta^\top Y)^p ]
+\end{equation}
+and let
+\begin{equation}
+\label{eq:funcf}
+f_{\nu}(\eta) = \frac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)\,.
+\end{equation}
+Our algorithm will heavily explore the second derivative of the function $f_{\nu_T^{(x)}}$. 
+Note that $\nabla^2f_{\nu}(\eta)$  can be evaluated from the observations by
+\begin{equation}
+\label{eq:G}
+\nabla^2 f_{\nu}(\eta) = G_{\nu}(\eta):= G_1^{(\nu)}(\eta) - G_2^{(\nu)}(\eta) -2G_3^{(\nu)}(\eta),
+\end{equation}
+where 
+\vspace{-3mm}
+\begin{align*}
+& G_1^{(\nu)}(\eta) =  \E_{X\sim \nu} [\big(\eta^{\top}X\big)^2XX^{\top}]; \\
+& G_2^{(\nu)}(\eta) = \E_{X\sim \nu} [\big(\eta^{\top}X\big)^2] \E_{X\sim \nu} [XX^{\top}]; \\
+%\frac{1}{T^2}\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)^2 \sum_{t=1}^{T}x(t)x(t)^{\top}; \\
+& G_3^{(\nu)}(\eta) = \E_{X\sim \nu} [\big(\eta^{\top}X\big)X] \E_{X\sim \nu} [\big(\eta^{\top}X\big)X^{\top}].
+%\frac{1}{T^2}\Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
+\end{align*} 
+In particular, we would prove that the function $\nabla^2f$ is robust to noise, as follows. 
+\begin{prop}
+\label{prop:denoise}
+For any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
+\[
+\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\text{Poly}}{\sqrt{T}}, 
+\] 
+where $\text{Poly}$ is polynomial in $\{L_\eta, C, \sigma_{\max}(A), L\}$.
+\end{prop}  
+Denote $\frac{\text{Poly}}{\sqrt{T}}$ by $P$. Note that this error caused by noise will decay in a rate of $\sqrt{t}$.
+For simplicity, we would assume that $\mu_t$ is the uniform distribution over $\{1,2,\ldots, t\}$ for the rest of the paper.
+All the results can be easily extended to a general $\mu_t$. 
+%We also assume that $T$ is large enough such that $P\le 1/6$.
+
+\if0
 Note that the above deterministic setting does not lose any generality to the traditional stochastic setting of ICA with Gaussian noise, given that we can rewrite the stochastic setting as 
 \[
 x = As+\eps = A(s+A^{-1}\eps),
 \] 
 where $\eps$ is a Gaussian noise. In practice, we are not going to observe the true distribution of $x$, but $x(t)$, $t\ge 0$, which leads to Equation \eqref{equ:ICA}.
-We assume $s_i$, the $i$th component of the function $s$, is bounded by a constant $C\ge 1$.
+\fi
+
 
 \section{Analysis of the HKICA Algorithm}
 \label{sec:AnalysisHK}
@@ -296,20 +355,10 @@ A detailed analysis shows that the performance of the algorithm may be not as tr
 
 \subsection{the HKICA algorithm}
 \label{subsec:HKalg}
-\citet{DHsu2012} proposed an algorithm for ICA based on the idea of moment methods.
-For $p\ge 1$, $\eta\in \real^d$, 
-let 
-\begin{equation}
-\label{eq:momnent}
-m_p(\eta) = \E_{Y\sim \nu^{(s)}}[ (\eta^\top A Y)^p ]
-\end{equation}
-and let
-\begin{equation}
-\label{eq:funcf}
-f(\eta) = \frac1{12} \left( m_4(\eta) - 3 m_2(\eta)^2 \right)\,.
-\end{equation}
+\citet{DHsu2012} proposed an algorithm for ICA based on the idea of moment methods. 
+The HKICA is shown in Algorithm \ref{alg:HKICA}. 
+We use  $\widehat{f}$  as an abbreviation of $f_{\nu_T^{(x)}}$ for simplicity.
 In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate. 
-The HKICA is shown in Algorithm \ref{alg:HKICA}.
 \begin{algorithm}[H]
 \caption{the HKICA algorithm}
 \label{alg:HKICA}
@@ -323,26 +372,16 @@ The HKICA is shown in Algorithm \ref{alg:HKICA}.
 \STATE Return $\widehat{A} = (\mu_1,\ldots,\mu_d)$.
 \end{algorithmic}
 \end{algorithm}
-In particular, $\nabla^2\widehat{f}(\eta)$  is evaluated from the observations by
-\begin{equation}
-\label{eq:G}
-\nabla^2 \widehat{f}(\eta) = \widehat{G}(\eta):= \widehat{G_1}(\eta) - \widehat{G_2}(\eta) -2\widehat{G_3}(\eta),
-\end{equation}
-where 
-\vspace{-3mm}
-\begin{align*}
-&\widehat{ G_1}(\eta) = \frac1T\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)^2x(t)x(t)^{\top}; \\
-& \widehat{G_2}(\eta) = \frac{1}{T^2}\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)^2 \sum_{t=1}^{T}x(t)x(t)^{\top}; \\
-& \widehat{G_3}(\eta) = \frac{1}{T^2}\Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
-\end{align*} 
+
 \begin{remark}[Remark for Algorithm \ref{alg:HKICA}]
 \label{rmk:symmetrization}
+Let $\nabla^2\widehat{f}(\psi) =\widehat{B}\widehat{B}^{\top} $.
 In practice, the HKICA algorithm may generate complex output. 
 This occurs only when $\nabla^2\widehat{f}(\psi)$ is singular. 
 Otherwise, the eigenvalues of $\widehat{M}$ would be the same as those of
 $\widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ which is symmetric and thus has all real eigenvalues, where $\widehat{B} $ is the square root of $\nabla^2\widehat{f}(\psi)$. 
 Note that theoretically singularity of $\nabla^2\widehat{f}(\psi)$ happens with probability 0. 
-One way of fixing this problem is keeping sampling $\phi$ and $\psi$ until a real eigen-decomposition exists.
+One way of fixing this problem is re-sampling $\phi$ and $\psi$ until a real eigen-decomposition exists.
 
 Another possible way, avoiding re-sampling and yet with larger error, is by the symmetrizing trick mentioned above.
 Instead of computing $\widehat{M} = (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1}$, one can calculate the eigen-decomposition of  $\widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$. 
@@ -361,7 +400,7 @@ We try to have weaker assumption instead of assuming independent signals.
 Clearly, no meaningful results will be achieved if $s$ is allowed to go arbitrarily wild. 
  
 In what follows in this paper, we fix $\mu = \mu_1\otimes \ldots \otimes \mu_d$ as some product measure
-satisfying $\E_{Y\sim\mu_i}[Y]=0$ and $\kappa_i := \E_{Y\sim \mu_i}[Y^4] - 3\left(\E_{Y\sim \mu_i}[Y^2]\right)^2\neq 0$.
+satisfying $\E_{Y\sim\mu_i}[Y]=0$ and $\kappa_i := \vert \E_{Y\sim \mu_i}[Y^4] - 3\left(\E_{Y\sim \mu_i}[Y^2]\right)^2 \vert \neq 0$.
 Denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$ by $K$. 
 Also, denote $\max_{i} \kappa_i$ by $\kappa_{\max}$ and $\min_{i} \kappa_i$ by $\kappa_{\min}$.
 We define a `distance' for two distributions, as follows. 
@@ -382,13 +421,15 @@ In the traditional stochastic setting where the observations are i.i.d samples, 
 Therefore, this condition will be satisfied given the sample size is large enough. \qed
 \end{remark} 
 
+\begin{definition}
+We denote by $\Epsi$ the following event: For some fixed $C_1 = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$ for $0\le \ell\le 1$, and $ L_u = \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$,
+\[\min_i |\psi^{\top}A_i| \ge C_1, \text{ and } \|\psi\|_2 \le L_u.\] 
+\end{definition}
 The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
-Let $C_1 = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$ for $0\le \ell\le 1$. Then with probability at least $\left(1- \frac{w}{d}\right)\exp(-\ell)$, 
-\[\min_i |\psi^{\top}A_i| \ge C_1.\] 
+With probability at least $\left(1- \frac{w}{d}\right)\exp(-\ell) - \exp(-x)$, $\Epsi$ holds.
 \end{lemma}
-Denote the event of Lemma \ref{lem:dmin} by $\Epsi$.
 Let 
 \begin{equation}
 \label{def:kappa}
@@ -396,12 +437,15 @@ Let
 \end{equation}
 The performance of the HKICA algorithm depends on this parameters, as shown in the following theorem.
 \begin{thm}
- \label{thm:efficiency}
+ \label{thm:efficiency} 
+Given a large enough $T$ (polynomial in $\{L_u, C, \sigma_{\max}(A), L\}$), assume that there exist a product measure $\mu$ such that $\xi$ is small enough polynomial in $\{\gamma_A, 1/d, 1/L_u, 1/\sigma_{\max}(A), \sigma_{\min}(A), 1/\kappa_{\max}, \kappa_{\min}, \ell\}$. 
+\if0
 Let 
  \begin{align*}
- Q = &\Big(\frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) }{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \\
- & + \frac{2\sqrt{2\pi}d^6A_{(2,\max)}^2A_{\max}^2}{\pi\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)} \Big)
-  \xi,
+Q = & 2\left( \frac{2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} + 
+\frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}
+\right) \\
+& \quad \times \left(d^5 A_{(2,\max)}^2A_{\max}^2\xi + P\right)
  \end{align*}
  where $\xi$ is defined in Equation \eqref{eq:xi}. Assume the following conditions hold:
  \begin{enumerate}
@@ -409,20 +453,26 @@ Let
  \item $\widehat{M}$ has distinct eigenvalues;
  \item $\gamma_A > 4\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} Q$
  \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_A}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } Q$;
- \item $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{4d^6 A_{(2,\max)}^2A_{\max}^2}$.
+ \item $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{8d^6 A_{(2,\max)}^2A_{\max}^2}$;
+ \item $T$  is large enough, but still polynomial in $\{L_\eta, C, \sigma_{\max}(A), L\}$, such that $P \le \frac{\sqrt{2\pi}}{8d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. 
   \end{enumerate}
+  \fi
  Then on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for any $k$,
  \[
-  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4}{\gamma_A} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q,
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le
+  % \frac{4}{\gamma_A} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q,
+  \frac{1}{\gamma_A} \text{Poly}
 \]
-where $\widehat{A}$ is the output of the HKICA algorithm.
+where $\widehat{A}$ is the output of the HKICA algorithm, and Poly is a polynomial in $\{C, L, d, L_u, \sigma_{\max}(A), 1/\sigma_{\min}(A), \kappa_{\max}, 1/\kappa_{\min}, 1/\ell\}$.
  \end{thm}
+ \if0
 \begin{remark}
 Note that the first condition holds with probability 1. Also, the other three conditions will be satisfied when $\xi$ is small enough (for a fixed $\gamma_A$).
 In particular, as mentioned in the Remark \ref{rmk:xi}, these conditions will be satisfied in the traditional stochastic setting of ICA (for a fixed $\gamma_A$), given large enough sample size. \qed
 %However, condition 2 and 3 are rarely satisfied in practice. 
 %More discussion about this problem and weaker conditions are discussed in Section \ref{sec:ExpRes}. 
 \end{remark}
+\fi
 \begin{remark}
 The parameter $1/\gamma_A$ is essential in the result of the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the conditions, under which such bound is guaranteed, also require a small $1/\gamma_A$.
 
@@ -433,7 +483,7 @@ Such discontinuity of the eigen-spaces suggests that the dependence on $\gamma_A
 
 Despite the important role that $\gamma_A$ plays in the efficiency of the HKICA algorithm, we have no clue about its behavior. 
 Even a polynomial (in the dimension $d$) lower bound of $\gamma_A$ is not yet available, to our best knowledge, in the literature (This problem has been discussed by \citet{husler1987minimal}, but the result does not apply to our case).
-A delicate analysis carried by \citet{goyal2014fourier} for a similar spacing problem is heavily based on the boundedness of the characteristic function, which isn't applicable here neither. 
+A delicate analysis carried out by \citet{goyal2014fourier} for a similar spacing problem is heavily based on the boundedness of the characteristic function, which isn't applicable here neither. 
 
 This problem motivates us to refine the HKICA algorithm.
 The idea is inspired by the ideas of \citet{arora2012provable} and \citet{frieze1996learning} using a quasi-whitening procedure, as shown in the next section. \qed
@@ -464,7 +514,7 @@ The difficult in analyzing $\gamma_A$ of the HKICA algorithm is due to its depen
 The way of DICA to deal with this problem can be viewed in a tensor perspective. 
 Instead of flattening two $4$-dimensional tensors into matrices simply by marginalizing in a random direction, in DICA we marginalize in a structured direction as $\psi^{\top}A^{-1}$ for a random $\psi$. 
 Another possible interpretation could be in a  probabilistic perspective, as sampling $\phi_1$ and $\phi_2$ based on an estimation of the variance matrix. 
-In particular, we would like to sample $\phi$ from a Gaussian distribution $N(0,V)$ where $V = A^{-\top}A^{-1}$, so that $\{\phi^{\top}A_1, \ldots, \phi^{\top}A_d \}$ is independent and hence $\gamma_A$ could be easier to analyze. 
+In particular, we would like to sample $\phi$ from a Gaussian distribution $\cN(0,V)$ where $V = A^{-\top}A^{-1}$, so that $\{\phi^{\top}A_1, \ldots, \phi^{\top}A_d \}$ is independent and hence $\gamma_A$ could be easier to analyze. 
 Despite the true value of $A^{-\top}A^{-1}$ is not available, we can estimate it by $\left(\nabla^2\widehat{f}(\psi)\right)^{-1}$ up to permutation and scaling,
 which can still maintain the independence of $\{\phi^{\top}A_1, \ldots, \phi^{\top}A_d \}$). 
 %Then in DICA, $\widehat{B}^{-\top}\phi$ is a way of sampling such direction $v$.
@@ -652,7 +702,7 @@ Given $v_b$ and the matrix $P$ both are generated from standard normal distribut
 \item $A_2 = v_b\times\boldsymbol{1}' + 0.005\times P$.
 \end{itemize}
 \vspace{-2mm}
-Another orthonormal matrix R is generated by computing the left column space of a non-singular random matrix $N$ (from standard normal distribution).  
+Another orthonormal matrix R is generated by computing the left column space of a non-singular random matrix (from standard normal distribution).  
 
 For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values (corresponding to the largest $\gamma_A$ and $\gamma_R$).
 We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
