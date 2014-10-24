@@ -169,7 +169,7 @@ The ICA model assumes a $d$-dimensional vector $X$ is a linear mixture of $d$ in
 \[
 X = AS+\epsilon,
 \]
-where $\epsilon$ is a $d$-dimensional Gaussian noise, and $A$ is a nonsingular mixing matrix.
+where $\epsilon \sim \mathcal{N}(0,\Sigma)$ is a $d$-dimensional Gaussian noise, and $A$ is a nonsingular mixing matrix.
 Our interest is to reconstruct $A$ given observations of $X$ with rigorous guarantee.
 
 The literature of the ICA model is vast in both practical algorithms and theoretical analysis. 
@@ -306,31 +306,29 @@ Moreover, we assume there exists a constant $L\ge 1$, such that
 \item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$;
 \item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F \le L$;
 \item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L$;
-\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - 3(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2} \|_F\le L/\sqrt{t}$
+\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - 3(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2} \|_F\le L/\sqrt{t}$.
 \end{enumerate}
 \vspace{-2mm}
 \begin{remark}
 The first two statements force the average of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
 The next two assumptions require both second and third moments are bounded.
 The last assumption is basically saying the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit.
-Note that all assumptions about $\epsilon$ will be satisfied by i.i.d Gaussian noise.
+Note that all assumptions about $\epsilon$ will be satisfied by i.i.d Gaussian noise, as proved later in Theorem \ref{thm:finalRes}.
 \end{remark}
 Moreover, we assume the source signal function and the noise function are 'independent' in the sense that for $i_1,i_2,j_1,j_2 \ge 0$ that $i_1+i_2+j_1+j_2 \le 4$,  
 \begin{align*}
-& \| \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_1}]\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \\
-& \quad \quad \otimes \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_2}]\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_2}]\\
-& - \E_{(X, Y)\sim \nu_t^{(s, \epsilon)}} [(AX)^{\otimes i_1}\otimes Y^{\otimes j_1}\otimes (AX)^{\otimes i_2}\otimes Y^{\otimes j_2}]  \|_F \\
+& \| \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_1}\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \otimes (AX)^{\otimes i_2}]\\
+& \quad - \E_{(X, Y)\sim \nu_t^{(s, \epsilon)}} [(AX)^{\otimes i_1}\otimes Y^{\otimes j_1}\otimes (AX)^{\otimes i_2}]  \|_F \\
 & \le L/\sqrt{t},
 \end{align*}
 and 
 \begin{align*}
-& \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \otimes \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_1}] \\
-& \quad \quad \otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_2}] \otimes \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_2}]\\
-& - \E_{(X, Y)\sim \nu_t^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AX)^{\otimes i_1}\otimes Y^{\otimes j_2}\otimes (AX)^{\otimes i_2}]  \|_F \\
+& \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1} \otimes \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_1}] \otimes Y^{\otimes j_2}] \\
+& \quad - \E_{(X, Y)\sim \nu_t^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AX)^{\otimes i_1}\otimes Y^{\otimes j_2}] \|_F \\
 & \le L/\sqrt{t},
 \end{align*}
  where $(s,\epsilon)$ is the function by concatenating $s$ and $\epsilon$ together.  
-This assumption does not lose any generality to the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals. 
+Similarly, we will prove that this assumption does not lose any generality to the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals, in Theorem \ref{thm:finalRes}. 
 
 \subsection{Quasi-Whitening}
 For $p\ge 1$, $\eta\in \real^d$, 
@@ -703,16 +701,16 @@ Then with probability at least $1-\delta$, there exists a permutation $\pi$ and 
 \[
 \| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}D_4(\mu, \nu_T),
 \]
-where $\mathcal{C} = \text{Poly}(\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d, C)$, and $\widehat{A}$ is the output of the DICA algorithm.
+where $\mathcal{C} = \text{Poly}(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C)$, and $\widehat{A}$ is the output of the DICA algorithm.
 
 In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the Appendix),
- with probability at most $1-2\delta$, 
+ with probability at most $1-\delta$, 
  DICA will generate an estimation $\widehat{A}$ of the mixing matrix $A$ in
  time complexity of $O(d^3T)$, 
  such that there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \begin{align*}
 & \| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \\
-& \quad\frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\text{Poly}(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \kappa_{\max},\frac{1}{\kappa_{\min}},\frac{1}{\delta}, d).
+& \quad\frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\text{Poly}(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d).
 \end{align*}
 \end{thm}
 \begin{remark}
