@@ -364,7 +364,7 @@ In particular, we would prove that the function $\nabla^2f$ is robust to noise, 
 \label{prop:denoise}
 For any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
 \[
-\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)}{\sqrt{T}}. 
+\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\text{Poly}(L_{\eta}, L, d, \sigma_{\max}(A), C)}{\sqrt{T}}. 
 \] 
 \end{prop}  
 Denote $\frac{\text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)}{\sqrt{T}}$ by $P$. Note that this error caused by noise will decay in a rate of $\sqrt{t}$.
@@ -472,15 +472,18 @@ Let
 The performance of the HKICA algorithm depends on this parameters, as shown in the following theorem.
 \begin{thm}
  \label{thm:efficiency} 
-Given a large enough $T$ (polynomial in $\{L_u, C, \sigma_{\max}(A), L, \ell^2\}$), assume that there exist a product measure $\mu$ such that $\xi$ is small enough polynomial in $\{\gamma_A, 1/d, 1/L_u, 1/\sigma_{\max}(A), \sigma_{\min}(A), 1/\kappa_{\max}, \kappa_{\min}, \ell\}$. 
+Given a large enough 
+\[T = \text{Poly}(d, L_u, C, \sigma_{\max}(A), L, \ell^2, 1/(\kappa_{\min}\sigma_{\min}^4)),\]
+assume that there exist a product measure $\mu$ such that 
+\[\xi=\text{Poly}(\gamma_A, \frac{1}{d}, \frac{1}{L_u}, \frac{1}{\sigma_{\max}(A)}, \frac{1}{\kappa_{\max}}, \kappa_{\min}\sigma^4_{\min}(A), \ell),\] 
 
  Then on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for any $k$,
  \[
   \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le
   % \frac{4}{\gamma_A} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}(A)}Q,
-  \frac{1}{\gamma_A} Q(\xi + P)
+  \frac{1}{\gamma_A} (\xi + P)Q
 \]
-where $\widehat{A}$ is the output of the HKICA algorithm, and $Q$ is a polynomial in $\{C, L, d, L_u, \sigma_{\max}(A), 1/\sigma_{\min}(A), \kappa_{\max}, 1/\kappa_{\min}, 1/\ell\}$.
+where $\widehat{A}$ is the output of the HKICA algorithm, and \[Q=\text{Poly}(C, L, d, L_u, \sigma_{\max}(A), \frac{1}{\kappa_{\min}\sigma^4_{\min}(A)}, \kappa_{\max}, \frac{1}{\ell}).\]
  \end{thm}
  \if0
 \begin{remark}
