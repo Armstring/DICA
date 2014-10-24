@@ -560,7 +560,7 @@ Note that on the event $\Ephi$, $\|\phi_j^{\top}R\|_2\le L_u$, $j\in\{1,2\}$.
 We will show later that this event $\Ephi$, as well as other events defined later, will hold simultaneously with high probability.
 Let 
 \begin{align*}
-& \bar{\xi} =   \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi, \\
+& \bar{\xi} =   \frac{\sqrt{2}d\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P\right)}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}, \\
 & \widehat{\xi} = \frac{3L_u^2d^7A^2_{\max}}{\pi\kappa_{\min}A^2_{(2,\min)}}\xi + \frac{2\sqrt{6}L_u^2d^2\sigma_{\max}^2(A)}{\pi A^2_{(2,\min)}}\bar{\xi},
 \end{align*} 
 and 
@@ -586,7 +586,8 @@ Let
  \item $\widehat{T}$ has distinct eigenvalues;
  \item $\gamma_R > 4 \frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) }Q$; 
  \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } Q$;
- \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{3\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
+ \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
+ \item $P \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$
  (so $\bar{\xi} \le 1/3$);
  \item $\widehat{\xi} \le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$.
  \end{enumerate}
