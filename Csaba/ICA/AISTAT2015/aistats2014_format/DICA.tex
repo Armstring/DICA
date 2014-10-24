@@ -85,6 +85,7 @@
 \newcommand{\mineig}{\nu_{\min}}
 \newcommand{\ra}{\rightarrow}
 \newcommand{\real}{\mathbb{R}}
+\newcommand{\R}{\real}
 \newcommand{\one}[1]{\mathbf{1}_{\{#1\}}}
 \newcommand{\rl}[1]{\mathbb{R}^{#1}}
 \newcommand{\Mset}{\mathcal{M}(\varepsilon)}
@@ -297,11 +298,29 @@ x(t) = As(t)+\epsilon(t), \quad 0\le  t\le T
 \end{equation}
 where $A$ is a $d\times d$ nonsingular mixing matrix,  $s$ is a $d$-dimensional deterministic source function, and $\epsilon$ is the noise function. 
 We assume $s_i$, the $i$th component of the function $s$, is bounded by a constant $C\ge 1$.
-Moreover, we assume there exists a constant $L$, such that $\| \E_{Y\sim \nu_t^{(s_i)}} [Y] \|_F\le L/\sqrt{t}$, $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$, and $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - 3(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^2 \|_F\le L/\sqrt{t}$.
+Moreover, we assume there exists a constant $L\ge 1$, such that 
+$\| \E_{X\sim \nu_t^{(s_i)}} [X] \|_F\le L/\sqrt{t}$, 
+$\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$, 
+$\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F \le L$, 
+$\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L/\sqrt{t}$, 
+and $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - 3(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2} \|_F\le L/\sqrt{t}$.
 The first two statements force the average of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
 The last assumption is basically saying the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit. 
-Moreover, we assume the source signal function and the noise function are 'independent' in the sense that for positive $i,j$ that $i+j \le 4$,  
-$\vert \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i}] \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j}]  - \E_{(X, Y)\sim \nu_t^{(s, \epsilon)}} [(AX)^{\otimes i}\otimes Y^{\otimes j}]  \vert \le L/\sqrt{t}$, where $(s,\epsilon)$ is the function by concatenating $s$ and $\epsilon$ together.  
+Moreover, we assume the source signal function and the noise function are 'independent' in the sense that for $i_1,i_2,j_1,j_2 \ge 0$ that $i_1+i_2+j_1+j_2 \le 4$,  
+\begin{align*}
+& \| \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_1}]\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \\
+& \quad \quad \otimes \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_2}]\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_2}]\\
+& - \E_{(X, Y)\sim \nu_t^{(s, \epsilon)}} [(AX)^{\otimes i_1}\otimes Y^{\otimes j_1}\otimes (AX)^{\otimes i_2}\otimes Y^{\otimes j_2}]  \|_F \\
+& \le L/\sqrt{t},
+\end{align*}
+and 
+\begin{align*}
+& \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \otimes \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_1}] \\
+& \quad \quad \otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_2}] \otimes \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_2}]\\
+& - \E_{(X, Y)\sim \nu_t^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AX)^{\otimes i_1}\otimes Y^{\otimes j_2}\otimes (AX)^{\otimes i_2}]  \|_F \\
+& \le L/\sqrt{t},
+\end{align*}
+ where $(s,\epsilon)$ is the function by concatenating $s$ and $\epsilon$ together.  
 Note that the above assumptions does not lose any generality to the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals. 
 
 \subsection{Quasi-Whitening}
@@ -336,11 +355,10 @@ In particular, we would prove that the function $\nabla^2f$ is robust to noise, 
 \label{prop:denoise}
 For any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
 \[
-\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\text{Poly}}{\sqrt{T}}, 
+\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)}{\sqrt{T}}. 
 \] 
-where $\text{Poly}$ is polynomial in $\{L_\eta, C, \sigma_{\max}(A), L\}$.
 \end{prop}  
-Denote $\frac{\text{Poly}}{\sqrt{T}}$ by $P$. Note that this error caused by noise will decay in a rate of $\sqrt{t}$.
+Denote $\frac{\text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)}{\sqrt{T}}$ by $P$. Note that this error caused by noise will decay in a rate of $\sqrt{t}$.
 For simplicity, we would assume that $\mu_t$ is the uniform distribution over $\{1,2,\ldots, t\}$ for the rest of the paper.
 All the results can be easily extended to a general $\mu_t$. 
 %We also assume that $T$ is large enough such that $P\le 1/6$.
