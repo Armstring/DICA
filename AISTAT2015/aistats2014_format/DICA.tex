@@ -297,15 +297,24 @@ Assume we are given a $d$-dimensional observed function $x(t)$ for $0\le t \le T
 x(t) = As(t)+\epsilon(t), \quad 0\le  t\le T
 \end{equation}
 where $A$ is a $d\times d$ nonsingular mixing matrix,  $s$ is a $d$-dimensional deterministic source function, and $\epsilon$ is the noise function. 
+
 We assume $s_i$, the $i$th component of the function $s$, is bounded by a constant $C\ge 1$.
 Moreover, we assume there exists a constant $L\ge 1$, such that 
-$\| \E_{X\sim \nu_t^{(s_i)}} [X] \|_F\le L/\sqrt{t}$, 
-$\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$, 
-$\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F \le L$, 
-$\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L/\sqrt{t}$, 
-and $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - 3(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2} \|_F\le L/\sqrt{t}$.
+\begin{enumerate}[i.]
+\vspace{-3mm}
+\item $\| \E_{X\sim \nu_t^{(s_i)}} [X] \|_F\le L/\sqrt{t}$;
+\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$;
+\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F \le L$;
+\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L$;
+\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - 3(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2} \|_F\le L/\sqrt{t}$
+\end{enumerate}
+\vspace{-2mm}
+\begin{remark}
 The first two statements force the average of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
-The last assumption is basically saying the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit. 
+The next two assumptions require both second and third moments are bounded.
+The last assumption is basically saying the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit.
+Note that all assumptions about $\epsilon$ will be satisfied by i.i.d Gaussian noise.
+\end{remark}
 Moreover, we assume the source signal function and the noise function are 'independent' in the sense that for $i_1,i_2,j_1,j_2 \ge 0$ that $i_1+i_2+j_1+j_2 \le 4$,  
 \begin{align*}
 & \| \E_{X\sim \nu_t^{(s)}} [(AX)^{\otimes i_1}]\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \\
@@ -321,7 +330,7 @@ and
 & \le L/\sqrt{t},
 \end{align*}
  where $(s,\epsilon)$ is the function by concatenating $s$ and $\epsilon$ together.  
-Note that the above assumptions does not lose any generality to the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals. 
+This assumption does not lose any generality to the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals. 
 
 \subsection{Quasi-Whitening}
 For $p\ge 1$, $\eta\in \real^d$, 
