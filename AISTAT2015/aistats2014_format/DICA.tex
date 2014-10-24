@@ -476,7 +476,7 @@ Given a large enough
 \[T = \text{Poly}(d, L_u, C, \sigma_{\max}(A), L, \ell^2, 1/(\kappa_{\min}\sigma_{\min}^4)),\]
 assume that there exist a product measure $\mu$ such that 
 \[\xi=\text{Poly}(\gamma_A, \frac{1}{d}, \frac{1}{L_u}, \frac{1}{\sigma_{\max}(A)}, \frac{1}{\kappa_{\max}}, \kappa_{\min}\sigma^4_{\min}(A), \ell),\] 
-
+is small enough.
  Then on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for any $k$,
  \[
   \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le
@@ -599,13 +599,15 @@ Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and consta
 \]
 where $\widehat{A}$ is the output of the DICA algorithm.
 \end{thm}
+\begin{remark}
+Note that all the conditions of Theorem \ref{thm:Modefficiency} will be satisfied with probability 1 if $\xi$ and $P$ are small enough.
 
 Similarly, the result of Theorem \ref{thm:Modefficiency} essentially depends on $\gamma_R$. 
 The main concern about Theorem \ref{thm:Modefficiency} would be the behavior of this quantity. 
 Even though an analytic characterization of $\gamma_R$ is not yet known, a probabilistic lower bound for $\gamma_R$ can be developed (while it is not the case for $\gamma_A$) as shown in Section~\ref{subsec:gammaR}.
 Another two concerns would be: 1. When will these conditions hold? In particular, will these conditions hold in the traditional stochastic setting? 2. What is the probability of these events?
-We show in Section \ref{subsec:gammaR} and \ref{subsec:ThminStocSetting} that answers to these questions are positive, which make Theorem \ref{thm:Modefficiency} meaningful.
-
+We show in Section \ref{subsec:gammaR} and \ref{subsec:ThminStocSetting} that answers to these questions are positive, which make Theorem \ref{thm:Modefficiency} meaningful. \qed
+\end{remark}
 \subsection{Behavior of $\gamma_R$}
 \label{subsec:gammaR}
 Note that $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
@@ -664,43 +666,54 @@ Note that all the constants in Lemma \ref{lem:ConstantProb} are polynomial in $d
  \label{subsec:ThminStocSetting}
 The last concern of Theorem \ref{thm:Modefficiency} is the validness of its conditions. 
 Note that the first condition holds with probability 1. 
-Moreover, on the event $\E$, all constants $1/\ell_l$, $L_u$ and $\gamma_R$ are upper bounded in polynomial of $\{\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d\}$. 
-Thus, $\widehat{\xi}$  and $Q$ are both linear in $\xi$ with linear coefficient polynomial in these parameters.
+The other 5 conditions can be satisfied by a small enough 
+$\widehat{\xi} = \text{Poly}(\frac{1}{L_u}, \frac{\sigma_{\min}(A)}{\sigma_{\max}(A)}, \ell, \gamma_R, \frac{1}{\sigma_{\max}(A)})$,
+a small enough $\xi = \text{Poly}(\frac{1}{\sigma_{\max}(A)}, \kappa_{\min}\sigma_{\min}^4(A),\frac{1}{d})$,
+and a small enough $P = \text{Poly}(\ell, \frac{1}{d}, \kappa_{\min}\sigma_{\min}^4(A))$.
+All this requirement, by Proposition \ref{prop:denoise}, can be satisfied given large enough sample size 
+\[T = \text{Poly}(d.\frac{1}{\kappa_{\min}\sigma^4_{\min}(A)}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}(A)),\] 
+and small enough 
+\[\xi = \text{Poly}(\frac{1}{L_u}, \frac{\sigma_{\min}(A)}{\sigma_{\max}(A)}, \ell, \gamma_R, \frac{1}{\sigma_{\max}(A)},\frac{1}{d}, \kappa_{\min}\sigma_{\min}^4(A)).\] 
+
+Moreover, on the event $\E$, all constants $1/\ell_l$, $L_u$ and $\gamma_R$ are upper bounded in polynomial of $\{ 1/\sigma_{\min}, 1/\delta, d\}$. 
+
+%Thus, $\widehat{\xi}$  and $Q$ are both linear in $\xi+P$ with linear coefficient polynomial in these parameters.
+\if0
 Therefore, the other 4 conditions basically requires:
 \begin{itemize}
 \vspace{-3mm}
-\item $\xi \le 1/ \text{Poly}_1$;
-\item $\xi \le \min_{i,j:i\neq j} \|A_i - A_j\|_2 / \text{Poly}_2$;
+\item $\frac{1}{\xi} \ge \text{Poly}(\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d)$;
 \end{itemize} 
 \vspace{-2mm}
-where $\text{Poly}_1$ and $\text{Poly}_2$ are some polynomials in $\{\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d\}$. 
-We omit the exact degrees of the polynomials.
-Recall Equation~\eqref{eq:xi} that $\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right) \le 7C^2D_4(\mu, \nu_T)$, where $C$ is an upper bound for the signal function $s$.
+\fi
+Recall Equation \eqref{eq:xi} that 
+\[\xi = \left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right) \le 7C^2D_4(\mu, \nu_T),\]
+where $C$ is an upper bound for the signal function $s$.
 In Summary, we have the final result, as follows.
 \begin{thm}
 \label{thm:finalRes}
- Assume that 
+ Given a large enough $T$, if there exists a product measure $\mu$  such that  $D_4(\mu, \nu_T)$ is small enough satisfying
 \begin{itemize}
 \vspace{-3mm}
-\item $D_4(\mu, \nu_T) \le \frac{1}{7C^2\text{Poly}_1}$;
-\item $D_4(\mu, \nu_T) \le \frac{1}{7C^2\text{Poly}_2}\min_{i,j:i\neq j} \|A_i - A_j\|_2$.
+\item $T \ge \text{Poly}(d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}(A), \frac{1}{\sigma_{\min}(A)})$;
+\item $D_4(\mu, \nu_T) \le \text{Poly}(\frac{1}{C},  \frac{\sigma_{\min}(A)}{\sigma_{\max}(A)},  \frac{1}{\sigma_{\max}(A)},\frac{1}{d}, \kappa_{\min}\sigma_{\min}^4(A))$.
 \end{itemize}
 \vspace{-2mm}
 Then with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
-\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le 7C^2\text{Poly}_3D_4(\mu, \nu_T),
+\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}D_4(\mu, \nu_T),
 \]
-where $\widehat{A}$ is the output of the DICA algorithm.
+where $\mathcal{C} = \text{Poly}(\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d, C)$, and $\widehat{A}$ is the output of the DICA algorithm.
 
 In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the Appendix),
  with probability at most $1-2\delta$, 
  DICA will generate an estimation $\widehat{A}$ of the mixing matrix $A$ in
  time complexity of $O(d^3T)$, 
  such that there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
-\[
-\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{7C^6\text{Poly}_3\sqrt{\log(1/\delta)}}{\sqrt{2T}}.
-\]
-Here $\text{Poly}_i$ are all polynomials for $1\le i\le 3$ in $\{\sigma_{\max}, 1/\sigma_{\min}, \kappa_{\max}, 1/\kappa_{\min},1/\delta, d\}$.
+\begin{align*}
+& \| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \\
+& \quad\frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\text{Poly}(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \kappa_{\max},\frac{1}{\kappa_{\min}},\frac{1}{\delta}, d).
+\end{align*}
 \end{thm}
 \begin{remark}
 Note that the result is polynomial in $1/\delta$ which is weaker than being polynomial in $\log(1/\delta)$. \qed
