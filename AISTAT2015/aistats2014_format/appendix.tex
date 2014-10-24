@@ -364,8 +364,8 @@ Therefore, by lemma \ref{lem:eigenvectorvariation},
 
 \subsection{Proof of Theorem \ref{thm:Modefficiency}}
 \label{subsec:ProofModEff}
-Note that $\nabla^2f(\psi) = AKD_{\psi}A^{\top}$. Thus $B = AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
-We need to introduce some lemmas before we can prove the theorem. Without loss of generality, we assume $\kappa_i>0$ for $1\le i \le d$.
+Note that $\nabla^2f_{\mu}(\psi) = AKD_{\psi}A^{\top}$. Thus $B = AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
+We need to introduce some lemmas before we can prove the theorem. 
 The following lemma shows the stability of the square root of matrix.
 \begin{lemma}
 \label{lem:matrixsquareroot}
@@ -393,11 +393,11 @@ Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A
 \]
 \end{lemma}
 \begin{proof}
-Note that by Lemma \ref{lem:boundsigmaminnabla},  under the event $\Epsi$, $\|\nabla^2f(\psi)\|_2 \ge \frac{\sqrt{2\pi}}{2d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Thus,
+Note that by Lemma \ref{lem:boundsigmaminnabla},  under the event $\Epsi$, $\|\nabla^2f(\psi)\|_2 \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Thus,
 \[
-\|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2 \le \frac{\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\xi = \bar{\xi}.
+\|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2 \le \frac{\sqrt{2}d}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P\right) = \bar{\xi}.
 \]
-Then given $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{2\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$, $\bar{\xi} \le 1/3 < 1$. 
+Then given $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$ and $P \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$, $\bar{\xi} \le 1/3 < 1$. 
 By Lemma \ref{lem:matrixsquareroot}, every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1 + \|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2}}$. 
 Thus every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
 \[
@@ -433,7 +433,7 @@ It still remains to bound $\|E\|_2$. In the event $\Ephi$, we take the orthogona
 
 \begin{lemma}
 \label{lem:Binversenablavariation}
-Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{3\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
+Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$ and $P \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$
 (so $\bar{\xi} \le 1/3$), then on the event $\Epsi$ and $\Ephi$ for $\phi \in \{\phi_1, \phi_2\}$,
 \[
 \|G(B^{-\top}{R^*}^{\top}\phi) - \widehat{G}(\widehat{B}^{-\top}\phi)\|_2
