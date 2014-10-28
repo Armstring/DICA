@@ -313,7 +313,7 @@ Moreover, we assume there exists a constant $L\ge 1$, such that
 The first two statements force the average of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
 The next two assumptions require both second and third moments are bounded.
 The last assumption is basically saying the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit.
-Note that all assumptions about $\epsilon$ will be satisfied by i.i.d Gaussian noise, as proved later in Theorem \ref{thm:finalRes}.
+All these assumptions about $\epsilon$ will be satisfied by i.i.d Gaussian noise $\mathcal{N}(0,\Sigma)$ with fixed $\Sigma$, as proved later in Proposition \ref{prop:stochasticAss}.
 \end{remark}
 Moreover, we assume the source signal function and the noise function are 'independent' in the sense that for $i_1,i_2,j_1,j_2 \ge 0$ that $i_1+i_2+j_1+j_2 \le 4$,  
 \begin{align*}
@@ -328,7 +328,11 @@ and
 & \le L/\sqrt{t},
 \end{align*}
  where $(s,\epsilon)$ is the function by concatenating $s$ and $\epsilon$ together.  
-Similarly, we will prove that this assumption does not lose any generality to the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals, in Theorem \ref{thm:finalRes}. 
+Similarly, we will prove that this assumption does not lose any generality to the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals, in Proposition \ref{prop:stochasticAss}. 
+\begin{prop}
+\label{prop:stochasticAss}
+In the traditional stochastic setting of ICA, there exists $L = \text{Poly}(\sigma_{\max}(A), \|\Sigma\|_{\infty,\infty}, C, d, \log(\frac{1}{\delta}))$, such that with probability at least $1-\delta$, all the assumptions above hold .
+\end{prop}
 
 \subsection{Quasi-Whitening}
 For $p\ge 1$, $\eta\in \real^d$, 
@@ -343,7 +347,7 @@ and let
 f_{\nu}(\eta) = \frac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)\,.
 \end{equation}
 Our algorithm will heavily explore the second derivative of the function $f_{\nu_T^{(x)}}$. 
-Note that $\nabla^2f_{\nu}(\eta)$  can be evaluated from the observations by
+Note that $\nabla^2f_{\nu}(\eta)$  can be evaluated by
 \begin{equation}
 \label{eq:G}
 \nabla^2 f_{\nu}(\eta) = G_{\nu}(\eta):= G_1^{(\nu)}(\eta) - G_2^{(\nu)}(\eta) -2G_3^{(\nu)}(\eta),
@@ -357,7 +361,7 @@ where
 & G_3^{(\nu)}(\eta) = \E_{X\sim \nu} [\big(\eta^{\top}X\big)X] \E_{X\sim \nu} [\big(\eta^{\top}X\big)X^{\top}].
 %\frac{1}{T^2}\Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
 \end{align*} 
-In particular, we would prove that the function $\nabla^2f$ is robust to noise, as follows. 
+In particular, we will prove that the function $\nabla^2f$ is robust to noise, as follows. 
 \begin{prop}
 \label{prop:denoise}
 For any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
@@ -367,7 +371,7 @@ For any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
 \end{prop}  
 Denote $\frac{\text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)}{\sqrt{T}}$ by $P$. Note that this error caused by noise will decay in a rate of $\sqrt{t}$.
 For simplicity, we would assume that $\mu_t$ is the uniform distribution over $\{1,2,\ldots, t\}$ for the rest of the paper.
-All the results can be easily extended to a general $\mu_t$. 
+All the results can be easily extended to a general $\mu_t$ by replacing the average by empirical mean. 
 %We also assume that $T$ is large enough such that $P\le 1/6$.
 
 \if0
@@ -387,10 +391,9 @@ A detailed analysis shows that the performance of the algorithm may be not as tr
 
 \subsection{the HKICA algorithm}
 \label{subsec:HKalg}
-\citet{DHsu2012} proposed an algorithm for ICA based on the idea of moment methods. 
-The HKICA is shown in Algorithm \ref{alg:HKICA}. 
+The HKICA algorithm is proposed based on the idea of moment methods, as shown in Algorithm \ref{alg:HKICA}. 
 We use  $\widehat{f}$  as an abbreviation of $f_{\nu_T^{(x)}}$ for simplicity.
-In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate. 
+In general, we denote by adding a ``hat'' on the top of a symbol its empirical estimate w.r.t. $\nu_T^{(x)}$. A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
 \begin{algorithm}[H]
 \caption{the HKICA algorithm}
 \label{alg:HKICA}
@@ -412,23 +415,23 @@ In practice, the HKICA algorithm may generate complex output.
 This occurs only when $\nabla^2\widehat{f}(\psi)$ is singular. 
 Otherwise, the eigenvalues of $\widehat{M}$ would be the same as those of
 $\widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ which is symmetric and thus has all real eigenvalues, where $\widehat{B} $ is the square root of $\nabla^2\widehat{f}(\psi)$. 
-Note that theoretically singularity of $\nabla^2\widehat{f}(\psi)$ happens with probability 0. 
+Note that theoretically the singularity of $\nabla^2\widehat{f}(\psi)$ happens with probability 0. 
 One way of fixing this problem is re-sampling $\phi$ and $\psi$ until a real eigen-decomposition exists.
 
-Another possible way, avoiding re-sampling and yet with larger error, is by the symmetrizing trick mentioned above.
+Another possible way, avoiding re-sampling albeit with larger error, is by a symmetrizing trick.
 Instead of computing $\widehat{M} = (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1}$, one can calculate the eigen-decomposition of  $\widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$. 
 Note that $\widehat{B} \approxeq ADR^{\top}$ for some diagonal matrix $D$ and orthonormal matrix $R$. 
 Hence such eigen-decomposition will recover $\widehat{R}\approxeq R$. 
 Then $A$ can be reconstructed, up to permutation and scaling of columns, by $\widehat{A} = \widehat{B}\widehat{R}$.
-Note that $ \widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ is always symmetric, thus yields a real eigen-decomposition. 
-Theoretical analysis of the symmetrizing version of the algorithm would require more steps but similar ideas go through.
+As mentioned above, $ \widehat{B}^{-\top}\nabla^2 \widehat{f}(\phi)\widehat{B}^{-1}$ is always symmetric, thus yields a real eigen-decomposition. 
+Theoretical analysis of the symmetrizing version of the algorithm would require more steps but similar ideas go through. We omit its analysis in the paper.
 \qed
 \end{remark}
 
 \subsection{Reconstruction error}
 \label{subsec:errorHK}
 Our analysis is developed in a deterministic setting.
-We try to have weaker assumption instead of assuming independent signals. 
+We try to have weaker assumption instead of assuming independent signals for the source function. 
 Clearly, no meaningful results will be achieved if $s$ is allowed to go arbitrarily wild. 
  
 In what follows in this paper, we fix $\mu = \mu_1\otimes \ldots \otimes \mu_d$ as some product measure
@@ -442,7 +445,7 @@ Given two distributions $\nu_1$ and $\nu_2$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\
 Let 
 \begin{equation}
 \label{eq:xi}
-\xi = \left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right),
+\xi = \left( 6C^2D_2(\mu, \nu_T^{(s)}) + D_4(\mu, \nu_T^{(s)})\right),
 \end{equation}
 which serves as a measure of how dependent the  component signals of $s$ are.
 
@@ -450,7 +453,7 @@ which serves as a measure of how dependent the  component signals of $s$ are.
 \label{rmk:xi}
 In general, we will need a condition that $\xi$ is small enough, so that the components of $s$ are 'independent' enough.
 In the traditional stochastic setting where the observations are i.i.d samples, the empirical distribution will weakly converge to the popular distribution which, based on the independence assumption, is a product probability measure. 
-Therefore, this condition will be satisfied given the sample size is large enough. \qed
+Therefore, this condition will be satisfied given large enough sample size. \qed
 \end{remark} 
 
 \begin{definition}
@@ -460,7 +463,7 @@ We denote by $\Epsi$ the following event: For some fixed $C_1 = \frac{\sqrt{\pi}
 The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
 \begin{lemma}
 \label{lem:dmin}
-With probability at least $\left(1- \frac{w}{d}\right)\exp(-\ell) - \exp(-x)$, $\Epsi$ holds.
+With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell) - \exp(-x)$, $\Epsi$ holds.
 \end{lemma}
 Let 
 \begin{equation}
@@ -492,15 +495,15 @@ In particular, as mentioned in the Remark \ref{rmk:xi}, these conditions will be
 \end{remark}
 \fi
 \begin{remark}
-The parameter $1/\gamma_A$ is essential in the result of the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the conditions, under which such bound is guaranteed, also require a small $1/\gamma_A$.
+The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the conditions, under which such bound is guaranteed, also require a small $1/\gamma_A$.
 
-Note that $\gamma_A$ is actually the minimal gap of the eigenvalues of $M$.
+Note that $\gamma_A$ is actually the minimal gap of the eigenvalues of $M = (\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1}$.
 Consider perturbing a $2\times 2$ matrix $A = \text{diag}([a,b])$ where $a<b$ by $E = \text{diag}([\eps,0])$. 
 The eigen-spaces of $A+E$ will stay as $[1,0]$ and $[0,1]$ for $\eps < b-a$, but then they can be arbitrary vectors when $\eps = b-a$.  
 Such discontinuity of the eigen-spaces suggests that the dependence on $\gamma_A$ is necessary for the HKICA algorithm because of the eigen-decomposition involved. 
 
 Despite the important role that $\gamma_A$ plays in the efficiency of the HKICA algorithm, we have no clue about its behavior. 
-Even a polynomial (in the dimension $d$) lower bound of $\gamma_A$ is not yet available, to our best knowledge, in the literature (This problem has been discussed by \citet{husler1987minimal}, but the result does not apply to our case).
+Even a polynomial (in the dimension $d$) lower bound of $\gamma_A$ is not yet available, to our best knowledge, in the literature (This problem has been discussed by \citet{husler1987minimal}, but the result there does not apply to our case).
 A delicate analysis carried out by \citet{goyal2014fourier} for a similar spacing problem is heavily based on the boundedness of the characteristic function, which isn't applicable here neither. 
 
 This problem motivates us to refine the HKICA algorithm.
