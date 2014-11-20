@@ -171,6 +171,7 @@ X = AS+\epsilon,
 \]
 where $\epsilon \sim \mathcal{N}(0,\Sigma)$ is a $d$-dimensional Gaussian noise, and $A$ is a nonsingular mixing matrix.
 Our interest is to reconstruct $A$ given observations of $X$ with rigorous guarantee.
+The ICA model can be viewed in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source. 
 
 The literature of the ICA model is vast in both practical algorithms and theoretical analysis. 
 We refer to the book of \citet{comon2010handbook} for a comprehensive survey.
@@ -182,8 +183,8 @@ Theoretical analysis of the FastICA algorithm has been conducted in many aspects
 but as far as we know, finite sample bound for FastICA is still not available.
 Besides, consistency of the estimation of $A$ can only be guaranteed for a particular forth-moments-based contrast function with noise-less observations(i.e. $X = AS$) \citep{miettinen2014fourth}. 
 
-Another class of ICA methods views ICA in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source. 
-Under additional statistical assumptions about the source signals, consistent estimators have been proposed for various settings. The first  $\sqrt{n}$-consistent estimator of $A$ (which implies a finite sample bound in the rate of $\sqrt{n}$), to our best knowledge, is proposed and analyzed by \citet{samarov2004nonparametric}.  
+The exploitation of the forth moments leads to several other consistent estimators of $A$, under additional statistical assumptions about the source signals. 
+The first  $\sqrt{n}$-consistent estimator of $A$ (which implies a finite sample bound in the rate of $\sqrt{n}$), to our best knowledge, is proposed and analyzed by \citet{samarov2004nonparametric}.  [What's idea?]
 Later \citet{chen2005consistent} showed that the estimator proposed in \citet{eriksson2003characteristic} is also $\sqrt{n}$-consistent. Another estimator which is more efficient is also proposed by the same authors in \citep{chen2006efficient}.
 However, these results all assume a noise-free setting. 
 Moreover, they involve an intermediate procedure of estimating a probability function or a score function, which consequentially invites extra technical conditions. 
