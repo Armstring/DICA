@@ -170,55 +170,73 @@ The ICA model assumes a $d$-dimensional vector $X$ is a linear mixture of $d$ in
 X = AS+\epsilon,
 \]
 where $\epsilon \sim \mathcal{N}(0,\Sigma)$ is a $d$-dimensional Gaussian noise, and $A$ is a nonsingular mixing matrix.
-Our interest is to reconstruct $A$ given observations of $X$ with rigorous guarantee.
-The ICA model can be viewed in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source. 
-
 The literature of the ICA model is vast in both practical algorithms and theoretical analysis. 
 We refer to the book of \citet{comon2010handbook} for a comprehensive survey.
+In particular, the ICA model can be viewed in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source\footnote{Parametric perspective of the ICA model is also proposed in the literature \citep{pham1997blind,lee1999independent}, but it is beyond the scope of this paper.}. 
+Our interest is proposing a `real' provable polynomial-time algorithm to reconstruct $A$ given observations of $X$.
+The definition of `real' provable algorithm should be clarified before we proceed to a review of the ICA literature.
+We propose the following definitions for 'real' provable algorithm and `pseudo' provable algorithm.
+\begin{definition}[real provable algorithm/pseudo provable algorithm]
+\end{definition}
+\begin{remark}
+One trivial pseudo provable algorithm for the ICA problem is in constant time, as follows.
+\end{remark}
+\begin{remark}
+SVM provable, even with regularization coefficient $\lambda$?  Yes. Even though the rate depends on the $\lambda$, it holds for any $\lambda$(depends on $n$).
+\end{remark}
+
 Perhaps the most popular ICA algorithm in engineering application would be the FastICA \citep{hyvarinen1999fast}. 
 In general, FastICA tries to find a linear transformation $W$ for $X$ by optimizing a particular designed contrast function, 
 such that the resulted coordinates of $WX$ are as independent as possible. 
-The optimal $W$ would be $A^{-1}$ under additional assumptions about the sources, thereby $A$ is recovered.  
+The optimal $W$ could serve as an estimator of $A^{-1}$, thereby $A$ is recovered.  
 Theoretical analysis of the FastICA algorithm has been conducted in many aspects \citep{tichavsky2006performance,oja2006fastica,ollila2010deflation,dermoune2013fastica,wei2014convergence}, 
 but as far as we know, finite sample bound for FastICA is still not available.
-Besides, consistency of the estimation of $A$ can only be guaranteed for a particular forth-moments-based contrast function with noise-less observations(i.e. $X = AS$) \citep{miettinen2014fourth}. 
+Recently, the $\sqrt{n}$-consistency of FastICA is built rigorously, but only for a particular forth-moments-based contrast function with noise-less observations(i.e. $X = AS$) \citep{miettinen2014fourth}. 
 
-The exploitation of the forth moments leads to several other consistent estimators of $A$, under additional statistical assumptions about the source signals. 
-The first  $\sqrt{n}$-consistent estimator of $A$ (which implies a finite sample bound in the rate of $\sqrt{n}$), to our best knowledge, is proposed and analyzed by \citet{samarov2004nonparametric}.  [What's idea?]
-Later \citet{chen2005consistent} showed that the estimator proposed in \citet{eriksson2003characteristic} is also $\sqrt{n}$-consistent. Another estimator which is more efficient is also proposed by the same authors in \citep{chen2006efficient}.
-However, these results all assume a noise-free setting. 
+The first  $\sqrt{n}$-consistent estimator of $A$ (which implies a finite sample bound in the rate of $\sqrt{n}$), to our best knowledge, is proposed and analyzed by \citet{samarov2004nonparametric}. 
+It is showed that the outer product of the density gradient as a matrix-valued functional has a diagonal structure in its expectation, 
+thereby an simultaneous diagonalization of two consistent estimators of such functionals will lead to a consistent estimation of $A$.
+Later other consistent estimators are also proposed \citep{eriksson2003characteristic,chen2005consistent,chen2006efficient}.
+%Later \citet{chen2005consistent} showed that the estimator 
+%based on characteristic functions of the joint probability of $S$ and the product of its 
+%proposed in \citet{eriksson2003characteristic} is also $\sqrt{n}$-consistent.
+%Another estimator which is more efficient is also proposed by the same authors in \citep{chen2006efficient}.
+However, these results all are all limited to a noise-free setting. 
 Moreover, they involve an intermediate procedure of estimating a probability function or a score function, which consequentially invites extra technical conditions. 
 
 The first provable ICA method that can deal with the noisy case is attributed to \citet{arora2012provable}. 
-The idea is still based on the forth moments. 
-After a quasi-whitening procedure, the ICA problem is reduced into a problem of finding all the local optimizer of a specific function defined using the forth order cumulant. Then a polynomial-time algorithm is proposed to find all the local optimizers with theoretical guarantee.
-Despite its soundness in theory, this algorithm requires an exhaustive search for an input parameter, $\beta$ in the original paper.
-The interval of the valid $\beta$s is not yet well understood, which impairs the usefulness of the algorithm in practice.
+%The idea is still based on the forth moments. 
+After a quasi-whitening procedure, the ICA problem is reduced into a problem of finding all the local optimizer of a specific function defined using the forth order cumulant. 
+Then a polynomial-time algorithm is proposed to find all the local optimizers with theoretical guarantee.
+Despite its soundness in theory, this algorithm requires an exhaustive search for an input parameter ($\beta$ in the original paper), the valid range of which is not yet well understood. This essentially impairs the validness of this method as a \emph{real} provable algorithm.
+%The definition of the so-called `real' provable algorithm will be proposed and discussed later in this section.
 
-The forth moment statics are also used in many other ICA related works. 
-Recently, a series of more promising methods are proposed based on the algebraic structure of the model \citep{hsu2013learning,anandkumar2012tensordecomposition,anandkumar2012method}. 
-In fact, this idea has been discussed earlier as a intuitive argument to construct a contrast function \citep{cardoso1999high}. 
+The exploitation of the special algebraic structure of its forth moments induced by the independence leads to several other works related to ICA \citep{hsu2013learning,anandkumar2012tensordecomposition,anandkumar2012method}. 
+Similar idea is also discussed earlier as a intuitive argument to construct a contrast function \citep{cardoso1999high}. 
 The first rigorous proof of this idea is developed using matrix perturbation tools in a general tensor perspective \citep{anandkumar2012tensordecomposition,anandkumar2012method,goyal2014fourier}. 
 A common problem faced by these methods is a minimal gap of the eigen-values, which may lead the result to exponentially depend on the number of source signals $d$.
-More precisely, these methods all require an eigen-decomposition of some flattened tensor where the minimal gap between the eigenvalues plays an essential role. 
+More precisely, these methods all require an eigen-decomposition of some flattened tensor where the minimal gap between the eigen-values plays an essential role. 
 A naive analysis of this gap will introduce an exponential dependence on the dimension of the flatten tensor $d$. 
-This dependence is also observed in the literature \citep{cardoso1999high,goyal2014fourier}.
+Such dependence is also observed in the literature \citep{cardoso1999high,goyal2014fourier}.
 One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flattening procedure \citep{anandkumar2014guaranteed}. 
 However, it is well known that power method is unstable in practice for high order tensors. 
 Another drawback is that this method, when applied to the ICA problem, introduces an error term that does not approach 0 as the sample size approaches infinity. 
-\citet{goyal2014fourier} proposed another method by estimating the  characteristic function rather than the forth moments. 
-However, estimating the derivative tensor of the second characteristic function will require a number of estimations of different high order tensors in complex plane, which in practice may introduce large estimation error. 
-Also, this method still involves picking a parameter, $\sigma$ in the original paper, smaller than some quantity that is unknown in practice, which still needs more investigation.
+\citet{goyal2014fourier} proposed another method by exploring the  characteristic function rather than the forth moments. 
+However, estimating the derivative tensor of the second characteristic function will require estimating a number of high order tensors in complex plane. 
+Also, this method still involves picking a parameter($\sigma$ in the original paper) that is smaller than some unknown quantity, which suffers the same problem as the algorithm of \citet{arora2012provable}.
 % to balance the running time and the correctness.
- 
-In this paper we proposed a practical method for ICA which also has meaningful theoretical guarantee (polynomial-time; no need of parameter tuning; with high probability the reconstruction error of $A$ polynomially depends on all the parameters; and the reconstruction error vanishes as the sample size going to infinity).
-Our algorithm is a refined version of the ICA algorithm proposed by \cite{hsu2013learning} (HKICA). 
+
+In this paper we proposed a `real' provable polynomial-time algorithm for ICA.
+%a practical method for ICA which also has meaningful theoretical guarantee (polynomial-time; no need of parameter tuning; with high probability the reconstruction error of $A$ polynomially depends on all the parameters; and the reconstruction error vanishes as the sample size going to infinity).
+Our algorithm is a refined version of the ICA method proposed by \cite{hsu2013learning} (HKICA). 
 One of the main contributions of this paper is a simpler way to deal with the spacing problem of the eigen-values. 
 Our result assumes similar conditions to those of \citet{goyal2014fourier}, but uses essentially different ideas.
 Our idea is inspired by \citet{frieze1996learning} and \citet{arora2012provable}.
-Unlike the method proposed by \citet{goyal2014fourier}, we can force the eigen-values well separated in the real space. 
-The gap is independent to the mixing matrix $A$, and our method needs no parameter tuning procedure.  
-Another contribution of the present paper is that our theoretical analysis is conducted in a deterministic manner. 
+Unlike the method proposed by \citet{goyal2014fourier}, our method can force the eigen-values well separated in the real space. 
+This gap is independent to the mixing matrix $A$, and our method needs no parameter tuning procedure.  
+
+
+Another contribution of the present paper is that our analysis is conducted in a deterministic manner. 
 In practice ICA is also known to work well for unmixing the mixture of various deterministic signals. 
 One of the classic demonstrations of ICA is showing that the periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
