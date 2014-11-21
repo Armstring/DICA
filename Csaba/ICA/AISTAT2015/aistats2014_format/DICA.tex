@@ -182,7 +182,7 @@ We propose the following definitions for 'real' provable algorithm and `pseudo' 
 One trivial pseudo provable algorithm for the ICA problem is in constant time, as follows.
 \end{remark}
 \begin{remark}
-SVM provable, even with regularization coefficient $\lambda$?  Yes. Even though the rate depends on the $\lambda$, it holds for any $\lambda$(depends on $n$).
+SVM provable, even with regularization coefficient $\lambda$?  Yes. Even though the rate depends on $\lambda$, the result holds for any $\lambda$ (depends on $n$).
 \end{remark}
 
 Perhaps the most popular ICA algorithm in engineering application would be the FastICA \citep{hyvarinen1999fast}. 
@@ -220,20 +220,19 @@ A naive analysis of this gap will introduce an exponential dependence on the dim
 Such dependence is also observed in the literature \citep{cardoso1999high,goyal2014fourier}.
 One way to circumvent such dependence would be directly decomposing a high order tensor using power method which requires no flattening procedure \citep{anandkumar2014guaranteed}. 
 However, it is well known that power method is unstable in practice for high order tensors. 
-Another drawback is that this method, when applied to the ICA problem, introduces an error term that does not approach 0 as the sample size approaches infinity. 
-\citet{goyal2014fourier} proposed another method by exploring the  characteristic function rather than the forth moments. 
+Another drawback is that this method, when applied to the ICA problem, introduces an bias term (the error does not approach 0 as the sample size approaches infinity). 
+\citet{goyal2014fourier} proposed another method by exploring the characteristic function rather than the forth moments. 
 However, estimating the derivative tensor of the second characteristic function will require estimating a number of high order tensors in complex plane. 
-Also, this method still involves picking a parameter($\sigma$ in the original paper) that is smaller than some unknown quantity, which suffers the same problem as the algorithm of \citet{arora2012provable}.
+Also, this method involves picking a parameter($\sigma$ in the original paper) that is smaller than some unknown quantity, i.e. it is a \emph{pseudo} provable algorithm.
 % to balance the running time and the correctness.
 
-In this paper we proposed a `real' provable polynomial-time algorithm for ICA.
+In this paper we proposed a \emph{real} provable polynomial-time algorithm for the noisy ICA model.
 %a practical method for ICA which also has meaningful theoretical guarantee (polynomial-time; no need of parameter tuning; with high probability the reconstruction error of $A$ polynomially depends on all the parameters; and the reconstruction error vanishes as the sample size going to infinity).
 Our algorithm is a refined version of the ICA method proposed by \cite{hsu2013learning} (HKICA). 
-One of the main contributions of this paper is a simpler way to deal with the spacing problem of the eigen-values. 
-Our result assumes similar conditions to those of \citet{goyal2014fourier}, but uses essentially different ideas.
-Our idea is inspired by \citet{frieze1996learning} and \citet{arora2012provable}.
-Unlike the method proposed by \citet{goyal2014fourier}, our method can force the eigen-values well separated in the real space. 
-This gap is independent to the mixing matrix $A$, and our method needs no parameter tuning procedure.  
+However, we propose a simpler way, inspired by \citet{frieze1996learning} and \citet{arora2012provable}, to deal with the spacing problem of the eigen-values under similar conditions to those of \citet{goyal2014fourier}.
+Unlike the method proposed by \citet{goyal2014fourier}, our method can force the eigen-values well separated in the real space with a gap that is independent to the mixing matrix $A$.
+We prove that our method is $\sqrt{n}$-consistent.
+Our method needs no parameter tuning, which makes it a \emph{real} provable algorithm.  
 
 
 Another contribution of the present paper is that our analysis is conducted in a deterministic manner. 
@@ -247,7 +246,7 @@ Denote by $s_i$ the $i$th component of $s$.
 We present the ICA model as a linear mixture of functions (details will be introduced later).
 Then we analyze the HKICA algorithm \citep{hsu2013learning} under this presentation using a measure of functional dependence.
 A detailed analysis shows that its performance depends on the minimal gap of the eigenvalues (of some random matrix. The exact form is presented later.).
-A key step of our algorithm is reducing such minimal eigenvalue gap problem to the problem of minimal spacing of i.i.d. Cauchy random variables, for which a polynomial lower bound is available, by the quasi-whitening procedure.
+A key step of our algorithm is reducing such minimal eigenvalue gap problem to the problem of minimal spacing of i.i.d. Cauchy random variables by the quasi-whitening procedure, for which a polynomial lower bound is available.
 With this lower bound, we then show the new algorithm has provable guarantee on the reconstruction error of $A$. 
 
 The rest of this paper is organized as follows: 
