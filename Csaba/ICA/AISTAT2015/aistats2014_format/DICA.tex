@@ -174,15 +174,13 @@ The literature of the ICA model is vast in both practical algorithms and theoret
 We refer to the book of \citet{comon2010handbook} for a comprehensive survey.
 In particular, the ICA model can be viewed in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source\footnote{Parametric perspective of the ICA model is also proposed in the literature \citep{pham1997blind,lee1999independent}, but it is beyond the scope of this paper.}. 
 Our interest is proposing a `real' provable polynomial-time algorithm to reconstruct $A$ given observations of $X$.
-The definition of `real' provable algorithm should be clarified before we proceed to a review of the ICA literature.
-We propose the following definitions for 'real' provable algorithm and `pseudo' provable algorithm.
-\begin{definition}[real provable algorithm/pseudo provable algorithm]
-\end{definition}
+Formally, an algorithm is called a provable polynomial-time algorithm, if the algorithm takes data $D$ and a \emph{data independent} parameter $\alpha$ as its input, and output $A$ in a running time of  $O\left(\text{Poly}(|D|, \alpha)\right)$ with guarantee on its correctness, where $|D|$ is the size of the data $D$ and $\text{Poly}(\cdot)$ is a polynomial in its arguments. If the parameter $\alpha$ has to be \emph{data dependent} to gurantee its correctness or polynomial running time, we call it oracle based polynomial-time algorithm, since it needs an oracle to propose the right $\alpha$. 
 \begin{remark}
-One trivial pseudo provable algorithm for the ICA problem is in constant time, as follows.
+One trivial pseudo provable algorithm for the ICA problem could be in constant time. The algorithm takes the observations of $X$ and a matrix parameter $M$ as its input, and outputs $M$. If an oracle exists to propose the right matrix $M$ ($=A$), then the algorithm correctly outputs $A$ in constant time. 
 \end{remark}
 \begin{remark}
-SVM provable, even with regularization coefficient $\lambda$?  Yes. Even though the rate depends on $\lambda$, the result holds for any $\lambda$ (depends on $n$).
+SVM is a real provable polynomial-time algorithm.  Even though in a classic analysis the error rate depends on its regularization coefficient  $\lambda$ , the result is valid for any $\lambda$, as long as $\lambda \rightarrow 0$ as $n\rightarrow 0$. 
+%Different $\lambda$'s will incur different error rates.)
 \end{remark}
 
 Perhaps the most popular ICA algorithm in engineering application would be the FastICA \citep{hyvarinen1999fast}. 
@@ -208,7 +206,7 @@ The first provable ICA method that can deal with the noisy case is attributed to
 %The idea is still based on the forth moments. 
 After a quasi-whitening procedure, the ICA problem is reduced into a problem of finding all the local optimizer of a specific function defined using the forth order cumulant. 
 Then a polynomial-time algorithm is proposed to find all the local optimizers with theoretical guarantee.
-Despite its soundness in theory, this algorithm requires an exhaustive search for an input parameter ($\beta$ in the original paper), the valid range of which is not yet well understood. This essentially impairs the validness of this method as a \emph{real} provable algorithm.
+Despite its soundness in theory, this algorithm requires an exhaustive search for an input parameter ($\beta$ in the original paper), the valid range of which is not yet well understood. Thus, this algorithm is essentially an oracle based algorithm.
 %The definition of the so-called `real' provable algorithm will be proposed and discussed later in this section.
 
 The exploitation of the special algebraic structure of its forth moments induced by the independence leads to several other works related to ICA \citep{hsu2013learning,anandkumar2012tensordecomposition,anandkumar2012method}. 
@@ -223,7 +221,7 @@ However, it is well known that power method is unstable in practice for high ord
 Another drawback is that this method, when applied to the ICA problem, introduces an bias term (the error does not approach 0 as the sample size approaches infinity). 
 \citet{goyal2014fourier} proposed another method by exploring the characteristic function rather than the forth moments. 
 However, estimating the derivative tensor of the second characteristic function will require estimating a number of high order tensors in complex plane. 
-Also, this method involves picking a parameter($\sigma$ in the original paper) that is smaller than some unknown quantity, i.e. it is a \emph{pseudo} provable algorithm.
+Also, this method involves picking a parameter($\sigma$ in the original paper) that is smaller than some unknown quantity, i.e. it is still an oracle based  algorithm.
 % to balance the running time and the correctness.
 
 In this paper we proposed a \emph{real} provable polynomial-time algorithm for the noisy ICA model.
