@@ -12,7 +12,7 @@ Denote the population expectation by $\E$ and the empirical expectation by $\E_t
 \item $\| \E_t[\epsilon] \|_F \le L/\sqrt{t}$;
 \item $\| \E_t[\epsilon^{\otimes 2}] \|_F \le L$;
 \item $\| \E_t[\epsilon^{\otimes 3}] \|_F \le L$;
-\item $\| \E_t[\epsilon^{\otimes4}] - 3(\E[\epsilon^{\otimes2}])^{\otimes 2} \|_F\le L/\sqrt{t}$;
+\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le L/\sqrt{t} \|\eta\|_2^2$;
 \item for $i_1,i_2,j_1,j_2 \ge 0$ that $i_1+i_2+j_1+j_2 \le 4$,  
 \begin{align*}
 \| \E_t[(AS)^{\otimes i_1} \otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F \le L/\sqrt{t},
@@ -22,7 +22,99 @@ and
 \| \E_t[\epsilon^{\otimes j_1} \otimes \E_t[(AS)^{\otimes i_1}] \otimes \epsilon^{\otimes j_2}] - \E_t[ \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_2}]  \|_F \le L/\sqrt{t}.
 \end{align*}
 \end{enumerate}
-Since $s$ is bounded by $C$, the first assumption will be satisfied with high probability $1-\delta$ by picking $L = C\sqrt{2d\log(\frac{1}{\delta})}$ by Hoeffding's inequality. Assumption (ii) to (v) are all about the moments of the Gaussian noise. Given $\epsilon \sim \mathcal{N}(0,\Sigma)$ for some fixed unknown $\Sigma$, they will be satisfied with probability $1-\delta$ by picking $L = \text{Poly}(\|\Sigma\|_{(\infty,\infty)}, d)\sqrt{\log(\frac{1}{\delta})}$ for some polynomial $\text{Poly}(\cdot)$.
+Since $s$ is bounded by $C$, the first assumption will be satisfied with high probability $1-\delta$ by picking $L = C\sqrt{2d\log(\frac{1}{\delta})}$ by Hoeffding's inequality. Assumption (ii) to (v) are all about the moments of the Gaussian noise. 
+For i.i.d. standard Gaussian random variables, $X_1, \ldots, X_t$, note that
+\begin{itemize}
+\item $ \E[\sum_j X_j/t] = 0$, $\text{Var}(\sum_j X_j/t) = 1/t$;
+\item $ \E[\sum_j X_j^2/t] = 1$, $\text{Var}(\sum_j X_j^2/t) = 2/t$;
+\item $ \E[\sum_j X_j^3/t] = 0$, $\text{Var}(\sum_j X_j^3/t) = 15/t$;
+\item $ \E[\sum_j X_j^4/t] = 3$, $\text{Var}(\sum_j X_j^4/t) = 96/t$.
+\end{itemize}
+Therefore, by Chebyshev's inequality,
+\begin{itemize}
+\item with probability at least $1-\delta$, $|\sum_j X_j/t| \le \sqrt{1/t\delta}$;
+\item with probability at least $1-\delta$, $|\sum_j X_j^2/t -1 | \le \sqrt{2/t\delta}$;
+\item with probability at least $1-\delta$, $|\sum_j X_j^3/t| \le \sqrt{15/t\delta}$;
+\item with probability at least $1-\delta$, $|\sum_j X_j^4/t -3| \le \sqrt{96/t\delta}$;
+\end{itemize}
+Given $\epsilon \sim \mathcal{N}(0,\Sigma)$ for some fixed unknown $\Sigma$, firstly consider the case when $\Sigma = I$.
+Consider the $i$th entry of the 1-dimensional tensor (vector), with probability at least $1-\delta$, 
+\[
+\left| \sum_j \eps_i(j)/t \right| \le \sqrt{1/t\delta}.
+\]
+Thus, with probability at least $1-d\delta$,
+\[
+\| \sum_j \eps(j)/t \|_F \le \sqrt{d/t\delta}.
+\]
+For (iii), consider the position $(u,v)$ of the 2-dimensional tensor (matrix). If $u=v$ with probability at least $1-\delta$,
+\[
+	\left| \sum_j \eps_u^2(j)/t - 1\right| \le \sqrt{2/t\delta}.
+\]
+If $u\neq v$, by Chebysev's inequality with probability at least $1-\delta$,
+\[
+	\left| \sum_j \eps_u(j)\eps_v(j)/t \right| \le  \sqrt{1/t\delta}.
+\]
+Therefore, with probability at least $1-d^2\delta$, all entries are less that $1+\sqrt{2/t\delta}$. Thus 
+\[
+\|\E_t[\epsilon^{\otimes 2}]\|_F \le d(1+\sqrt{2/t\delta}).
+\]
+Similarly for (iv), consider the $(u,v,w)$ position for different cases. The expectation of $\eps_u\eps_v\eps_w$ is 0 and its variance is at most  $15$. Therefore, with probability at least $1-\delta$,
+\[
+\left|\sum_j \eps_u(j)\eps_v(j)\eps_w(j)/t \right| \le \sqrt{15/t\delta}.
+\]
+Thus, with probability at least $1-d^3\delta$,
+\[
+\|\E_t[\epsilon^{\otimes 3}]\|_F \le \sqrt{15d^3/t\delta}.
+\] 
+Lastly for (iv), each of the following inequalities holds with probability at least $1-\delta$,
+\begin{align*}
+& \left| \sum_j\eps_u^4(j)/t -3 \right| \le \sqrt{96/t\delta}; \quad \left| \sum_j\eps_u^3(j)\eps_v(j)/t \right| \le \sqrt{15/t\delta}; \quad \left| \sum_j\eps_u^2(j)\eps_v^2(j)/t - 1\right| \le \sqrt{4/t\delta}; \\
+&  \left| \sum_j\eps_u^2(j)\eps_v(j)\eps_w(j)/t \right| \le \sqrt{2/t\delta}; \quad \left| \sum_j\eps_u(j)\eps_v(j)\eps_w(j)\eps_z(j)/t \right| \le \sqrt{1/t\delta};
+\end{align*}
+Consider the $(u,v)$ position of the matrix,
+\begin{align*}
+& \quad \left|\left(\E_t[\epsilon^{\otimes4}](\eta,\eta,\cdot,\cdot) - (\E_t[\epsilon^{\otimes2}])^{\otimes 2}(\eta,\eta,\cdot,\cdot) - 2(\E_t[\epsilon^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot) \right)_{u,v}\right|\\
+& \le \left| \left(\sum_j \eps_u(j)\eps_v(j)\sum_{k_1}\eta_{k_1}\eps_{k_1}(j)\sum_{k_2}\eta_{k_2}\eps_{k_2}(j)\right)/t- \E\left[ \eps_{u}\eps_{v}\sum_{k_1}\eta_{k_1}\eps_{k_1}\sum_{k_2}\eta_{k_2}\eps_{k_2}\right]\right| \\ 
+& \quad + \left| \left(\sum_j \eps_u(j)\eps_v(j)\right)/t -  \E\left[ \eps_{u}\eps_{v}\right]\right|\left|\left(\sum_j\sum_{k_1}\eta_{k_1}\eps_{k_1}(j)\sum_{k_2}\eta_{k_2}\eps_{k_2}(j)\right)/t \right| \\
+& \quad + 2\left| \left(\sum_j \eps_u(j)\sum_{k_1}\eta_{k_1}\eps_{k_1}(j)\right)/t\left(\sum_j \eps_v(j)\sum_{k_2}\eta_{k_2}\eps_{k_2}(j)\right)/t- \E\left[ \eps_{u}\sum_{k_1}\eta_{k_1}\eps_{k_1}\right]\E\left[\eps_{v}\sum_{k_2}\eta_{k_2}\eps_{k_2}\right]\right| 
+\end{align*}
+Note that the above inequality including $3d^2$ terms of concentration equations. Thus, with probability at least $1-3d^2\delta$,
+\[
+\left|\left(\E_t[\epsilon^{\otimes4}](\eta,\eta,\cdot,\cdot) - (\E_t[\epsilon^{\otimes2}])^{\otimes 2}(\eta,\eta,\cdot,\cdot) - 2(\E_t[\epsilon^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot) \right)_{u,v}\right| 
+\le
+4\sqrt{15/t\delta}(1+\sqrt{2/t\delta})d\|\eta\|^2_2.  
+\]
+Thus, 
+\[
+\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F \le 4\sqrt{15/t\delta}(1+\sqrt{2/t\delta})d^2\|\eta\|^2_2.
+\]
+\if0
+For the position $(i_1,i_2,i_3,i_4)$ of the tensor $\E_t[\epsilon^{\otimes4}] - 3(\E_t[\epsilon^{\otimes2}])^{\otimes 2}$ is
+\[
+\sum_j \eps_{i_1}(j)\eps_{i_2}(j)\eps_{i_3}(j)\eps_{i_4}(j)/t - 3(\sum_j \eps_{i_1}(j)\eps_{i_2}(j)/t)(\sum_j \eps_{i_3}(j)\eps_{i_4}(j)/t) = \sum_j \eps_i(t)^4/t - 3(\sum_j \eps_i(t)^2/t)^2  - \E[\eps_i^4] + 3(\E[\eps_i^2])^2.
+\]  
+Thus, 
+\begin{align*}
+|\sum_j \eps_i(t)^4/t - 3(\sum_j \eps_i(t)^2/t)^2| & \le \left|\sum_j \eps_i(t)^4/t - \E[\eps_i^4]\right| + \left|3(\sum_j \eps_i(t)^2/t)^2 - 3(\E[\eps_i^2])^2\right|. 
+\end{align*}
+Therefore, with probability at least $1-2\delta$, 
+\[
+|\sum_j \eps_i(t)^4/t - 3(\sum_j \eps_i(t)^2/t)^2| \le \sqrt{96/t\delta}+ 6(1+\sqrt{2/t\delta})\sqrt{2/t\delta}.
+\]
+Similarly, for the position $(i_1,i_1,i_1,i_2)$ (or its permutation), with probability at least $1-3\delta$,
+\begin{align*}
+&\quad |\sum_j \eps_{i_1}(t)^3\eps_{i_2}(t)/t - 3(\sum_j \eps_{i_1}(t)^2/t)(\sum_j \eps_{i_1}(t)\eps_{i_2}(t)/t)| \\
+& \le \left|\sum_j \eps_{i_1}(t)^3\eps_{i_2}(t)/t -  \E[\eps_{i_1}^3 \eps_{i_2}]\right| +3\left|\sum_j \eps_{i_1}(t)^2/t\right|\left|\sum_j \eps_{i_1}(t)\eps_{i_2}(t)/t - \E[\eps_{i_1}\eps_{i_2}]\right| \\
+& \le \sqrt{15/t\delta}+ 3(1+\sqrt{2/t\delta})\sqrt{1/t\delta}.
+\end{align*}
+Similarly, for the position $(i_1,i_1,i_2,i_2)$ (or its permutation), with probability at least $1-3\delta$,
+\begin{align*}
+&\quad |\sum_j \eps_{i_1}(t)^2\eps_{i_2}^2(t)/t - 3(\sum_j \eps_{i_1}(t)^2/t)(\sum_j \eps_{i_2}^2(t)/t)| \\
+& \le \left|\sum_j \eps_{i_1}(t)^3\eps_{i_2}(t)/t -  \E[\eps_{i_1}^3 \eps_{i_2}]\right| +3\left|\sum_j \eps_{i_1}(t)^2/t\right|\left|\sum_j \eps_{i_1}(t)\eps_{i_2}(t)/t - \E[\eps_{i_1}\eps_{i_2}]\right| \\
+& \le \sqrt{15/t\delta}+ 3(1+\sqrt{2/t\delta})\sqrt{1/t\delta}.
+\end{align*}
+Therefore, (ii) to (v) will be satisfied with probability $1-\delta$ by picking $L = \text{Poly}(\|\Sigma\|_{(\infty,\infty)}, d)\sqrt{\log(\frac{1}{\delta})}$ for some polynomial $\text{Poly}(\cdot)$.
+\fi
 For the last assumption, since the Gaussian noise $\epsilon$ is independent to the source signals $s$, by triangular inequality 
 \begin{align*}
 &\|\E_t[(AS)^{\otimes i_1}\otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F \\
@@ -31,12 +123,18 @@ For the last assumption, since the Gaussian noise $\epsilon$ is independent to t
 & \quad \quad + \underbrace{\|\E[(AS)^{\otimes i_1}\otimes \E[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}]  - \E[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}] \|_F}_{=0} \\
 & \quad \quad + \| \E[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}] \|_F.
 \end{align*}
-Since every term in the RHS is a concentration inequality with finite variance, such $L = \text{Poly}(A_{\max},\|\Sigma\|_{(\infty,\infty)}, d)\sqrt{\log(\frac{1}{\delta})}$ exists such that with probability $1-\delta$, (vi) holds.
+Note that every term in the RHS is a concentration inequality of $i_1+j_1+i_2$-dimensional tensors. Similarly we can consider each position of these tensors which has finite variance.
+Thus, with probability at least $1- 4d^{(i_1+j_1+i_2)}\delta$,   
+\[
+\|\E_t[(AS)^{\otimes i_1}\otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F 
+\le
+12(1+\sqrt{2/t\delta})d^{(i_1+j_1+i_2)/2}A_{\max}^{i_1+i_2}C^{i_1+i_2}\sqrt{96/t\delta}.  
+\]
+Similar argument will go through for the second inequality.
+Therefore, there exists $\hat{L} = \text{Poly}(\frac{1}{\delta}, A_{\max}, C, d)$, such that for probability at least $1-\delta$, the above conclusions hold simultaneously.
 
+Lastly, for general case where $\eps\sim {\cN}(0,\Sigma)$, the above conclusions will apply for $\Sigma^{-1/2}\eps$. Thus picking $L = \|\Sigma\|^4_2\hat{L}$, all bounds will still hold. 
 \subsection{Proof of Proposition \ref{prop:denoise}} 
-Given a $4$-dimensional tensor $T$, we denote the matrix $M$ by $T(\eta,\eta,\cdot , \cdot)$ that is generated by marginalizing the first two coordinates of $T$ on the direction $\eta$, i.e
-$M_{i,j} = \sum_{k_1,k_2 = 1}^{d} \eta_{k_1} \eta_{k_2} T_{k_1,k_2,i,j}$. (Similar definitions for marginalizing different coordinates of the tensor.)
-
 Note that 
 \begin{align*}
 & \E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [(AX+Y)^{\otimes 4}]\\
@@ -68,7 +166,6 @@ where $\|K_1\|_F \le\frac{\text{Poly}(L, d, \sigma_{\max}(A), C)}{\sqrt{T}} $, a
 K2  = & E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [ (AX)^{\otimes 2}\otimes Y^{\otimes 2} + (AX)\otimes Y\otimes (AX)\otimes Y + (AX)\otimes Y^{\otimes 2}\otimes (AX)]\\
 & \quad+  E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [ (Y)^{\otimes 2}\otimes (AX)^{\otimes 2} + (Y)\otimes (AX)\otimes Y\otimes (AX) + Y\otimes (AX)^{\otimes 2}\otimes Y]. 
 \end{align*}
-
 A similar computation can be applied to $\E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [(AX+Y)^{\otimes 2}]$.
 \begin{align*}
 \E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [(AX+Y)^{\otimes 2}]= & \, \E_{X\sim \nu_t^{(s)}}[(AX)^{\otimes 2}] + \E_{(X,Y)\sim \nu_t^{(s,\epsilon)}}[(AX)\otimes Y + Y\otimes (AX)] + \E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 2}].
@@ -116,8 +213,8 @@ Combining the above two inequalities leads to the conclusion.
 
 \subsection{Proof of Theorem \ref{thm:efficiency}}
 \label{subsec:ProofEfficiency}
-The following result is proven by \citet{DHsu2012}:
-\begin{thm}[\citet{DHsu2012}, Theorem~4]
+The following result is proven by \citet{hsu2013learning}:
+\begin{thm}[\citet{hsu2013learning}, Theorem~4]
 Assume $A$ is nonsingular. 
 Let $m_4,m_2:\real^d \ra \real$ be defined by Equation \eqref{eq:momnent} with respect to the product distribution $\mu$,
 	while $f_{\mu}: \real^d \ra \real$ be defined by Equation \eqref{eq:funcf}.
@@ -149,15 +246,15 @@ the eigenvalues of  $M$ are all distinct and the corresponding eigenvectors
 determine the rows of $A$ up to permutation and scaling.
 %Now since we have a product measure $\mu$ that $\nu_T^{(s)}$ is close to, we can treat $s(t)$ is an empirical instance from the distribution $\mu$.  
 
-The following lemma bounds $\|\nabla^2 f_{\mu}(\eta) - \nabla^2 \widehat{f}(\eta) \|_2$ by $\xi$:
+The following lemma bounds $\|\nabla^2 f_{\mu}(\eta) - \nabla^2 \hat{f}(\eta) \|_2$ by $\xi$:
 \begin{lemma}
 \label{lem:nablavariation}
 \[
-\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta)  \|_2 \le \|\nabla^2 f_{\mu}(\eta) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta)  \|_F\le  \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi.
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f_{\nu_T^{(As)}}}(\eta)  \|_2 \le \|\nabla^2 f_{\mu}(\eta) - \nabla^2 \hat{f_{\nu_T^{(As)}}}(\eta)  \|_F\le  \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi.
 \]
 Thus, 
 \[
-\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2\widehat{f}(\eta)\|_2 \le  \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(\|\eta\|_2).
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2\hat{f}(\eta)\|_2 \le  \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(\|\eta\|_2).
 \]
 \end{lemma}
 \begin{proof}
@@ -168,20 +265,20 @@ Note that
 \]
 and 
 \[
-\nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta) =\widehat{G_1}(\eta) - \widehat{G_2}(\eta) -2\widehat{G_3}(\eta),
+\nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta) =\hat{G_1}(\eta) - \hat{G_2}(\eta) -2\hat{G_3}(\eta),
 \]
 where 
 \begin{align*}
 & G_1(\eta) = \int (\eta^{\top}As)^2Ass^{\top}A^{\top}\,d\mu(s); \\
 & G_2(\eta) = \int (\eta^{\top}As)^2\,d\mu(s) \int Ass^{\top}A^{\top} \,d\mu(s); \\
 & G_3(\eta) = \Big(\int (\eta^{\top}As)As\,d\mu(s)\Big)\Big(\int (\eta^{\top}As)As\,d\mu(s)\Big)^{\top}. \\
-&\widehat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)^2As(k)s(k)^{\top}A^{\top} = \int (\eta^{\top}As)^2Ass^{\top}A^{\top}\,d\nu_T(s); \\
-& \widehat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)^2 \sum_{k=1}^{n}As(k)s(k)^{\top}A^{\top} = \int (\eta^{\top}As)^2\,d\nu_T(s) \int Ass^{\top}A^{\top} \,d\nu_T(s); \\
-& \widehat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big)^{\top} = \Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)\Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)^{\top}.
+&\hat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)^2As(k)s(k)^{\top}A^{\top} = \int (\eta^{\top}As)^2Ass^{\top}A^{\top}\,d\nu_T(s); \\
+& \hat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)^2 \sum_{k=1}^{n}As(k)s(k)^{\top}A^{\top} = \int (\eta^{\top}As)^2\,d\nu_T(s) \int Ass^{\top}A^{\top} \,d\nu_T(s); \\
+& \hat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big)^{\top} = \Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)\Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)^{\top}.
 \end{align*}
 
 %Without loss of generality, assume $ \|\eta\|_2 = 1$.
-Note that all the integral functions of $G_i(\eta)$ or $\widehat{G_i}(\eta)$ are matrices of polynomials in $x$. Thus, we only need to bound its coefficients.
+Note that all the integral functions of $G_i(\eta)$ or $\hat{G_i}(\eta)$ are matrices of polynomials in $x$. Thus, we only need to bound its coefficients.
 %Also, since $|b_1b_2b_3b_4| \le \frac14(b_1^4+b_2^4+b_3^4+b_4^4)$, we only need to upper bound the coefficients of $x_i^4$. 
 Note that 
 \[
@@ -191,7 +288,7 @@ Thus, the coefficient of the term $s_{t_1}s_{t_2}s_{t_3}s_{t_4}$ is $\eta^{\top}
 which is bounded by $\max_i |\eta^{\top} A_i|^2 A_{\max}^2 \le A_{(2,\max)}^2A_{\max}^2$. 
 Thus,
 \[
-\left| (G_1)_{i,j} - (\widehat{G_1})_{i,j} \right| \le d^4  A_{(2,\max)}^2A_{\max}^2D_4(\mu, \nu_T).
+\left| (G_1)_{i,j} - (\hat{G_1})_{i,j} \right| \le d^4  A_{(2,\max)}^2A_{\max}^2D_4(\mu, \nu_T).
 \]
 
 Similarly, 
@@ -204,9 +301,9 @@ Similarly,
 \]
 Also note that $ \left| \int (\eta^{\top}As)^2\,d\mu(s) \right| \le d^2A_{(2,\max)}^2 C^2$, and
 $\left| \int A_{i:}ss^{\top}A_{j:}^{\top} \,d\nu_T(s) \right| \le d^2A_{\max}^2 C^2$.
-Now consider the difference between $G_2$ and $\widehat{G_2}$. 
+Now consider the difference between $G_2$ and $\hat{G_2}$. 
 \begin{align*}
-& \left| (G_2)_{i,j} - (\widehat{G_2})_{i,j} \right| \\
+& \left| (G_2)_{i,j} - (\hat{G_2})_{i,j} \right| \\
 =\, & \left| \int (\eta^{\top}As)^2\,d\mu(s) \int A_{i:}ss^{\top}A_{j:}^{\top} \,d\mu(s)  - 
 \int (\eta^{\top}As)^2\,d\nu_T(s) \int A_{i:}ss^{\top}A_{j:}^{\top} \,d\nu_T(s) \right| \\
 \le \, & \left| \int (\eta^{\top}As)^2\,d\mu(s) \int A_{i:}ss^{\top}A_{j:}^{\top} \,d\mu(s)  - 
@@ -219,38 +316,38 @@ Now consider the difference between $G_2$ and $\widehat{G_2}$.
 \end{align*}
 Similarly,
 \[
-\left| (G_3)_{i,j} - (\widehat{G_3})_{i,j} \right| \le 2 d^4  A_{(2,\max)}^2A_{\max}^2C^2D_2(\mu, \nu_T).
+\left| (G_3)_{i,j} - (\hat{G_3})_{i,j} \right| \le 2 d^4  A_{(2,\max)}^2A_{\max}^2C^2D_2(\mu, \nu_T).
 \]
 Thus for any $1\le i,j\le d$,
 \begin{align*}
-\left|\left(\nabla^2 f_{\mu}(A^{\top}\eta) \right)_{i,j} - \left(\nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta) \right)_{i,j} \right| 
+\left|\left(\nabla^2 f_{\mu}(A^{\top}\eta) \right)_{i,j} - \left(\nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta) \right)_{i,j} \right| 
 \le 
 d^4  A_{(2,\max)}^2A_{\max}^2\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right).
 \end{align*}
 Therefore, 
 \[
-\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta)  \|_2 \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta) \|_F \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right).
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta)  \|_2 \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta) \|_F \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right).
 \]
 Lastly, combining with Proposition \ref{prop:denoise}, 
 \[
-\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2\widehat{f}(\eta)\|_2 \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta)\|_2 + \| \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\eta) - \nabla^2\widehat{f}(\eta)\|_2 \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(\|\eta\|_2).
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2\hat{f}(\eta)\|_2 \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta)\|_2 + \| \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta) - \nabla^2\hat{f}(\eta)\|_2 \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(\|\eta\|_2).
 \]
 \end{proof}
 Before we can prove the theorem, we need to prove some lemmas.
 The following lemma shows that a small perturbation of $M$ will only result in a small variation of its eigenvectors, at least under some mild regularity conditions.
 \begin{lemma}
 \label{lem:eigenvectorvariation}
-Denote $\widehat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in  \eqref{eq:M2}. 
-Assume $\widehat{M}$ has distinct eigenvalues. 
+Denote $\hat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in  \eqref{eq:M2}. 
+Assume $\hat{M}$ has distinct eigenvalues. 
 If $\gamma_A > 4 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_A}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
-\max_{1\le k\le d} \| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4  \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A) } \|E\|_2\,,
+\max_{1\le k\le d} \| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le 4  \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A) } \|E\|_2\,,
 \]
 and therefore
 \[
-\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)} \|E\|_2\,,
+\sum_{k=1}^{d}\| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)} \|E\|_2\,,
 \]
-where $\widehat{A}$ is the matrix of eigenvectors of $\widehat{M}$. 
+where $\hat{A}$ is the matrix of eigenvectors of $\hat{M}$. 
 \end{lemma}
 \begin{proof}
 For $1\le k\le d$, assume 
@@ -264,7 +361,7 @@ F_{3k} & F_{4k} \\
 \right), 
 \]
 where $A_{(k)}$ is the matrix $(A_k, A_1, \cdots, A_{k-1}, A_{k+1}, \cdots, A_d)$.
-Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{3k}\|_2$, and 
+Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{2k}\|_2$, and 
 \[
 \delta_k = \min_{j: j\neq k} 
 \left\vert \left(\frac{\phi^{\top}A_k}{\psi^{\top}A_k}\right)^2 -\left( \frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\,.
@@ -281,28 +378,28 @@ Note that by definition, $\gamma_k = \|F_{3k}\|_2\le\|A_{(k)}^{-1}EA_{k}\|_2\le\
 	& >  2 \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}\|E\|_2 >0,
 \end{align*}
 and $\delta_k^2 > 4\gamma_k\eta_k$. 
-Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$ such that there exists one of a eigenvector $\widehat{A_k}$ of $\widehat{M}$ satisfying
+Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$ such that there exists one of a eigenvector $\hat{A_k}$ of $\hat{M}$ satisfying
  \[
- \|\widehat{A_k} - A_k\|_2 \le \|A_{ck}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_k}{\delta_k}
+ \|\hat{A_k} - A_k\|_2 \le \|A_{ck}\|_2 \|v\|_2 \le 2\sigma_{\max}(A)\frac{\gamma_k}{\delta_k}
  \le 
  \frac{4\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A) } \|E\|_2,
  \]
  where $A_{ck}$ is the $d\times (d-1)$ matrix $(A_1,\ldots,A_{k-1}, A_{k+1},\ldots,A_d)$.
- By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \widehat{A_i}\|_2 + \|A_j - \widehat{A_i}\|_2$, thus $\widehat{A_i} \neq \widehat{A_j}$.  Summing up the upper bound gets the result. 
+ By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A) } \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \hat{A_i}\|_2 + \|A_j - \hat{A_i}\|_2$, thus $\hat{A_i} \neq \hat{A_j}$.  Summing up the upper bound gets the result. 
 \end{proof}
-The next lemma shows that $\widehat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix induced $2$-norm.
+The next lemma shows that $\hat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix induced $2$-norm.
 \begin{lemma}
 \label{lem:inversevariation}
-If non-singular matrix $\widehat{X} = X+E$ satisfying that $\sigma_{\min}(X)\ge2\|E\|_2$, then $\|\widehat{X}^{-1}\|_2 \le \frac{2}{\sigma_{\min}(X)}$, and $\|\widehat{X}^{-1} - X^{-1} \|_2 \le \frac{2}{\sigma_{\min}^2(X)}\|E\|_2$.
+If non-singular matrix $\hat{X} = X+E$ satisfying that $\sigma_{\min}(X)\ge2\|E\|_2$, then $\|\hat{X}^{-1}\|_2 \le \frac{2}{\sigma_{\min}(X)}$, and $\|\hat{X}^{-1} - X^{-1} \|_2 \le \frac{2}{\sigma_{\min}^2(X)}\|E\|_2$.
 \end{lemma} 
 \begin{proof}
-Note that $\|\widehat{X}^{-1}\|_2$ is the inverse of the minimal singular value of $\widehat{X}$. Also, 
+Note that $\|\hat{X}^{-1}\|_2$ is the inverse of the minimal singular value of $\hat{X}$. Also, 
 \[
- \min_{v:\|v\|_2=1} \|\widehat{X}v\|_2 = \min_{v:\|v\|_2=1}\|(X+E)v\|_2 \ge \min_{v:\|v\|_2=1} \|Xv\|_2 - \|Ev\|_2 \ge \sigma_{\min}(X) - \|E\|_2.
+ \min_{v:\|v\|_2=1} \|\hat{X}v\|_2 = \min_{v:\|v\|_2=1}\|(X+E)v\|_2 \ge \min_{v:\|v\|_2=1} \|Xv\|_2 - \|Ev\|_2 \ge \sigma_{\min}(X) - \|E\|_2.
 \]
-So $\|\widehat{X}^{-1}\|_2 \le \frac{1}{\sigma_{\min}(X) - \|E\|_2} \le \frac{2}{\sigma_{\min}(X)}$. Moreover,
+So $\|\hat{X}^{-1}\|_2 \le \frac{1}{\sigma_{\min}(X) - \|E\|_2} \le \frac{2}{\sigma_{\min}(X)}$. Moreover,
 \begin{align*}
-\|\widehat{X}^{-1} - X^{-1} \|_2 \le \|X^{-1}\|_2\|\widehat{X}^{-1}\|_2\|\widehat{X} - X\|_2
+\|\hat{X}^{-1} - X^{-1} \|_2 \le \|X^{-1}\|_2\|\hat{X}^{-1}\|_2\|\hat{X} - X\|_2
 \le \frac{2}{\sigma_{\min}^2(X)}\|E\|_2.
 \end{align*}
 \end{proof}
@@ -337,25 +434,25 @@ Note that $\nabla^2f_{\mu}(\psi)$ is symmetric.
 For any unit vector $v$, $v^{\top}AD_{\psi}KA^{\top}v \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min} A^2_{(2,\min)}\|v^{\top}A\|_2^2 \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Similar calculation for the maximum singular value.
 \end{proof}
 
-Lastly, we still need to bound $\|M - \widehat{M}\|_2$.
+Lastly, we still need to bound $\|M - \hat{M}\|_2$.
 \begin{lemma}
 \label{lem:Mvariation_alg}
 Given that  $\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$ and $T$  is large enough, but still polynomial in $\{L_\eta, C, \sigma_{\max}(A), L\}$, such that $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2$, then on the event $\Epsi$, 
 \[ 
-\|M - \widehat{M}\|_2 \le 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)\ell^4} + 
+\|M - \hat{M}\|_2 \le 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)\ell^4} + 
 \frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}
 \right)\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(L_u)\right).
 \]
 \end{lemma}
 \begin{proof}
-Let $E_1 = \nabla^2 f_{\mu}(\phi) - \nabla^2 \widehat{f}(\phi)$ and $ E_2 = \nabla^2 f_{\mu}(\psi) - \nabla^2 \widehat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P$.
+Let $E_1 = \nabla^2 f_{\mu}(\phi) - \nabla^2 \hat{f}(\phi)$ and $ E_2 = \nabla^2 f_{\mu}(\psi) - \nabla^2 \hat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P$.
 Note $\nabla^2f(\phi) = AKD_{\phi} A^{\top}$.
 Given that 
 $\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$ 
 and $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2$, the condition in Lemma \ref{lem:Mvariation} holds on the event $\Epsi$. 
 Then apply Lemma \ref{lem:Mvariation} and \ref{lem:nablavariation}, we have
 \begin{align*}
-\|M - \widehat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \widehat{f}(\phi))(\nabla^2\widehat{f}(\psi))^{-1} \|_2 \\
+\|M - \hat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \hat{f}(\phi))(\nabla^2\hat{f}(\psi))^{-1} \|_2 \\
 \le \, &\frac{2\|\nabla^2 f(\phi)\|_2}{\sigma_{\min}^2(\nabla^2f(\psi))}\|E_2\|_2 + \frac{2}{\sigma_{\min}(\nabla^2f(\psi))}\|E_1\|_2 \\
 \le \, & 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)\ell^4} + 
 \frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}
@@ -364,7 +461,7 @@ Then apply Lemma \ref{lem:Mvariation} and \ref{lem:nablavariation}, we have
 \if0
 Thus, 
 \[ 
-\|M - \widehat{M}\|_2 \le \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
+\|M - \hat{M}\|_2 \le \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
 \]
 \fi
 \end{proof}
@@ -385,14 +482,14 @@ Q = 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\ka
  \item  $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. 
   \end{enumerate}
 
-Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$ and $\widehat{M}$ has distinct eigen-values with probability 1,  then by Lemma \ref{lem:Mvariation_alg}, $\|M-\widehat{M}\|_2 \le Q$.
+Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$ and $\hat{M}$ has distinct eigen-values with probability 1,  then by Lemma \ref{lem:Mvariation_alg}, $\|M-\hat{M}\|_2 \le Q$.
 Therefore, by lemma \ref{lem:eigenvectorvariation}, 
   \[
-  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)}\|M - \widehat{M} \|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)} Q. 
+  \max_{1\le k\le d}\| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)}\|M - \hat{M} \|_2 \le 4 \frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)} Q. 
   \]
  %and 
  %\[
- %\sum_{k=1}^{d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le 4d\frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)}\|M - \widehat{M} \|_2. 
+ %\sum_{k=1}^{d}\| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le 4d\frac{\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}(A)}\|M - \hat{M} \|_2. 
 % \]
  
 \end{proof}
@@ -404,19 +501,19 @@ We need to introduce some lemmas before we can prove the theorem.
 The following lemma shows the stability of the square root of matrix.
 \begin{lemma}
 \label{lem:matrixsquareroot}
-Given two symmetric matrices $X$ and $\widehat{X} = X + E$, where $X = HH^{\top}$ and $\widehat{X} = \widehat{H}\widehat{H}^{\top}$, such that $\|X^{-1}\|_2 \|E\|_2 < 1$, then every singular value of $H^{-1}\widehat{H}$ is bounded between $\sqrt{1- \|X^{-1}\|_2 \|E\|_2}$ and $\sqrt{1+ \|X^{-1}\|_2 \|E\|_2}$, 
-and every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1 + \|X^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|X^{-1}\|_2 \|E\|_2}}$. 
+Given two symmetric matrices $X$ and $\hat{X} = X + E$, where $X = HH^{\top}$ and $\hat{X} = \hat{H}\hat{H}^{\top}$, such that $\|X^{-1}\|_2 \|E\|_2 < 1$, then every singular value of $H^{-1}\hat{H}$ is bounded between $\sqrt{1- \|X^{-1}\|_2 \|E\|_2}$ and $\sqrt{1+ \|X^{-1}\|_2 \|E\|_2}$, 
+and every singular value of $\hat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1 + \|X^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|X^{-1}\|_2 \|E\|_2}}$. 
 \end{lemma}
 \begin{proof}
 For any unit vector $x$,
 \begin{align*}
-& x^{\top}H^{-1}\widehat{H}\widehat{H}^{\top}H^{-\top}x - x^{\top}x\\
-& \quad = x^{\top}H^{-1}\left( \widehat{H}\widehat{H}^{\top} - HH^{\top}\right)H^{-\top}x \\
+& x^{\top}H^{-1}\hat{H}\hat{H}^{\top}H^{-\top}x - x^{\top}x\\
+& \quad = x^{\top}H^{-1}\left( \hat{H}\hat{H}^{\top} - HH^{\top}\right)H^{-\top}x \\
 & \quad \le \|H^{-\top}x\|^2_2 \|E\|_2 \\
 & \quad \le \|X^{-1}\|_2^2 \|E\|_2.
 \end{align*}
-Thus every singular value of $H^{-1}\widehat{H}$ is bounded between $\sqrt{1- \|X^{-1}\|_2 \|E\|_2}$ and $\sqrt{1+ \|X^{-1}\|_2 \|E\|_2}$, 
-and every singular value of $\widehat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1 + \|X^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|X^{-1}\|_2 \|E\|_2}}$.
+Thus every singular value of $H^{-1}\hat{H}$ is bounded between $\sqrt{1- \|X^{-1}\|_2 \|E\|_2}$ and $\sqrt{1+ \|X^{-1}\|_2 \|E\|_2}$, 
+and every singular value of $\hat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1 + \|X^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|X^{-1}\|_2 \|E\|_2}}$.
 \end{proof}
 Applying Lemma \ref{lem:matrixsquareroot}, we can get the stability of $B$, as follows.
 \begin{lemma}
@@ -424,7 +521,7 @@ Applying Lemma \ref{lem:matrixsquareroot}, we can get the stability of $B$, as f
 Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}L_u^2d^6A_{(2,\max)}^2A_{\max}^2}$ and $P(L_u)\le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$
 (so $\bar{\xi} \le 1/3$), under the event $\Epsi$ there exists an orthonormal matrix $R^*$ such that 
 \[
-\|\widehat{B}^{-1}B - R^*\|_2 \le \bar{\xi}.
+\|\hat{B}^{-1}B - R^*\|_2 \le \bar{\xi}.
 \]
 \end{lemma}
 \begin{proof}
@@ -435,10 +532,10 @@ Note that by Lemma \ref{lem:boundsigmaminnabla},  under the event $\Epsi$, $\|\n
 Then given $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}L_u^2d^6A_{(2,\max)}^2A_{\max}^2}$
 and 
 $P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$, $\bar{\xi} \le 1/3 < 1$. 
-By Lemma \ref{lem:matrixsquareroot}, every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1 + \|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2}}$. 
-Thus every singular value of $\widehat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
+By Lemma \ref{lem:matrixsquareroot}, every singular value of $\hat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1 + \|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2}}$. 
+Thus every singular value of $\hat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
 \[
-\|\widehat{B}^{-1}B - R^*\|_2 \le \max \left\{ \left|1-\frac{1}{\sqrt{1+\bar{\xi}}}\right| , \left|\frac{1}{\sqrt{1-\bar{\xi}}}-1\right| \right\} \le \bar{\xi},
+\|\hat{B}^{-1}B - R^*\|_2 \le \max \left\{ \left|1-\frac{1}{\sqrt{1+\bar{\xi}}}\right| , \left|\frac{1}{\sqrt{1-\bar{\xi}}}-1\right| \right\} \le \bar{\xi},
 \]
 where the last inequality is by $\bar{\xi} \le 1/3$.
 \end{proof}
@@ -455,13 +552,13 @@ where $\Lambda = \text{diag}\left((\frac{\phi_1^{\top}R^*R_1}{\phi_2^{\top}R^*R_
 Similarly, we have the stability of the eigen-decomposition, as follows. 
 \begin{lemma}
 \label{lem:Teigenvectorvariation}
-Denote $\widehat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in Equation \eqref{eq:T}. 
-Assume $\widehat{T}$ has distinct eigenvalues. 
+Denote $\hat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in Equation \eqref{eq:T}. 
+Assume $\hat{T}$ has distinct eigenvalues. 
 If $\gamma_R > 4 \frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) }\|E\|_2$ and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$
 \[
-\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} \|E\|_2\,,
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} \|E\|_2\,,
 \]
-where $\widehat{A}$ is the matrix of eigenvectors of $\widehat{M}$. 
+where $\hat{A}$ is the matrix of eigenvectors of $\hat{M}$. 
 \end{lemma}
 \begin{proof}
 The proof is similar to that of Lemma \ref{lem:eigenvectorvariation}.
@@ -473,83 +570,83 @@ It still remains to bound $\|E\|_2$. In the event $\Ephi$, we take the orthogona
 Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$ and $P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$
 (so $\bar{\xi} \le 1/3$), then on the event $\Epsi$ and $\Ephi$ for $\phi \in \{\phi_1, \phi_2\}$,
 \[
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\widehat{B}^{-\top}\phi)  \|_2 
-= \|G(B^{-\top}{R^*}^{\top}\phi) - \widehat{G}(\widehat{B}^{-\top}\phi)\|_2
+\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
+= \|G(B^{-\top}{R^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2
 \le 
 \frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2(A)}{C_1^2}\bar{\xi}
-\le \widehat{\xi}.
+\le \hat{\xi}.
 \]
 \end{lemma}
 \begin{proof}
-Note that by Lemma \ref{lem:nablavariation} $\|\nabla^2 f(\psi) - \nabla^2 \widehat{f}(\psi)\|_2 \le L_u^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi$, and 
+Note that by Lemma \ref{lem:nablavariation} $\|\nabla^2 f(\psi) - \nabla^2 \hat{f}(\psi)\|_2 \le L_u^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi$, and 
 \[
-\|G(B^{-\top}R{^*}^{\top}\phi) - \widehat{G}(\widehat{B}^{-\top}\phi)\|_2
+\|G(B^{-\top}R{^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2
 \le 
-\|G(B^{-\top}{R^*}^{\top}\phi) - G(\widehat{B}^{-\top}\phi)\|_2
-+ \|G(\widehat{B}^{-\top}\phi) - \widehat{G}(\widehat{B}^{-\top}\phi)\|_2.
+\|G(B^{-\top}{R^*}^{\top}\phi) - G(\hat{B}^{-\top}\phi)\|_2
++ \|G(\hat{B}^{-\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2.
 \]
 
-To Bound $\|G(\widehat{B}^{-\top}\phi) - \widehat{G}(\widehat{B}^{-\top}\phi)\|_2$, we will need the following properties which are straightforward based on Lemma \ref{lem:BhatinverseB}: 
+To Bound $\|G(\hat{B}^{-\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2$, we will need the following properties which are straightforward based on Lemma \ref{lem:BhatinverseB}: 
 under the event $ \Epsi\cap \Ephi $ for $1\le i, j\le d$,
 \begin{itemize}
-\item $|\phi^{\top}\widehat{B}^{-1}A_i| \le \|\phi\|_2\|\widehat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le
+\item $|\phi^{\top}\hat{B}^{-1}A_i| \le \|\phi\|_2\|\hat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le
  \frac{L_u}{\sqrt{1-\bar{\xi}}} (K^{-1/2}D^{-1/2}_{\psi})_{ii} \le
  \frac{L_u}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}C_1}$.
 \end{itemize}
 Thus for $1\le i, j\le d$,
 \[
-|(G_1(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_1}(\widehat{B}^{-\top}\phi))_{i,j}| \le
+|(G_1(\hat{B}^{-\top}\phi))_{i,j} - (\hat{G_1}(\hat{B}^{-\top}\phi))_{i,j}| \le
 d^4A^2_{\max}\frac{L_u^2}{(1-\bar{\xi})\kappa_{\min}C_1^2}D_4(\nu,\nu_t).
 \]
 Also note that for $1\le i, j\le d$,
 \begin{itemize}
-\item $|\int(\phi^{\top}\widehat{B}^{-1}x)x_i d\Prob{s}| 
-\le L_u\int \|\widehat{B}^{-1}A\|_2\|s\|_2 |A_{i:}s| d\Prob{s}
+\item $|\int(\phi^{\top}\hat{B}^{-1}x)x_i d\Prob{s}| 
+\le L_u\int \|\hat{B}^{-1}A\|_2\|s\|_2 |A_{i:}s| d\Prob{s}
 \le \frac{L_ud^{3/2}C^2A_{\max}}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}C_1}$; 
-\item $|(\widehat{B}^{-1}A)_{ij}| \le \frac{1}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}C_1}$;
-\item $|\int(\phi^{\top}\widehat{B}^{-1}x)^2 d\Prob{s}|\le
- \int \|\phi\|_2^2 \|\widehat{B}^{-1}A\|_2^2\|s\|_2^2 d\Prob{s} \le \frac{L_u^2dC^2}{(1-\bar{\xi})\kappa_{\min}C_1^2}$.
+\item $|(\hat{B}^{-1}A)_{ij}| \le \frac{1}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}C_1}$;
+\item $|\int(\phi^{\top}\hat{B}^{-1}x)^2 d\Prob{s}|\le
+ \int \|\phi\|_2^2 \|\hat{B}^{-1}A\|_2^2\|s\|_2^2 d\Prob{s} \le \frac{L_u^2dC^2}{(1-\bar{\xi})\kappa_{\min}C_1^2}$.
 \end{itemize}
 Thus, similar to \ref{lem:nablavariation},
 \[
-|(G_2(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_2}(\widehat{B}^{-\top}\phi))_{i,j}| \le
+|(G_2(\hat{B}^{-\top}\phi))_{i,j} - (\hat{G_2}(\hat{B}^{-\top}\phi))_{i,j}| \le
 \frac{2L_u^2d^3C^2A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}C_1^2}D_2(\nu,\nu_t),
 \]
 and 
 \[
-|(G_3(\widehat{B}^{-\top}\phi))_{i,j} - (\widehat{G_3}(\widehat{B}^{-\top}\phi))_{i,j}| \le
+|(G_3(\hat{B}^{-\top}\phi))_{i,j} - (\hat{G_3}(\hat{B}^{-\top}\phi))_{i,j}| \le
 \frac{2L_u^2d^{7/2}C^2A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}C_1^2}D_2(\nu,\nu_t).
 \]
 Therefore for $1\le i,j\le d$,
 \[
-\left|\left(G(\widehat{B}^{-\top}\phi)\right)_{i,j} - \left(\widehat{G}(\widehat{B}^{-\top}\phi)\right)_{i,j}\right| 
+\left|\left(G(\hat{B}^{-\top}\phi)\right)_{i,j} - \left(\hat{G}(\hat{B}^{-\top}\phi)\right)_{i,j}\right| 
 \le
 \frac{L_u^2d^4A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}C_1^2}D_2(\nu,\nu_t). 
 \]
 Thus, 
 \begin{equation}
 \label{eq:fBhatfhatBhat}
- \|G(\widehat{B}^{-\top}\phi) - \widehat{G}(\widehat{B}^{-\top}\phi)\|_2 \le 
+ \|G(\hat{B}^{-\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2 \le 
 \frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi.
 \end{equation}
 
 On the other hand, 
 \begin{align*}
-\|G(B^{-\top}{R^*}^{\top}\phi_i) - G(\widehat{B}^{-\top}\phi_i)\|_2 
-= & \, \|A D_{\psi}^{-1}\Lambda_iA^{\top}- A D_{\psi}^{-1}\widehat{\Lambda}_iA^{\top}\|_2 \\
-\le & \, \|A\|^2_2 \|D_{\psi}^{-1}\|_2 \|\Lambda_i - \widehat{\Lambda}_i\|_2\\
+\|G(B^{-\top}{R^*}^{\top}\phi_i) - G(\hat{B}^{-\top}\phi_i)\|_2 
+= & \, \|A D_{\psi}^{-1}\Lambda_iA^{\top}- A D_{\psi}^{-1}\hat{\Lambda}_iA^{\top}\|_2 \\
+\le & \, \|A\|^2_2 \|D_{\psi}^{-1}\|_2 \|\Lambda_i - \hat{\Lambda}_i\|_2\\
 \le & \, 2\frac{\sigma_{\max}^2(A)}{C_1^2}\frac{L_u^2\bar{\xi}}{\sqrt{1-\bar{\xi}}},
 \end{align*}
-where $\widehat{\Lambda}_i = \text{diag}\left((\phi_i^{\top}\widehat{B}^{-1}BR_1)^2, \cdots, (\phi_i^{\top}\widehat{B}^{-1}BR_d)^2\right)$.
+where $\hat{\Lambda}_i = \text{diag}\left((\phi_i^{\top}\hat{B}^{-1}BR_1)^2, \cdots, (\phi_i^{\top}\hat{B}^{-1}BR_d)^2\right)$.
 Thus,
 \begin{equation}
 \label{eq:fBfBhat}
-\|G(B^{-\top}{R^*}^{\top}\phi) - G(\widehat{B}^{-\top}\phi)\|_2 \le  \frac{\sqrt{6}L_u^2\sigma_{\max}^2(A)}{C_1^2}\bar{\xi}. 
+\|G(B^{-\top}{R^*}^{\top}\phi) - G(\hat{B}^{-\top}\phi)\|_2 \le  \frac{\sqrt{6}L_u^2\sigma_{\max}^2(A)}{C_1^2}\bar{\xi}. 
 \end{equation}
 
 Combine Equation \eqref{eq:fBhatfhatBhat} and Equation \eqref{eq:fBfBhat},
 \[
-\|G(B^{-\top}{R^*}^{\top}\phi) - \widehat{G}(\widehat{B}^{-\top}\phi)\|_2
+\|G(B^{-\top}{R^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2
 \le 
 \frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2(A)}{C_1^2}\bar{\xi}.
 \]
@@ -559,9 +656,9 @@ Combine Equation \eqref{eq:fBhatfhatBhat} and Equation \eqref{eq:fBfBhat},
 \label{lem:Binversenablavariation2}
 Given the same conditions as Lemma \ref{lem:BhatinverseB}, then on the event $\Epsi$ and $\Ephi$ for $\phi \in \{\phi_1, \phi_2\}$,
 \[
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\widehat{B}^{-\top}\phi)  \|_2 
+\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
 \le
- \widehat{\xi}
+ \hat{\xi}
 +
 \frac{1}{T}\text{Poly}\left(\frac{1}{\sigma_{\min}(A)}, \frac{1}{C_1}, L_u, \frac{1}{\kappa_{\min}}, L, d, \sigma_{\max}(A), C\right).
 \]
@@ -569,42 +666,39 @@ Given the same conditions as Lemma \ref{lem:BhatinverseB}, then on the event $\E
 \begin{proof}
 By triangular inequality, 
 \[
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f}(\widehat{B}^{-\top}\phi)  \|_2 
+\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2 
 \le 
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\widehat{B}^{-\top}\phi)  \|_2 
+\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
 +
-\|\nabla^2 \widehat{f_{\nu_T^{(As)}}}(\widehat{B}^{-\top}\phi) - \nabla^2 \widehat{f}(\widehat{B}^{-\top}\phi)  \|_2. 
+\|\nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2. 
 \]
 By Lemma \ref{lem:Binversenablavariation1}, 
 \[
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f_{\nu_T^{(As)}}}(\widehat{B}^{-\top}\phi)  \|_2 
-\le \widehat{\xi}. 
+\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
+\le \hat{\xi}. 
 \]
 It remains to bound the second term. 
-Note that on the event $\Epsi\cap\Ephi$, $\|\widehat{B}^{-\top}\phi\|_2 \le \frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}$. 
+Note that on the event $\Epsi\cap\Ephi$, $\|\hat{B}^{-\top}\phi\|_2 \le \frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}$. 
 Thus by Proposition \ref{prop:denoise}, 
 \[
-\|\nabla^2 \widehat{f_{\nu_T^{(As)}}}(\widehat{B}^{-\top}\phi) - \nabla^2 \widehat{f}(\widehat{B}^{-\top}\phi)  \|_2 \le P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right).
+\|\nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2 \le P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right).
 \]
 Therefore, 
 \[
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f}(\widehat{B}^{-\top}\phi)  \|_2 
+\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2 
 \le 
- \widehat{\xi}
+ \hat{\xi}
 +
 P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right).
 \]
 \end{proof}
 \begin{lemma}
 \label{lem:Tvariantion}
-Given the same conditions as Lemma \ref{lem:BhatinverseB}, On the event $\Epsi$ and $\Ephi$, assume that $\widehat{\xi}
+Given the same conditions as Lemma \ref{lem:BhatinverseB}, On the event $\Epsi$ and $\Ephi$, assume that $\hat{\xi}
 +
 P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right)\le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$, then 
-%\[
-%\|T - \widehat{T}\|_2 \le %\frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\widehat{\xi}} = Q.
-%\]
 \[
-\|M - \widehat{M}\|_2 \le  \frac{128d^6A^6_{(2,\max)}}{\pi^3 A^6_{(2,\min)}}\widehat{\xi} = Q.
+\|M - \hat{M}\|_2 \le  \frac{128d^6A^6_{(2,\max)}}{\pi^3 A^6_{(2,\min)}}\hat{\xi} = Q.
 \]
 \end{lemma}
 
@@ -613,13 +707,13 @@ On the event $\Epsi\cap\Ephi$,
 \[
 \sigma_{\min}(T_2) \ge \frac{l_l^2A^2_{(2,\min)}}{A^2_{(2,\max)}}; \quad \sigma_{\max}(T_2) \le \frac{L_u^2A^2_{(2,\max)}}{A^2_{(2,\min)}};  \quad \sigma_{\max}(T_1) \le \frac{L_u^2A^2_{(2,\max)}}{A^2_{(2,\min)}}. 
 \]
-Let $E_i = \nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi_i) - \nabla^2 \widehat{f}(\widehat{B}^{-\top}\phi_i)$ for  $i\in\{1,2\}$. then by 
+Let $E_i = \nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi_i) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi_i)$ for  $i\in\{1,2\}$. then by 
 Lemma \ref{lem:Binversenablavariation1} $\sigma_{\min}(T_2) \ge 2\|E_2\|_2$.
 Apply Lemma \ref{lem:Mvariation},
 \begin{align*}
-\|M - \widehat{M}\|_2 \le &
+\|M - \hat{M}\|_2 \le &
 \frac{2\|T_1\|_2}{\sigma^2_{\min}(T_2)}\|E_2\|_2 + \frac{2}{\sigma_{\min}(T_2)}\|E_1\|_2 \\
-\le & \frac{4L_u^2A^6_{(2,\max)}}{l_l^4 A^6_{(2,\min)}}\left(\widehat{\xi}
+\le & \frac{4L_u^2A^6_{(2,\max)}}{l_l^4 A^6_{(2,\min)}}\left(\hat{\xi}
 +
 P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right)\right) = Q.
 \end{align*}
@@ -627,12 +721,11 @@ P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right)
 \begin{proof}[{\bf Proof of Theorem \ref{thm:Modefficiency}}]
 Note that by Lemma \ref{lem:Tvariantion},
 \[
-\|\widehat{M} - M\|_2 \le Q.
+\|\hat{M} - M\|_2 \le Q.
 \]
 Then by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
-%\|c_k\widehat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\widehat{T} - T\|_2\,,
-\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} \|\widehat{M} - M\|_2.
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} \|\hat{M} - M\|_2.
 \]
 \end{proof}
 
@@ -748,9 +841,51 @@ D_4(\mu, \nu_T) \le  C^4\sqrt{\frac{\log(1/\delta)}{2T}}.
 
 Therefore, Given 
 \[
-T \ge \text{Poly}\left(C, \frac{1}{\delta}, d,  \sigma_{\max}, 1/\sigma_{\min}, \|\Sigma\|_{(\infty,\infty)}, 1/\kappa_{\min}\right),
+T \ge \text{Poly}\left(C, \frac{1}{\delta}, d,  \sigma_{\max}, 1/\sigma_{\min}, \|\Sigma\|_2, 1/\kappa_{\min}\right),
 \]
 for some polynomial, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
-\| c_k\widehat{A}_{\pi(k)} - A_k\|_2 \le \frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\text{Poly}(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d).
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\text{Poly}(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d).
 \]
+
+\subsection{Proof of Corollary \ref{cor:signalerror}}
+
+ Given a large enough $T$, if there exists a product measure $\mu$  such that  $D_4(\mu, \nu_T)$ is small enough satisfying
+\begin{itemize}
+\vspace{-3mm}
+\item $T \ge \text{Poly}(d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}(A), \frac{1}{\sigma_{\min}(A)})$;
+\item $D_4(\mu, \nu_T) \le \text{Poly}(\frac{1}{C},  \sigma_{\min}(A),  \frac{1}{\sigma_{\max}(A)},\frac{1}{d}, \delta, \kappa_{\min})$.
+\end{itemize}
+\vspace{-2mm}
+Then with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\[
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+\frac{1}{\sqrt{T}}\right),
+\]
+where $\mathcal{C} = \text{Poly}(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L)$, and $\hat{A}$ is the output of the DICA algorithm.
+\begin{proof}
+Note that by Lemma \ref{lem:Tvariantion},
+\[
+\|M - \hat{M}\|_2 \le  \frac{128d^6A^6_{(2,\max)}}{\pi^3 A^6_{(2,\min)}}\hat{\xi} = Q.
+\]
+So, 
+\[
+\|A^{-1}\hat{M}A -A^{-1}MA \|_2 \le \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q.
+\]
+Moreover, $A^{-1}MA = \Lambda$, thus its eigenvectors are $\{e_1,\ldots,e_d\}$.
+By Lemma \ref{lem:Teigenvectorvariation}, given $\gamma_R \ge 4\sqrt{2} \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q$, there exist a permutation $\pi$ and constants ${c_1,\ldots,c_d}$ such that for $1\le k\le d$,
+\[
+\|c_k\hat{A}^{-1}_{\pi(k):}A - e_k^{\top}\| \le \frac{4}{\gamma_R}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q.
+\]
+Here $\hat{A}^{-1}_{\pi(k):}$ is the $\pi(k)$th row of $\hat{A}^{-1}$.
+On the other hand, keeping the same permutation $\pi$,
+\begin{align*}
+\| \hat{s}_{\pi(k)} - s \|_2 & = \|(\hat{A}^{-1})_{\pi(k):}As + (\hat{A}^{-1})_{\pi(k)}\eps - A^{-1}_kAs \|_2 \\
+& \le \|(\hat{A}^{-1})_{\pi(k):}A - e_k^{\top}\|_2\|s\|_2 + \|(\hat{A}^{-1})_{\pi(k):}A - e_k^{\top}\|_2\|A^{-1}\eps\|_2 + \|(A^{-1})_{k:}\eps\|_2 \\
+& \le (\|s\|_2+\frac{1}{\sigma_{\min}(A)}\|\eps\|_2)\frac{4}{\gamma_R}\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}Q + \frac{1}{\sigma_{\min}(A)}\|\eps\|_2
+\end{align*}  
+Note that under the event $\E$,  $Q$ and $\gamma_R$ are both polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L)$. 
+\[
+\| \hat{s}_{\pi(k)} - s \|_2 \le \mathcal{C}(\|s\|_2+\frac{1}{\sigma_{\min}(A)}\|\eps\|_2)(D_4(\mu,\nu_T)+\frac{1}{\sqrt{T}})+\frac{\|\eps\|_2}{\sigma_{\min}(A)},
+\]
+where $\mathcal{C} = \text{Poly}(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L)$.
+\end{proof}
