@@ -772,7 +772,15 @@ Therefore,
 \Prob{\Epsi} \ge (1-\exp(-x))+\left(1- \frac{\ell}{d}\right)\exp(-\ell)-1 = \left(1- \frac{\ell}{d}\right)\exp(-\ell)-\exp(-x).
 \end{equation}
 \end{proof}
-
+Recall that $Z_i$'s are independent Cauchy random variables.
+\begin{lemma}
+\label{lem:CauchyGap}
+Let $C_2 = \frac{\pi}{2d^2}\ell$ for $0\le \ell\le 1$. 
+With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$,
+\[
+\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge C_2, \text{and} \,  \min_i\vert Z_i\vert \ge C_2.
+\]
+\end{lemma}
 \begin{proof}[Proof of Lemma \ref{lem:CauchyGap}]
 Since $\{Z_1,\ldots, Z_d\}$ are independent, we can calculate $\Prob{\EZ}$ by sequentially sampling $Z_i$s. 
 Firstly, $\Prob{|Z_1|\ge C_2} \ge 1-\frac{2C_2}{\pi}$. 
@@ -783,7 +791,15 @@ Therefore,
 \Prob{\EZ} \ge (1-\frac{2C_2}{\pi})\times \ldots \times (1-\frac{2dC_2}{\pi}) \ge (1-\frac{2dC_2}{\pi})^d \ge \left(1- \frac{\ell}{d}\right)\exp(-\ell).
 \end{equation}
 \end{proof}
-
+Thus, $\gamma_R \ge 2C_2^2$ with probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$.
+Denote this event by $\EZ$.
+\begin{lemma}
+\label{lem:EventphiProb}
+Let $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for any $0\le \ell\le 1$ and $ L_u = \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$. Then
+\[
+\Prob{\Ephi} \ge \left(1- \frac{\ell}{d}\right)\exp(-\ell) - 2\exp(-x).
+\]
+\end{lemma}
 \begin{proof}[Prrof of Lemma \ref{lem:EventphiProb}]
 For fix $\ell_l\le \frac{\sqrt{\pi}}{\sqrt{2}d}$, $L_u \ge \sqrt{2d}$ and an orthonormal matrix $R$, 
 \[

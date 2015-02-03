@@ -277,7 +277,10 @@ Our method needs no parameter tuning, which makes it a \emph{real} provable algo
 Another contribution of the present paper is that our analysis is conducted in a deterministic manner. 
 In practice ICA is also known to work well for unmixing the mixture of various deterministic signals. 
 One of the classic demonstrations of ICA is showing that the periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
-For example, assuming that we would like to unmix a 2-dimensional observations that is generated as follows:
+One possible example could be as follows.
+\begin{example}
+\label{eg:1}
+Assuming that we would like to unmix a 2-dimensional observations that is generated as follows:
 \begin{itemize}
 \item for $0\le t\le 15$, $s_1(t) = \sin(t)$; $s_2(t) = \cos(t\pi)$;  
 \item mixing matrix $A = \left( 
@@ -295,6 +298,7 @@ Here our observations are not i.i.d. since the sources are deterministic. The re
 	\includegraphics[width = \linewidth]{demo}
 \caption{Example of deterministic sources: The first black curves are deterministic sources; The red curves are our observations; the blue signals are recovered signals from our ICA algorithm (DICA).}
 \end{figure}
+\end{example} 
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
 Our deterministic analysis helps investigate this curious phenomenon without losing any generality to the traditional stochastic setting. 
 
@@ -414,12 +418,19 @@ Similarly, we will prove that this assumption does not lose any generality to th
 \label{prop:stochasticAss}
 In the traditional stochastic setting of ICA, there exists $L = \text{Poly}(A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta})$, such that with probability at least $1-\delta$, all the assumptions above hold .
 \end{prop}
-On the other hand, our setting can also cover some other examples excluded by the traditional setting. 
+On the other hand, our setting can also cover some other examples excluded by the traditional setting. One of such examples is the example \ref{eg:1} in the Introduction. We present its general form here.
 \begin{example}
-Assume that each unknown sources $s_i$ is deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
+Assume that each unknown sources $s_i$s ($1\le i\le d$) are deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
 Even though $\eps$ is i.i.d. for every time step, the observations can not satisfy the traditional i.i.d. assumption, since the source $s$ is deterministic. However, it can be proved that if the ratio of the periods of each pair of $(s_i, s_j)$ is irrational, then this example satisfies all the assumptions above, given large enough $T$.   
 \end{example}
- 
+Another example is a source with both deterministic component and stochastic component, as follows.
+\begin{example}
+Assume the source signal has two dimensions, $s_1$ and $s_2$. For discrete time step $t = 1,2,\ldots$, assume $s_1$ is a deterministic signal with period $p$, i.e. $s_1(p+t) = s_1(t)$. 
+Also assume $s_2$ is generated from some distribution $P$ independently to $s_1$ and time step $t$.
+Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
+Similarly, the observations can not satisfy the traditional i.i.d. assumption, since the source $s$ is deterministic. 
+However, this example satisfies all the assumptions above, given large enough $T$.   
+\end{example}
 
 \subsection{Quasi-Whitening}
 For $p\ge 1$, $\eta\in \real^d$, 
@@ -474,7 +485,7 @@ where $\eps$ is a Gaussian noise. In practice, we are not going to observe the t
 \label{sec:AnalysisHK}
 Even though \citet{hsu2013learning} believed that the HKICA algorithm has provable guarantee, no rigorous analysis is provided. 
 We try to fill the gap in the next section. 
-A detailed analysis shows that the performance of the algorithm may be not as trivial as it is claimed.
+A detailed analysis shows that the performance of the algorithm may not be as trivial as it is claimed.
 
 \subsection{the HKICA algorithm}
 \label{subsec:HKalg}
@@ -557,7 +568,7 @@ Let
 \label{def:kappa}
 \gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert. 
 \end{equation}
-The performance of the HKICA algorithm depends on this parameters, as shown in the following theorem.
+The performance of the HKICA algorithm will essentially depend on this parameters, as shown in the following theorem.
 \begin{thm}
  \label{thm:efficiency} 
 Given a large enough 
@@ -586,12 +597,12 @@ In particular, as mentioned in the Remark \ref{rmk:xi}, these conditions will be
 \end{remark}
 \fi
 \begin{remark}
-The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the conditions, under which such bound is guaranteed, also require a small $1/\gamma_A$.
+The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the conditionalso require a small $1/\gamma_A$ so that the above error bound is valid.
 
 Note that $\gamma_A$ is actually the minimal gap of the eigenvalues of $M = (\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1}$.
 We would like to claim that such dependence on the minimal gap of the eigenvalues is necessary.
 Consider a $2\times 2$ matrix $A = \text{diag}([a,b])$ where $a<b$. Let $\eps = b-a$. Note that two eigenvectors of $A$ are $[1,0]$ and $[0,1]$, and $\eps$ is the gap of its eigenvalues. If the perturbation is small, one can prove, as in the proof of Theorem \ref{thm:efficiency}, that the variation of the eigenvectors is also small. 
-However, if the perturbation is larger than the gap of the eigenvalues, i.e. $\eps$, then the variation of the eigenvectors could be arbitrary bad. To see this, consider perturbing $A$ by a matrix $E = \text{diag}([\eps,0])$. Thus $\hat{A} = \text{[b,b]}$ whose eigenvectors could be arbitrary orthogonal vectors.   
+However, if the perturbation is larger than the gap of the eigenvalues, i.e. $\eps$, then the variation of the eigenvectors could be arbitrary bad. To see this, consider perturbing $A$ by a matrix $E = \text{diag}([\eps,0])$. Thus $\hat{A} = \text{[b,b]}$ whose eigenvectors could be arbitrary orthogonal vectors, thus arbitrary  far away from $[1,0]$ and $[0,1]$ (the eigenvectors of $A$).   
 Such discontinuity of the eigen-spaces suggests that the dependence on $\gamma_A$ is necessary for the HKICA algorithm because of the eigen-decomposition of $M$. 
 
 Despite the important role that $\gamma_A$ plays in the efficiency of the HKICA algorithm, we have no clue about its behavior. 
@@ -704,7 +715,7 @@ Similarly, the result of Theorem \ref{thm:Modefficiency} essentially depends on 
 The main concern about Theorem \ref{thm:Modefficiency} would be the behavior of this quantity. 
 Even though an analytic characterization of $\gamma_R$ is not yet known, a probabilistic lower bound for $\gamma_R$ can be developed (recall such lower bound is not available for $\gamma_A$) as shown in Section~\ref{subsec:gammaR}.
 Another two concerns would be: (1)When will these conditions hold? In particular, will these conditions hold in the traditional stochastic setting? (2)What is the probability of these events?
-We show that answers to these questions are positive in Section \ref{subsec:gammaR} and \ref{subsec:ThminStocSetting}, which makes Theorem \ref{thm:Modefficiency} meaningful. \qed
+We show that the answers to these questions are positive in Section \ref{subsec:gammaR} and \ref{subsec:ThminStocSetting}, which makes Theorem \ref{thm:Modefficiency} meaningful. \qed
 \end{remark}
 \subsection{Behavior of $\gamma_R$}
 \label{subsec:gammaR}
@@ -720,31 +731,7 @@ $, WLOG assume both $Z_i$ and $Z_j$ are positive. Then,
 	\ge 	& 2\min_i\vert Z_i\vert\min_{i\neq j} \left\vert Z_i - Z_j \right\vert.
 \end{align*}
 %Recall that on the event $\Ephione$, $\min_i\vert Z_i \vert \ge \frac{\sqrt{2\pi}}{2d}$. 
-Here $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$ is the distribution of the minimal spacing of Cauchy random variables.
-
-\begin{lemma}
-\label{lem:CauchyGap}
-Let $C_2 = \frac{\pi}{2d^2}\ell$ for $0\le \ell\le 1$. 
-With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$,
-\[
-\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge C_2, \text{and} \,  \min_i\vert Z_i\vert \ge C_2.
-\]
-\end{lemma}
-Thus, $\gamma_R \ge 2C_2^2$ with probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$.
-Denote this event by $\EZ$.
-\begin{lemma}
-\label{lem:EventphiProb}
-Let $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for any $0\le \ell\le 1$ and $ L_u = \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$. Then
-\[
-\Prob{\Ephi} \ge \left(1- \frac{\ell}{d}\right)\exp(-\ell) - 2\exp(-x).
-\]
-\end{lemma}
-Let  
-\[
-\E = \Epsi \cap\Ephi \cap \EZ,
-\]
-for some fixed $0\le \ell\le 1$ and $x>0$ that would be picked later.
-It remains to argue that with high probability $\E$ holds.
+Here $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$ is the minimal spacing of Cauchy random variables.
 \begin{lemma}
 \label{lem:ConstantProb}
 With Probability at least $1-\delta$ , the following inequalities holds simultaneously.
@@ -757,6 +744,7 @@ With Probability at least $1-\delta$ , the following inequalities holds simultan
 \end{itemize}
 \vspace{-2mm}
 \end{lemma}
+Denote that above event by $\E$.
 \begin{remark}
 Note that all the constants in Lemma \ref{lem:ConstantProb} are polynomial in $d$ (or $d^{-1}$ for the lower bound), thus the result of Theorem \ref{thm:Modefficiency} is polynomial in $d$ and $\frac{1}{\delta}$ with probability at least $1-\delta$. \qed
 \end{remark}
@@ -831,16 +819,16 @@ In particular, in the traditional stochastic setting given large enough $T$ (but
 \end{align*}
 where $\text{Poly}$ is a polynomial in $(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d)$.
 \end{cor}
+\if0
 \subsection{A modified version of DICA}
 \label{subsec:modifiedDICA}
-We are also expecting that DICA\_Re will achieve smaller error in the case of extreme coherence, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
-However, the experimental results indicate the opposite, as showed in Section \ref{subsubsec:results}.  
-The reason is when the coherence is extremely high, the estimation error of $M$ in DICA is so much larger than that in HKICA, 
-which is caused by taking the inverse of $T_2$ in DICA, 
-that it overwhelms the error caused by coherence of the mixing matrix.
+We would expect that DICA will achieve smaller error in the case of extreme coherence, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
+However, the experimental results show the opposite, as in Section \ref{subsubsec:results}.  
+The reason is when the coherence is extremely high, the estimation error of $M$ in DICA is so much larger than that in HKICA that it dominates the error caused by coherence of the mixing matrix.
+This estimation error comes from taking the inverse of $T_2$ in DICA. 
 We are not yet clear about the relation of the estimation error and the coherence of the mixing matrix.
 
-We propose the following ICA algorithm, Algorithm \ref{alg:DICA_Mod}, trying to relieve the estimation error problem of DICA, but still keeps large gap of the eigen-values in the eigen-decomposition. 
+We propose the following ICA algorithm, Algorithm \ref{alg:DICA_Mod}, trying to relieve the estimation error problem of DICA, but still keeps large gap of the eigenvalues in the eigen-decomposition. 
 \begin{algorithm} 
 \caption{DICA Modified (DICA\_Mod)}
 \label{alg:DICA_Mod}
@@ -858,13 +846,13 @@ We propose the following ICA algorithm, Algorithm \ref{alg:DICA_Mod}, trying to 
 \end{algorithmic}
 \end{algorithm}
 \begin{remark}
-Note that the eigen-values of $\hat{M}$ in DICA\_Mod are $\frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}$ for $1\le i\le d$. 
+Note that the eigenvalues of $\hat{M}$ in DICA\_Mod are $\frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}$ for $1\le i\le d$. 
 When $A$ is highly coherent, we would expect that $\psi^{\top}A_i$'s are close to each other. Also, the $\kappa_i$'s are fixed. 
-Given that $\phi^{\top}R_i$'s are far separated from each other, we would intuitively expect the eigen-values are well separated from each other. 
+Given that $\phi^{\top}R_i$'s are far separated from each other, we would intuitively expect the eigenvalues are well separated from each other. 
 However, we don't have a rigorous proof for this algorithm.
 Experimental results shows that DICA\_Mod consistently performs better than DICA. \qed
 \end{remark}
-
+\fi
 \section{Experimental Results}
 \label{sec:ExpRes}
 We compare the empirical performances of several ICA algorithms in this section. 
