@@ -1,3 +1,17 @@
 %!TEX root =  DICA.tex
 
 \subsection{Recursive versions}
+
+Recently \citet{vempala2014max} proposed an idea to improve the sample complexity of Fourier PCA algorithm \citep{goyal2014fourier}. 
+The idea is that instead of recovering all the columns of $A$ in one eigen-decomposition, it only decompose the whole space into two sub-spaces, 
+then recursively decompose each subspaces until it is 1-dimensional.
+The insight of this recursive procedure is when the maximal spacing of the eigenvalues are much large than  the minimal one (e.g. improve from $\frac{\delta}{d^2}$ to $\frac{\delta}{\log d}$), then even the error may accumulated in the recursion, overall we still have better results. 
+
+
+
+Note that this idea is general enough, and can be also applied to our algorithm, as follows. 
+
+\begin{thm}
+\label{thm:recursiveAlg}
+DDDDD
+\end{thm} 
