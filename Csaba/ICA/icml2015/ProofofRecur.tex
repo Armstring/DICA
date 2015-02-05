@@ -1,6 +1,55 @@
 %!TEX root =  appendix.tex
 \subsection{Proof of Theorem \ref{thm:recursiveAlg}}
-Firstly let's see why this algorithm compute an estimation of the mixing matrix. 
+Firstly note that this algorithm compute an estimation of the mixing matrix. 
+By Lemma \ref{lem:BhatinverseB}, $\hat{B}B^{-1}$ is close to some orthonormal matrix $R^*$.
+Define $y = R^*B^{-1}x = R^*R K^{-1/2}D_{\phi}^{-1/2}s + R^*B^{-1}\eps$. Recall that this procedure  is exactly the qusi-whitening in Section \ref{subsec:quasiwhite}. Therefore, 
+$\hat{y}$ is the empirical observation of $y$ which is a orthonormal mixture of independent sources contaminated by Gaussian Noise. 
+Since the mixing matrix is orthonormal, we can apply the recursion idea of \citet{vempala2014max} to recover $R^*R$. 
+Then $\hat{B}R^*R= BB^{-1}\hat{B}R^*R \approxeq AD_{\phi}^{1/2}K^{1/2}R^{\top} (R^*)^{\top}R^*R = AD_{\phi}^{1/2}K^{1/2}$, thus recover $A$ up to column permutation and scaling. 
 
+Moreover, note that the calculation of $M$ in the helper function `Recur' is exactly the $M$ in the algorithm of DICA (we call it recursion version of HKICA, because in the helper function `Recur', it has the same format as HKICA).
+Therefore, by Lemma \ref{lem:Tvariantion},
+\[
+\|M-\hat{M}\|_2 \le Q.
+\]
+To analyze the error accumulation of the recursion, recall that $M = \bar{R}\Lambda\bar{R}^{\top}$, where $\bar{R} = R^*R$ is an orthonormal matrix.
+Assume we have computed a m-dimensional subspace in a recursion of depth $k-1$ whose orthonormal projection matrix is $V^{(k-1)} \in \R^{d\times m}$, such that there exists $m$ columns of $\bar{R}$ (WLOG assume it is $1,\ldots,m$.) satisfying
+\[
+\sin\left(\Theta\left(V^{(k-1)}, \bar{R}_{1:m}\right)\right) \le E_{k-1},
+\] 
+Where $\bar{R}_{1:m}$ is the first $m$ columns of $\bar{R}$ and $E_{k-1}$ is a error upper bound for depth $k-1$ recursion.
+Then
+\begin{align*}
+& \quad {V^{(k-1)}}^\top MV^{(k-1)} = \left( {V^{(k-1)}}^\top\bar{R}_{1:m}, {V^{(k-1)}}^\top\bar{R}_{m+1:d}\right)\Lambda
+\left(
+\begin{tabular}{c}
+$\bar{R}_{1:m}^{\top} V^{(k-1)}$ \\
+$\bar{R}_{m+1:d}^{\top} V^{(k-1)}$
+\end{tabular}
+\right) \\
+& = {V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m}^{\top} V^{(k-1)} + {V^{(k-1)}}^\top\bar{R}_{m+1:d}\Lambda_{m+1:d}\bar{R}_{m+1:d}^{\top} V^{(k-1)},
+\end{align*}
+where $\Lambda_{1:m}$ and $\Lambda_{m+1:d}$ are the first $m\times m$  and last $(d-m)\times (d-m)$ submatrices of the diagonal matrix $\Lambda$.
 
-First, we will need to estimate the error from the qusi-whitening. 
+Recall that the diagonal elements of $\Lambda$ is the square of Cauchy random variables. The following proposition characterize the maximal spacing of i.i.d. Cauchy random variables.
+\begin{prop}
+DDDD
+\end{prop}
+
+Therefore, The estimation error of ${V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m}^{\top} V^{(k-1)}$ is 
+\begin{align*}
+& \quad \| {V^{(k-1)}}^\top \hat{M}V^{(k-1)} - {V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m}^{\top} V^{(k-1)} \|_2 \\
+& \le \|{V^{(k-1)}}^\top \hat{M}V^{(k-1)} - {V^{(k-1)}}^\top MV^{(k-1)}\|_2 + \| {V^{(k-1)}}^\top MV^{(k-1)} -{V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m}^{\top} V^{(k-1)} \|_2 \\
+&  = \|{V^{(k-1)}}^\top \hat{M}V^{(k-1)} - {V^{(k-1)}}^\top MV^{(k-1)}\|_2 + \|{V^{(k-1)}}^\top\bar{R}_{m+1:d}\Lambda_{m+1:d}\bar{R}_{m+1:d}^{\top} V^{(k-1)} \|_2 \\
+& \le Q + E_{k-1}^2 |Z_i|^2
+& \le 
+\end{align*}
+Therefore, by Claim 4.8 of \citet{vempala2014max}, 
+\[
+E_k \le .
+\]
+Thus Line 6 returns a matrix $\hat{R}$ s.t.
+\[
+\|\hat{R} - R^*R\|_2 \le 
+\]
+Therefore,

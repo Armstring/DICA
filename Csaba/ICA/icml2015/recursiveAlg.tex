@@ -18,9 +18,9 @@ In this section, we adapt the idea of \citet{vempala2014max} and apply it to our
 \STATE Sample $\psi$ from a $d$-dimensional standard Gaussian distribution;
 \STATE Evaluate $\nabla^2\hat{f}(\psi) = \hat{G}(\psi)$; \\
 \STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
-\STATE Compute $\tilde{x}(t) = \hat{B}^{-1}x(t)$ for $1\le t \le T$;
+\STATE Compute $\hat{y}(t) = \hat{B}^{-1}x(t)$ for $1\le t \le T$;
 \STATE Let $P = I_d$;
-\STATE Compute $R = \text{Recur}(\tilde{x}, P)$;
+\STATE Compute $R = \text{Recur}(\hat{y}, P)$;
 \STATE Return $\hat{B}R$;
 \end{algorithmic}
 \end{algorithm}
@@ -34,8 +34,8 @@ In this section, we adapt the idea of \citet{vempala2014max} and apply it to our
 \STATE if $k==1$, Return $P$;
 \STATE Sample $\phi_1$ and $\phi_2$ independently from a standard Gaussian distribution of dimension $d$;
 \STATE Evaluate $\nabla^2\hat{f}(\phi_1)$ and $\nabla^2\hat{f}(\phi_2)$, 
-\STATE Compute $\hat{M} = (\nabla^2 \hat{f}(\phi_1))(\nabla^2\hat{f}(\phi_2))^{-1}$;
-\STATE Compute $\hat{T} = P^{\top} \hat{M} P$;
+\STATE Compute $\hat{T} = (\nabla^2 \hat{f}(\phi_1))(\nabla^2\hat{f}(\phi_2))^{-1}$;
+\STATE Compute $\hat{M} = P^{\top} \hat{M} P$;
 \STATE Compute all the eigen-decomposition of $\hat{T}$, its eigenvalues$\{\sigma_1,\ldots,\sigma_d\}$ where $\sigma_1\ge\ldots\ge \sigma_k$ and their corresponding eigenvectors $\{\mu_1,\ldots, \mu_k\}$;
 \STATE Find the index $m = \arg\max \sigma_m - \sigma_{m+1}$; 
 \STATE Let $P_1 = (\mu_1,\ldots,\mu_m)$, and $P_2 = (\mu_{m+1},\ldots,\mu_k)$;
