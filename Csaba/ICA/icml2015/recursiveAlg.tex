@@ -6,11 +6,47 @@ Recently \citet{vempala2014max} proposed an idea to improve the sample complexit
 The idea is that instead of recovering all the columns of $A$ in one eigen-decomposition, it only decompose the whole space into two sub-spaces, 
 then recursively decompose each subspaces until it is 1-dimensional.
 The insight of this recursive procedure is when the maximal spacing of the eigenvalues are much large than  the minimal one (e.g. improve from $\frac{\delta}{d^2}$ to $\frac{\delta}{\log d}$), then even the error may accumulated in the recursion, overall we still have better results. 
+However, this algorithm is based on the assumption that the mixing matrix is orthonormal, so that the projection to its subspaces can always eliminate some component of the source signals. 
 
+In this section, we adapt the idea of \citet{vempala2014max} and apply it to our algorithms. Due to space limit, we will only take the simplest recursive algorithm, recursive version of HKICA, as an example.
+\begin{algorithm} 
+\caption{recursive version of HKICA (HKICA\_recur)}
+\label{alg:HKICA_recur}
+\begin{algorithmic}[1]
+\INPUT $x(t)$ for $1\le t \le T$. 
+\OUTPUT An estimation of the mixing matrix $A$. 
+\STATE Sample $\psi$ from a $d$-dimensional standard Gaussian distribution;
+\STATE Evaluate $\nabla^2\hat{f}(\psi) = \hat{G}(\psi)$; \\
+\STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
+\STATE Compute $\tilde{x}(t) = \hat{B}^{-1}x(t)$ for $1\le t \le T$;
+\STATE Let $P = I_d$;
+\STATE Compute $R = \text{Recur}(\tilde{x}, P)$;
+\STATE Return $\hat{B}R$;
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm} 
+\caption{The `Recur' Helper}
+\label{alg:recur}
+\begin{algorithmic}[1]
+\INPUT $x(t)$ for $1\le t \le T$, a projection matrix $P\in \R^{d\times k}$ ($d\ge k$). 
+\OUTPUT An estimation of the mixing matrix $A\in \R^{d\times k}$. 
 
+\STATE if $k==1$, Return $P$;
+\STATE Sample $\phi_1$ and $\phi_2$ independently from a standard Gaussian distribution of dimension $d$;
+\STATE Evaluate $\nabla^2\hat{f}(\phi_1)$ and $\nabla^2\hat{f}(\phi_2)$, 
+\STATE Compute $\hat{M} = (\nabla^2 \hat{f}(\phi_1))(\nabla^2\hat{f}(\phi_2))^{-1}$;
+\STATE Compute $\hat{T} = P^{\top} \hat{M} P$;
+\STATE Compute all the eigen-decomposition of $\hat{T}$, its eigenvalues$\{\sigma_1,\ldots,\sigma_d\}$ where $\sigma_1\ge\ldots\ge \sigma_k$ and their corresponding eigenvectors $\{\mu_1,\ldots, \mu_k\}$;
+\STATE Find the index $m = \arg\max \sigma_m - \sigma_{m+1}$; 
+\STATE Let $P_1 = (\mu_1,\ldots,\mu_m)$, and $P_2 = (\mu_{m+1},\ldots,\mu_k)$;
+\STATE Compute $W_1 = \text{Recur} (x, PP_1)$, and  $W_2 = \text{Recur} (x, PP_2)$;
+\STATE Return $[W_1,W_2]$;
+\end{algorithmic}
+\end{algorithm}
 
-Note that this idea is general enough, and can be also applied to our algorithm, as follows. 
-
+\begin{remark}
+Other algorithms can be modified into a recursive version in a similar way, based on the idea of mapping the estimated Hessian matrix into a small subspace by $T = P^{\top}MP$. 
+\end{remark}
 \begin{thm}
 \label{thm:recursiveAlg}
 DDDDD
