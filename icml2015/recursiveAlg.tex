@@ -20,8 +20,8 @@ In this section, we adapt the idea of \citet{vempala2014max} and apply it to our
 \STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
 \STATE Compute $\hat{y}(t) = \hat{B}^{-1}x(t)$ for $1\le t \le T$;
 \STATE Let $P = I_d$;
-\STATE Compute $R = \text{Recur}(\hat{y}, P)$;
-\STATE Return $\hat{B}R$;
+\STATE Compute $\hat{R} = \text{Recur}(\hat{y}, P)$;
+\STATE Return $\hat{B}\hat{R}$;
 \end{algorithmic}
 \end{algorithm}
 \begin{algorithm} 
@@ -46,8 +46,20 @@ In this section, we adapt the idea of \citet{vempala2014max} and apply it to our
 
 \begin{remark}
 Other algorithms can be modified into a recursive version in a similar way, based on the idea of mapping the estimated Hessian matrix into a small subspace by $T = P^{\top}MP$. 
+\qed
 \end{remark}
 \begin{thm}
 \label{thm:recursiveAlg}
-DDDDD
+Given the conditions in Theorem \ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with a guaranteed polynomial error bound.
 \end{thm} 
+\begin{remark}
+In our result, the recursive version gets worse error bound, compared to the one-pass version. The reason is that the events $\Ephi$ and $\Ez$ could be required to hold for $d$ times. Therefore, for the final result to hold for probability at least $1-\delta$, the error bound for each recursion has to hold with probability at least $1-\frac{1}{d}\delta$. 
+
+Recall that in our case we have lower bound for the minimal eigenvalue spacing as $O(\frac{1}{d^2}\delta)$, and lower bound for maximal eigenvalue spacing as $O(\frac{1}{d}\delta)$. By requiring it holds for higher probability ($1-\frac{1}{d}\delta$), the maximal gap actually reduced to $O(\frac{1}{d^2}\delta)$, same order as the one-pass version, leading to the same error bound.
+
+Moreover, for the event $E\phi$, the recursive version essentially require the lower bound $\ell$ is $d$ times smaller than the one-pass version, which cause high degrees of $d$ in the error bound.
+
+For the recursive version to help, one possible way is to prove that for each recursion, we only require the conclusion holds with probability at least $1-\frac{1}{\log d}\delta$, rather than $1-\frac{1}{d}\delta$. 
+Another potential improvement is developing a lower bound for the maximal spacing that is sub-polynomial in $d$, e.g. $\frac{1}{\log d}\delta$, and sub-polynomial dependence of $\delta$ in the lower bound in the Event $\Ephi$, e.g. $\frac{1}{\log \frac{1}{\delta}}$.    
+\qed
+\end{remark}
