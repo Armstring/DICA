@@ -763,31 +763,69 @@ where $\Lambda_{1:m}$ and $\Lambda_{m+1:d}$ are the first $m\times m$  and last 
 Recall that the diagonal elements of $\Lambda$ is the square of Cauchy random variables. The following proposition characterize the maximal spacing of i.i.d. Cauchy random variables.
 \begin{prop}
 \label{prop:maximalGapCauchy}
-Given $\{Z_1,\ldots, Z_d\}$ are i.i.d. Cauchy random variables, with probability at least $1-3\delta$, the following inequality hold simultaneously.
-\begin{itemize}
-\item $\max_i\min_{j\neq i} | Z_i - Z_j| \ge \ell$;
-\item $ \max_i |Z-i| \le L$;
-\item $\min |Z_i| \ge \ell$;
-\end{itemize} 
-where $\ell = \frac{\pi}{2(d+1)}\delta^{1/d}$ and $ L = \frac{3d}{\pi\delta}$.
+Given $\{Z_1,\ldots, Z_d\}$ are i.i.d. Cauchy random variables, with probability at least $1-2\delta$, 
+\[
+\max_i \min_{j\neq i} |Z_i^2 - Z_j^2| \ge \frac{2(d-1)}{\pi^2 \log(d/\delta)}\delta.
+\]
+Also, with probability at least $1-\delta$,
+\[
+\max_i |Z_i| \le \frac{3d}{\pi\delta}.
+\]
 \end{prop}
 \begin{proof}
-Note that the first inequality is about the maximal spacing.
+Let $Z_{(1)}\le \ldots \le Z_{(d)}$ denote the order statistics of $Z_i$. 
+WLOG, we fold the negative part of the Cauchy distribution to its positive part, leading to a density function $p_Z(z) = \frac{2}{\pi (1+z^2)}$ for $0\le z$.
+Note that 
 \[
-\Prob{\max_i\min_{j\neq i} | Z_i - Z_j| \ge \ell} \ge \Prob{\exists i, |Z_i| \ge d\ell} = 1-\Prob{\forall i, |Z_i| \le d\ell} \le 1- (\frac{2d\ell}{\pi})^d.
+\max_i \min_{i\neq j} |Z_i^2 - Z_j^2| \ge |Z_{(d)}^2 - Z_{(d-1)}^2| \ge 2Z_{(d-1)} \left(Z_{(d)} - Z_{(d-1)}\right).
 \]
-Picking $\ell = \frac{\pi}{2d}\delta^{1/d}$, with probability at least $1-\delta$, 
+We will bound both terms in the RHS.
+
+To bound, $Z_{(d-1)}$, recall that for a folded Cauchy random variable $Z$ and $L\ge \pi$,
 \[
-\max_i\min_{j\neq i} | Z_i - Z_j| \ge \frac{\pi}{2d}\delta^{1/d}.
+\Prob{Z \le L} = \frac{2}{\pi} \arctan(L) \le 1- \frac{1}{\pi L}.
+\] 
+Therefore, if $\frac{d-1}{\log \frac{d}{\delta}} \ge \pi$,
+\[
+\Prob{Z_{(d-1)} \ge L} \ge 1-d\Prob{Z\le L}^{d-1} \ge 1- d\left(1-  \frac{1}{\pi L}\right)^{d-1}.
+\]
+Picking $L = \frac{d-1}{\pi\log \frac{d}{\delta}}$,
+\[
+\Prob{Z_{(d-1)} \ge L} \ge 1- d(1- \frac{\log \frac{d}{\delta}}{d-1})^{d-1} \ge 1-d\exp(\log \frac{\delta}{d}) = 1-\delta.
+\]
+Thus, with probability at least $1- \delta$, 
+\[
+Z_{(d-1)} \ge \frac{d-1}{\pi\log \frac{d}{\delta}}.
 \]
 
-Similarly, picking $\ell = \frac{\pi}{2d}\delta^{1/d}$,
+On the other hand, let $U_{(1)}, \ldots, U_{(d)}$ denote the order statistics of $d$ i.i.d random variables from the Uniform(0,1) distribution, and $E_{(1)}, \ldots, E_{(d)}$ denote the order statistics from the exponential distribution with density function $p_E(x) = \pi e^{-\pi x}$. 
+We will bound the probability of $Z_{(d)} - Z_{(d-1)} \ge L$ by $E_{(d)} - E_{(d-1)} \ge L$.
+
+First by the Quantile Transformation Theorem \citep{dasgupta2011finite}, the join distribution of $(F_{\text{C}}(Z_{(1)}), \ldots, F_{\text{C}}(Z_{(d)}))$ has the same distribution of $(U_{(1)}, \ldots, U_{(d)})$. So is the distribution of $(F_{\text{E}}(E_{(1)}), \ldots, F_{\text{E}}(E_{(d)}))$. 
+Here $F_{\text{C}}(\cdot)$ and $F_{\text{E}}(\cdot)$ are the c.d.f. of the folded Cauchy distribution and the exponential distribution with parameter $\pi$. 
+Recall $F_{\text{C}}(t) = \frac{2}{\pi}\arctan(t)$ and $F_{\text{E}}(t) = 1-e^{-\pi t}$. 
+Therefore,
 \[
-\Prob{\min_i |Z_i| \ge \ell} \le (1- \frac{2\ell}{\pi})^d \ge (1-\frac{\delta^{1/d}}{d})^d \ge (1-\frac{\delta}{d})^d \ge (1-\frac{\delta}{d})e^{-\delta} \ge 1-\frac{d+1}{d}\delta.
+\Prob{ Z_{(d)} - Z_{(d-1)} \ge t} = \Prob{\tan\left(\frac{\pi}{2}U_{(d)} \right) - \tan\left(\frac{\pi}{2}U_{(d-1)}\right) \ge t },
 \]
-Therefore, with probability at least $1-\delta$, 
+and 
 \[
-\min_i |Z_i| \ge \frac{\pi}{2d}(\frac{d}{d+1}\delta)^{1/d}\ge \frac{\pi}{2(d+1)}\delta. 
+\Prob{E_{(d)} - E_{(d-1)} \ge t} = \Prob{\frac{1}{\pi} \left( \log \frac{1}{1-U_{(d)}} - \log \frac{1}{1-U_{(d-1)}} \right) \ge t}.
+\]
+To bound $\Prob{ Z_{(d)} - Z_{(d-1)} \ge t}$ by $\Prob{E_{(d)} - E_{(d-1)} \ge t}$, it is suffice to prove 
+\[
+\tan\left(\frac{\pi}{2}U_{(d)} \right) - \tan\left(\frac{\pi}{2}U_{(d-1)}\right) \ge \log \frac{1}{1-U_{(d)}} - \log \frac{1}{1-U_{(d-1)}} .
+\] 
+Let $f(x) = \tan\left(\frac{\pi}{2}x \right) - \tan\left(\frac{\pi}{2}U_{(d-1)}\right)$, and $g(x) = \log \frac{1}{1-x} - \log \frac{1}{1-U_{(d-1)}}$ for $1\ge x\ge U_{(d-1)}\ge 0 $.
+Clearly, $f(U_{(d-1)}) = g(U_{(d-1)})$. Taking the derivative of both functions, by simple algebraic computation, $f'(x) \ge g'(x)$.
+Therefore,
+\[
+\Prob{ Z_{(d)} - Z_{(d-1)} \ge t} \ge \Prob{E_{(d)} - E_{(d-1)} \ge t} = e^{-\pi t} \ge 1-\pi t.
+\]
+Thus, with probability at least $1-\delta$, $Z_{(d)} - Z_{(d-1)} \ge \frac{\delta}{\pi}$.
+Therefore, with probability at least $1-2\delta$,
+\[
+\max_i \min_{j\neq i} |Z_i^2 - Z_j^2| \ge \frac{2(d-1)}{\pi^2 \log(d/\delta)}\delta.
 \]
 
 Lastly, for a Cauchy random variable $Z$, $\Prob{|Z|\le \frac{3L}{\pi}}  = \frac{2}{\pi}\arctan(\frac{3L}{\pi})$.
@@ -803,6 +841,7 @@ Therefore, picking $L = \frac{d}{\delta}$, the probability that $\max_i |Z_i| \l
 \[
 \left(1-\frac{1}{L}\right)^d \le 1-\frac{d}{L} \le 1-\delta.
 \]
+
 \end{proof}
 Denote the Event of Proposition \ref{prop:maximalGapCauchy} as $\Ez$.
 Therefore, by Proposition \ref{prop:maximalGapCauchy}, with probability at least $1-3\delta$, 
