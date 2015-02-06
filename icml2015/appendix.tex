@@ -734,14 +734,7 @@ Then by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ 
 \]
 \end{proof}
 \subsection{Proof of Theorem \ref{thm:recursiveAlg}}
-Firstly note that this algorithm compute an estimation of the mixing matrix. 
-By Lemma \ref{lem:BhatinverseB}, $\hat{B}B^{-1}$ is close to some orthonormal matrix $R^*$.
-Define $y = R^*B^{-1}x = R^*R K^{-1/2}D_{\phi}^{-1/2}s + R^*B^{-1}\eps$. Recall that this procedure  is exactly the qusi-whitening in Section \ref{subsec:quasiwhite}. Therefore, 
-$\hat{y}$ is the empirical observation of $y$ which is a orthonormal mixture of independent sources contaminated by Gaussian Noise. 
-Since the mixing matrix is orthonormal, we can apply the recursion idea of \citet{vempala2014max} to recover $R^*R$. 
-Then $\hat{B}R^*R= BB^{-1}\hat{B}R^*R \approxeq AD_{\phi}^{1/2}K^{1/2}R^{\top} (R^*)^{\top}R^*R = AD_{\phi}^{1/2}K^{1/2}$, thus recover $A$ up to column permutation and scaling. 
-
-Moreover, note that the calculation of $M$ in the helper function `Recur' is exactly the $M$ in the algorithm of DICA (we call it recursion version of HKICA, because in the helper function `Recur', it has the same format as HKICA).
+Note that the calculation of $M$ in the helper function `Recur' is exactly the $M$ in the algorithm of DICA (we call it recursion version of HKICA, because in the helper function `Recur', it has the same format as HKICA).
 Therefore, by Lemma \ref{lem:Tvariantion},
 \[
 \|M-\hat{M}\|_2 \le Q.
