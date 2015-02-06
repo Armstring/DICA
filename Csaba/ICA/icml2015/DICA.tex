@@ -312,7 +312,7 @@ other algorithms, FastICA \citep{hyvarinen1999fast} and HKICA \citep{hsu2013lear
 \label{fig:demo}
 \centering
 	\includegraphics[width = \linewidth]{demo}
-\caption{Example of ICA for deterministic sources: The first two rows show the source signals $s_1(t)=\lfloor t-2\lfloor t/2 \rfloor \rfloor-0.5$, $s_2=\cos(t)$, the next two rows present the observations with mixing matrix matrix $A=\left(\begin{array}{cc}1&-2\\2.6&1.3\end{array}\right)$. The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $s(t)$ at 2000 uniformly spaced points in the interval $[0,15]$.}
+\caption{Example of ICA for deterministic sources: The first two rows show the source signals $s_1(t)=\lfloor t-2\lfloor t/2 \rfloor \rfloor-0.5$, $s_2=\cos(t)$, the next two rows present the observations with mixing matrix matrix $A=\left(\begin{array}{cc}1&-2\\2.6&1.3\end{array}\right)$. The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $s(t)$ at 10000 uniformly spaced points in the interval $[0,15]$.}
 \end{figure}
 
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
@@ -874,13 +874,25 @@ Experimental results shows that DICA\_Mod consistently performs better than DICA
 \fi
 
 \subsection{Recursive versions}
-Recently \citet{vempala2014max} proposed an idea to improve the sample complexity of Fourier PCA algorithm \citep{goyal2014fourier}. 
-The idea is that instead of recovering all the columns of $A$ in one eigen-decomposition, it only decompose the whole space into two sub-spaces, 
+Recently \citet{vempala2014max} proposed a recursion idea to improve the sample complexity of the Fourier PCA algorithm \citep{goyal2014fourier}. 
+Instead of recovering all the columns of $A$ in one eigen-decomposition, the recursive algorithm only decomposes the whole space into only two sub-spaces according to the maximal spacing of the eigenvalues, 
 then recursively decompose each subspaces until it is 1-dimensional.
 The insight of this recursive procedure is when the maximal spacing of the eigenvalues are much large than  the minimal one (e.g. improve from $\frac{\delta}{d^2}$ to $\frac{\delta}{\log d}$), then even the error may accumulated in the recursion, overall we still have better results. 
 However, this algorithm is based on the assumption that the mixing matrix is orthonormal, so that the projection to its subspaces can always eliminate some component of the source signals. 
 
-In this section, we adapt the idea of \citet{vempala2014max} and apply it to our algorithms. Due to space limit, we will only take the simplest recursive algorithm, recursive version of HKICA, as an example.
+We adapt the above idea to our algorithms. Due to space limit, we will only take the simplest recursive algorithm, recursive version of HKICA, as an example.
+
+To force a orthonormal mixing matrix, we will first compute the square root matrix $B$ of  $\nabla^2f(\psi) = AD_{\psi}KA^{\top}$. 
+Thus $B = AD_{\psi}^{1/2}K^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
+Transform our observation by $B^{-1}$, we then have the new observation $y(t) = B^{-1}x(t) + B^{-1}\eps(t) = RD_{\psi}^{1/2}K^{1/2}s(t) + B^{-1}\eps(t)$. 
+Note that $B^{-1}\eps(t)$ is still a Gaussian noise. Also $D_{\psi}^{1/2}K^{1/2}$ is diagonal, thus $RD_{\psi}^{1/2}K^{1/2}s(t)$ is an orthonormal mixture of independent sources.
+We then apply the recursive algorithm to recover the mixing matrix $R$. Finally, $BR$ gives an estimation of $A$ up to scaling.
+
+To recover $R$ using recursive matrix, we follow the idea of HKICA (and DICA) to compute two Hessian matrices $T_1 = RD_{\psi}^{-1}\Lambda_1R^{\top}$ and $T_2 = RD_{\psi}^{-1}\Lambda_2R^{\top}$. 
+Then instead of computing the eigen-decomposition of $T = T_1/T_2$ (as in HKICA), we only decompose its eigen-space into two subspaces, according to the maximal spacing of the eigenvalues of $T$. 
+The `Recur' helper takes a projection matrix $P$ of a subspace spanned by some columns of $R$ (WLOG we assume it is the first $k$ columns of $R$). After the calculation $T$, we project $T$ by $M = P^{\top}TP$. Thus $PMP^{\top}$ only consists the eigen-space defined by $P$. 
+Lastly by separating the eigenvectors of $M$ according to its eigenvalues into $PP_1$ and $PP_2$, the `Recur' helper decompose the subspaces into two smaller subspaces.  
+
 \begin{algorithm} 
 \caption{recursive version of HKICA (HKICA\_recur)}
 \label{alg:HKICA_recur}
@@ -907,8 +919,8 @@ In this section, we adapt the idea of \citet{vempala2014max} and apply it to our
 \STATE Sample $\phi_1$ and $\phi_2$ independently from a standard Gaussian distribution of dimension $d$;
 \STATE Evaluate $\nabla^2\hat{f}(\phi_1)$ and $\nabla^2\hat{f}(\phi_2)$, 
 \STATE Compute $\hat{T} = (\nabla^2 \hat{f}(\phi_1))(\nabla^2\hat{f}(\phi_2))^{-1}$;
-\STATE Compute $\hat{M} = P^{\top} \hat{M} P$;
-\STATE Compute all the eigen-decomposition of $\hat{T}$, its eigenvalues$\{\sigma_1,\ldots,\sigma_d\}$ where $\sigma_1\ge\ldots\ge \sigma_k$ and their corresponding eigenvectors $\{\mu_1,\ldots, \mu_k\}$;
+\STATE Compute $\hat{M} = P^{\top} \hat{T} P$;
+\STATE Compute all the eigen-decomposition of $\hat{M}$, its eigenvalues$\{\sigma_1,\ldots,\sigma_d\}$ where $\sigma_1\ge\ldots\ge \sigma_k$ and their corresponding eigenvectors $\{\mu_1,\ldots, \mu_k\}$;
 \STATE Find the index $m = \arg\max \sigma_m - \sigma_{m+1}$; 
 \STATE Let $P_1 = (\mu_1,\ldots,\mu_m)$, and $P_2 = (\mu_{m+1},\ldots,\mu_k)$;
 \STATE Compute $W_1 = \text{Recur} (x, PP_1)$, and  $W_2 = \text{Recur} (x, PP_2)$;
@@ -917,13 +929,17 @@ In this section, we adapt the idea of \citet{vempala2014max} and apply it to our
 \end{algorithm}
 
 \begin{remark}
-Other algorithms can be modified into a recursive version in a similar way, based on the idea of mapping the estimated Hessian matrix into a small subspace by $T = P^{\top}MP$. 
+Other algorithms can be modified into a recursive version in a similar way, based on the idea of mapping the estimated Hessian matrix into a small subspace by $M = P^{\top}TP$. 
 \qed
 \end{remark}
 \begin{thm}
 \label{thm:recursiveAlg}
 Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with a guaranteed polynomial error bound.
 \end{thm} 
+\begin{remark}
+The recursion idea improves the sample complexity of the eigen-decomposition (to recover the orthonormal mixing matrix $R$). However, the error carried from quasi-whitening dominates the total error. 
+\end{remark}
+\if0
 \begin{remark}
 In our result, the recursive version gets worse error bound, compared to the one-pass version. The reason is that the events $\Ephi$ and $\Ez$ could be required to hold for $d$ times. Therefore, for the final result to hold for probability at least $1-\delta$, the error bound for each recursion has to hold with probability at least $1-\frac{1}{d}\delta$. 
 
@@ -935,7 +951,7 @@ For the recursive version to help, one possible way is to prove that for each re
 Another potential improvement is developing a lower bound for the maximal spacing that is sub-polynomial in $d$, e.g. $\frac{1}{\log d}\delta$, and sub-polynomial dependence of $\delta$ in the lower bound in the Event $\Ephi$, e.g. $\frac{1}{\log \frac{1}{\delta}}$.    
 \qed
 \end{remark}
-
+\fi
 \section{Experimental Results}
 \label{sec:ExpRes}
 We compare the empirical performances of several ICA algorithms in this section. 
@@ -1034,7 +1050,9 @@ We report the reconstruction errors for different kinds of mixing matrices and n
 \begin{figure*}[pt]
 \label{fig:Error}
 \centering
-	\includegraphics[width = \linewidth]{error}
+	\includegraphics[width = \linewidth]{error2}
+	\includegraphics[width = \linewidth]{error3}
+	\includegraphics[width = \linewidth]{error4}
 \caption{Reconstruction Error}
 \end{figure*}
 
