@@ -820,17 +820,8 @@ We show that the answers to these questions are positive in Section \ref{subsec:
 \label{subsec:gammaR}
 Note that $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
 Thus, $\{\phi_1^{\top}R_1, \cdots, \phi_1^{\top}R_d,$ $\phi_2^{\top}R_1, \cdots, \phi_2^{\top}R_d\}$ are $2d$ independent standard Gaussian random variables. 
-Let $Z_i = \frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
-
-Moreover for any $1\le i, j \le d$, to analyze $\left\vert Z_i^2 - Z_j^2\right\vert
-$, WLOG assume both $Z_i$ and $Z_j$ are positive. Then, 
-\begin{align*}
-\gamma_R =	& \min_{i\neq j} \left\vert Z_i^2 - Z_j^2 \right\vert \\
-	=		& \min_{i\neq j}\left\vert Z_i - Z_i \right\vert	\left\vert Z_i + Z_i \right\vert \\
-	\ge 	& 2\min_i\vert Z_i\vert\min_{i\neq j} \left\vert Z_i - Z_j \right\vert.
-\end{align*}
+Let $Z_i = \frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. We would need a high probability lower bound for $\gamma_R$
 %Recall that on the event $\Ephione$, $\min_i\vert Z_i \vert \ge \frac{\sqrt{2\pi}}{2d}$. 
-Here $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$ is the minimal spacing of Cauchy random variables.
 \begin{lemma}
 \label{lem:ConstantProb}
 With Probability at least $1-\delta$ , the following inequalities holds simultaneously.
@@ -839,7 +830,7 @@ With Probability at least $1-\delta$ , the following inequalities holds simultan
 \item $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{\pi}A_{(2,\min)}}{5\sqrt{2}(d+1)} \delta$;
 \item $\min_i \{|\phi_2^{\top}R_i|\} \ge \frac{\sqrt{\pi}}{5\sqrt{2}(d+1)}\delta$;
 \item $\|\phi_1\|_2, \|\phi_2\|_2 \le \sqrt{2}\left(\sqrt{\log(\frac{5}{\delta})}+\sqrt{d}\right)$;
-\item $\gamma_R \ge\frac{\pi^2}{100d^2(d+1)^2}\delta^2$.
+\item $\gamma_R \ge\frac{\delta}{2d^2}$.
 \end{itemize}
 \vspace{-2mm}
 \end{lemma}
@@ -863,7 +854,7 @@ where $C$ is an upper bound for the signal function $s$.
 Moreover, on the event $\E$, all constants $1/\ell_l$, $L_u$ and $\gamma_R$ are upper bounded in polynomial of $\{ 1/\sigma_{\min}, 1/\delta, d\}$. 
 
 In Summary, we have the final result, as follows.
-\if0
+
 \subsection{A modified version of DICA}
 \label{subsec:modifiedDICA}
 We would expect that DICA will achieve smaller error in the case of extreme coherence, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
@@ -896,7 +887,6 @@ Given that $\phi^{\top}R_i$'s are far separated from each other, we would intuit
 However, we don't have a rigorous proof for this algorithm.
 Experimental results shows that DICA\_Mod consistently performs better than DICA. \qed
 \end{remark}
-\fi
 
 \subsection{Recursive versions}
 Recently \citet{vempala2014max} proposed a recursion idea to improve the sample complexity of the Fourier PCA algorithm \citep{goyal2014fourier}. 
@@ -959,11 +949,18 @@ Other algorithms can be modified into a recursive version in a similar way, base
 \end{remark}
 \begin{thm}
 \label{thm:recursiveAlg}
-Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with a guaranteed polynomial error bound.
+Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with an error bound
+\begin{align*}
+& \quad \| \hat{A} - ADP\|_2 \\
+\le & \poly{d.\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}(A)}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}(A)}(Q^2 + \bar{\xi}).
+\end{align*}
+Here $D$ is some diagonal matrix and $P$ is some permutation matrix.
 \end{thm} 
 \begin{remark}
-The recursion idea improves the sample complexity of the eigen-decomposition (to recover the orthonormal mixing matrix $R$). However, the error carried from quasi-whitening dominates the total error. 
+Note that given large enough $T$, the term $Q^2$ will be dominated by $\bar{\xi}$, which is the error carried over from quasi-whitening.
+The recursion idea improves the sample complexity of the eigen-decomposition (to recover the orthonormal mixing matrix $R$).  
 \end{remark}
+
 \if0
 \begin{remark}
 In our result, the recursive version gets worse error bound, compared to the one-pass version. The reason is that the events $\Ephi$ and $\Ez$ could be required to hold for $d$ times. Therefore, for the final result to hold for probability at least $1-\delta$, the error bound for each recursion has to hold with probability at least $1-\frac{1}{d}\delta$. 
