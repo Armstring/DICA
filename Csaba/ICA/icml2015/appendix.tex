@@ -841,7 +841,6 @@ Therefore, picking $L = \frac{d}{\delta}$, the probability that $\max_i |Z_i| \l
 \[
 \left(1-\frac{1}{L}\right)^d \le 1-\frac{d}{L} \le 1-\delta.
 \]
-
 \end{proof}
 Denote the Event of Proposition \ref{prop:maximalGapCauchy} as $\Ez$.
 Therefore, by Proposition \ref{prop:maximalGapCauchy}, with probability at least $1-3\delta$, 
@@ -852,21 +851,21 @@ the estimation error of ${V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m
 &  = \|{V^{(k-1)}}^\top \hat{M}V^{(k-1)} - {V^{(k-1)}}^\top MV^{(k-1)}\|_2 + \|{V^{(k-1)}}^\top\bar{R}_{m+1:d}\Lambda_{m+1:d}\bar{R}_{m+1:d}^{\top} V^{(k-1)} \|_2 \\
 & \le Q + E_{k-1}^2 \frac{9d^2}{\pi^2\delta^2} 
 \end{align*}
-Also, the minimal spacing of the diagonal elements of $\Lambda_{1:m}$ satisfying
+Also, with probability at least $1-2\delta$ the maximal spacing of the diagonal elements of $\Lambda_{1:m}$ satisfying
 \[
-\max_i\min_{j\neq i} |Z_i|^2 - |Z_j^2| \ge 2\min_i |Z_i| \max_i\min_{j\neq j} |Z_i - Z_j| \ge \frac{\pi^2}{2(d+1)^2}\delta^2.
+\max_i\min_{j\neq i} |Z_i|^2 - |Z_j^2| \ge 2\min_i |Z_i| \max_i\min_{j\neq j} |Z_i - Z_j| \ge \frac{2(d-1)}{\pi^2 \log(d/\delta)}\delta.
 \] 
 By Wedin's Theorem \citep{stewart1990matrix}, 
 \[
-E_k \le \frac{Q + E_{k-1}^2 \frac{9d^2}{\pi^2\delta^2} }{\frac{\pi^2}{2(d+1)^2}\delta^{2/d}} = \frac{2(d+1)^2Q}{\pi^2\delta^{2/d}} + \frac{18d^2(d+1)^2}{\pi^4\delta^{2+2/d}}E_{k-1}^2.
+E_k \le \frac{Q + E_{k-1}^2 \frac{9d^2}{\pi^2\delta^2} }{\frac{2(d-1)}{\pi^2 \log(d/\delta)}\delta} = \frac{\pi^2 \log(d/\delta)Q}{2(d-1)\delta} + \frac{9d^2 \log(d/\delta)}{2(d-1)\delta^3}E_{k-1}^2.
 \]
-Therefore, by Claim 4.8 of \citet{vempala2014max}, given that $Q\le \frac{\pi^6\delta^{2+4/d}}{36d^2(d+1)^4}$, for $0\le k\le d$,
+Therefore, by Claim 4.8 of \citet{vempala2014max}, given that $Q\le  \frac{81d^4\log^2(d/\delta)}{2(d-1)\pi^2\delta^5\log(d/\delta)}$, for $0\le k\le d$,
 \[
-E_k \le \frac{4(d+1)^2}{\pi^2\delta^{2/d}}Q. 
+E_k \le \frac{\pi^2 \log(d/\delta)}{(d-1)\delta} Q. 
 \]
 Thus Line 6 returns a matrix $\hat{R}$ s.t.
 \[
-\|\hat{R} - R^*R\|_2 = 2-2\cos(\Theta)= 2 - 2\sqrt{1-\sin^2(\Theta)} \le 2 - 2\sqrt{1-\frac{16(d+1)^4}{\pi^4\delta^{4/d}}Q^2}
+\|\hat{R} - R^*R\|_2 = 2-2\cos(\Theta)= 2 - 2\sqrt{1-\sin^2(\Theta)} \le 2 - 2\sqrt{1-\frac{\pi^4 \log^2(d/\delta)}{(d-1)^2\delta^2} Q^2}
 \]
 Therefore,
 \begin{align*}
@@ -877,17 +876,22 @@ Therefore,
 & \le  \|B\|_2\|B^{-1}\hat{B}\|_2\|\hat{R} - R^*R\|_2 +\|B\|_2\|B^{-1}\hat{B} - {R^*}^{\top}\|_2.
 \end{align*}
 
-Note that by Lemma \ref{lem:dmin}, 
+By Lemma \ref{lem:dmin}, 
  $ \|B\|_2 \le \sigma_{\max}(A)L_uA_{(2,\max)}\kappa_{\max}^{1/2}$. 
 Similarly by Lemma \ref{lem:BhatinverseB}, $\| B^{-1}\hat{B}\|_2 \le (1+\bar{\xi})^{1/2}$. 
 Also, given that $\bar{xi} \le 1/2$, by Lemma \ref{lem:inversevariation}, $\|B^{-1}\hat{B} -{R^*}^{\top}\|_2 \le 2\bar{\xi}$.
 Adding all the terms together,
 \[
-\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le \sigma_{\max}(A)L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\left(  2 - 2\sqrt{1-\frac{16(d+1)^4}{\pi^4\delta^{4/d}}Q^2}\right) + 2\bar{\xi}\right).
+\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le \sigma_{\max}(A)L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\left(  2 - 2\sqrt{1-\frac{\pi^4 \log^2(d/\delta)}{(d-1)^2\delta^2} Q^2}\right) + 2\bar{\xi}\right).
 \] 
+Note that for a small enough $\eps$, $\sqrt{1-\eps} \ge 1-\frac{2\eps}{3}$. Thus, given large enough $T$ such that $Q$ is small enough,
+\[
+\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le \sigma_{\max}(A)L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\frac{4\pi^4 \log^2(d/\delta)}{3(d-1)^2\delta^2} Q^2+ 2\bar{\xi}\right).
+\]
 
-Note that we need Event $\Epsi$ to be satisfied once, and $\Ephi$ and $\Ez$ for at most $d$ times. 
-Thus, given the conditions of Theorem \ref{thm:finalRes}, with probability $1-7d\delta$, we have a polynomial error bound. 
+It remains to bound the probability that the above result holds.
+We need Event $\Epsi$ to be satisfied once, and $\Ephi$ and $\Ez$ for at most $d$ times (we ignore the $\log d$ factor here). 
+Thus, given the conditions of Theorem \ref{thm:finalRes}, with probability $1-7d\delta$, the above error bound holds. 
 \subsection{Proofs of Lemma \ref{lem:dmin}, Lemma \ref{lem:CauchyGap} and Lemma \ref{lem:ConstantProb}}
 \begin{proof}[Proof of Lemma \ref{lem:dmin}]
 \if0
@@ -931,25 +935,50 @@ Therefore,
 \Prob{\Epsi} \ge (1-\exp(-x))+\left(1- \frac{\ell}{d}\right)\exp(-\ell)-1 = \left(1- \frac{\ell}{d}\right)\exp(-\ell)-\exp(-x).
 \end{equation}
 \end{proof}
+
 Recall that $Z_i$'s are independent Cauchy random variables.
 \begin{lemma}
 \label{lem:CauchyGap}
-Let $C_2 = \frac{\pi}{2d^2}\ell$ for $0\le \ell\le 1$. 
-With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$,
+With probability at least $1-2\delta$,
 \[
-\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge C_2, \text{and} \,  \min_i\vert Z_i\vert \ge C_2.
+\gamma_R \ge \frac{\delta(1-\delta)^{1/d}}{(d-1)^2}.
 \]
 \end{lemma}
 \begin{proof}[Proof of Lemma \ref{lem:CauchyGap}]
-Since $\{Z_1,\ldots, Z_d\}$ are independent, we can calculate $\Prob{\EZ}$ by sequentially sampling $Z_i$s. 
-Firstly, $\Prob{|Z_1|\ge C_2} \ge 1-\frac{2C_2}{\pi}$. 
-Then $\Prob{Z_{k}: |Z_{k}|\ge C_2, |Z_{k+1}- Z_j|\ge C_2 \text{ for } j\le k-1} \ge 1-\frac{2kC_2}{\pi}$ for $2 \le k\le d$.
+WLOG assume both $Z_i$ and $Z_j$ are positive. Then, 
+\begin{align*}
+\gamma_R =	& \min_{i\neq j} \left\vert Z_i^2 - Z_j^2 \right\vert \\
+	=		& \min_{i\neq j}\left\vert Z_i - Z_i \right\vert	\left\vert Z_i + Z_i \right\vert \\
+	\ge 	& 2\min_i\vert Z_i\vert\min_{i\neq j} \left\vert Z_i - Z_j \right\vert.
+\end{align*}
+
+We will first bound $\min_i |Z_i|$. Recall that $\Prob{|Z|\ge t} \ge \frac{1}{\pi L}$. Thus,
+\[
+\Prob{\min_i |Z_i| \ge t} \ge \left(\frac{1}{\pi L}\right)^d.
+\]
+Picking $t = \frac{1}{\pi}(1-\delta)^{1/d}$, 
+\[
+\Prob{\min_i |Z_i| \ge t} \ge 1-\delta.
+\]
+
+To bound $\min_{i\neq j} \left\vert Z_i - Z_j \right\vert$, assume we sequentially sample $Z_i$s. 
+Then $\Prob{ |Z_{k}- Z_j|\ge \ell \text{ for } j\le k-1} \ge 1-\frac{2(k-1)C_2}{\pi}$ for $2 \le k\le d$.
 Therefore,
 \begin{equation}
 \label{eq:ProbEZ}
-\Prob{\EZ} \ge (1-\frac{2C_2}{\pi})\times \ldots \times (1-\frac{2dC_2}{\pi}) \ge (1-\frac{2dC_2}{\pi})^d \ge \left(1- \frac{\ell}{d}\right)\exp(-\ell).
+\Prob{\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge \ell} \ge (1-\frac{2\ell}{\pi})\times \ldots \times (1-\frac{2(d-1)\ell}{\pi}) \ge (1-\frac{2(d-1)\ell}{\pi})^{(d-1)}.
 \end{equation}
+Picking $\ell = \frac{\pi\delta}{2(d-1)^2}$,
+\[
+\Prob{\min_{i\neq j} \left\vert Z_i - Z_j \right\vert \ge \ell} \ge 1-\delta.
+\]
+Therefore, with probability at least $1-2\delta$,
+\[
+\gamma_R \ge \frac{\delta(1-\delta)^{1/d}}{(d-1)^2}.
+\]
 \end{proof}
+
+
 Thus, $\gamma_R \ge 2C_2^2$ with probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$.
 Denote this event by $\EZ$.
 \begin{lemma}
@@ -998,7 +1027,7 @@ Then with probability $1-\delta$,
 \item $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{\pi}A_{(2,\min)}}{5\sqrt{2}(d+1)} \delta$;
 \item $\min_i \{|\phi_2^{\top}R_i|\} \ge \frac{\sqrt{\pi}}{5\sqrt{2}(d+1)}\delta$;
 \item $\|\phi_1\|_2, \|\phi_2\|_2 \le \sqrt{2}\left(\sqrt{\log(\frac{5}{\delta})}+\sqrt{d}\right)$;
-\item $\gamma_R \ge\frac{\pi^2}{100d^2(d+1)^2}\delta^2$.
+\item $\gamma_R \ge \frac{\delta(1-\delta)^{1/d}}{(d-1)^2} \ge \frac{\delta}{2d^2}$.
 \end{itemize}
 \end{proof}
 
