@@ -1,6 +1,22 @@
 %!TEX root =  DICA.tex
 \onecolumn
 \appendix
+\section{An Empirical comparison of $\gamma_R$ and $\gamma_A$}
+\label{sec:gamma}
+
+Figure~\ref{fig:miniSpacing} below shows the behavior of $1/\gamma_A$ and $1/\gamma_R$ for mixing matrices with different coherence (defined in Section~\ref{sec:ExpRes}), and for some random orthonormal matrix $R$. For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values of $1/\gamma$, and plot the average value over 200 repetitions. %  (corresponding to the largest $\gamma_A$ and $\gamma_R$).
+% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
+As expected, the value of $1/\gamma$ increases with the coherence of the matrix. However, it is similar to that of an orthonormal matrix unless the coherence is really large. 
+\begin{figure}[h]
+\centering
+	\includegraphics[width = 0.75\columnwidth]{miniSpacing}
+\vspace{-0.4cm}
+\caption{
+\label{fig:miniSpacing}
+ The values of $1/\gamma$ for matrices with different coherences}
+\vspace{-0.5cm}
+\end{figure}
+
 \section{A Modified Version of DICA}
 \label{subsec:modifiedDICA}
 We would expect that DICA will achieve smaller error in the case of extreme coherence, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
@@ -533,6 +549,19 @@ Therefore, by lemma \ref{lem:eigenvectorvariation},
 
 \subsection{Analysis of DICA -- Proof of Theorem~\ref{thm:finalRes}}
 \label{subsec:ProofModEff}
+
+Let 
+\begin{align*}
+\bar{\xi} &=   \frac{\sqrt{2}d\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P\right)}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}, \\
+\hat{\xi} &= \frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2(A)}{C_1^2}\bar{\xi}, \\
+ Q &=  
+ %\frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\hat{\xi}}.
+ \frac{4L_u^2A^6_{(2,\max)}}{l_l^4 A^6_{(2,\min)}}\left(\hat{\xi}
+ +
+ P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right)\right).
+\end{align*} 
+%Similar to Lemma~\ref{lem:dmin}, on the event $\Ephi$ with probability at least $1/4$, $\text{min}_i |\phi_1^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$ (respectively $\text{min}_i |\phi_2^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$). 
+%Denote this event by $\Ephione$ (respectively $\Ephitwo$).
 
 First we start with proving the following theorem:
 \begin{thm}
