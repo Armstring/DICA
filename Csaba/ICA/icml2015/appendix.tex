@@ -187,7 +187,15 @@ Similar argument will go through for the second inequality.
 Therefore, there exists $\hat{L} = \text{Poly}(\frac{1}{\delta}, A_{\max}, C, d)$, such that for probability at least $1-\delta$, the above conclusions hold simultaneously.
 
 Lastly, for general case where $\eps\sim {\cN}(0,\Sigma)$, the above conclusions will apply for $\Sigma^{-1/2}\eps$. Thus picking $L = \|\Sigma\|^4_2\hat{L}$, all bounds will still hold. 
-\subsection{Proof of Proposition \ref{prop:denoise}} 
+\subsection{Limit Effect of the Noise} 
+\label{subsec:denoise}
+\begin{prop}
+ Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. Then,
+for any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
+\[
+\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\poly{L_{\eta}, L, d, \sigma_{\max}(A), C}}{\sqrt{T}}. 
+\] 
+\end{prop}
 Note that 
 \begin{align*}
 & \E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [(AX+Y)^{\otimes 4}]\\
@@ -845,9 +853,7 @@ Note that all the constants in Lemma~\ref{lem:ConstantProb} are polynomial in $d
 \end{remark}
 
 \subsubsection{Proof of Theorem \ref{thm:finalRes}}
-\subsection{Further Discussion of Theorem~\ref{thm:Modefficiency}}
- \label{subsec:ThminStocSetting}
-The other concern of Theorem~\ref{thm:Modefficiency} is the validness of its conditions in the traditional stochastic setting. 
+We need to verify the validness of the conditions of Theorem~\ref{thm:Modefficiency} in the traditional stochastic setting. 
 Note that the first condition holds with probability 1. 
 The other 5 conditions can be satisfied by small enough 
 $\hat{\xi}$, small enough $\bar{\xi}$, small enough $P(L_u)$, and small enough $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right)$.
@@ -860,7 +866,7 @@ where $C$ is an upper bound for the signal function $s$.
 %\[\xi = \poly{\frac{1}{L_u}, \frac{\sigma_{\min}(A)}{\sigma_{\max}(A)}, \ell, \gamma_R, \frac{1}{\sigma_{\max}(A)},\frac{1}{d}, \kappa_{\min}\sigma_{\min}^4(A)}.\] 
 Moreover, on the event $\E$, all constants $1/\ell_l$, $L_u$ and $\gamma_R$ are upper bounded by polynomials of $\{ 1/\sigma_{\min}, 1/\delta, d\}$. 
 
-Based on the discussion before this theorem, The first part of the theorem can be proved by replacing $\xi$ by $7C^2D_4(\nu,\nu_T)$ and applying Lemma \ref{lem:ConstantProb} and Theorem \ref{thm:Modefficiency}. 
+Based on the discussion above, The first part of the theorem can be proved by replacing $\xi$ by $7C^2D_4(\nu,\nu_T)$ and applying Lemma \ref{lem:ConstantProb} and Theorem \ref{thm:Modefficiency}. 
 
 For the second part, it is sufficient to prove that our assumptions in Section \ref{sec:Preliminaries} hold for the traditional setting with some constant $L$, and $D_4(\nu, \nu_T)$ is small enough given large enough $T$.
 The first claim has been proved in Proposition \ref{prop:stochasticAss}. 

@@ -596,16 +596,9 @@ where
 \end{align*} 
 and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu_T^{(x)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu_T^{(x)}$. 
 %A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
-It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown by the following result:
-\begin{prop}
-\label{prop:denoise} Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. Then,
-for any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
-\[
-\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\poly{L_{\eta}, L, d, \sigma_{\max}(A), C}}{\sqrt{T}}. 
-\] 
-\end{prop}  
-Denote $\frac{\poly{L_{\eta}, L, d, \sigma_{\max}(A), C}}{\sqrt{T}}$
-by $P(L_{\eta})$. Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
+It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the appendix, Section \ref{subsec:denoise}. 
+In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\frac{\poly{L_{\eta}, L, d, \sigma_{\max}(A), C}}{\sqrt{T}}$. Denote this quantity by $P(L_{\eta})$. 
+Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
 %We also assume that $T$ is large enough such that $P\le 1/6$.
 
 
