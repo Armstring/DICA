@@ -1,5 +1,42 @@
 %!TEX root =  DICA.tex
 \onecolumn
+\appendix
+\section{A Modified Version of DICA}
+\label{subsec:modifiedDICA}
+We would expect that DICA will achieve smaller error in the case of extreme coherence, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
+However, the experimental results in Section~\ref{subsubsec:results} show the opposite.  
+The reason is that when the coherence is extremely high, the estimation
+error of $M$ in DICA is so much larger than that in HKICA that it
+dominates the error caused by the coherence of the mixing matrix.
+This estimation error comes from taking the inverse of $T_2$ in DICA. 
+Unfortunately, at the moment we don't understand well enough the relation of the estimation error and the coherence of the mixing matrix.
+
+We propose the following ICA algorithm, Algorithm \ref{alg:DICA_Mod}, trying to relieve the estimation error problem of DICA, but still keeping the large gap of the eigenvalues in the eigen-decomposition. 
+\begin{algorithm} 
+\caption{DICA Modified (DICA\_Mod)}
+\label{alg:DICA_Mod}
+\begin{algorithmic}[1]
+\INPUT $x(t)$ for $1\le t \le T$. 
+\OUTPUT An estimation of the mixing matrix $A$. 
+\STATE Sample $\psi$ from a $d$-dimensional standard Gaussian distribution;
+\STATE Evaluate $\nabla^2\hat{f}(\psi)$, \\
+%\quad where $\hat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\hat{f}(\eta) = \frac{1}{12}\big(\hat{m_4}(\eta) - 3\hat{m_2}(\eta)^2 \big)$;
+\STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
+\STATE Sample $\phi$ from the standard normal distribution;
+\STATE Compute $\hat{T} = \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)$;
+\STATE Compute all the eigenvectors of $\hat{M} = \hat{B}^{-1}\hat{T}\hat{B}^{-\top}$, $\hat{R} = \{\mu_1,\ldots,\mu_d\}$;
+\STATE Return $\hat{A} = \hat{B}\hat{R}$.
+\end{algorithmic}
+\end{algorithm}
+\begin{remark}
+\label{rmk:DICA_Mod}
+Note that the eigenvalues of $\hat{M}$ in DICA\_Mod are $\frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}$ for $1\le i\le d$. 
+When $A$ is highly coherent, we would expect that $\psi^{\top}A_i$'s are close to each other. Also, the $\kappa_i$'s are fixed. 
+Given that $\phi^{\top}R_i$'s are far separated from each other, we intuitively expect the eigenvalues to be well-separated from each other. 
+However, we do not have a rigorous proof for this algorithm.
+Experimental results show that DICA\_Mod consistently outperforms DICA. 
+\end{remark}
+
 
 \section{Appendix}
 \label{sec:Appendix}
