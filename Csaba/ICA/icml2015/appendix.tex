@@ -966,11 +966,11 @@ Then with probability $1-\delta$,
 \subsection{Proof of Theorem \ref{thm:finalRes}}
 Based on the discussion before this theorem, The first part of the theorem can be proved by replacing $\xi$ by $7C^2D_4(\nu,\nu_T)$ and applying Lemma \ref{lem:ConstantProb} and Theorem \ref{thm:Modefficiency}. 
 
-For the second part, it is sufficient to prove that our assumptions in Section \ref{subsec:ICA} hold for the traditional setting with some constant $L$, and $D_4(\nu, \nu_T)$ is small enough given large enough $T$.
+For the second part, it is sufficient to prove that our assumptions in Section \ref{sec:Preliminaries} hold for the traditional setting with some constant $L$, and $D_4(\nu, \nu_T)$ is small enough given large enough $T$.
 The first claim has been proved in Proposition \ref{prop:stochasticAss}. 
 
 For $D_4(\nu, \nu_T)$ to be small enough, recall that the signal function $s$ is bounded by $C$. 
-Thus any nomial with degree $\le 4$ will be bounded by $C^4$. Since our observations are i.i.d from $\mu$, by Hoeffding's ineuqality, with probability at least $1-\delta$, 
+Thus any nomial with degree $\le 4$ will be bounded by $C^4$. Since our observations are i.i.d from $\mu$, by Hoeffding's inequality, with probability at least $1-\delta$, 
 \[
 D_4(\mu, \nu_T) \le  C^4\sqrt{\frac{\log(1/\delta)}{2T}}.
 \]
@@ -981,7 +981,7 @@ T \ge \text{Poly}\left(C, \frac{1}{\delta}, d,  \sigma_{\max}, 1/\sigma_{\min}, 
 \]
 for some polynomial, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\text{Poly}(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d).
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\poly{C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d}.
 \]
 
 \subsection{Proof of Corollary \ref{cor:signalerror}}
@@ -989,15 +989,15 @@ for some polynomial, with probability at least $1-\delta$, there exists a permut
  Given a large enough $T$, if there exists a product measure $\mu$  such that  $D_4(\mu, \nu_T)$ is small enough satisfying
 \begin{itemize}
 \vspace{-3mm}
-\item $T \ge \text{Poly}(d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}(A), \frac{1}{\sigma_{\min}(A)})$;
-\item $D_4(\mu, \nu_T) \le \text{Poly}(\frac{1}{C},  \sigma_{\min}(A),  \frac{1}{\sigma_{\max}(A)},\frac{1}{d}, \delta, \kappa_{\min})$.
+\item $T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}(A), \frac{1}{\sigma_{\min}(A)}}$;
+\item $D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min}(A),  \frac{1}{\sigma_{\max}(A)},\frac{1}{d}, \delta, \kappa_{\min}}$.
 \end{itemize}
 \vspace{-2mm}
 Then with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
 \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+\frac{1}{\sqrt{T}}\right),
 \]
-where $\mathcal{C} = \text{Poly}(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L)$, and $\hat{A}$ is the output of the DICA algorithm.
+where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$, and $\hat{A}$ is the output of the DICA algorithm.
 \begin{proof}
 Note that by Lemma \ref{lem:Tvariantion},
 \[
@@ -1023,5 +1023,11 @@ Note that under the event $\E$,  $Q$ and $\gamma_R$ are both polynomial in $(\si
 \[
 \| \hat{s}_{\pi(k)} - s \|_2 \le \mathcal{C}(\|s\|_2+\frac{1}{\sigma_{\min}(A)}\|\eps\|_2)(D_4(\mu,\nu_T)+\frac{1}{\sqrt{T}})+\frac{\|\eps\|_2}{\sigma_{\min}(A)},
 \]
-where $\mathcal{C} = \text{Poly}(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L)$.
+where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$.
 \end{proof}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "DICA"
+%%% End: 
