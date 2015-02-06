@@ -412,7 +412,7 @@ $\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $
 \begin{assumption}
 \label{ass:gauss}
 Assume there exists a constant $L\ge 1$, such that 
-\begin{enumerate}[i.]
+\begin{enumerate}[(i)]
 \vspace{-3mm}
 \item $\| \E_{S_i\sim \nu_t^{(s_i)}} [S_i] \|_F\le L/\sqrt{t}$;
 \item $\| \E_{Y \sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$;
@@ -776,7 +776,7 @@ Similarly to HKICA, DICA may fail with probability 0 (giving, e.g., complex outp
 The same resampling trick can be applied again, as in Remark \ref{rmk:symmetrization}. 
 \end{remark}
 
-The DICA algorithm can be showed to have provable performance under some good events defined as follows:
+The DICA algorithm can be showed to have provable performance guarantees under some good events defined as follows:
 \begin{definition}
 Let $\Ephi$ denote the following event:
 For some fixed constant $L_u \ge \sqrt{2d}$ and $\ell_l$ such that $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for $0\le \ell\le 1$,
@@ -811,7 +811,7 @@ on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants 
 \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} Q,
 \]
 where $\hat{A}$ is the output of the DICA algorithm. This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
-This is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
+It is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
 %\begin{remark}
 % Note that all the conditions of Theorem~\ref{thm:Modefficiency} will be satisfied with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right)$  are small enough.
 
@@ -823,7 +823,21 @@ This is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma
 % \end{remark}
 % \subsection{Behavior of $\gamma_R$}
 % \label{subsec:gammaR}
-Note that $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
+
+Figure~\ref{fig:miniSpacing} shows the behavior of $1/\gamma_A$ and $1/\gamma_R$ for mixing matrices with different coherence (defined in Section~\ref{sec:ExpRes}), and for some random orthonormal matrix $R$. For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values of $1/\gamma$, and plot the average value over 200 repetitions.%  (corresponding to the largest $\gamma_A$ and $\gamma_R$).
+% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
+As expected, the value of $1/\gamma$ increases with the coherence of the matrix. However, it is similar to that of an orthonormal matrix unless the coherence is really large. 
+\begin{figure}[h]
+\centering
+	\includegraphics[width = 0.8\columnwidth]{miniSpacing}
+\caption{
+\label{fig:miniSpacing}
+ The values of $1/\gamma$ for matrices with different coherences}
+\end{figure}
+
+
+To analyze $\gamma_R$ analytically,
+note that $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
 Thus, $\{\phi_1^{\top}R_1, \cdots, \phi_1^{\top}R_d,$ $\phi_2^{\top}R_1, \cdots, \phi_2^{\top}R_d\}$ are $2d$ independent standard Gaussian random variables. 
 Let $Z_i = \frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
 Using this observation, we show in Lemma~\ref{lem:ConstantProb} in the appendix that, among others,  $\gamma_R \ge\frac{\delta}{2d^2}$ with probability at least $1-\delta$.
@@ -848,7 +862,7 @@ Using this observation, we show in Lemma~\ref{lem:ConstantProb} in the appendix 
 % \end{remark}
 
 \if0
-\subsection{Further discussion of Theorem~\ref{thm:Modefficiency}}
+\subsection{Further Discussion of Theorem~\ref{thm:Modefficiency}}
  \label{subsec:ThminStocSetting}
 The other concern of Theorem~\ref{thm:Modefficiency} is the validness of its conditions in the traditional stochastic setting. 
 Note that the first condition holds with probability 1. 
@@ -865,42 +879,9 @@ Moreover, on the event $\E$, all constants $1/\ell_l$, $L_u$ and $\gamma_R$ are 
 \fi
 
 Based on the above, we show in the appendix that Theorem~\ref{thm:finalRes} holds for DICA.
+Furthermore, in Section~\ref{subsec:modifiedDICA} in the appendix, we provide a heuristic modification of DICA that performs better in the experiments (proving performance guarantees for that algorithm has defied our efforts so far).
 
-\subsection{A modified version of DICA}
-\label{subsec:modifiedDICA}
-We would expect that DICA will achieve smaller error in the case of extreme coherence, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
-However, the experimental results show the opposite, as in Section \ref{subsubsec:results}.  
-The reason is when the coherence is extremely high, the estimation error of $M$ in DICA is so much larger than that in HKICA that it dominates the error caused by coherence of the mixing matrix.
-This estimation error comes from taking the inverse of $T_2$ in DICA. 
-We are not yet clear about the relation of the estimation error and the coherence of the mixing matrix.
-
-We propose the following ICA algorithm, Algorithm \ref{alg:DICA_Mod}, trying to relieve the estimation error problem of DICA, but still keeps large gap of the eigenvalues in the eigen-decomposition. 
-\begin{algorithm} 
-\caption{DICA Modified (DICA\_Mod)}
-\label{alg:DICA_Mod}
-\begin{algorithmic}[1]
-\INPUT $x(t)$ for $1\le t \le T$. 
-\OUTPUT An estimation of the mixing matrix $A$. 
-\STATE Sample $\psi$ from a $d$-dimensional standard Gaussian distribution;
-\STATE Evaluate $\nabla^2\hat{f}(\psi)$, \\
-%\quad where $\hat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\hat{f}(\eta) = \frac{1}{12}\big(\hat{m_4}(\eta) - 3\hat{m_2}(\eta)^2 \big)$;
-\STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
-\STATE Sample $\phi$ from the standard normal distribution;
-\STATE Compute $\hat{T} = \hat{G}(\hat{B}^{-\top}\phi)$;
-\STATE Compute all the eigenvectors of $\hat{M} = \hat{B}^{-1}\hat{T}\hat{B}^{-\top}$, $\hat{R} = \{\mu_1,\ldots,\mu_d\}$;
-\STATE Return $\hat{A} = \hat{B}\hat{R}$.
-\end{algorithmic}
-\end{algorithm}
-\begin{remark}
-\label{rmk:DICA_Mod}
-Note that the eigenvalues of $\hat{M}$ in DICA\_Mod are $\frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}$ for $1\le i\le d$. 
-When $A$ is highly coherent, we would expect that $\psi^{\top}A_i$'s are close to each other. Also, the $\kappa_i$'s are fixed. 
-Given that $\phi^{\top}R_i$'s are far separated from each other, we would intuitively expect the eigenvalues are well separated from each other. 
-However, we don't have a rigorous proof for this algorithm.
-Experimental results shows that DICA\_Mod consistently performs better than DICA. \qed
-\end{remark}
-
-\subsection{Recursive versions}
+\subsection{Recursive Versions}
 Recently \citet{vempala2014max} proposed a recursion idea to improve the sample complexity of the Fourier PCA algorithm \citep{goyal2014fourier}. 
 Instead of recovering all the columns of $A$ in one eigen-decomposition, the recursive algorithm only decomposes the whole space into only two sub-spaces according to the maximal spacing of the eigenvalues, 
 then recursively decompose each subspaces until it is 1-dimensional.
@@ -991,6 +972,7 @@ Another potential improvement is developing a lower bound for the maximal spacin
 We compare the empirical performances of all the ICA algorithms mentioned above, including the recursive algorithms and the modified version of DICA (DICA\_Mod), in this section. 
 \subsection{Comparison of $\gamma_A$ and $\gamma_R$}
 \label{subsec:comparisonGamma}
+
 We compare its behavior and that of $\gamma_R$ empirically. 
 In this section, we test the expected values of $1/\gamma_A$ and $1/\gamma_R$ for mixing matrices $A$ with different coherences.
 In particular, we artificially construct 4 kinds of matrices, as follows:
@@ -1005,17 +987,16 @@ Given $v_b$ and the matrix $P$ both are generated from standard normal distribut
 \vspace{-2mm}
 Another orthonormal matrix R is generated by computing the left column space of a non-singular random matrix (from standard normal distribution).  
 
-For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values (corresponding to the largest $\gamma_A$ and $\gamma_R$).
-We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
-\begin{figure}[h]
-\label{fig:miniSpacing}
-\centering
-	\includegraphics[width = \columnwidth]{miniSpacing}
-\caption{The values of $\gamma$ for matrices with different coherences}
-\end{figure}
+% For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values (corresponding to the largest $\gamma_A$ and $\gamma_R$).
+% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
+% \begin{figure}[h]
+% \label{fig:miniSpacing}
+% \centering
+% 	\includegraphics[width = \columnwidth]{miniSpacing}
+% \caption{The values of $\gamma$ for matrices with different coherences}
+% \end{figure}
 
-As expected, the value of gamma increases as the coherence of the matrix. 
-But on the other hand, the distinction from that of an orthonormal matrix only happens when $A$ is highly coherence. 
+
 
 \subsection{Reconstruction errors}
 We then investigate the performances of different ICA algorithms in a simulation setting, with mixing matrices of different coherences. 
