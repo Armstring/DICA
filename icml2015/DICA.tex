@@ -667,11 +667,6 @@ Let $\Epsi$ denote the following event: For some fixed $C_1 = \frac{\sqrt{\pi}A_
 %= \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$,
 $\min_i |\psi^{\top}A_i| \ge C_1$ and $\|\psi\|_2 \le L_u$ hold simultaneously. 
 \end{definition}
-The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
-\begin{lemma}
-\label{lem:dmin}
-With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell) - \exp(-x)$, $\Epsi$ holds, where $x=(L_u/\sqrt{2}-\sqrt{d})^2$.
-\end{lemma}
 Let 
 \begin{equation}
 \label{def:kappa}
@@ -937,7 +932,7 @@ Lastly by separating the eigenvectors of $M$ according to its eigenvalues into $
 \end{algorithm}
 
 \begin{remark}
-Other algorithms can be modified into a recursive version in a similar way, based on the idea of mapping the estimated Hessian matrix into a small subspace by $M = P^{\top}TP$. 
+Other algorithms can be modified into a recursive version in a similar way. 
 \qed
 \end{remark}
 \begin{thm}
