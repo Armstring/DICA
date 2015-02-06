@@ -422,7 +422,7 @@ Applying Lemma \ref{lem:inversevariation},
 \end{proof}
 
 
-Note that $\nabla^2f_{\mu}(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top} = AKD_{\psi}A^{\top}$,  where $D_{\psi} = \text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$. 
+Note that $\nabla^2f_{\mu}(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top} = AKD_{\psi}A^{\top}$,  where $D_{\psi} = \text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$ (see, e.g., \citealt{hsu2013learning}). 
 Thus, $\sigma_{\min}(\nabla^2f_{\mu}(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$. 
 \begin{lemma}
 \label{lem:boundsigmaminnabla}
@@ -494,8 +494,34 @@ Therefore, by lemma \ref{lem:eigenvectorvariation},
  
 \end{proof}
 
-\subsection{Proof of Theorem \ref{thm:Modefficiency}}
+\subsection{Analysis of DICA -- Proof of Theorem~\ref{thm:finalRes}}
 \label{subsec:ProofModEff}
+
+First we start with proving the following theorem:
+\begin{thm}
+\label{thm:Modefficiency}
+ Assume the following conditions hold:
+ \begin{enumerate}
+ \vspace{-3mm}
+ \item $\hat{T}$ has distinct eigenvalues;
+ \item $\gamma_R > 4 \frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) }Q$; 
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}(A) } Q$;
+ \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
+ \item $P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$
+ (so $\bar{\xi} \le 1/3$);
+ \item $\hat{\xi}
+  +
+  P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right) \le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$.
+ \end{enumerate}
+ \vspace{-2mm}
+Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\[
+%\|c_k\hat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\hat{T} - T\|_2\,,
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} Q,
+\]
+where $\hat{A}$ is the output of the DICA algorithm.
+\end{thm}
+
 Note that $\nabla^2f_{\mu}(\psi) = AKD_{\psi}A^{\top}$. Thus $B = AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
 We need to introduce some lemmas before we can prove the theorem. 
 The following lemma shows the stability of the square root of matrix.
@@ -733,6 +759,47 @@ Then by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ 
 \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} \|\hat{M} - M\|_2.
 \]
 \end{proof}
+
+Before finishing the proof of Theorem \ref{thm:finalRes}, we need another auxiliary result, whose proof is deferred to Section~\ref{sec:events}:
+\begin{lemma}
+\label{lem:ConstantProb}
+With Probability at least $1-\delta$ , the following inequalities holds simultaneously.
+\begin{itemize}
+\vspace{-3mm}
+\item $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{\pi}A_{(2,\min)}}{5\sqrt{2}(d+1)} \delta$;
+\item $\min_i \{|\phi_2^{\top}R_i|\} \ge \frac{\sqrt{\pi}}{5\sqrt{2}(d+1)}\delta$;
+\item $\|\phi_1\|_2, \|\phi_2\|_2 \le \sqrt{2}\left(\sqrt{\log(\frac{5}{\delta})}+\sqrt{d}\right)$;
+\item $\gamma_R \ge\frac{\delta}{2d^2}$.
+\end{itemize}
+\vspace{-2mm}
+\end{lemma}
+Denote the above event by $\E$.
+\begin{remark}
+Note that all the constants in Lemma~\ref{lem:ConstantProb} are polynomial in $d$ (or $d^{-1}$ for the lower bound), thus the result of Theorem~\ref{thm:Modefficiency} is polynomial in $d$ and $\frac{1}{\delta}$ with probability at least $1-\delta$. \qed
+\end{remark}
+
+\subsubsection{Proof of Theorem \ref{thm:finalRes}}
+Based on the discussion before this theorem, The first part of the theorem can be proved by replacing $\xi$ by $7C^2D_4(\nu,\nu_T)$ and applying Lemma \ref{lem:ConstantProb} and Theorem \ref{thm:Modefficiency}. 
+
+For the second part, it is sufficient to prove that our assumptions in Section \ref{sec:Preliminaries} hold for the traditional setting with some constant $L$, and $D_4(\nu, \nu_T)$ is small enough given large enough $T$.
+The first claim has been proved in Proposition \ref{prop:stochasticAss}. 
+
+For $D_4(\nu, \nu_T)$ to be small enough, recall that the signal function $s$ is bounded by $C$. 
+Thus any nomial with degree $\le 4$ will be bounded by $C^4$. Since our observations are i.i.d from $\mu$, by Hoeffding's inequality, with probability at least $1-\delta$, 
+\[
+D_4(\mu, \nu_T) \le  C^4\sqrt{\frac{\log(1/\delta)}{2T}}.
+\]
+
+Therefore, Given 
+\[
+T \ge \text{Poly}\left(C, \frac{1}{\delta}, d,  \sigma_{\max}, 1/\sigma_{\min}, \|\Sigma\|_2, 1/\kappa_{\min}\right),
+\]
+for some polynomial, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\[
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\poly{C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d}.
+\]
+
+
 \subsection{Proof of Theorem \ref{thm:recursiveAlg}}
 Note that the calculation of $M$ in the helper function `Recur' is exactly the $M$ in the algorithm of DICA (we call it recursion version of HKICA, because in the helper function `Recur', it has the same format as HKICA).
 Therefore, by Lemma \ref{lem:Tvariantion},
@@ -893,6 +960,7 @@ It remains to bound the probability that the above result holds.
 We need Event $\Epsi$ to be satisfied once, and $\Ephi$ and $\Ez$ for at most $d$ times (we ignore the $\log d$ factor here). 
 Thus, given the conditions of Theorem \ref{thm:finalRes}, with probability $1-7d\delta$, the above error bound holds. 
 \subsection{Proofs of Lemma \ref{lem:dmin}, Lemma \ref{lem:CauchyGap} and Lemma \ref{lem:ConstantProb}}
+\label{sec:events}
 \begin{proof}[Proof of Lemma \ref{lem:dmin}]
 \if0
 For a fixed constant $c \le A_{(2,\max)}$,
@@ -1031,26 +1099,6 @@ Then with probability $1-\delta$,
 \end{itemize}
 \end{proof}
 
-\subsection{Proof of Theorem \ref{thm:finalRes}}
-Based on the discussion before this theorem, The first part of the theorem can be proved by replacing $\xi$ by $7C^2D_4(\nu,\nu_T)$ and applying Lemma \ref{lem:ConstantProb} and Theorem \ref{thm:Modefficiency}. 
-
-For the second part, it is sufficient to prove that our assumptions in Section \ref{sec:Preliminaries} hold for the traditional setting with some constant $L$, and $D_4(\nu, \nu_T)$ is small enough given large enough $T$.
-The first claim has been proved in Proposition \ref{prop:stochasticAss}. 
-
-For $D_4(\nu, \nu_T)$ to be small enough, recall that the signal function $s$ is bounded by $C$. 
-Thus any nomial with degree $\le 4$ will be bounded by $C^4$. Since our observations are i.i.d from $\mu$, by Hoeffding's inequality, with probability at least $1-\delta$, 
-\[
-D_4(\mu, \nu_T) \le  C^4\sqrt{\frac{\log(1/\delta)}{2T}}.
-\]
-
-Therefore, Given 
-\[
-T \ge \text{Poly}\left(C, \frac{1}{\delta}, d,  \sigma_{\max}, 1/\sigma_{\min}, \|\Sigma\|_2, 1/\kappa_{\min}\right),
-\]
-for some polynomial, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
-\[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\poly{C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d}.
-\]
 
 \if0
 \subsection{Proof of Corollary \ref{cor:signalerror}}
