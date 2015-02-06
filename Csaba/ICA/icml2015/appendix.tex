@@ -998,6 +998,11 @@ We need Event $\Epsi$ to be satisfied once, and $\Ephi$ and $\Ez$ for at most $d
 Thus, given the conditions of Theorem \ref{thm:finalRes}, with probability $1-7d\delta$, the above error bound holds. 
 \subsection{Proofs of Lemma \ref{lem:dmin}, Lemma \ref{lem:CauchyGap} and Lemma \ref{lem:ConstantProb}}
 \label{sec:events}
+The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
+\begin{lemma}
+\label{lem:dmin}
+With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell) - \exp(-x)$, $\Epsi$ holds, where $x=(L_u/\sqrt{2}-\sqrt{d})^2$.
+\end{lemma}
 \begin{proof}[Proof of Lemma \ref{lem:dmin}]
 \if0
 For a fixed constant $c \le A_{(2,\max)}$,
