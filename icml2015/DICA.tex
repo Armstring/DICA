@@ -1030,23 +1030,29 @@ On the other hand, when estimating a missing dimension (due to numerical accurac
 \fi
 %The higher coherent it is, the easier problem, for low noise? Why?
 
-We are expecting that DICA will achieve smaller error for an extreme coherent $A$, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
+We have expected that DICA will achieve smaller error for an extremely coherent $A$, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
 However, the experimental results indicate the opposite. 
 Note that high coherence implies small minimal singular value.
 In this case, the estimation error of $M$ in DICA could be much larger than that in HKICA, because of the fourth degree of $A^{-1}$.
 %Also DICA requires estimation of more fourth moments. 
-This error overwhelms the improvement brought by larger eigenvalue spacings, if sample size is not large enough.
-Due to the time limit, we haven't confirm this argument by more experiments yet.
+This error overwhelms the improvement brought by larger eigenvalue
+spacings, if the sample size is not large enough.
+The investigation of this phenomenon is left for future work.
+%Due to the time limit, we haven't confirm this argument by more experiments yet.
 
-On the other hand, based on the discussion in the appendix Remark \ref{rmk:DICA_Mod}, 
-we will expect that MDICA can have both less estimations of the fourth moments, meanwhile keep the eigenvalue spacing large (intuitively approximation of Gaussian random variable spacings), thus lead to good performance.
-This is confirmed by the experimental results, in both non-recursive and recursive versions.
+On the other hand, based on the discussion in Remark~\ref{rmk:DICA_Mod} in the appendix, 
+MDICA needs to estimate the fourth moments one time less than
+DICA, while we expect that it keeps the eigenvalue spacing large
+(intuitively, it is approximately the spacing of the square of $d$ Gaussian random variables), leading to good performance.
+This is confirmed by the experimental results, in both the non-recursive and recursive versions.
 
-In summary, the results suggest these moment methods are comparable to each other in practice,
-while FastICA  is better for the case of low coherent $A$ or mild coherent $A$ with low noise.
-If the mixing matrix is orthonormal, then FPCA performs better than other algorithms.
-If the observations have heavy noise and the mixing matrix is not the case of extremely coherent, then HKICA may be the best choice.
-In the case of extremely coherent mixing matrix, MDICA performs better. Also the recursive idea is very helpful, given the limit of available sample size.
+In summary, the results suggest that these moment methods are comparable to each other in practice,
+while FastICA  is better for mixing matrices with low coherence or mild coherence with low noise.
+If the mixing matrix is orthonormal, then FPCA performs better than
+the other algorithms.
+If the observations have heavy noise and the mixing matrix is not extremely coherent, then HKICA may be the best choice.
+In the case of an extremely coherent mixing matrix, MDICA performs the
+best. Also, the recursive idea is very helpful for small sample sizes.
 
 % \section{Conclusion}
 % We presented the first ICA algorithms with polynomial computational
