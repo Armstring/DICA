@@ -1007,18 +1007,21 @@ We report the reconstruction errors for different kinds of mixing matrices and n
 \label{fig:Error}
  Reconstruction Error}
 \end{figure}
-The experimental results suggests that moment methods are more robust to high-coherence mixing matrix and Gaussian noise.
-FastICA achieve best performance in the case of low coherence.
-As the increase of the coherence of the mixing matrix $A$, its performance decreases quickly and becomes sensitive to noise. 
-The Fourier PCA algorithm performs poorly, because its assumption is barely satisfied that $A$ is orthonormal. 
+The experimental results suggest that moment methods are more robust
+to high-coherence mixing matrices and Gaussian noise than FastICA.
+FastICA achieves the best performance in case of low coherence.
+As the coherence of the mixing matrix $A$ increases, its performance decreases quickly and becomes sensitive to noise. 
+The Fourier PCA algorithm performs poorly, because its assumption that
+$A$ is orthonormal is barely satisfied. 
 When the mixing matrix is indeed orthonormal, it achieves good performance.
 %This is also confirmed in the result of the case of orthonormal mixing matrix $R$. 
 %Due to the time limit, we haven't investigate the performance of Fourier PCA with a quasi-whitening procedure.
 
-However, the recursive idea is not always helpful for the moment methods. For a high coherent $A$, the recursive versions outperform their non-recursive versions. 
-Note that in this case, $A$ is close to singular (smaller minimal singular value), and thus requires a better sample complexity.
+However, the recursive idea is not always helpful for the moment methods. For a highly coherent $A$, the recursive versions outperform their non-recursive counterparts.
+Note that in this case, $A$ is close to singular (small minimal
+singular value), and thus it requires more samples.
 On the other hand, when $A$ has relatively low coherence,  the estimation error of the fourth moments contributes more to the reconstruction error. 
-Recursive algorithms suffers from taking many times of such estimations. 
+Recursive algorithms suffers from making several such estimations.
 
 \if0
 Non-recursive algorithms in the symmetrizing version are consistently outperformed by their re-sampling version, as expected. 
