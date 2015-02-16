@@ -1,0 +1,1083 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% ICML 2015 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Use the following line _only_ if you're still using LaTeX 2.09.
+%\documentstyle[icml2015,epsf,natbib]{article}
+% If you rely on Latex2e packages, like most moden people use this:
+\documentclass[jmlr]{article}
+%\usepackage{jmlr2e} 
+
+% use Times
+\usepackage{times}
+% For figures
+\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+\usepackage{subfigure} 
+
+% For citations
+\usepackage{natbib}
+%\usepackage[authoryear]{natbib}
+
+% For caption of the fifure
+\usepackage{caption}
+% For algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% As of 2011, we use the hyperref package to produce hyperlinks in the
+% resulting PDF.  If this breaks your system, please commend out the
+% following usepackage line and replace \usepackage{icml2015} with
+% \usepackage[nohyperref]{icml2015} above.
+\usepackage{hyperref}
+
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% Employ the following version of the ``usepackage'' statement for
+% submitting the draft version of the paper for review.  This will set
+% the note in the first column to ``Under review.  Do not distribute.''
+
+
+% Employ this version of the ``usepackage'' statement after the paper has
+% been accepted, when creating the final version.  This will set the
+% note in the first column to ``Proceedings of the...''
+%\usepackage[accepted]{icml2015}
+
+
+\usepackage{epstopdf}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{array}
+
+
+%%%%%%%%%%%%%% TODOs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+% uncomment the following line and comment the line after it if you want to turn
+% off todos
+\usepackage[backgroundcolor = White,textwidth=\marginparwidth]{todonotes}
+%\usepackage[disable]{todonotes}
+\newcommand{\todoc}[2][]{ \todo[color=Apricot,size=\tiny,#1]{#2}} % Csaba's comments
+\newcommand{\todor}[2][]{ \todo[color=Cerulean!20,size=\tiny,#1]{#2}} % Ruitong's comments
+\newcommand{\todoa}[2][]{ \todo[color=Purple!20,size=\tiny,#1]{#2}} % Andras' comments
+
+\usepackage{xspace}
+
+\newcommand{\xcom}[1]{x_{#1}}
+\newcommand{\scom}[1]{s_{#1}}
+\newcommand{\cset}[2]{\left\{#1\,:\,#2\right\}}
+\newcommand{\Ephione}{\mathcal{E}_{\phi_1}}
+\newcommand{\Ephitwo}{\mathcal{E}_{\phi_2}}
+\newcommand{\Epsi}{\mathcal{E}_{\psi}}
+\newcommand{\Ephi}{\mathcal{E}_{\phi}}
+\newcommand{\EZ}{\mathcal{E}_{Z}}
+\newcommand{\Ez}{\mathcal{E}_{Z\max}}
+\newcommand{\cN}{\cal{N}}
+\renewcommand{\P}{{\mathcal P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ex}[1]{\mathbb{E}[#1]}
+\newcommand{\Em}[2]{\mathbb{E}_{#1}\left[#2\right]}
+\newcommand{\Prob}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\snorm}[1]{\left\|#1\right\|} % scaling norm
+\newcommand{\lmax}[1]{\lambda_{\mathrm{max}}(#1)}
+\newcommand{\lmin}[1]{\lambda_{\mathrm{min}}(#1)}
+\newcommand{\sign}{\mathrm{sign}}
+\newcommand{\dprod}[2]{\langle #1,#2 \rangle_{M}}
+\newcommand{\hA}{\hat{A}}
+\newcommand{\hb}{\hat{b}}
+\newcommand{\hC}{\hat{C}}
+\newcommand{\hAp}{\hat{A}^\prime}
+\newcommand{\hbp}{\hat{b}^\prime}
+\newcommand{\hCp}{\hat{C}^\prime}
+\renewcommand{\th}{\theta}
+\newcommand{\vth}{\hat{\theta}_{V}}
+\newcommand{\lth}{\hat{\theta}_{\lambda}}
+\newcommand{\hth}{\hat{\theta}}
+\newcommand{\ltho}{\hat{\theta}_{\lambda_1}}
+\newcommand{\ltht}{\hat{\theta}_{\lambda_2}}
+\newcommand{\hlth}{\hat{\theta}_{\hat{\lambda}}}
+\newcommand{\slth}{\hat{\theta}_{\lambda^*}}
+\newcommand{\plth}{\hat{\theta}_{\lambda_p}}
+\newcommand{\hthp}{\hat{\theta}^\prime}
+\newcommand{\lthp}{\hat{\theta}^\prime_{\lambdap}}
+\newcommand{\ath}{\hat{\theta}_{a}}
+\newcommand{\thetap}{\theta^\prime}
+\newcommand{\sth}{\theta^*}
+\newcommand{\ind}[1]{\mathbb{I}_{\left\{ #1 \right\}}}
+\newcommand{\hzeta}{\hat{\zeta}}
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\cf}{\emph{cf.}}
+\newcommand{\T}[1]{T\left( #1 \right)}
+\newcommand{\St}[1]{S\left( #1 \right)}
+\newcommand{\Ts}[2]{T_{#1}\left( #2 \right)}
+\newcommand{\Ss}[2]{S_{#1}\left( #2 \right)}
+\newcommand{\Ord}[1]{O\left( #1 \right)}
+\newcommand{\etc}{\emph{etc.}}
+\newcommand{\bsth}{\bar{\theta}^*}
+\newcommand{\sal}{\emph} %Emphasis the J.D. Salinger way :)
+\newcommand{\gradL}{\nabla \mathcal{L}}
+\newcommand{\lambdap}{{\lambda^\prime}}
+\newcommand{\lambdahp}{\hat{\lambda}^\prime}
+\newcommand{\pqLoss}[1]{\mathcal{L}_{#1}}
+\newcommand{\pLoss}[2]{\pqLoss{#1}( #2 )}
+\newcommand{\qLoss}{\pqLoss{M}}
+\newcommand{\Loss}[1]{\qLoss(#1)}
+\newcommand{\hpqLoss}[1]{\mathcal{\hat{L}}_{#1}}
+\newcommand{\hpLoss}[2]{\hpqLoss{#1}( #2 )}
+\newcommand{\hqLoss}{\hpqLoss{M}}
+\newcommand{\hLoss}[1]{\hqLoss(#1)}
+\newcommand{\bX}{\bar{X}}
+\newcommand{\bY}{\bar{Y}}
+\newcommand{\rth}{\hat{\theta}}
+\newcommand{\tth}{\tilde{\theta}}
+\newcommand{\maxeig}{\nu_{\max}}
+\newcommand{\mineig}{\nu_{\min}}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\R}{\real}
+\newcommand{\one}[1]{\mathbf{1}_{\{#1\}}}
+\newcommand{\rl}[1]{\mathbb{R}^{#1}}
+\newcommand{\Mset}{\mathcal{M}(\varepsilon)}
+\newcommand{\Cset}{\mathcal{C}}
+\newcommand{\truel}{L}
+\newcommand{\zol}{L_{\mathrm{0-1}}}
+\newcommand{\hinl}{L_{\mathrm{hinge}}}
+\newcommand{\phil}{L_{\varphi}}
+\newcommand{\lspace}{\left\{1, \dots,K \right\}}
+\newcommand{\risk}{\mathcal{R}}
+\newcommand{\scoref}{\in \mathcal{H}}
+\newcommand{\subscoref}{\in \mathcal{H}^\prime}
+\newcommand{\hQ}{\hat{Q}}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\esssup}{ess\,sup}
+\renewcommand{\natural}{\mathbb{N}}
+\newcommand{\iid}{i.i.d.\xspace}
+\DeclareMathOperator{\pol}{Poly}
+\newcommand{\poly}[1]{\pol\left(#1\right)}
+ %theorems/definitions
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{thm}[lemma]{Theorem}
+%\newtheorem{claim}[lemma]{Claim}
+%\newtheorem{cor}[lemma]{Corollary}
+\newtheorem{example}[lemma]{Example}
+\newtheorem{prop}[lemma]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{remark}[lemma]{Remark}
+%\newtheorem*{solution}[lemma]{Solution}
+%\newtheorem{note}[lemma]{Note}
+%\newtheorem{problem}[lemma]{Problem}
+\newtheorem{assumption}[lemma]{Assumption}
+
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\TT}{\mathcal{T}}
+\renewcommand{\AA}{\mathcal{A}}
+\newcommand{\KK}{\mathcal{K}}
+\newcommand{\eps}{\epsilon}
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+%\icmltitlerunning{Deterministic Independent Component Analysis}
+
+\title{Deterministic Independent Component Analysis}
+%\author{}
+
+\begin{document} 
+\maketitle
+
+\begin{abstract}
+We study independent component analysis with noisy observations. 
+We present, for the first time in the literature, consistent, polynomial-time algorithms to recover 
+%non-Gaussian source signals and 
+the mixing matrix with 
+a reconstruction error that vanishes at a rate of $\sqrt{T}$ using $T$ observations and scales only polynomially with
+the natural parameters of the problem. 
+Our algorithms and analysis also extend to deterministic source signals whose empirical distributions are approximately independent.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:Intro}
+Independent Component Analysis (ICA)
+%, as a main tool of blind source separation, 
+has received much attention in the past decades. 
+In the standard ICA model one can observe a $d$-dimensional vector $X$ that is a linear mixture of $d$ independent variables $(S_1,\ldots, S_d)$ with Gaussian noise:
+\begin{equation}
+\label{eq:stoch-ICA}
+X = AS+\epsilon,
+\end{equation}
+where $\epsilon \sim \mathcal{N}(0,\Sigma)$ is a $d$-dimensional Gaussian noise with zero mean and covariance matrix $\Sigma$, and $A$ is a nonsingular $d \times d$ mixing matrix. The goal of the observer is to recover (separate) the source signals and the mixing matrix given several independent and identically distributed (\iid) observations from the above model.
+The ICA literature is vast in both practical algorithms and theoretical analyses; 
+we refer to the book of \citet{comon2010handbook} for a comprehensive survey.
+% In particular, the ICA model can be viewed in a semiparametric manner with parameters $(W, p_1, \ldots, p_d)$ where $W$ is the targeted matrix, and nuisance parameters $p_i$ is the density function of the $i$-th source\footnote{Parametric perspective of the ICA model is also proposed in the literature \citep{pham1997blind,lee1999independent}, but it is beyond the scope of this paper.}. 
+In this paper we investigate one of he most important problems in ICA: finding consistent, computationally efficient algorithms with finite-sample performance guarantees. In particular, we aim to develop algorithms whose computational and sample complexity are polynomial in the natural parameters of the problem.
+
+% Our interest is proposing a `real' provable polynomial-time algorithm to reconstruct $A$ given observations of $X$.
+% Formally, an algorithm is called a provable polynomial-time algorithm, if the algorithm takes data $D$ and a \emph{data independent} parameter $\alpha$ as its input, and output $A$ in a running time of  $O\left(\text{Poly}(|D|, \alpha)\right)$ with guarantee on its correctness, where $|D|$ is the size of the data $D$ and $\text{Poly}(\cdot)$ is a polynomial in its arguments. 
+% If the parameter $\alpha$ has to be \emph{data dependent} to guarantee its correctness or polynomial running time, we call it oracle based algorithm, since it needs an oracle to propose the right $\alpha$. 
+% \begin{remark}
+% A trivial oracle based provable algorithm for the ICA problem could be taking the observations of $X$ and a matrix parameter $M$ as its input, and then outputting $M$. 
+% If an oracle exists to propose the right matrix $M$ ($=A$), then the algorithm correctly outputs $A$ in constant time. 
+% \end{remark}
+% \begin{remark}
+% SVM is a real provable polynomial-time algorithm. Even though in a classic analysis the error rate depends on its regularization coefficient $\lambda$, the result is valid for any $\lambda$, thus data independent. 
+% %Different $\lambda$'s will incur different error rates.)
+% \end{remark}
+
+A popular approach to the ICA problem is to find a linear transformation $W$ for $X$ by optimizing a, so-called, \emph{contrast function} 
+that measures dependence or non-gaussianity of the resulting coordinates of $WX$.
+The optimal $W$ then can serve as an estimate of $A^{-1}$, thereby recovering the mixing matrix $A$.
+One of the most popular ICA algorithms, FastICA \citep{hyvarinen1999fast},
+follows this approach for a specific contrast function.  
+FastICA has been analyzed theoretically from many aspects \citep{tichavsky2006performance,oja2006fastica,ollila2010deflation,dermoune2013fastica,wei2014convergence}.
+%, however, to the best of our knowledge, no finite-sample bounds are available for the general noisy case.
+In particular, recently \citet{miettinen2014fourth} showed  that in the noise-free case (i.e., when $X = AS$), the error of FastICA (when using a particular forth-moments-based contrast function) vanishes at a rate of $1/\sqrt{T}$ where $T$ is the sample size.
+In addition, several other methods have been shown to achieve similar error rates in the noise-free setting \citep[e.g.,][]{eriksson2003characteristic,samarov2004nonparametric,chen2005consistent,chen2006efficient}.
+However, to our knowledge, no similar finite sample results are available in the noisy case.
+% The first  $\sqrt{n}$-consistent estimator of $A$ (which implies a finite sample bound in the rate of $\sqrt{n}$), to our best knowledge, is proposed and analyzed by \citet{samarov2004nonparametric}. 
+% It is showed that the outer product of the density gradient as a matrix-valued functional has a diagonal structure in its expectation, 
+% thereby an simultaneously diagonalizing two consistent estimators of such functionals will lead to a consistent estimation of $A$.
+% Later other consistent estimators are also proposed \citep{eriksson2003characteristic,chen2005consistent,chen2006efficient}.
+%%Later \citet{chen2005consistent} showed that the estimator 
+%%based on characteristic functions of the joint probability of $S$ and the product of its 
+%%proposed in \citet{eriksson2003characteristic} is also $\sqrt{n}$-consistent.
+%Another estimator which is more efficient is also proposed by the same authors in \citep{chen2006efficient}.
+% However, these results are all limited to a noiseless setting. 
+% Moreover, they involve an intermediate procedure of estimating a probability function or a score function, which consequentially introduces extra technical conditions. 
+
+On the other hand, several promising algorithms are available in the noisy case that make significant advances towards provably efficient and effective ICA algorithms, albeit fall short of providing a complete solution. 
+Using a quasi-whitening procedure, \citet{arora2012provable} reduces the problem to finding all the local optima of a specific function defined using the forth order cumulant, 
+and propose a polynomial-time algorithm to find them with appealing theoretical guarantees. However, the results depend on an unspecified parameter ($\beta$ in the original paper) whose proper tuning is essential; note that even an exhaustive search over $\beta$ is problematic, since in practice we don't have 
+%its valid range is not well understood.
+
+% The first such method that can deal with the noise setting is attributed to \citet{arora2012provable}. 
+% %The idea is still based on the forth moments. 
+% After a quasi-whitening procedure, the ICA problem is reduced into a problem of finding all the local optima of a specific function defined using the forth order cumulant. 
+% Then a polynomial-time algorithm is proposed to find them with theoretical guarantee.
+% Despite its soundness in theory, this algorithm requires an exhaustive search for an input parameter ($\beta$ in the original paper), the valid range of which is not yet well understood. Thus, this algorithm is essentially an oracle based algorithm.
+% %The definition of the so-called `real' provable algorithm will be proposed and discussed later in this section.
+
+The exploitation of the special algebraic structure of the forth moments induced by the independence leads to several other works related to ICA \citep{hsu2013learning}. 
+A similar idea is also discussed earlier as a intuitive argument to construct a contrast function \citep{cardoso1999high}. 
+The first rigorous proofs for this idea are developed using matrix perturbation tools in a general tensor perspective \citep{goyal2014fourier}. 
+A common problem faced by these methods is a minimal gap of the eigenvalues, which may result in an exponential dependence on the number of source signals $d$.
+More precisely, these methods all require an eigen-decomposition of some flattened tensor where the minimal gap between the eigenvalues plays an essential role. 
+Although the exact size of this gap is not yet understood, a naive analysis introduces an exponential dependence on the dimension $d$. 
+Such dependence is also observed in the literature \citep{cardoso1999high,goyal2014fourier}.
+One way to circumvent such dependence is to directly decompose a high-order tensor using the power method, which requires no flattening procedure \citep{anandkumar2014guaranteed}. 
+However, when applied to the ICA problem, this introduces a bias term and so the error does not approach 0 as the sample size approaches infinity.
+Another issue is the well-known fact that the power method is unstable in practice for high-order tensors. 
+\citet{goyal2014fourier} proposed another method by exploring the characteristic function rather than the forth moments.
+However, their algorithm requires picking a parameter ($\sigma$ in the original paper) that is smaller than some unknown quantity, making their algorithm impossible to tune.
+%Also, estimating the derivative tensor of the second cumulant generating function requires estimating a number of high-order tensors in the complex plane. %\todoa{And then what?}
+%to balance the running time and the correctness
+Recently, \citet{vempala2014max} proposed an ICA algorithm based on an elegant, recursive version of the method of \citet{goyal2014fourier} that avoids dealing with the aforementioned minimal gap; however, they still need an oracle to set the unspecified parameter of \citet{goyal2014fourier}.
+
+In this paper we propose a \emph{provably polynomial-time} algorithm for the noisy ICA model.
+%a practical method for ICA which also has meaningful theoretical guarantee (polynomial-time; no need of parameter tuning; with high probability the reconstruction error of $A$ polynomially depends on all the parameters; and the reconstruction error vanishes as the sample size going to infinity).
+Our algorithm is a refined version of the ICA method proposed by \cite{hsu2013learning} (HKICA). 
+However, we propose two simpler ways, one inspired by \citet{frieze1996learning}, \citet{arora2012provable}, and another based on \citet{vempala2014max}, to deal with the spacing problem of the eigenvalues under similar conditions to those of \citet{goyal2014fourier}.
+Unlike the method proposed by \citet{goyal2014fourier}, our first method can force the eigenvalues to be well-separated with a gap that is independent of the mixing matrix $A$, while our second method, based on the recursive decomposition idea of \citet{vempala2014max}, avoids dealing with the minimum gap (on the price of introducing other complications).
+We prove that our methods achieve an $O(1/\sqrt{T})$ error in estimating $A$ and the source signals, with high probability, such that both the convergence rate and the computational complexity scale \emph{polynomially} with the natural parameters of the problem. %  is $\sqrt{n}$-consistent.
+Our method needs no parameter tuning, which makes it even more appealing. %a \emph{real} provable algorithm.  
+
+
+Another contribution of the present paper is that our analysis is conducted in a deterministic manner. 
+In practice, ICA is also known to work well for unmixing the mixture of various deterministic signals. 
+One of the classical demonstrations of ICA is showing that two periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
+Such an example is shown in Figure~\ref{fig:demo}. It can be seen that our algorithm, DICA, designed for deterministic signals, can solve the problem better than
+other algorithms, FastICA \citep{hyvarinen1999fast} and HKICA \citep{hsu2013learning}.
+
+\begin{figure}[pt]
+\captionsetup{singlelinecheck=off}
+\centering
+	\includegraphics[width = \textwidth]{demo}
+\label{fig:demo}
+\caption{Example of ICA for deterministic sources: The first two rows show the source signals
+$s_1(t)=\lfloor t-2\lfloor t/2 \rfloor \rfloor-0.5$, 
+$s_2=\cos(t)$, the next two rows present the observations with mixing matrix 
+$A=\left(
+\protect\begin{array}{cc}
+1&-2\\
+2.6 & 1.3
+\protect\end{array}
+\right)$. 
+The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 10000 uniformly spaced points in the interval $\left[0,15\right]$.}
+\end{figure}
+
+Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
+Our deterministic analysis helps investigate this curious phenomenon without losing any generality to the traditional stochastic setting. 
+Formally, instead of observing $T$ \iid samples from Equation \eqref{eq:stoch-ICA}, the source signals are defined by the function $s:\natural \ra \real^d$ be a $d$-dimensional deterministic ``signal'', and
+the observations are $x(t)=A s(t) +\epsilon_t$, where $(\epsilon_t)_{t=1}^\infty$ is an \iid sequence of $d$-dimensional $\mathcal{N}(0,\Sigma)$ random variables.
+
+% Denote by $s_i$ the $i$th component of $s$.
+% We present the ICA model as a linear mixture of functions (details will be introduced later).
+% Then we analyze the HKICA algorithm \citep{hsu2013learning} under this presentation using a measure of functional dependence.
+% A detailed analysis shows that its performance depends on the minimal gap of the eigenvalues (of some random matrix. The exact form is presented later.).
+% A key step of our algorithm is reducing such minimal eigenvalue gap problem to the problem of minimal spacing of i.i.d. Cauchy random variables by the quasi-whitening procedure, for which a polynomial lower bound is available.
+% With this lower bound, we then show the new algorithm has provable guarantee on the reconstruction error of $A$. 
+
+The rest of this paper is organized as follows: 
+The ICA problem is introduced in detail in Section~\ref{sec:Preliminaries} and  our main results are highlighted in Section~\ref{sec:main}.
+The polynomial-time algorithms underlying these results are developed through the next two sections: Section~\ref{sec:AnalysisHK} is devoted to the analysis of the HKICA algorithm, also showing its disadvantages, while our new algorithms are presented in Section~\ref{sec:DICA}.
+Experimental results are reported in Section \ref{sec:ExpRes}.
+All proofs are provided in the appendix.
+
+\subsection{Notation}
+All vectors, matrices and tensors are real or complex valued, unless otherwise stated; below $K$ denotes either the set of real or complex numbers. We denote the set of real and natural numbers by $\real$ and $\natural$, respectively.
+A vector $v \in K^d$ is assumed to be a column vector.
+Let $\|v\|_2$ denote its $L_2$-norm, and for any matrix $Z$ let $\|Z\|_2=\max_{v:\|v\|_2=1}{\|Z v\|_2}$ denote the corresponding induced norm. Denote the maximal and minimal singular value of $Z$ by $\sigma_{\max}(Z)$ and  $\sigma_{\min}(Z)$, respectively. Also, let $Z_i$ and $Z_{i:}$ denote the $i$th column and, resp., row of $Z$, and let $Z_{(2,\min)} = \min_{i} \|Z_i\|_2$, $Z_{(2,\max)} = \max_{i} \|Z_i\|_2$ and $Z_{\max} = \max_{i,j} |Z_{i,j}|$. 
+Clearly, $\sigma_{\max}(Z) =\|Z\|_2 \ge Z_{(2,\max)} \ge Z_{\max}$, and $\sigma_{\min}(Z) \le Z_{(2,\min)}$. For a tensor (including vectors and matrices) $T$, its Frobenious norm (or $L_2$ norm) $\|T\|_F$  is defined as the square root of the sum of the square of all the entries.  
+For a vector $v=(v_1,\ldots,v_d) \in K^d$, $\vert v \vert$ is defined coordinatewise, that is $\vert v \vert=(\vert v_1 \vert,\ldots,\vert v_d\vert)$. 
+The transpose of a vector/matrix $Z$ is denoted by $Z^\top$, while the inverse of the transpose is denoted by $Z^{-\top}$.  
+The outer product of two vectors $v, u \in K^d$ is denoted by $u\otimes v=u v^\top$. 
+$v^{\otimes k}$ denotes the $k$-fold outer product of $v$ with itself, that is, $v\otimes v\otimes v \ldots \otimes v$, which is a k-dimensional tensor.
+Given a $4$-dimensional tensor $T$, we denote the matrix $Z$ by $T(\eta,\eta,\cdot , \cdot)$ that is generated by marginalizing the first two coordinates of $T$ on the direction $\eta$, that is,
+$Z_{i,j} = \sum_{k_1,k_2 = 1}^{d} \eta_{k_1} \eta_{k_2} T_{k_1,k_2,i,j}$. (Similar definitions for marginalizing different coordinates of the tensor.)
+For a real vector $v$ and some real number $C$, $v \le C$ means that all the entries of $v$ are at most $C$. 
+The bold symbol $\boldsymbol{1}$ denotes a vector with all entries being $1$ (the dimension of this vector will always be clear from the context).
+Finally, $\poly{\cdot,\cdots,\cdot}$ denotes a polynomial function of its argument.
+
+
+
+
+
+% As preliminaries, we introduce the induced probability measures by the signal, which is a generalization of empirical 
+% frequency counts.
+% \subsection{Induced Probability}
+% \label{subsec:InducesProb}
+% Let  $(\mu_t)_{t\ge0}$ be a sequence of probability measures over some measurable domain $(\Omega,\AA)$, 
+% and $s: \Omega \ra \real^d$. Then,  for any function and $t\ge 0$, the probability measure $\nu_t$ over $\real^d$ induced by $s$ and $\mu_t$ is defined as
+% \[
+% \nu_t(B)= \mu_t\Bigl( \cset{z}{s(z)\in B} \Bigr)
+% = \mu_t ( s^{-1}(B) ).
+% \]
+% for any Borel set $B\subset \real^d$.
+% Note that if $\Omega = \natural$, $\AA = 2^\natural$ and $\mu_t$ is
+% the uniform distribution on $\{0,\ldots,t\}$, then $\nu_t$ is the
+% empirical distribution of $s(1),\ldots,s(t)$. 
+
+% For continuous time observations, one can select $\Omega=\R$, $\AA$ as the Borel sets over $\R$, and $\mu_t$ as the uniform distribution on $[0,t]$; then $\nu_t$ is the empirical distribution of $s(\tau), \tau \in [0,t]$.
+
+% In what follows we fix $\Omega$ and $(\mu_t)$ and define all the concepts that follow relative to these. 
+% In this paper we only consider about real functions. If we want to emphasize the dependence on $s$ then we will use $\nu_t^{(s)}$.
+% \if0
+% When the limit of $(\nu_t)$ exists, it will be denoted by $\nu$.
+% Also, if we want to emphasize the dependence on $s$ then we will use $\nu^{(s)}$.
+% Similarly, when the dependence of $\nu_t$ on $s$ is important, we will use $\nu^{(s)}_t$.
+% \begin{definition}
+% A function $s:\Omega \rightarrow \real^d$ is called \emph{ergodic} w.r.t. $(\mu_t)_{t\ge0}$
+% if the sequence of  induced probability measures $(\nu_t)_{t\ge 0}$ is weakly convergent.
+% \end{definition}
+% A simple example of an ergodic function is a real periodic function.
+% The following lemma shows that once $\nu$ exists, it is a probability measure. 
+% \begin{prop}
+% \label{prop:ergodicfunction}
+% Let $\scom{i}$ denote the $i$th coordinate function of $s$. Assume that
+% \[
+% \lim_{t\to\infty} \int |\scom{i}(x)|\, d\mu_t(x) 
+% \]
+% exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |\scom{i}|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
+% Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
+% \end{prop}
+% \fi
+
+\section{The ICA Problem}
+\label{sec:Preliminaries}
+%\label{subsec:ICA}
+%In this paper we consider the ICA problem without the usual stochastic \iid assumptions on the source signal, and present our main results.
+In this paper we consider the following non-stochastic version of the ICA problem.
+Assume that we can observe the $d$ dimensional mixed signal $x(t) \in \R^d, t \in [T]:=\{1,2,\ldots,T\}$ generated by  
+\begin{equation}
+\label{eq:ICA}
+x(t) = As(t)+\epsilon(t), 
+\end{equation}
+where $A$ is a $d\times d$ nonsingular mixing matrix,  $s:[T] \to [-C,C]^d$ is a bounded, $d$-dimensional source function for some constant $C \ge 1$. , and $\epsilon:[T] \to \R^d$ is the noise function. We will denote the $i$th component of $s$ by $s_i$. Furthermore, we will use the notation $\sigma_{\min}=\sigma_{\min}$ and
+$\sigma_{\max}=\sigma_{\max}$
+
+For any $t,k \ge 1$ and signal $u:[t] \to \R^k$, we introduce the empirical distribution $\nu_t^{(u)}$ defined by
+$\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $B \subset \R^k$. Next we will impose assumptions on the empirical measure that guarantee that on the average we do not deviate too much from the stochastic model. The next assumption implies that the empirical distributions of the source signals are approximately zero mean, and that the noise is approximately zero-mean Gaussian.
+
+\begin{assumption}
+\label{ass:gauss}
+Assume there exists a constant $L\ge 1$, such that 
+\begin{enumerate}[(i)]
+\vspace{-3mm}
+\item $\| \E_{S_i\sim \nu_t^{(s_i)}} [S_i] \|_F\le L/\sqrt{t}$;
+\item $\| \E_{Y \sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$;
+\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F \le L$;
+\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L$;
+\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le L/\sqrt{t}\|\eta\|_2^2$.
+\end{enumerate}
+\end{assumption}
+\begin{remark}
+The first two statements force the average of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
+The next two assumptions require that both the second and third moments of the noise be bounded.
+The last assumption basically says that the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit.
+All these assumptions about $\epsilon$ will are satisfied with high probability for \iid Gaussian noise $\mathcal{N}(0,\Sigma)$ with fixed $\Sigma$, as proved later in Proposition~\ref{prop:stochasticAss}.
+\end{remark}
+Moreover, we will need to guarantee that the source signals and the noise are approximately independent:
+\begin{assumption}
+\label{ass:independence}
+Assume the source signal function and the noise function are `independent' up to the 4th moment in the sense that for any $i_1,i_2,j_1,j_2 \ge 0$ such that $i_1+i_2+j_1+j_2 \le 4$,  
+\begin{align*}
+& \| \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \otimes (AS)^{\otimes i_2}]\\
+& \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [(AS)^{\otimes i_1}\otimes Y^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F 
+ \le\frac{L}{\sqrt{t}},
+\end{align*}
+and 
+\begin{align*}
+& \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1} \otimes \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}] \otimes Y^{\otimes j_2}] \\
+& \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes Y^{\otimes j_2}] \|_F 
+\le\frac{L}{\sqrt{t}}, % \le L/\sqrt{t},
+\end{align*}
+for some $L \ge 1$, where $(s,\epsilon)$ is the function obtained by concatenating $s$ and $\epsilon$ together.  
+\end{assumption}
+The sufficiency of such weaker assumptions is also discussed in the paper of \citet{frieze1996learning}.
+Similarly, the next proposition shows that the assumptions are satisfied, with high probability, for the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals.
+\begin{prop}
+\label{prop:stochasticAss}
+In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$,there exists $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
+\end{prop}
+On the other hand, our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
+\begin{example} \em
+Assume that each unknown sources $s_i$s ($1\le i\le d$) are deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
+Even though $\eps$ is i.i.d. for every time step, the observations can not satisfy the traditional i.i.d. assumption, since the source $s$ is deterministic. However, it can be proved that if the ratio of the periods of each pair of $(s_i, s_j)$ is irrational, then this example satisfies all the assumptions above, given large enough $T$.   
+\end{example}
+% \todoa{The following example seems to be incorrect}
+% Another example is a source with both deterministic component and stochastic component, as follows.
+% \begin{example}
+% Assume the source signal has two dimensions, $s_1$ and $s_2$. For discrete time step $t = 1,2,\ldots$, assume $s_1$ is a deterministic signal with period $p$, i.e. $s_1(p+t) = s_1(t)$. 
+% Also assume $s_2$ is generated from some distribution $P$ independently to $s_1$ and time step $t$.
+% Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
+% Similarly, the observations can not satisfy the traditional i.i.d. assumption, since the source $s$ is deterministic. 
+% However, this example satisfies all the assumptions above, given large enough $T$.   
+% \end{example}
+
+\section{Main Results}
+\label{sec:main}
+
+The ICA approach requires that the components $s_i$ of the source signal $s$ be statistically independent. In our non-stochastic setup, we require that the empirical distribution $\nu_T^{(s)}$ be close to a product distribution.
+
+Fix some product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\R^d$ 
+such that $\E_{S_i\sim\mu_i}[S_i]=0$ and $\kappa_i := \vert \E_{S_i\sim \mu_i}[S_i^4] - 3\left(\E_{S_i\sim \mu_i}[S_i^2]\right)^2 \vert \neq 0$. Let
+$K$ denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$, and define $\kappa_{\max}=\max_{i} \kappa_i$ and $\kappa_{\min}=\min_{i} \kappa_i$.
+
+To measure the distance of $\nu_T^{(s)}$ from $\mu$, define the following family of ``distances'' to measure the closeness of two distributions: Given two distributions $\nu_1$ and $\nu_2$ over $\R^d$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\nu_2(s)|$, where $\mathcal{F}=\{f:\R^d \to \R : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ is the set of all monomials up to degree $k$. Finally let
+\begin{equation}
+\label{eq:xi}
+\xi = \left( 6C^2D_2(\mu, \nu_T^{(s)}) + D_4(\mu, \nu_T^{(s)})\right).
+\end{equation}
+%\begin{remark}
+In general, we will need a condition that $\xi$ is small enough, so that the components of $s$ are ``independent'' enough. To this end, one should choose
+$\mu$ to minimize $\xi$; however, such a minimizer does not always exists.
+On the other hand, in the traditional stochastic setting where the observations are \iid samples, the empirical distribution will converge to the population distribution, which, based on the independence assumption, is a product probability measure. 
+Therefore, in this case, $\xi$ will be small for large enough sample sizes. 
+%\end{remark}
+
+Now we are ready to state our main result, which shows the existence of polynomial-time algorithms for ICA that reconstructs the mixing matrix $A$ 
+with error that vanishes at an $O(1/\sqrt{T})$ rate for $T$ samples and is also polynomial in the natural parameters of the problem:
+
+
+\begin{thm}
+\label{thm:finalRes} Consider the ICA problem \eqref{eq:ICA}. There exists an algorithm that estimates the mixing matrix $A$ from $T$ samples of $x$ such that (i) the computational complexity of the algorithm is $O(d^3 T)$; and (ii) if Assumptions~\ref{ass:gauss} and~\ref{ass:independence} are satisfied,
+\[
+T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}},
+\]
+and there exists a product distribution  $\mu$  such that 
+\[
+D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},\frac{1}{d}, \delta, \kappa_{\min}},
+\]
+then, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$,
+\[
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+\frac{1}{\sqrt{T}}\right),
+\]
+where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$, and $\hat{A}$ is the output of the algorithm.
+
+In particular, in the traditional stochastic setting, if $S$ has a distribution $\mu$, 
+\[
+T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \|\Sigma\|_2},
+\]
+then, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$,
+\begin{align*}
+ \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le 
+& \frac{\poly{C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d}}{\sqrt{2T}}.
+\end{align*}
+\end{thm}
+\begin{remark} %\em
+Note that the result is polynomial in $1/\delta$ which is weaker than being polynomial in $\log(1/\delta)$.
+\end{remark}
+
+In the next sections, we will present two algorithms, DICA (Algorithm~\ref{alg:DICA} and HKICA\_recur (Algorithm~\ref{alg:HKICA_recur}) in Section~\ref{sec:DICA} that 
+satisfy the theorem.
+
+
+\if0
+Based on the previous result on the reconstruction error of the mixing matrix, we can also bound the error in reconstructing the source signals:
+\todoa{This is too weak at the moment, since $\|\eps\|_2/T$ does not converge to zero. I will remove it if it is not improved.}
+\begin{cor}
+\label{cor:signalerror}
+Under the assumptions of Theorem~\ref{thm:finalRes}, the reconstructed signal $\hat{s}(t)=\hat{A}^{-1} x(t)$ of the algorithm of the theorem satisfies
+ Given a large enough $T$, if there exists a product measure $\mu$  such that  $D_4(\mu, \nu_T)$ is small enough satisfying
+\begin{itemize}
+\vspace{-3mm}
+\item $T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}}$;
+\item $D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},\frac{1}{d}, \delta, \kappa_{\min}}$.
+\end{itemize}
+\vspace{-2mm}
+Then with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\begin{align*}
+\| \hat{s}_{\pi(k)} - s \|_2 & \le \mathcal{C}(\|s\|_2+\frac{1}{\sigma_{\min}}\|\eps\|_2)(D_4(\mu,\nu_T)+\frac{1}{\sqrt{T}}) \\
+& \quad +\frac{\|\eps\|_2}{\sigma_{\min}},
+\end{align*}
+where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$.
+
+In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the Appendix),
+ with probability at most $1-\delta$, 
+ DICA will generate an estimate $\hat{A}$ of the mixing matrix $A$ in
+ time complexity of $O(d^3T)$, 
+ such that there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\begin{align*}
+& \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \\
+& \quad\frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}(\|s\|_2+\frac{1}{\sigma_{\min}}\|\eps\|_2)\text{Poly} +\frac{\|\eps\|_2}{\sigma_{\min}},
+\end{align*}
+where $\text{Poly}$ is a polynomial in $(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d)$.
+\end{cor}
+\fi
+
+\section{Estimating Moments: the HKICA Algorithm}
+
+In this section we introduce the ICA method of \citet{hsu2013learning} which is based on the well-known excess-kurtosis-like quantity
+defined as follows:
+% \subsection{Quasi-Whitening}
+% \label{subsec:quasiwhite}
+
+For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\R^d$,
+let 
+\begin{equation}
+\label{eq:momnent}
+m_p^{(\nu)}(\eta) = \E_{X\sim \nu}[ (\eta^\top X)^p ]
+\end{equation}
+and let
+\begin{equation}
+\label{eq:funcf}
+f_{\nu}(\eta) = \frac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)\,.
+\end{equation}
+
+\citet{hsu2013learning} showed that $\nabla^2f_{\nu_T^{(x)}}(\eta)$, the second derivative of the function $f_{\nu_T^{(x)}}$, is extremely useful for the ICA problem:
+They showed that if $\mu^{(X)}$ is the distribution of the observations $X$ in the stochastic setting where $S$ comes from the product distribution $\mu$, then
+$f_{\mu^{(X)}}(\eta)=f_{A\mu}(\eta)$ for all $\eta$ (where $A\mu$ denotes the distribution of $AS$) and, consequently, the eigenvectors\footnote{Throughout the paper eigenvectors always mean right eigenvectors, unless specified otherwise.} of the matrix $M=\nabla^2f_{\mu^{(X)}}(\phi)(\nabla^2f_{\mu^{(X)}}(\psi))^{-1}$ are the rescaled columns of $A$ if $\frac{\phi^\top A_i}{\psi^\top A_i}$ are distinct for all $i$. Thus, to obtain an algorithm, one needs to estimate $\nabla^2 f_{\mu^{(X)}}$ in such a way that the noise $\epsilon$ could still be neglected.
+
+Providing an estimate $\nabla^2 \hat{f}$ of $\nabla^2f_{\mu^{(X)}}$ is not hard, since for any $\nu$,
+$\nabla^2f_{\nu}(\eta)$  can be computed as
+\begin{equation}
+\label{eq:G}
+\nabla^2 f_{\nu}(\eta) = G_{\nu}(\eta):= G_1^{(\nu)}(\eta) - G_2^{(\nu)}(\eta) -2G_3^{(\nu)}(\eta),
+\end{equation}
+where 
+\vspace{-3mm}
+\begin{align*}
+& G_1^{(\nu)}(\eta) =  \E_{X\sim \nu} [\big(\eta^{\top}X\big)^2XX^{\top}]; \\
+& G_2^{(\nu)}(\eta) = \E_{X\sim \nu} [\big(\eta^{\top}X\big)^2] \E_{X\sim \nu} [XX^{\top}]; \\
+%\frac{1}{T^2}\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)^2 \sum_{t=1}^{T}x(t)x(t)^{\top}; \\
+& G_3^{(\nu)}(\eta) = \E_{X\sim \nu} [\big(\eta^{\top}X\big)X] \E_{X\sim \nu} [\big(\eta^{\top}X\big)X^{\top}],
+%\frac{1}{T^2}\Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
+\end{align*} 
+and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu_T^{(x)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu_T^{(x)}$. 
+%A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
+It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the appendix, Section \ref{subsec:denoise}. 
+In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\frac{\poly{L_{\eta}, L, d, \sigma_{\max}, C}}{\sqrt{T}}$. Denote this quantity by $P(L_{\eta})$. 
+Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
+%We also assume that $T$ is large enough such that $P\le 1/6$.
+
+
+
+Putting everything together, we obtain the algorithm HKICA, named after \citet{hsu2013learning}, which is shown in Algorithm~\ref{alg:HKICA},
+\begin{algorithm}[H]
+\caption{The HKICA algorithm.}
+\label{alg:HKICA}
+\begin{algorithmic}[1]
+\INPUT $x(t)$ for $1\le t \le T$. 
+\OUTPUT An estimation of the mixing matrix $A$. 
+\STATE Sample $\phi$ and $\psi$ independently from a standard Gaussian distribution of dimension $d$;
+\STATE Evaluate $\nabla^2\hat{f}(\phi)$ and $\nabla^2\hat{f}(\psi)$, 
+\STATE Compute $\hat{M} = (\nabla^2 \hat{f}(\phi))(\nabla^2\hat{f}(\psi))^{-1}$;
+\STATE Compute all the eigenvectors of $\hat{M}$, $\{\mu_1,\ldots,\mu_d\}$;
+\STATE Return $\hat{A} = (\mu_1,\ldots,\mu_d)$.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}%[Remark for Algorithm~\ref{alg:HKICA}]
+\label{rmk:symmetrization} 
+Although in theory, HKICA generates a valid, real output almost surely, in practice this may not happen always as, due to numerical errors, $\nabla^2\hat{f}(\psi)$ may become singular or the ratio $(\phi^\top A_i)/(\psi^\top A_i)$ may become the same for multiple indices $i$. A simple way to fix this problem is re-sampling $\phi$ and $\psi$ until a real eigen-decomposition exists.
+% Let $\nabla^2\hat{f}(\psi) =\hat{B}\hat{B}^{\top} $.
+% In practice, the HKICA algorithm may generate complex output. 
+% This occurs only when $\nabla^2\hat{f}(\psi)$ is singular. 
+% Otherwise, the eigenvalues of $\hat{M}$ would be the same as those of
+% $\hat{B}^{-\top}\nabla^2 \hat{f}(\phi)\hat{B}^{-1}$ which is symmetric and thus has all real eigenvalues, where $\hat{B} $ is the square root of $\nabla^2\hat{f}(\psi)$. 
+% Note that theoretically the singularity of $\nabla^2\hat{f}(\psi)$ happens with probability 0. 
+% One way of fixing this problem is re-sampling $\phi$ and $\psi$ until a real eigen-decomposition exists.
+
+% Another possible way, avoiding re-sampling albeit with larger error, is by a symmetrizing trick.
+% Instead of computing $\hat{M} = (\nabla^2 \hat{f}(\phi))(\nabla^2\hat{f}(\psi))^{-1}$, one can calculate the eigen-decomposition of  $\hat{B}^{-\top}\nabla^2 \hat{f}(\phi)\hat{B}^{-1}$. 
+% Note that $\hat{B} \approxeq ADR^{\top}$ for some diagonal matrix $D$ and orthonormal matrix $R$. 
+% Hence such eigen-decomposition will recover $\hat{R}\approxeq R$. 
+% Then $A$ can be reconstructed, up to permutation and scaling of columns, by $\hat{A} = \hat{B}\hat{R}$.
+% As mentioned above, $ \hat{B}^{-\top}\nabla^2 \hat{f}(\phi)\hat{B}^{-1}$ is always symmetric, thus yields a real eigen-decomposition. 
+% Theoretical analysis of the symmetrizing version of the algorithm would require more steps but similar ideas go through. We omit its analysis in the paper.
+% \qed
+\end{remark}
+
+\if0
+Note that the above deterministic setting does not lose any generality to the traditional stochastic setting of ICA with Gaussian noise, given that we can rewrite the stochastic setting as 
+\[
+x = As+\eps = A(s+A^{-1}\eps),
+\] 
+where $\eps$ is a Gaussian noise. In practice, we are not going to observe the true distribution of $x$, but $x(t)$, $t\ge 0$, which leads to Equation \eqref{eq:ICA}.
+\fi
+
+
+\subsection{Analysis of HKICA}
+\label{sec:AnalysisHK}
+
+\citet{hsu2013learning} claimed that HKICA is easy to analyze using matrix perturbation techniques. In this section we provide a rigorous analysis of the algorithm, which reveals some unexpected complications.
+
+
+
+\begin{definition}
+Let $\Epsi$ denote the following event: For some fixed $C_1 = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$ for $0\le \ell\le 1$, and $ L_u \ge \sqrt{2d}$,
+%= \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$,
+$\min_i |\psi^{\top}A_i| \ge C_1$ and $\|\psi\|_2 \le L_u$ hold simultaneously. 
+\end{definition}
+Let 
+\begin{equation}
+\label{def:kappa}
+\gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert. 
+\end{equation}
+The performance of the HKICA algorithm will essentially depend on this parameters, as shown in the following theorem.
+\begin{thm}
+ \label{thm:efficiency} 
+Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. 
+Furthermore, assume that
+\begin{align*}
+T & \ge \poly{d, L_u, C, \sigma_{\max},\kappa_{\max}, L,\frac{1}{\ell}, \frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\gamma_A}},
+\end{align*}
+and that there exist a product measure $\mu$ such that 
+\[
+\xi \le \poly{\gamma_A, \frac{1}{d}, \frac{1}{L_u}, \frac{1}{\sigma_{\max}}, \frac{1}{\kappa_{\max}}, \kappa_{\min}, \sigma_{\min}, \ell}.
+\] 
+Then, on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for any $k$,
+\begin{equation}
+\label{eq:HKICA-bound}
+  \max_{1\le k\le d}\| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le
+  % \frac{4}{\gamma_A} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}}Q,
+  \frac{1}{\gamma_A} (\xi + P(L_u))Q
+\end{equation}
+where $\hat{A}$ is the output of the HKICA algorithm, and 
+\[Q=\poly{d, L_u, \sigma_{\max}, \kappa_{\max}, \frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}}.\]
+ \end{thm}
+ \if0
+\begin{remark}
+Note that the first condition holds with probability 1. Also, the other three conditions will be satisfied when $\xi$ is small enough (for a fixed $\gamma_A$).
+In particular, as mentioned in the Remark \ref{rmk:xi}, these conditions will be satisfied in the traditional stochastic setting of ICA (for a fixed $\gamma_A$), given large enough sample size. \qed
+%However, condition 2 and 3 are rarely satisfied in practice. 
+%More discussion about this problem and weaker conditions are discussed in Section \ref{sec:ExpRes}. 
+\end{remark}
+\fi
+\begin{remark}
+(i) Note that the bound in \eqref{eq:HKICA-bound} goes to zero at an $O(1/\sqrt{T})$ rate whenewer $D_4(\mu,\nu_T^{(s)})=O(1/\sqrt{T})$, as, e.g., in the stochastic setting.
+(ii) The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the conditionalso require a small $1/\gamma_A$ so that the above error bound is valid. Also, since $\gamma_A$ is the minimum spacing of the eigenvalues of $M=\nabla^2 f_{A\mu}(\phi) (\nabla^2 f_{A\mu}(\psi))^{-1}$, the eigenvalue perturbations imposed by the noise cannot be too large compared to $\gamma_A$ without potentially  ruining the eigenvectors of $M$; thus, the dependence on $\gamma_A$ seems to necessary.
+
+% Note that $\gamma_A$ is actually the minimal gap of the eigenvalues of $M = (\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1}$.
+% We would like to claim that such dependence on the minimal gap of the eigenvalues is necessary.
+% Consider a $2\times 2$ matrix $A = \text{diag}([a,b])$ where $a<b$. Let $\eps = b-a$. Note that two eigenvectors of $A$ are $[1,0]$ and $[0,1]$, and $\eps$ is the gap of its eigenvalues. If the perturbation is small, one can prove, as in the proof of Theorem~\ref{thm:efficiency}, that the variation of the eigenvectors is also small. 
+% However, if the perturbation is larger than the gap of the eigenvalues, i.e. $\eps$, then the variation of the eigenvectors could be arbitrary bad. To see this, consider perturbing $A$ by a matrix $E = \text{diag}([\eps,0])$. Thus $\hat{A} = \text{[b,b]}$ whose eigenvectors could be arbitrary orthogonal vectors, thus arbitrary  far away from $[1,0]$ and $[0,1]$ (the eigenvectors of $A$).   
+% Such discontinuity of the eigen-spaces suggests that the dependence on $\gamma_A$ is necessary for the HKICA algorithm because of the eigen-decomposition of $M$. 
+\end{remark}
+
+Despite the important role that $\gamma_A$ plays in the efficiency of the HKICA algorithm, it is not clear how it depends on different properties of $A$.
+To the best of our knowledge, even a polynomial (in the dimension $d$) lower bound of $\gamma_A$ is not yet available in the literature. 
+Similar problems have been discussed by  \citet{husler1987minimal} and \citet{goyal2014fourier}, but there solutions are not applicable to our case.
+% A similar problem has been discussed by \citet{husler1987minimal}, but their results just do not apply to our case.
+% A delicate analysis carried out by \citet{goyal2014fourier} for a similar spacing problem is heavily based on the boundedness of the characteristic function, which isn't applicable here either.
+
+\section{A Refined HKICA Algorithm}
+\label{sec:DICA}
+
+The problems with $\gamma_A$ motivate us to refine the HKICA algorithm.
+The idea is inspired by \citet{arora2012provable} and \citet{frieze1996learning} using a quasi-whitening procedure:
+
+One can show that $\nabla^2 f_\mu(\psi)=A K D_{\psi} A^\top$ where $D_{\psi}=\text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$,
+and so $B=AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. Defining $T_i=\nabla^2 f_\mu(B^{-\top} \phi_i)$, one can calculate that
+$T_i=A K^{1/2} D_\psi^{-1/2} \Lambda_i A^\top$ where $\Lambda_i=\text{diag}\left(\phi_i^\top R_1,\ldots,\phi_i^\top R_d\right)$ and $R_i$ denote the $i$th column of $R$.
+Then $M=T_1 T_2^{-1} = A\Lambda A^{-1}$ with $\Lambda=\Lambda_1 \Lambda_2^{-1}=\text{diag}\left(\frac{\phi_1^\top R_1}{\phi_2^\top R_1},\ldots,\frac{\phi_1^\top R_d}{\phi_2^\top R_d}\right)$. Thus, $A_i$ are again the eigenvectors of $M$, but now the eigenvalues of $M$ are defined in terms of the orthogonal matrix $R$ instead of $A$,
+and so the resulting minimum spacing
+\begin{equation}
+\label{def:gammaR}
+\gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2 - \left(\frac{\phi_1^{\top}R_j}{\phi_2^{\top}R_j}\right)^2 \right\vert
+\end{equation}
+is much easier to handle.
+
+The resulting algorithm, called Deterministic ICA (DICA), is shown in Algorithm \ref{alg:DICA}. 
+\begin{algorithm}
+\caption{Deterministic ICA (DICA)}
+\label{alg:DICA}
+\begin{algorithmic}[1]
+\INPUT $x(t)$ for $1\le t \le T$. 
+\OUTPUT An estimation of the mixing matrix $A$. 
+\STATE Sample $\psi$ from a $d$-dimensional standard Gaussian distribution;
+\STATE Evaluate $\nabla^2\hat{f}(\psi)$, \\
+%\quad where $\hat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\hat{f}(\eta) = \frac{1}{12}\big(\hat{m_4}(\eta) - 3\hat{m_2}(\eta)^2 \big)$;
+\STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
+\STATE Sample $\phi_1$ and $\phi_2$ independently from the standard Gaussian distribution;
+\STATE Compute $\hat{T}_1 =\nabla^2\hat{f}(\hat{B}^{-\top}\phi_1)$ and  $\hat{T}_2 =\nabla^2\hat{f}(\hat{B}^{-\top}\phi_2)$;
+
+\STATE Compute all the eigenvectors of $\hat{M} = \hat{T}_1\left(\hat{T}_2\right)^{-1}$, $\{\mu_1,\ldots,\mu_d\}$;
+\STATE Return $\hat{A} = \{\mu_1,\ldots,\mu_d\}$.
+\end{algorithmic}
+\end{algorithm}
+% \begin{remark}[Remark for Algorithm \ref{alg:DICA}]
+% The difficult in analyzing $\gamma_A$ of the HKICA algorithm is due to its dependence on the unknown mixing matrix $A$. 
+% The way of DICA to deal with this problem can be viewed in a tensor perspective. 
+% Instead of flattening two $4$-dimensional tensors into matrices simply by marginalizing in a random direction, in DICA we marginalize in a structured direction as $\psi^{\top}A^{-1}$ for a random $\psi$. 
+% Another possible interpretation could be in a  probabilistic perspective, as sampling $\phi_1$ and $\phi_2$ based on an estimation of the variance matrix. 
+% In particular, we would like to sample $\phi$ from a Gaussian distribution $\cN$$(0,V)$ where $V = A^{-\top}A^{-1}$, so that $\{\phi^{\top}A_1, \ldots, \phi^{\top}A_d \}$ is independent and hence $\gamma_A$ could be easier to analyze. 
+% Despite the true value of $A^{-\top}A^{-1}$ is not available, we can estimate it by $\left(\nabla^2\hat{f}(\psi)\right)^{-1}$ up to permutation and scaling,
+% which can still maintain the independence of $\{\phi^{\top}A_1, \ldots, \phi^{\top}A_d \}$). 
+% %Then in DICA, $\hat{B}^{-\top}\phi$ is a way of sampling such direction $v$.
+% %This perspective also suggest that a better estimation of $A^{-\top}A^{-1}$ would help improve DICA. 
+% \qed
+% \end{remark}
+\begin{remark}
+Similarly to HKICA, DICA may fail with probability 0 (giving, e.g., complex outputs), but this may be experienced due to numerical errors.
+The same resampling trick can be applied again, as in Remark \ref{rmk:symmetrization}. 
+\end{remark}
+Note that on the event $\Ephi$, $\|\phi_j^{\top}R\|_2\le L_u$, $j\in\{1,2\}$. 
+We will show later that this event $\Ephi$, as well as other events defined later, will hold simultaneously with high probability.
+
+The DICA algorithm can be showed to have provable performance guarantees under some good events defined as follows:
+\begin{definition}
+Let $\Ephi$ denote the following event:
+For some fixed constant $L_u \ge \sqrt{2d}$ and $\ell_l$ such that $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for $0\le \ell\le 1$,
+% = \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$,
+$\|\phi_1\|_2 \le L_u$, $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l$ hold simultaneously.
+% \begin{itemize}
+% \vspace{-3mm}
+% \item $\|\phi_1\|_2 \le L_u$;
+% \item $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l$ where $R_i$ is the $i$th column of some orthonormal matrix $R$ (specified in the Appendix);
+% \end{itemize} 
+\end{definition}  
+%Note that $\phi_1$ and $\phi_2$ are sampled independently from standard normal distribution. 
+Similarly to Theorem~\ref{thm:efficiency}, one can show that under some technical assumptions, which 
+hold with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$  are small enough,
+on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\[
+%\|c_k\hat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\hat{T} - T\|_2\,,
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} Q,
+\]
+where $\hat{A}$ is the output of the DICA algorithm and $Q$ is polinomial in the usual problem parameters and decays roughly as $1/T$. This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
+It is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
+An empirical comparison of $1/\gamma_A$ and $1/\gamma_R$ is provided in Section~\ref{sec:gamma} in the appendix.
+%\begin{remark}
+% Note that all the conditions of Theorem~\ref{thm:Modefficiency} will be satisfied with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$  are small enough.
+
+% Similarly, the result of Theorem~\ref{thm:Modefficiency} essentially depends on $\gamma_R$. 
+% The main concern about Theorem~\ref{thm:Modefficiency} would be the behavior of this quantity. 
+% Even though an analytic characterization of $\gamma_R$ is not yet known, a probabilistic lower bound for $\gamma_R$ can be developed (recall such lower bound is not available for $\gamma_A$) as shown in Section~\ref{subsec:gammaR}.
+% Another two concerns would be: (1)When will these conditions hold? In particular, will these conditions hold in the traditional stochastic setting? (2)What is the probability of these events?
+% We show that the answers to these questions are positive in Section \ref{subsec:gammaR} and \ref{subsec:ThminStocSetting}, which makes Theorem~\ref{thm:Modefficiency} meaningful. \qed
+% \end{remark}
+% \subsection{Behavior of $\gamma_R$}
+% \label{subsec:gammaR}
+
+
+
+
+To analyze $\gamma_R$ analytically,
+note that $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
+Thus, $\{\phi_1^{\top}R_1, \cdots, \phi_1^{\top}R_d,$ $\phi_2^{\top}R_1, \cdots, \phi_2^{\top}R_d\}$ are $2d$ independent standard Gaussian random variables. 
+Let $Z_i = \frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
+Using this observation, we show in Lemma~\ref{lem:ConstantProb} in the appendix that, among others,  $\gamma_R \ge\frac{\delta}{2d^2}$ with probability at least $1-\delta$.
+
+% We would need a high probability lower bound for $\gamma_R$
+% %Recall that on the event $\Ephione$, $\min_i\vert Z_i \vert \ge \frac{\sqrt{2\pi}}{2d}$. 
+% \begin{lemma}
+% \label{lem:ConstantProb}
+% With Probability at least $1-\delta$ , the following inequalities holds simultaneously.
+% \begin{itemize}
+% \vspace{-3mm}
+% \item $\min_i |\psi^{\top}A_i| \ge \frac{\sqrt{\pi}A_{(2,\min)}}{5\sqrt{2}(d+1)} \delta$;
+% \item $\min_i \{|\phi_2^{\top}R_i|\} \ge \frac{\sqrt{\pi}}{5\sqrt{2}(d+1)}\delta$;
+% \item $\|\phi_1\|_2, \|\phi_2\|_2 \le \sqrt{2}\left(\sqrt{\log(\frac{5}{\delta})}+\sqrt{d}\right)$;
+% \item $\gamma_R \ge\frac{\delta}{2d^2}$.
+% \end{itemize}
+% \vspace{-2mm}
+% \end{lemma}
+% Denote that above event by $\E$.
+% \begin{remark}
+% Note that all the constants in Lemma~\ref{lem:ConstantProb} are polynomial in $d$ (or $d^{-1}$ for the lower bound), thus the result of Theorem~\ref{thm:Modefficiency} is polynomial in $d$ and $\frac{1}{\delta}$ with probability at least $1-\delta$. \qed
+% \end{remark}
+
+Based on the above, we show in the appendix that Theorem~\ref{thm:finalRes} holds for DICA.
+Furthermore, in Section~\ref{subsec:modifiedDICA} in the appendix, we provide a heuristic modification of DICA that performs better in the experiments (proving performance guarantees for that algorithm has defied our efforts so far).
+
+\subsection{Recursive Versions}
+Recently, \citet{vempala2014max} proposed a recursion idea to improve the sample complexity of the Fourier PCA algorithm of \citet{goyal2014fourier}. 
+Instead of recovering all the columns of $A$ in a single eigen-decomposition, the recursive algorithm only decomposes the whole space into two subspaces according to the maximal spacing of the eigenvalues, 
+then recursively decomposes each subspaces until they are all 1-dimensional.
+The insight of this recursive procedure is the following: when the maximal spacing of the eigenvalues are much larger than the minimal one, the algorithm may win over a single decomposition even with the accumulating errors through the recursion.
+However, this algorithm is based on the assumption that the mixing matrix is orthonormal, so that the projection to its subspaces can always eliminate some component of the source signal. 
+
+We adapt the above idea to our algorithms. Due to space limit, we will only take the simplest recursive algorithm, recursive version of HKICA, as an example.
+
+To force a orthonormal mixing matrix, we will first compute the square root matrix $B$ of  $\nabla^2f(\psi) = AD_{\psi}KA^{\top}$. 
+Thus $B = AD_{\psi}^{1/2}K^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
+Transform our observation by $B^{-1}$, we then have the new observation $y(t) = B^{-1}x(t) + B^{-1}\eps(t) = RD_{\psi}^{1/2}K^{1/2}s(t) + B^{-1}\eps(t)$. 
+Note that $B^{-1}\eps(t)$ is still a Gaussian noise. Also $D_{\psi}^{1/2}K^{1/2}$ is diagonal, thus $RD_{\psi}^{1/2}K^{1/2}s(t)$ is an orthonormal mixture of independent sources.
+We then apply the recursive algorithm to recover the mixing matrix $R$. Finally, $BR$ gives an estimation of $A$ up to scaling.
+
+To recover $R$ using a recursive algorithm, we follow the idea of HKICA (and DICA) to compute two Hessian matrices $T_1 = RD_{\psi}^{-1}\Lambda_1R^{\top}$ and $T_2 = RD_{\psi}^{-1}\Lambda_2R^{\top}$. 
+Then, instead of computing the eigen-decomposition of $T = T_1 T_2^{-1}$ (as in HKICA), we only decompose its eigenspace into two subspaces, according to the maximal spacing of the eigenvalues of $T$. The `Recur' helper takes a projection matrix $P$ of a subspace spanned
+by some columns of $R$ (WLOG we assume it is the first $k$ columns of $R$). Then we compute the projection of $T$ as $M = P^{\top}TP$. Thus the eigenspace of $PMP^{\top}$ is in the span of $P$. 
+Lastly, by separating the eigenvectors of $M$ according to its eigenvalues into $PP_1$ and $PP_2$, the `Recur' helper decomposes the subspaces into two smaller subspaces.  
+
+\begin{algorithm} 
+\caption{recursive version of HKICA (HKICA\_recur)}
+\label{alg:HKICA_recur}
+\begin{algorithmic}[1]
+\INPUT $x(t)$ for $1\le t \le T$. 
+\OUTPUT An estimation of the mixing matrix $A$. 
+\STATE Sample $\psi$ from a $d$-dimensional standard Gaussian distribution;
+\STATE Evaluate $\nabla^2\hat{f}(\psi) = \hat{G}(\psi)$; \\
+\STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
+\STATE Compute $\hat{y}(t) = \hat{B}^{-1}x(t)$ for $1\le t \le T$;
+\STATE Let $P = I_d$;
+\STATE Compute $\hat{R} = \text{Recur}(\hat{y}, P)$;
+\STATE Return $\hat{B}\hat{R}$;
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm} 
+\caption{The `Recur' Helper}
+\label{alg:recur}
+\begin{algorithmic}[1]
+\INPUT $x(t)$ for $1\le t \le T$, a projection matrix $P\in \R^{d\times k}$ ($d\ge k$). 
+\OUTPUT An estimation of the mixing matrix $A\in \R^{d\times k}$. 
+
+\STATE if $k==1$, Return $P$;
+\STATE Sample $\phi_1$ and $\phi_2$ independently from a standard Gaussian distribution of dimension $d$;
+\STATE Evaluate $\nabla^2\hat{f}(\phi_1)$ and $\nabla^2\hat{f}(\phi_2)$, 
+\STATE Compute $\hat{T} = (\nabla^2 \hat{f}(\phi_1))(\nabla^2\hat{f}(\phi_2))^{-1}$;
+\STATE Compute $\hat{M} = P^{\top} \hat{T} P$;
+\STATE Compute all the eigen-decomposition of $\hat{M}$, its eigenvalues$\{\sigma_1,\ldots,\sigma_d\}$ where $\sigma_1\ge\ldots\ge \sigma_k$ and their corresponding eigenvectors $\{\mu_1,\ldots, \mu_k\}$;
+\STATE Find the index $m = \arg\max \sigma_m - \sigma_{m+1}$; 
+\STATE Let $P_1 = (\mu_1,\ldots,\mu_m)$, and $P_2 = (\mu_{m+1},\ldots,\mu_k)$;
+\STATE Compute $W_1 = \text{Recur} (x, PP_1)$, and  $W_2 = \text{Recur} (x, PP_2)$;
+\STATE Return $[W_1,W_2]$;
+\end{algorithmic}
+\end{algorithm}
+
+\begin{remark}
+% Other algorithms can be modified to use a recursive estimation in a similar way, based on the idea of mapping the estimated Hessian matrix into a small subspace by $M = P^{\top}TP$. 
+Other algorithms can be modified into a recursive version in a similar way. 
+\qed
+\end{remark}
+\begin{thm}
+\label{thm:recursiveAlg}
+Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with an error bound
+\begin{align*}
+& \quad \| \hat{A} - ADP\|_2 \\
+\le & \poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}(Q^2 + \bar{\xi}).
+\end{align*}
+Here $D$ is some diagonal matrix and $P$ is some permutation matrix.
+\end{thm} 
+\begin{remark}
+Note that given large enough $T$, the term $Q^2$ will be dominated by $\bar{\xi}$, which is the error carried over from quasi-whitening.
+The recursion idea improves the sample complexity of the eigen-decomposition (to recover the orthonormal mixing matrix $R$).  
+\end{remark}
+
+\if0
+\begin{remark}
+In our result, the recursive version gets worse error bound, compared to the one-pass version. The reason is that the events $\Ephi$ and $\Ez$ could be required to hold for $d$ times. Therefore, for the final result to hold for probability at least $1-\delta$, the error bound for each recursion has to hold with probability at least $1-\frac{1}{d}\delta$. 
+
+Recall that in our case we have lower bound for the minimal eigenvalue spacing as $O(\frac{1}{d^2}\delta)$, and lower bound for maximal eigenvalue spacing as $O(\frac{1}{d}\delta)$. By requiring it holds for higher probability ($1-\frac{1}{d}\delta$), the maximal gap actually reduced to $O(\frac{1}{d^2}\delta)$, same order as the one-pass version, leading to the same error bound.
+
+Moreover, for the event $E\phi$, the recursive version essentially require the lower bound $\ell$ is $d$ times smaller than the one-pass version, which cause high degrees of $d$ in the error bound.
+
+For the recursive version to help, one possible way is to prove that for each recursion, we only require the conclusion holds with probability at least $1-\frac{1}{\log d}\delta$, rather than $1-\frac{1}{d}\delta$. 
+Another potential improvement is developing a lower bound for the maximal spacing that is sub-polynomial in $d$, e.g. $\frac{1}{\log d}\delta$, and sub-polynomial dependence of $\delta$ in the lower bound in the Event $\Ephi$, e.g. $\frac{1}{\log \frac{1}{\delta}}$.    
+\qed
+\end{remark}
+\fi
+\section{Experimental Results}
+\label{sec:ExpRes}
+In this section we compare the performance of different ICA algorithms
+in some synthetic examples, with mixing matrices of different coherences.
+
+% For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values (corresponding to the largest $\gamma_A$ and $\gamma_R$).
+% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
+% \begin{figure}[h]
+% \label{fig:miniSpacing}
+% \centering
+% 	\includegraphics[width = \columnwidth]{miniSpacing}
+% \caption{The values of $\gamma$ for matrices with different coherences}
+% \end{figure}
+
+
+We test 9 algorithms: 
+HKICA (HKICA), and its recursive version (HKICA\_recur); 
+DICA  (DICA), and its recursive version (DICA\_recur);  
+the modified version of  DICA  (MDICA), and its recursive version (MDICA\_recur);
+the default FastICA algorithm from the 'ITE' toolbox \citep{szabo12separation} (FICA);
+the recursive Fourier PCA algorithm of \citet{xiao2014FPCAPackage} (FPCA);
+and random guessing (Random).
+%\item Symmetrizing version of  HKICA  (HKICA\_Symm), and its recursive version (HKICA\_Symm\_recur);
+%\item Symmetrizing version of  DICA  (DICA\_Symm), and its recursive version (DICA\_Symm\_recur);
+%Recall that the re-sampling version and the symmetrizing version are two different ways for the algorithms to deal with complex (invalid) output, as discussed in Remark \ref{rmk:symmetrization}.
+%FastICA, as one of the most popular ICA algorithm in the literature, is evaluated and reported as a baseline. 
+%We will discuss the intuition of the DICA\_Int algorithm later. 
+%We include the Fourier PCA algorithm as another baseline, with a moderately tuned parameter. 
+%The random guessing algorithm, which returns a randomly guessing matrix, serves as the last baseline.
+%We do not test the algorithm of \citep{anandkumar2012tensordecomposition} because the tensor decomposition takes too long to converge and achieve a valid solution. 
+
+In the simulation, a common mixing matrix $A$ of dimension 6 is generated in the following ways:
+We construct four kinds of matrices:
+$A_1 = P$; 
+$A_2 = v_b\times\boldsymbol{1}' + 0.3\times P$;
+$A_3 = v_b\times\boldsymbol{1}' + 0.05\times P$;
+and $A_4 = v_b\times\boldsymbol{1}' + 0.005\times P$.
+Here the vector $v_b$ and the matrix $P$ are both generated from standard normal distribution (with different dimensions).
+We also generate an orthonormal mixing matrix R, obtained by computing the left column space of a non-singular random matrix (from standard normal distribution).  
+Then we generate a $6$-dimensional BPSK signal $s$ as follows. Let $p=(\sqrt{2},\sqrt{5},\sqrt{7},\sqrt{11},\sqrt{13},\sqrt{19})$.
+We generate a $\{+1,-1\}$ valued sequence $q(t)$ uniformly at random for $1 \le t \le T$, and set
+$s_i(t) = q(t) i\times\sin (p_i t)$.
+Note that in order to have the components of $s$ close to independent, we need the ratio of their frequencies are irrational. 
+
+Lastly, the observed signal is generated as $x = As+c\epsilon$ where $\epsilon$ is the noise generated from a $d$-dimensional normal distribution with randomly generated covariance. 
+We take $T=20000$ instances of the observed signal on time steps $t= 1,\ldots, 20000$.
+We test the noise ratio $c$ from 0 (noise-free) to 1 (heavily noisy). 
+All the algorithms are evaluated on a $150$ repetitions. For each repetition, we try $3$ times and report the best.
+
+We measure the performances of the algorithms by its actual reconstruction error.
+In particular, we evaluate the following quantity between the true mixing matrix $A$ and the estimate $\hat{A}$ returned by the algorithms:
+\begin{equation}
+\label{equ:parerror}
+\min_{\Pi,S} \|\hat{A}\Pi S - A\|_{\text{Frob}},
+\end{equation}
+where $\Pi$ is a permutation matrix, and $S$ is a column scaling matrix (diagonal).
+The calculation of this measure would require a exhaust search for the optimal permutation.
+
+\if0
+The second measure we used is an approximation of Equation \eqref{equ:parerror} proposed by \citet{comon1994independent}. 
+Note that to evaluate Equation \eqref{equ:parerror} one has to enumerate all the permutation $\Pi$, which is not affordable in practice for a large dimension $d$. 
+This error helps avoid this computation problem. 
+
+The last measure is the mutual information between the joint distribution of the recovered sources and the product of its marginal ones. 
+This measure is common in practice when the true mixing matrix $A$ is unknown. 
+In fact, this measure can be reduced to the sum of the entropies of its marginal distribution \citep{Learned-Miller:2003:IUS:945365.964306}. 
+In particular for an output $\hat{A}$, we evaluate the following quantity:
+\begin{equation}
+\sum_{i = 1}^{d} \text{Entropy}(\hat{x_i}) + \log |\hat{A}|,
+\end{equation}
+where $\hat{x} = \hat{A}^{-1}y$, and $|\hat{A}|$ is the absolute value of the determine of $\hat{A}$. We also use the entropy estimation function 'HShannon\_kNN\_k\_estimation' in the 'ITE' toolbox \citep{szabo14information}. 
+\fi
+
+\subsection{Results}
+\label{subsubsec:results}
+We report the reconstruction errors for different kinds of mixing matrices and noise ratios.
+
+\begin{figure}[t] %pt]
+	\includegraphics[width =0.49\columnwidth]{errorR}
+	\includegraphics[width =0.49\columnwidth]{error1} \medskip \\
+	\includegraphics[width =0.49\columnwidth]{error2}
+	\includegraphics[width =0.49\columnwidth]{error3} \medskip \\
+	\includegraphics[width =0.49\columnwidth]{error4}
+\vspace{-0.5cm}
+\caption{
+\label{fig:Error}
+ Reconstruction Error}
+\end{figure}
+The experimental results suggest that moment methods are more robust
+to high-coherence mixing matrices and Gaussian noise than FastICA.
+FastICA achieves the best performance in case of low coherence.
+As the coherence of the mixing matrix $A$ increases, its performance decreases quickly and becomes sensitive to noise. 
+The Fourier PCA algorithm performs poorly, because its assumption that
+$A$ is orthonormal is barely satisfied. 
+When the mixing matrix is indeed orthonormal, it achieves good performance.
+%This is also confirmed in the result of the case of orthonormal mixing matrix $R$. 
+%Due to the time limit, we haven't investigate the performance of Fourier PCA with a quasi-whitening procedure.
+
+However, the recursive idea is not always helpful for the moment methods. For a highly coherent $A$, the recursive versions outperform their non-recursive counterparts.
+Note that in this case, $A$ is close to singular (small minimal
+singular value), and thus it requires more samples.
+On the other hand, when $A$ has relatively low coherence,  the estimation error of the fourth moments contributes more to the reconstruction error. 
+Recursive algorithms suffers from making several such estimations.
+
+\if0
+Non-recursive algorithms in the symmetrizing version are consistently outperformed by their re-sampling version, as expected. 
+In the recursive versions, since the mixing matrix $A$ is orthonormal, estimating a missing dimension (due to numerical accuracy) by a vector that is orthogonal to other columns of $A$ is reasonable. 
+On the other hand, when estimating a missing dimension (due to numerical accuracy) by an arbitrary assigned vector which does not cause complex eigen-decompositions, Re-sampling versions will accept this bad estimation.
+\fi
+%The higher coherent it is, the easier problem, for low noise? Why?
+
+We have expected that DICA will achieve smaller error for an extremely coherent $A$, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
+However, the experimental results indicate the opposite. 
+Note that high coherence implies small minimal singular value.
+In this case, the estimation error of $M$ in DICA could be much larger than that in HKICA, because of the fourth degree of $A^{-1}$.
+%Also DICA requires estimation of more fourth moments. 
+This error overwhelms the improvement brought by larger eigenvalue
+spacings, if the sample size is not large enough.
+The investigation of this phenomenon is left for future work.
+%Due to the time limit, we haven't confirm this argument by more experiments yet.
+
+On the other hand, based on the discussion in Remark~\ref{rmk:DICA_Mod} in the appendix, 
+MDICA needs to estimate the fourth moments one time less than
+DICA, while we expect that it keeps the eigenvalue spacing large
+(intuitively, it is approximately the spacing of the square of $d$ Gaussian random variables), leading to good performance.
+This is confirmed by the experimental results, in both the non-recursive and recursive versions.
+
+In summary, the results suggest that these moment methods are comparable to each other in practice,
+while FastICA  is better for mixing matrices with low coherence or mild coherence with low noise.
+If the mixing matrix is orthonormal, then FPCA performs better than
+the other algorithms.
+If the observations have heavy noise and the mixing matrix is not extremely coherent, then HKICA may be the best choice.
+In the case of an extremely coherent mixing matrix, MDICA performs the
+best. Also, the recursive idea is very helpful for small sample sizes.
+
+% \section{Conclusion}
+% We presented the first ICA algorithms with polynomial computational
+% complexity and provable performance guarantees on the reconstruction
+% error for the ICA problem
+
+
+%\subsubsection*{Acknowledgements}
+
+
+\newpage 
+\bibliography{DICA}
+\bibliographystyle{plainnat}
+
+\include{appendix}
+\end{document}
+
+\if0
+\begin{table}[h]
+\caption{Sample Table Title} \label{sample-table}
+\begin{center}
+\begin{tabular}{ll}
+{\bf PART}  &{\bf DESCRIPTION} \\
+\hline \\
+Dendrite         &Input terminal \\
+Axon             &Output terminal \\
+Soma             &Cell body (contains cell nucleus) \\
+\end{tabular}
+\end{center}
+\end{table}
+\fi
