@@ -1,105 +1,9 @@
 %!TEX root =  DICA.tex
 \onecolumn
 \appendix
-\section{An Empirical comparison of $\gamma_R$ and $\gamma_A$}
-\label{sec:gamma}
-
-Figure~\ref{fig:miniSpacing} below shows the behavior of $1/\gamma_A$ and $1/\gamma_R$ for mixing matrices with different coherence (defined in Section~\ref{sec:ExpRes}), and for some random orthonormal matrix $R$. For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values of $1/\gamma$, and plot the average value over 200 repetitions. %  (corresponding to the largest $\gamma_A$ and $\gamma_R$).
-% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
-As expected, the value of $1/\gamma$ increases with the coherence of the matrix. However, it is similar to that of an orthonormal matrix unless the coherence is really large. 
-\begin{figure}[h]
-\centering
-	\includegraphics[width = 0.75\columnwidth]{miniSpacing}
-\vspace{-0.4cm}
-\caption{
-\label{fig:miniSpacing}
- The values of $1/\gamma$ for matrices with different coherences}
-\vspace{-0.5cm}
-\end{figure}
-
-\section{A Modified Version of DICA}
-\label{subsec:modifiedDICA}
-We would expect that DICA will achieve smaller error in the case of extreme coherence, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
-However, the experimental results in Section~\ref{subsubsec:results} show the opposite.  
-The reason is that when the coherence is extremely high, the estimation
-error of $M$ in DICA is so much larger than that in HKICA that it
-dominates the error caused by the coherence of the mixing matrix.
-This estimation error comes from taking the inverse of $T_2$ in DICA. 
-Unfortunately, at the moment we don't understand well enough the relation of the estimation error and the coherence of the mixing matrix.
-
-We propose the following ICA algorithm, Algorithm \ref{alg:DICA_Mod}, trying to relieve the estimation error problem of DICA, but still keeping the large gap of the eigenvalues in the eigen-decomposition. 
-\begin{algorithm} 
-\caption{DICA Modified (DICA\_Mod)}
-\label{alg:DICA_Mod}
-\begin{algorithmic}[1]
-\INPUT $x(t)$ for $1\le t \le T$. 
-\OUTPUT An estimation of the mixing matrix $A$. 
-\STATE Sample $\psi$ from a $d$-dimensional standard Gaussian distribution;
-\STATE Evaluate $\nabla^2\hat{f}(\psi)$, \\
-%\quad where $\hat{m_p}(\eta) = \frac{1}{T}\sum_{k=1}^{T} (\eta^{\top}g(k))^p$, and $\hat{f}(\eta) = \frac{1}{12}\big(\hat{m_4}(\eta) - 3\hat{m_2}(\eta)^2 \big)$;
-\STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
-\STATE Sample $\phi$ from the standard normal distribution;
-\STATE Compute $\hat{T} = \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)$;
-\STATE Compute all the eigenvectors of $\hat{M} = \hat{B}^{-1}\hat{T}\hat{B}^{-\top}$, $\hat{R} = \{\mu_1,\ldots,\mu_d\}$;
-\STATE Return $\hat{A} = \hat{B}\hat{R}$.
-\end{algorithmic}
-\end{algorithm}
-\begin{remark}
-\label{rmk:DICA_Mod}
-Note that the eigenvalues of $\hat{M}$ in DICA\_Mod are $\frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}$ for $1\le i\le d$. 
-When $A$ is highly coherent, we would expect that $\psi^{\top}A_i$'s are close to each other. Also, the $\kappa_i$'s are fixed. 
-Given that $\phi^{\top}R_i$'s are far separated from each other, we intuitively expect the eigenvalues to be well-separated from each other. 
-However, we do not have a rigorous proof for this algorithm.
-Experimental results show that DICA\_Mod consistently outperforms DICA. 
-\end{remark}
-Note that the eigenvalues of the eigen-decomposition in MDICA are $\{ \frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}\}$.
-Assume that $\kappa_i$ are all equal. The following theorem shows that when $A$ is highly coherent, then MDICA 
-\begin{thm}
-Given that
-\begin{itemize}
-\item $L_u \ge |\psi^{\top}A_i| \ge \ell$ for any $1\le i\le d$;
-\item $| \phi^{\top}R_i - \phi^{\top}R_j| \ge c$ for any $1\le i\neq j \le d$;
-\item $|\phi^{\top}R_i| \ge q$ for any $1\le i\le d$;
-\item $\kappa_i = \kappa$ for any $1\le i\le d$;
-\item $<A_i, A_j> \,\ge 1-\eps$ for any $1\le i, j \le d$, such that $\eps \le \frac{\ell^4 c}{4L_u^3}$;
-\end{itemize}
-Then the minimal spacing of $M$  in the MDICA algorithm is at least $\frac{c}{L_u^2} - \frac{2l_u\eps}{\ell^4} \ge \frac{c}{2L_u^2}$. 
-\end{thm}
-\begin{proof}
-Note that $\|A_i\|_2 = 1$.  Thus, given that $<A_i, A_j> \,\ge 1-\eps$, 
-\[
-\|A_i - A_j\|_2 \le 2 - 2<A_i, A_j>\, \le \eps.
-\]
-Also, 
-\[
-|(\psi^{\top}A_i)^2 -(\psi^{\top}A_j)^2 |  =  |(\psi^{\top}A_i) -(\psi^{\top}A_j)| |(\psi^{\top}A_i) +(\psi^{\top}A_j)| \le 2L_u\|\psi\|_2 \eps = 2L_u\eps. 
-\]
-Now WLOG assume $\phi^{\top}R_i$ and $\phi^{\top}R_j$ are both positive. Then the minimal eigenvalue spacing 
-\begin{align*}
-\left\vert \frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}  -  \frac{(\phi^{\top}R_j)^2}{(\psi^{\top}A_i)^4\kappa_j} \right\vert 
-& \ge \frac{2}{\kappa} \min_i \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} \right\vert \min_{i\neq j} \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2}\right\vert 
-\\
-& \ge \frac{2q}{\kappa L_u^2} \min_{i\neq j} \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2} \right\vert. 
-\end{align*}
-
-It remains to bound 
-\[
-\min_{i\neq j} \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2}\right\vert.
-\]
-For any $1\le i\ neq j \le d$,
-\begin{align*}
- \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2} \right\vert 
- &
-  =  \left\vert \left(\frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} -   \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2}\right) - \left(\frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} - \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} \right) \right\vert \\
-  & \ge  \left\vert \frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} -   \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2} \right\vert - \left\vert \frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} - \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} \right\vert \\
-  & \ge \frac{\vert \phi^{\top}R_i -  \phi^{\top}R_i \vert }{L_u^2} - \frac{\vert (\psi^{\top}A_i)^2 - (\psi^{\top}A_j)^2 \vert }{(\psi^{\top}A_i)^2(\psi^{\top}A_i)^2} \\
-  & \ge \frac{c}{L_u^2} - \frac{2L_u\eps}{\ell^4} \ge \frac{c}{2L_u^2}.
-\end{align*}
-\end{proof}
 
 \section{Proofs}
 \label{sec:Appendix}
-
 \subsection{Proof of Proposition \ref{prop:stochasticAss}}
 Denote the population expectation by $\E$ and the empirical expectation by $\E_t$. We restate the assumptions here.
 \begin{enumerate}[(i).]
@@ -181,9 +85,10 @@ Note that the above inequality including $3d^2$ terms of concentration equations
 4\sqrt{15/t\delta}(1+\sqrt{2/t\delta})d\|\eta\|^2_2.  
 \]
 Thus, 
-\[
-\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F \le 4\sqrt{15/t\delta}(1+\sqrt{2/t\delta})d^2\|\eta\|^2_2.
-\]
+\begin{align*}
+ \| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot) &  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F \\
+& \quad \le 4\sqrt{15/t\delta}(1+\sqrt{2/t\delta})d^2\|\eta\|^2_2.
+\end{align*}
 \if0
 For the position $(i_1,i_2,i_3,i_4)$ of the tensor $\E_t[\epsilon^{\otimes4}] - 3(\E_t[\epsilon^{\otimes2}])^{\otimes 2}$ is
 \[
@@ -221,25 +126,17 @@ For the last assumption, since the Gaussian noise $\epsilon$ is independent to t
 \end{align*}
 Note that every term in the RHS is a concentration inequality of $i_1+j_1+i_2$-dimensional tensors. Similarly we can consider each position of these tensors which has finite variance.
 Thus, with probability at least $1- 4d^{(i_1+j_1+i_2)}\delta$,   
-\[
-\|\E_t[(AS)^{\otimes i_1}\otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F 
-\le
+\begin{align*}
+\|\E_t[(AS)^{\otimes i_1}\otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] & - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F \\
+& \quad \le
 12(1+\sqrt{2/t\delta})d^{(i_1+j_1+i_2)/2}A_{\max}^{i_1+i_2}C^{i_1+i_2}\sqrt{96/t\delta}.  
-\]
+\end{align*}
 Similar argument will go through for the second inequality.
 Therefore, there exists $\hat{L} = \text{Poly}(\frac{1}{\delta}, A_{\max}, C, d)$, such that for probability at least $1-\delta$, the above conclusions hold simultaneously.
 
 Lastly, for general case where $\eps\sim {\cN}(0,\Sigma)$, the above conclusions will apply for $\Sigma^{-1/2}\eps$. Thus picking $L = \|\Sigma\|^4_2\hat{L}$, all bounds will still hold. 
-\subsection{Limit Effect of the Noise} 
+\subsection{Proof of Proposition \ref{prop:denoise}} 
 \label{subsec:denoise}
-\begin{prop}
- \label{prop:denoise}
- Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. Then,
-for any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
-\[
-\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\poly{L_{\eta}, L, d, \sigma_{\max}, C}}{\sqrt{T}}. 
-\] 
-\end{prop}
 Note that 
 \begin{align*}
 & \E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [(AX+Y)^{\otimes 4}]\\
@@ -299,7 +196,8 @@ Also note that $\| \left[\E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 4}] - 3\left(\
 Therefore,
 \begin{align*}
 %\label{eq:HessionApprox1}
-\|\nabla^2f_{\nu_T^{(x)}}(\eta) -  \nabla^2f_{\nu_T^{(As)}}(\eta) \|_F \le & \|K_1(\eta,\eta,\cdot, \cdot)\|_F + \|(K_2-K_4)(\eta,\eta,\cdot, \cdot) - 2K_4(\eta,\cdot,\eta,\cdot)\|_F + 3 \|K_3(\eta,\eta,\cdot, \cdot)\|_F + \frac{L}{\sqrt{T}}\\
+\|\nabla^2f_{\nu_T^{(x)}}(\eta) -  \nabla^2f_{\nu_T^{(As)}}(\eta) \|_F \le & \|K_1(\eta,\eta,\cdot, \cdot)\|_F + \|(K_2-K_4)(\eta,\eta,\cdot, \cdot) - 2K_4(\eta,\cdot,\eta,\cdot)\|_F \\
+& \quad \quad + 3 \|K_3(\eta,\eta,\cdot, \cdot)\|_F + \frac{L}{\sqrt{T}}\\
 \le & \|(K_2-K_4)(\eta,\eta,\cdot, \cdot) - 2K_4(\eta,\cdot,\eta,\cdot)\|_F + \frac{\text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)}{\sqrt{T}}.
 \end{align*}
 
@@ -379,7 +277,8 @@ where
 & G_3(\eta) = \Big(\int (\eta^{\top}As)As\,d\mu(s)\Big)\Big(\int (\eta^{\top}As)As\,d\mu(s)\Big)^{\top}. \\
 &\hat{ G_1}(\eta) = \frac1n\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)^2As(k)s(k)^{\top}A^{\top} = \int (\eta^{\top}As)^2Ass^{\top}A^{\top}\,d\nu_T(s); \\
 & \hat{G_2}(\eta) = \frac{1}{n^2}\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)^2 \sum_{k=1}^{n}As(k)s(k)^{\top}A^{\top} = \int (\eta^{\top}As)^2\,d\nu_T(s) \int Ass^{\top}A^{\top} \,d\nu_T(s); \\
-& \hat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big)^{\top} = \Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)\Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)^{\top}.
+& \hat{G_3}(\eta) = \frac{1}{n^2}\Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big) \Big(\sum_{k=1}^{n} \big(\eta^{\top}As(k)\big)As(k)\Big)^{\top} \\
+&  \quad \quad \quad = \Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)\Big(\int (\eta^{\top}As)As\,d\nu_T(s)\Big)^{\top}.
 \end{align*}
 
 %Without loss of generality, assume $ \|\eta\|_2 = 1$.
@@ -430,13 +329,15 @@ Thus for any $1\le i,j\le d$,
 d^4  A_{(2,\max)}^2A_{\max}^2\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right).
 \end{align*}
 Therefore, 
-\[
-\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta)  \|_2 \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta) \|_F \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right).
-\]
+\begin{align*}
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta)  \|_2 & \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta) \|_F \\
+& \le d^5  A_{(2,\max)}^2A_{\max}^2\left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right).
+\end{align*}
 Lastly, combining with Proposition \ref{prop:denoise}, 
-\[
-\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2\hat{f}(\eta)\|_2 \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta)\|_2 + \| \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta) - \nabla^2\hat{f}(\eta)\|_2 \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(\|\eta\|_2).
-\]
+\begin{align*}
+\|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2\hat{f}(\eta)\|_2 & \le \|\nabla^2 f_{\mu}(A^{\top}\eta) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta)\|_2 + \| \nabla^2 \hat{f}_{\nu_T^{(As)}}(\eta) - \nabla^2\hat{f}(\eta)\|_2 \\
+&  \le \|\eta\|_2^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(\|\eta\|_2).
+\end{align*}
 \end{proof}
 Before we can prove the theorem, we need to prove some lemmas.
 The following lemma shows that a small perturbation of $M$ will only result in a small variation of its eigenvectors, at least under some mild regularity conditions.
@@ -487,10 +388,10 @@ Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a
  \[
  \|\hat{A_k} - A_k\|_2 \le \|A_{ck}\|_2 \|v\|_2 \le 2\sigma_{\max}\frac{\gamma_k}{\delta_k}
  \le 
- \frac{4\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}} \|E\|_2,
+ \frac{4\sigma_{\max}^2}{\gamma_A \sigma_{\min}} \|E\|_2,
  \]
  where $A_{ck}$ is the $d\times (d-1)$ matrix $(A_1,\ldots,A_{k-1}, A_{k+1},\ldots,A_d)$.
- By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2(A)}{\gamma_A \sigma_{\min}} \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \hat{A_i}\|_2 + \|A_j - \hat{A_i}\|_2$, thus $\hat{A_i} \neq \hat{A_j}$.  Summing up the upper bound gets the result. 
+ By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2}{\gamma_A \sigma_{\min}} \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \hat{A_i}\|_2 + \|A_j - \hat{A_i}\|_2$, thus $\hat{A_i} \neq \hat{A_j}$.  Summing up the upper bound gets the result. 
 \end{proof}
 The next lemma shows that $\hat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix induced $2$-norm.
 \begin{lemma}
@@ -531,21 +432,21 @@ Note that $\nabla^2f_{\mu}(\psi) = \sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA
 Thus, $\sigma_{\min}(\nabla^2f_{\mu}(\psi)) = \min_{v:\|v\|_2=1}\|\sum_{i=1}^{d} \kappa_i(\psi^{\top}A_i)^2A_iA_i^{\top}v\|_2$. 
 \begin{lemma}
 \label{lem:boundsigmaminnabla}
-On the event $\Epsi$, $\sigma_{\max}(\nabla^2f_{\mu}(\psi)) \le L_u^2 \kappa_{\max}A^2_{(2,\max)}\sigma_{\max}^2(A)$, and
- $\sigma_{\min}(\nabla^2f_{\mu}(\psi)) \ge \frac{\sqrt{2\pi}}{2d} \ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$.
+On the event $\Epsi$, $\sigma_{\max}(\nabla^2f_{\mu}(\psi)) \le L_u^2 \kappa_{\max}A^2_{(2,\max)}\sigma_{\max}^2$, and
+ $\sigma_{\min}(\nabla^2f_{\mu}(\psi)) \ge \frac{\sqrt{2\pi}}{2d} \ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2$.
 \end{lemma}
 \begin{proof}
 Note that $\nabla^2f_{\mu}(\psi)$ is symmetric. 
-For any unit vector $v$, $v^{\top}AD_{\psi}KA^{\top}v \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min} A^2_{(2,\min)}\|v^{\top}A\|_2^2 \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Similar calculation for the maximum singular value.
+For any unit vector $v$, $v^{\top}AD_{\psi}KA^{\top}v \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min} A^2_{(2,\min)}\|v^{\top}A\|_2^2 \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2$. Similar calculation for the maximum singular value.
 \end{proof}
 
 Lastly, we still need to bound $\|M - \hat{M}\|_2$.
 \begin{lemma}
 \label{lem:Mvariation_alg}
-Given that  $\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$ and $T$  is large enough, but still polynomial in $\{L_\eta, C, \sigma_{\max}, L\}$, such that $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2$, then on the event $\Epsi$, 
+Given that  $\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$ and $T$  is large enough, but still polynomial in $\{L_\eta, C, \sigma_{\max}, L\}$, such that $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2$, then on the event $\Epsi$, 
 \[ 
-\|M - \hat{M}\|_2 \le 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)\ell^4} + 
-\frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}
+\|M - \hat{M}\|_2 \le 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4\ell^4} + 
+\frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2}
 \right)\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(L_u)\right).
 \]
 \end{lemma}
@@ -553,28 +454,28 @@ Given that  $\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^
 Let $E_1 = \nabla^2 f_{\mu}(\phi) - \nabla^2 \hat{f}(\phi)$ and $ E_2 = \nabla^2 f_{\mu}(\psi) - \nabla^2 \hat{f}(\psi)$. Then $\|E_1\|_2 , \|E_2\|_2 \le L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P$.
 Note $\nabla^2f(\phi) = AKD_{\phi} A^{\top}$.
 Given that 
-$\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$ 
-and $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2$, the condition in Lemma \ref{lem:Mvariation} holds on the event $\Epsi$. 
+$\xi \le  \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$ 
+and $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2$, the condition in Lemma \ref{lem:Mvariation} holds on the event $\Epsi$. 
 Then apply Lemma \ref{lem:Mvariation} and \ref{lem:nablavariation}, we have
 \begin{align*}
 \|M - \hat{M}\|_2 =\, & \|(\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1} - (\nabla^2 \hat{f}(\phi))(\nabla^2\hat{f}(\psi))^{-1} \|_2 \\
 \le \, &\frac{2\|\nabla^2 f(\phi)\|_2}{\sigma_{\min}^2(\nabla^2f(\psi))}\|E_2\|_2 + \frac{2}{\sigma_{\min}(\nabla^2f(\psi))}\|E_1\|_2 \\
-\le \, & 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)\ell^4} + 
-\frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}
+\le \, & 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4\ell^4} + 
+\frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2}
 \right)\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(L_u)\right).
 \end{align*}
 \if0
 Thus, 
 \[ 
-\|M - \hat{M}\|_2 \le \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2(A) + 2\sqrt{2\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)} \xi.
+\|M - \hat{M}\|_2 \le \frac{4d^7A_{(2,\max)}^4A_{\max}^2\kappa_{\max}\sigma_{\max}^2 + 2\sqrt{2\pi}d^6A_{(2,\max)}^2A_{\max}^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4} \xi.
 \]
 \fi
 \end{proof}
 \begin{proof}[{\bf Proof of Theorem  \ref{thm:efficiency}}]
 Let 
  \begin{align*}
-Q = 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4(A)\ell^4} + 
-\frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}
+Q = 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4\ell^4} + 
+\frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2}
 \right)\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(L_u)\right)
  \end{align*}
  where $\xi$ is defined in Equation \eqref{eq:xi}.
@@ -582,9 +483,9 @@ Q = 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2(A)}{\pi\ka
  \begin{enumerate}
  \vspace{-3mm}
  \item $\gamma_A > 4\frac{\sigma_{\max}}{\sigma_{\min}} Q$
- \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_A}\frac{\sigma_{\max}^2(A)}{\sigma_{\min}} Q$;
- \item $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$;
- \item  $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. 
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_A}\frac{\sigma_{\max}^2}{\sigma_{\min}} Q$;
+ \item $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$;
+ \item  $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2$. 
   \end{enumerate}
 
 Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$ and $\hat{M}$ has distinct eigen-values with probability 1,  then by Lemma \ref{lem:Mvariation_alg}, $\|M-\hat{M}\|_2 \le Q$.
@@ -604,7 +505,7 @@ Therefore, by lemma \ref{lem:eigenvectorvariation},
 
 Let 
 \begin{align*}
-\bar{\xi} &=   \frac{\sqrt{2}d\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P\right)}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}, \\
+\bar{\xi} &=   \frac{\sqrt{2}d\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P\right)}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}, \\
 \hat{\xi} &= \frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}, \\
  Q &=  
  %\frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\hat{\xi}}.
@@ -624,8 +525,8 @@ First we start with proving the following theorem:
  \item $\hat{T}$ has distinct eigenvalues;
  \item $\gamma_R > 4 \frac{\sigma_{\max}^2}{\sigma_{\min}}Q$; 
  \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2}{\sigma_{\min}} Q$;
- \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
- \item $P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$
+ \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
+ \item $P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}d}$
  (so $\bar{\xi} \le 1/3$);
  \item $\hat{\xi}
   +
@@ -662,7 +563,7 @@ and every singular value of $\hat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1
 Applying Lemma \ref{lem:matrixsquareroot}, we can get the stability of $B$, as follows.
 \begin{lemma}
 \label{lem:BhatinverseB}
-Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}L_u^2d^6A_{(2,\max)}^2A_{\max}^2}$ and $P(L_u)\le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$
+Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}L_u^2d^6A_{(2,\max)}^2A_{\max}^2}$ and $P(L_u)\le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}d}$
 (so $\bar{\xi} \le 1/3$), under the event $\Epsi$ there exists an orthonormal matrix $R^*$ such that 
  \[
  \sqrt{1-\bar{\xi}} \le \|B^{-1}\hat{B}\|_2 \le \sqrt{1+\bar{\xi}},
@@ -673,13 +574,13 @@ Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A
 \]
 \end{lemma}
 \begin{proof}
-Note that by Lemma \ref{lem:boundsigmaminnabla},  under the event $\Epsi$, $\|\nabla^2f(\psi)\|_2 \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)$. Thus,
+Note that by Lemma \ref{lem:boundsigmaminnabla},  under the event $\Epsi$, $\|\nabla^2f(\psi)\|_2 \ge \frac{\sqrt{2\pi}}{2d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2$. Thus,
 \[
-\|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2 \le \frac{\sqrt{2}d}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(L_u)\right) = \bar{\xi}.
+\|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2 \le \frac{\sqrt{2}d}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(L_u)\right) = \bar{\xi}.
 \]
-Then given $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}L_u^2d^6A_{(2,\max)}^2A_{\max}^2}$
+Then given $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}L_u^2d^6A_{(2,\max)}^2A_{\max}^2}$
 and 
-$P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$, $\bar{\xi} \le 1/3 < 1$. 
+$P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}d}$, $\bar{\xi} \le 1/3 < 1$. 
 By Lemma \ref{lem:matrixsquareroot}, every singular value of $\hat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1 + \|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|\left(\nabla^2f(\psi)\right)^{-1}\|_2 \|E\|_2}}$. 
 Thus every singular value of $\hat{B}^{-1}B$ is bounded between $\frac{1}{\sqrt{1+\bar{\xi}}}$ and $\frac{1}{\sqrt{1-\bar{\xi}}}$, i.e. there exist an orthonormal matrix $R^*$ such that 
 \[
@@ -715,15 +616,15 @@ It still remains to bound $\|E\|_2$. In the event $\Ephi$, we take the orthogona
 
 \begin{lemma}
 \label{lem:Binversenablavariation1}
-Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$ and $P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2(A)}{6\sqrt{2}d}$
+Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$ and $P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}d}$
 (so $\bar{\xi} \le 1/3$), then on the event $\Epsi$ and $\Ephi$ for $\phi \in \{\phi_1, \phi_2\}$,
-\[
+\begin{align*}
 \|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
-= \|G(B^{-\top}{R^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2
-\le 
-\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2(A)}{C_1^2}\bar{\xi}
+ & = \|G(B^{-\top}{R^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2\\
+& \le 
+\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}
 \le \hat{\xi}.
-\]
+\end{align*}
 \end{lemma}
 \begin{proof}
 Note that by Lemma \ref{lem:nablavariation} $\|\nabla^2 f(\psi) - \nabla^2 \hat{f}(\psi)\|_2 \le L_u^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi$, and 
@@ -783,20 +684,20 @@ On the other hand,
 \|G(B^{-\top}{R^*}^{\top}\phi_i) - G(\hat{B}^{-\top}\phi_i)\|_2 
 = & \, \|A D_{\psi}^{-1}\Lambda_iA^{\top}- A D_{\psi}^{-1}\hat{\Lambda}_iA^{\top}\|_2 \\
 \le & \, \|A\|^2_2 \|D_{\psi}^{-1}\|_2 \|\Lambda_i - \hat{\Lambda}_i\|_2\\
-\le & \, 2\frac{\sigma_{\max}^2(A)}{C_1^2}\frac{L_u^2\bar{\xi}}{\sqrt{1-\bar{\xi}}},
+\le & \, 2\frac{\sigma_{\max}^2}{C_1^2}\frac{L_u^2\bar{\xi}}{\sqrt{1-\bar{\xi}}},
 \end{align*}
 where $\hat{\Lambda}_i = \text{diag}\left((\phi_i^{\top}\hat{B}^{-1}BR_1)^2, \cdots, (\phi_i^{\top}\hat{B}^{-1}BR_d)^2\right)$.
 Thus,
 \begin{equation}
 \label{eq:fBfBhat}
-\|G(B^{-\top}{R^*}^{\top}\phi) - G(\hat{B}^{-\top}\phi)\|_2 \le  \frac{\sqrt{6}L_u^2\sigma_{\max}^2(A)}{C_1^2}\bar{\xi}. 
+\|G(B^{-\top}{R^*}^{\top}\phi) - G(\hat{B}^{-\top}\phi)\|_2 \le  \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}. 
 \end{equation}
 
 Combine Equation \eqref{eq:fBhatfhatBhat} and Equation \eqref{eq:fBfBhat},
 \[
 \|G(B^{-\top}{R^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2
 \le 
-\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2(A)}{C_1^2}\bar{\xi}.
+\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}.
 \]
 \end{proof}
 
@@ -813,13 +714,13 @@ Given the same conditions as Lemma \ref{lem:BhatinverseB}, then on the event $\E
 \end{lemma}
 \begin{proof}
 By triangular inequality, 
-\[
+\begin{align*}
 \|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2 
-\le 
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
-+
+& \le 
+\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 \\
+& \quad +
 \|\nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2. 
-\]
+\end{align*}
 By Lemma \ref{lem:Binversenablavariation1}, 
 \[
 \|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
@@ -1090,65 +991,12 @@ Note that for a small enough $\eps$, $\sqrt{1-\eps} \ge 1-\frac{2\eps}{3}$. Thus
 It remains to bound the probability that the above result holds.
 We need Event $\Epsi$ to be satisfied once, and $\Ephi$ and $\Ez$ for at most $d$ times (we ignore the $\log d$ factor here). 
 Thus, given the conditions of Theorem \ref{thm:finalRes}, with probability $1-7d\delta$, the above error bound holds. 
-\subsection{Proofs of Lemma \ref{lem:dmin}, Lemma \ref{lem:CauchyGap} and Lemma \ref{lem:ConstantProb}}
+
+\subsection{Proofs of Proposition \ref{prop:CauchyGap}, Proposition \ref{prop:spacingMDICA} and Lemma \ref{lem:ConstantProb}}
 \label{sec:events}
-The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
-\begin{lemma}
-\label{lem:dmin}
-With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell) - \exp(-x)$, $\Epsi$ holds, where $x=(L_u/\sqrt{2}-\sqrt{d})^2$.
-\end{lemma}
-\begin{proof}[Proof of Lemma \ref{lem:dmin}]
-\if0
-For a fixed constant $c \le A_{(2,\max)}$,
-\begin{align*}
-\Prob{\min_i \{|\psi^{\top}A_i|\} \ge c} = & \Prob{\cap_i\{\psi : |\psi^{\top}A_i|\ge c\}}\\
- \ge & \sum_i \Prob{|\psi^{\top}A_i|\ge c} - (d-1)
-\end{align*}
-Now note that sampling $\psi$ uniformly from the unit sphere is equivalent to sampling $\eta$ from a standard normal distribution and then let $\psi = \eta/ \|\eta\|_2$.
-Also, let $\Prob{|\psi^{\top}A_i|\ge c} = \Prob{|\psi^{\top}R_i|\ge c/\|A_i\|_2}$ where $R_i$ is the normalized vector of $A_i$. 
-Let $c' = c/\|A_i\|_2$. 
-Thus, $ \Prob{|\psi^{\top}R_i|\ge c'} = \Prob{|\eta^{\top}R_i|/\|\eta\|_2\ge c'} \ge $
-\fi
-For a fixed constant $C_1 \le A_{(2,\max)}$, $\min_i \{|\psi^{\top}A_i|\} \ge C_1$ is equivalent to  $\cap_i G_i$, where $G_i$ is the set defined as $\{x: x^{\top}A_i\ge C_1\}$.  
-Also note that for each $G_i$, let $C_1' = C_1/A_{(2,\min)}$ and $V_i = A_i/\|A_i\|_2$, then $G_i \supset G_i' = \{x: x^{\top}V_i\ge C_1'\}$.
 
-Now we consider $\Prob{\cap_i G_i'}$. 
-This probability is minimized when $V_i$s are orthogonal to each other. 
-Thus, for any orthonormal matrix $R$, define $G_i'' = \{x: x^{\top}R_i\ge C_1'\}$, then 
-\[
-\Prob{\cap_i G_i'} \ge \Prob{\cap_i G_i''} = \Prob{|\psi^{\top}R| \ge C_1'} = \Prob{|\psi| \ge C_1'}.
-\]
-Note that $\Prob{|X|\ge C_1'} \ge 1- \frac{\sqrt{2}C_1'}{\sqrt{\pi}}$ for $X\sim N(0,1)$. Thus, picking $C_1 = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$ for any $0\le \ell \le 1$, 
-\begin{equation}
-\label{eq:GaussianLowerBound}
-\Prob{|\psi| \ge C_1'} \ge (1- \frac{\sqrt{2}C_1'}{\sqrt{\pi}})^d = (1-\frac{\ell}{d})^d = \left(1- \frac{\ell}{d}\right)\left(1-\frac{\ell}{d}\right)^{d-1} \ge \left(1- \frac{\ell}{d}\right)\exp(-\ell).
-\end{equation}
-On the other hand, note that $\Prob{\|\psi\|_2 \le L_u} = \Prob{X \le L_u^2}$ where $X \sim \chi_d$.
-Thus by Lemma 1 of \citep{laurent2000adaptive}, picking
-\[
-x = \left(\frac{\sqrt{2}}{2}L_u - \sqrt{d}\right)^2,
-\]
-then $L_u^2 \ge d+2\sqrt{dx}+2x$, and
-\begin{equation}
-\label{eq:ProbEpsi}
-\Prob{\|\psi\|_2 \le L_u} = 1- \Prob{X\ge L_u^2} \ge 1- \Prob{X - d\ge 2\sqrt{dx} +2x} \ge 1-\exp(-x).
-\end{equation}
-Therefore, 
-\begin{equation}
-\label{eq:ProbEpsi2}
-\Prob{\Epsi} \ge (1-\exp(-x))+\left(1- \frac{\ell}{d}\right)\exp(-\ell)-1 = \left(1- \frac{\ell}{d}\right)\exp(-\ell)-\exp(-x).
-\end{equation}
-\end{proof}
-
+\begin{proof}[Proof of Proposition \ref{prop:CauchyGap}]
 Recall that $Z_i$'s are independent Cauchy random variables.
-\begin{lemma}
-\label{lem:CauchyGap}
-With probability at least $1-2\delta$,
-\[
-\gamma_R \ge \frac{\delta(1-\delta)^{1/d}}{(d-1)^2}.
-\]
-\end{lemma}
-\begin{proof}[Proof of Lemma \ref{lem:CauchyGap}]
 WLOG assume both $Z_i$ and $Z_j$ are positive. Then, 
 \begin{align*}
 \gamma_R =	& \min_{i\neq j} \left\vert Z_i^2 - Z_j^2 \right\vert \\
@@ -1183,8 +1031,86 @@ Therefore, with probability at least $1-2\delta$,
 \end{proof}
 
 
-Thus, $\gamma_R \ge 2C_2^2$ with probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell)$.
-Denote this event by $\EZ$.
+
+\begin{proof}[Proof of Proposition \ref{prop:spacingMDICA}]
+Note that $\|A_i\|_2 = 1$.  Thus, given that $<A_i, A_j> \,\ge 1-\eps$, 
+\[
+\|A_i - A_j\|_2 \le 2 - 2<A_i, A_j>\, \le \eps.
+\]
+Also, 
+\[
+|(\psi^{\top}A_i)^2 -(\psi^{\top}A_j)^2 |  =  |(\psi^{\top}A_i) -(\psi^{\top}A_j)| |(\psi^{\top}A_i) +(\psi^{\top}A_j)| \le 2L_u\|\psi\|_2 \eps = 2L_u\eps. 
+\]
+Now WLOG assume $\phi^{\top}R_i$ and $\phi^{\top}R_j$ are both positive. Then the minimal eigenvalue spacing 
+\begin{align*}
+\left\vert \frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}  -  \frac{(\phi^{\top}R_j)^2}{(\psi^{\top}A_i)^4\kappa_j} \right\vert 
+& \ge \frac{2}{\kappa} \min_i \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} \right\vert \min_{i\neq j} \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2}\right\vert 
+\\
+& \ge \frac{2\ell_l}{\kappa L_u^2} \min_{i\neq j} \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2} \right\vert. 
+\end{align*}
+
+It remains to bound 
+\[
+\min_{i\neq j} \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2}\right\vert.
+\]
+For any $1\le i\neq j \le d$,
+\begin{align*}
+ \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2} \right\vert 
+ &
+  =  \left\vert \left(\frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} -   \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2}\right) - \left(\frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} - \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} \right) \right\vert \\
+  & \ge  \left\vert \frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} -   \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2} \right\vert - \left\vert \frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} - \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} \right\vert \\
+  & \ge \frac{\vert \phi^{\top}R_i -  \phi^{\top}R_i \vert }{L_u^2} - \frac{\vert (\psi^{\top}A_i)^2 - (\psi^{\top}A_j)^2 \vert }{(\psi^{\top}A_i)^2(\psi^{\top}A_i)^2} \\
+  & \ge \frac{c}{L_u^2} - \frac{2L_u\eps}{\ell^4} \ge \frac{c}{2L_u^2}.
+\end{align*}
+\end{proof}
+
+%The following lemma provides a lower bound for $\min_i |\psi^{\top}A_i|$.
+\begin{lemma}
+\label{lem:dmin}
+With probability at least $\left(1- \frac{\ell}{d}\right)\exp(-\ell) - \exp(-x)$, $\Epsi$ holds, where $x=(L_u/\sqrt{2}-\sqrt{d})^2$.
+\end{lemma}
+\begin{proof}[Proof of Lemma \ref{lem:dmin}]
+\if0
+For a fixed constant $c \le A_{(2,\max)}$,
+\begin{align*}
+\Prob{\min_i \{|\psi^{\top}A_i|\} \ge c} = & \Prob{\cap_i\{\psi : |\psi^{\top}A_i|\ge c\}}\\
+ \ge & \sum_i \Prob{|\psi^{\top}A_i|\ge c} - (d-1)
+\end{align*}
+Now note that sampling $\psi$ uniformly from the unit sphere is equivalent to sampling $\eta$ from a standard normal distribution and then let $\psi = \eta/ \|\eta\|_2$.
+Also, let $\Prob{|\psi^{\top}A_i|\ge c} = \Prob{|\psi^{\top}R_i|\ge c/\|A_i\|_2}$ where $R_i$ is the normalized vector of $A_i$. 
+Let $c' = c/\|A_i\|_2$. 
+Thus, $ \Prob{|\psi^{\top}R_i|\ge c'} = \Prob{|\eta^{\top}R_i|/\|\eta\|_2\ge c'} \ge $
+\fi
+For a fixed constant $\ell_l \le A_{(2,\max)}$, $\min_i \{|\psi^{\top}A_i|\} \ge \ell_l$ is equivalent to  $\cap_i G_i$, where $G_i$ is the set defined as $\{x: x^{\top}A_i\ge \ell_l\}$.  
+Also note that for each $G_i$, let $\ell_l' = \ell_l/A_{(2,\min)}$ and $V_i = A_i/\|A_i\|_2$, then $G_i \supset G_i' = \{x: x^{\top}V_i\ge \ell_l'\}$.
+
+Now we consider $\Prob{\cap_i G_i'}$. 
+This probability is minimized when $V_i$s are orthogonal to each other. 
+Thus, for any orthonormal matrix $R$, define $G_i'' = \{x: x^{\top}R_i\ge \ell_l'\}$, then 
+\[
+\Prob{\cap_i G_i'} \ge \Prob{\cap_i G_i''} = \Prob{|\psi^{\top}R| \ge \ell_l'} = \Prob{|\psi| \ge \ell_l'}.
+\]
+Note that $\Prob{|X|\ge \ell_l'} \ge 1- \frac{\sqrt{2}\ell_l'}{\sqrt{\pi}}$ for $X\sim N(0,1)$. Thus, picking $\ell_l = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$ for any $0\le \ell \le 1$, 
+\begin{equation}
+\label{eq:GaussianLowerBound}
+\Prob{|\psi| \ge \ell_l'} \ge (1- \frac{\sqrt{2}\ell_l'}{\sqrt{\pi}})^d = (1-\frac{\ell}{d})^d = \left(1- \frac{\ell}{d}\right)\left(1-\frac{\ell}{d}\right)^{d-1} \ge \left(1- \frac{\ell}{d}\right)\exp(-\ell).
+\end{equation}
+On the other hand, note that $\Prob{\|\psi\|_2 \le L_u} = \Prob{X \le L_u^2}$ where $X \sim \chi_d$.
+Thus by Lemma 1 of \citep{laurent2000adaptive}, picking
+\[
+x = \left(\frac{\sqrt{2}}{2}L_u - \sqrt{d}\right)^2,
+\]
+then $L_u^2 \ge d+2\sqrt{dx}+2x$, and
+\begin{equation}
+\label{eq:ProbEpsi}
+\Prob{\|\psi\|_2 \le L_u} = 1- \Prob{X\ge L_u^2} \ge 1- \Prob{X - d\ge 2\sqrt{dx} +2x} \ge 1-\exp(-x).
+\end{equation}
+Therefore, 
+\begin{equation}
+\label{eq:ProbEpsi2}
+\Prob{\Epsi} \ge (1-\exp(-x))+\left(1- \frac{\ell}{d}\right)\exp(-\ell)-1 = \left(1- \frac{\ell}{d}\right)\exp(-\ell)-\exp(-x).
+\end{equation}
+\end{proof}
 \begin{lemma}
 \label{lem:EventphiProb}
 Let $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for any $0\le \ell\le 1$ and $ L_u = \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$. Then
@@ -1221,7 +1147,7 @@ Note that for $1\le \ell \le 1$,
 \[
 \left(1- \frac{\ell}{d}\right)\exp(-\ell) \ge 1-\frac{d+1}{d}\ell.
 \]
-Combining Lemma \ref{lem:dmin}, \ref{lem:CauchyGap} and \ref{lem:EventphiProb}, given that $<1$,
+Combining Lemma \ref{lem:dmin}, \ref{prop:CauchyGap} and \ref{lem:EventphiProb}, given that $<1$,
 \[
 \Prob{\E} \ge \Prob{\Epsi} + \Prob{\EZ} + \Prob{\Ephi} -2 \ge 1- 3\frac{d+1}{d}\ell- 2\exp(-x)  
 \]
@@ -1235,6 +1161,21 @@ Then with probability $1-\delta$,
 \end{itemize}
 \end{proof}
 
+\section{Experimental Results for dimension 3}
+\label{sec:results_d3}
+We report the reconstruction errors for different kinds of mixing matrices (dimension 3) and noise ratios.
+
+\begin{figure}[t] %pt]
+	\includegraphics[width =0.49\columnwidth]{errorR_d3}
+	\includegraphics[width =0.49\columnwidth]{error1_d3} \medskip \\
+	\includegraphics[width =0.49\columnwidth]{error2_d3}
+	\includegraphics[width =0.49\columnwidth]{error3_d3} \medskip \\
+	\includegraphics[width =0.49\columnwidth]{error4_d3}
+\vspace{-0.5cm}
+\caption{
+\label{fig:Error_d3}
+ Reconstruction Error}
+\end{figure}
 
 \if0
 \subsection{Proof of Corollary \ref{cor:signalerror}}
