@@ -299,7 +299,6 @@ Such an example is shown in Figure \ref{fig:demo}.
 %It can be seen that our algorithm, DICA, designed for deterministic signals, can solve the problem better than other algorithms, FastICA \citep{hyvarinen1999fast} and HKICA \citep{hsu2013learning}.
 
 \begin{figure}[pt]
-\label{fig:demo}
 \captionsetup{singlelinecheck=off}
 \centering
 	\includegraphics[width = \textwidth]{demo}
@@ -314,6 +313,7 @@ $A=\left(
 \protect\end{array}
 \right)$. 
 The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 10000 uniformly spaced points in the interval $\left[0,15\right]$.}
+\label{fig:demo}
 \end{figure}
 
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
@@ -412,15 +412,17 @@ $\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $
 
 \begin{assumption}
 \label{ass:gauss}
-Assume there exists a constant $L\ge 1$, such that 
+Assume there exists a constant $L$ and a function $g:[T]\rightarrow \real$ such that $g(t)$ approaches 0 as $t$ approaching infinity, and
+%Assume there exists a constant $L\ge 1$, such that 
 \begin{enumerate}[(i)]
 \vspace{-3mm}
-\item $\| \E_{S_i\sim \nu_t^{(s_i)}} [S_i] \|_F\le L/\sqrt{t}$;
-\item $\| \E_{Y \sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$;
+\item $\| \E_{S_i\sim \nu_t^{(s_i)}} [S_i] \|_F\le g(t)$; % L/\sqrt{t}$;
+\item $\| \E_{Y \sim \nu_t^{(\epsilon)}} [Y] \|_F \le g(t)$; %L/\sqrt{t}$;
 \item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F \le L$;
 \item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L$;
-\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le L/\sqrt{t}\|\eta\|_2^2$.
+\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le g(t)\|\eta\|_2^2$. %$.
 \end{enumerate}
+Here $L$ and the function $g$ may depend on $\{A,\Sigma,C,d\}$.
 \end{assumption}
 \begin{remark}
 The first two statements force the averages of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
@@ -435,21 +437,21 @@ Assume the source signal function and the noise function are `independent' up to
 \begin{align*}
 & \| \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \otimes (AS)^{\otimes i_2}]\\
 & \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [(AS)^{\otimes i_1}\otimes Y^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F 
- \le\frac{L}{\sqrt{t}},
+ \le g(t); %\frac{L}{\sqrt{t}},
 \end{align*}
 and 
 \begin{align*}
 & \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1} \otimes \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}] \otimes Y^{\otimes j_2}] \\
 & \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes Y^{\otimes j_2}] \|_F 
-\le\frac{L}{\sqrt{t}}, % \le L/\sqrt{t},
+\le g(t). %\frac{L}{\sqrt{t}}, % \le L/\sqrt{t},
 \end{align*}
-for some $L \ge 1$, where $(s,\epsilon)$ is the function obtained by concatenating $s$ and $\epsilon$ together.  
+for the same function $g$ in Assumption \ref{ass:gauss}, where $(s,\epsilon)$ is the function obtained by concatenating $s$ and $\epsilon$ together.  
 \end{assumption}
 The sufficiency of such weaker assumptions is also discussed in the paper of \citet{frieze1996learning}.
 Similarly, the next proposition shows that the assumptions are satisfied, with high probability, for the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals.
 \begin{prop}
 \label{prop:stochasticAss}
-In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$,there exists $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
+In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$,there exists $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$ and $g(t) = L/\sqrt{t}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
 \end{prop}
 On the other hand, our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
 \begin{example} \em
@@ -502,7 +504,7 @@ D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},
 \]
 then, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$,
 \[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+\frac{1}{\sqrt{T}}\right),
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+g^2(T)+g(T)\right),
 \]
 where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$, and $\hat{A}$ is the output of the algorithm.
 
@@ -517,7 +519,7 @@ then, with probability at least $1-\delta$, there exists a permutation $\pi$ and
 \end{align*}
 \end{thm}
 \begin{remark}
-Our algorithms are randomized algorithms. The high probability $1-\delta$ in the first part of the above theorem comes from the random sampling of the algorithm. The observations are deterministic and thus has no randomness. 
+Our algorithms are randomized algorithms. The high probability $1-\delta$ in the first part of Theorem \ref{thm:finalRes} comes from the random sampling of the algorithm. The observations are deterministic and thus has no randomness. 
 \end{remark}
 \begin{remark} %\em
 Note that the result is polynomial in $1/\delta$ which is weaker than being polynomial in $\log(1/\delta)$.
@@ -581,7 +583,9 @@ f_{\nu}(\eta) = \frac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \rig
 
 \citet{hsu2013learning} showed that $\nabla^2f_{\nu_T^{(x)}}(\eta)$, the second derivative of the function $f_{\nu_T^{(x)}}$, is extremely useful for the ICA problem:
 They showed that if $\mu^{(X)}$ is the distribution of the observations $X$ in the stochastic setting where $S$ comes from the product distribution $\mu$, then
-$f_{\mu^{(X)}}(\eta)=f_{A\mu}(\eta)$ for all $\eta$ (where $A\mu$ denotes the distribution of $AS$) and, consequently, the eigenvectors\footnote{Throughout the paper eigenvectors always mean right eigenvectors, unless specified otherwise.} of the matrix $M=\nabla^2f_{\mu^{(X)}}(\phi)(\nabla^2f_{\mu^{(X)}}(\psi))^{-1}$ are the rescaled columns of $A$ if $\frac{\phi^\top A_i}{\psi^\top A_i}$ are distinct for all $i$. Thus, to obtain an algorithm, one needs to estimate $\nabla^2 f_{\mu^{(X)}}$ in such a way that the noise $\epsilon$ could still be neglected.
+$f_{\mu^{(X)}}(\eta)=f_{A\mu}(\eta)$ for all $\eta$ (where $A\mu$ denotes the distribution of $AS$). 
+Moreover, $\nabla^2 f_{A\mu}(\eta)=A K D_{\eta} A^\top$ where $D_{\eta}=\text{diag}\left((\eta^{\top}A_1)^2,\cdots, (\eta^{\top}A_d)^2\right)$.
+ Thus the eigenvectors\footnote{Throughout the paper eigenvectors always mean right eigenvectors, unless specified otherwise.} of the matrix $M=\nabla^2f_{\mu^{(X)}}(\phi)(\nabla^2f_{\mu^{(X)}}(\psi))^{-1} = AD_{\phi}D_{\psi}^{-1}A^{-1}$ are the rescaled columns of $A$ if $\left(\frac{\phi^\top A_i}{\psi^\top A_i}\right)^2$ are distinct for all $i$. Thus, to obtain an algorithm, one needs to estimate $\nabla^2 f_{\mu^{(X)}}$ in such a way that the noise $\epsilon$ could still be neglected.
 
 An estimate $\nabla^2 \hat{f}$ of $\nabla^2f_{\mu^{(X)}}$ is not hard, since for any $\nu$,
 $\nabla^2f_{\nu}(\eta)$  can be computed as
@@ -606,12 +610,12 @@ It is important to note that, under our assumptions, the noise $\epsilon$ has li
  Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. Then,
 for any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
 \[
-\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\poly{L_{\eta}, L, d, \sigma_{\max}, C}}{\sqrt{T}}. 
+\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)(g(T)+1)g(T). 
 \] 
 \end{prop}
 
-In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\frac{\poly{L_{\eta}, L, d, \sigma_{\max}, C}}{\sqrt{T}}$. Denote this quantity by $P(L_{\eta})$. 
-Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
+In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)(g(T)+1)g(T)$. Denote this quantity by $P(L_{\eta})$. 
+%Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
 %We also assume that $T$ is large enough such that $P\le 1/6$.
 
 
@@ -709,7 +713,7 @@ In particular, as mentioned in the Remark \ref{rmk:xi}, these conditions will be
 \end{remark}
 \fi
 \begin{remark}
-(i) Note that the bound in \eqref{eq:HKICA-bound} goes to zero at an $O(1/\sqrt{T})$ rate whenewer $D_4(\mu,\nu_T^{(s)})=O(1/\sqrt{T})$, as, e.g., in the stochastic setting.
+(i) Note that the bound in \eqref{eq:HKICA-bound} goes to zero at an $O(1/\sqrt{T})$ rate whenewer $D_4(\mu,\nu_T^{(s)})=O(1/\sqrt{T})$ and $g(T) =O(1/\sqrt{T}) $, as, e.g., in the stochastic setting.
 (ii) The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the conditions also require a small $1/\gamma_A$ so that the above error bound is valid. 
 Also, since $\gamma_A$ is the minimum spacing of the eigenvalues of $M=\nabla^2 f_{A\mu}(\phi) (\nabla^2 f_{A\mu}(\psi))^{-1}$, the eigenvalue perturbations imposed by the noise cannot be too large compared to $\gamma_A$ without potentially  ruining the eigenvectors of $M$; thus, the dependence on $\gamma_A$ seems necessary.
 
@@ -732,10 +736,12 @@ Similar problems have been discussed by  \citet{husler1987minimal} and \citet{go
 The problems with $\gamma_A$ motivate us to refine the HKICA algorithm.
 The idea is inspired by \citet{arora2012provable} and \citet{frieze1996learning} using a quasi-whitening procedure:
 
-One can show that $\nabla^2 f_\mu(\psi)=A K D_{\psi} A^\top$ where $D_{\psi}=\text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$. Let $\nabla^2 f_\mu(\psi) = BSB^{\top}$ where $S$ is a diagonal matrix with its diagonal elements being $\{+1, -1\}$. The sign matrix $S$ here is to deal with negative $\kappa$.
-So $B=A|K|^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. Defining $T_i=\nabla^2 f_\mu(B^{-\top} \phi_i)$, one can calculate that
-$T_i=A \text{sign}(K) D_\psi^{-1} \Lambda_i A^\top$ where $\Lambda_i=\text{diag}\left((\phi_i^\top R_1)^2,\ldots,(\phi_i^\top R_d)^2 \right) $ and $R_i$ denote the $i$th column of $R$.
-Then $M=T_1 T_2^{-1} = A\Lambda A^{-1}$ with $\Lambda=\Lambda_1 \Lambda_2^{-1}=\text{diag}\left(\frac{\phi_1^\top R_1}{\phi_2^\top R_1},\ldots,\frac{\phi_1^\top R_d}{\phi_2^\top R_d}\right)$. Thus, $A_i$ are again the eigenvectors of $M$, but now the eigenvalues of $M$ are defined in terms of the orthogonal matrix $R$ instead of $A$,
+Recall that  $\nabla^2 f_{\mu}(\psi)=A K D_{\psi} A^\top$ where $D_{\psi}=\text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$.
+ Let $\nabla^2 f_\mu(\psi) = BSB^{\top}$ where the diagonal matrix $S$ with its diagonal elements being $\{+1, -1\}$ is the sign of $K$, $\text{sign}(K)$. The sign matrix $S$ here is to deal with negative $\kappa$.
+So $B=A|K|^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. Defining $T_i=\nabla^2 f_\mu(B^{-\top} \phi_i)$ and $\Lambda_i=\text{diag}\left((\phi_i^\top R_1)^2,\ldots,(\phi_i^\top R_d)^2 \right) $, one can calculate that
+$T_i=A S D_\psi^{-1} \Lambda_i A^\top$ 
+where $R_i$ denote the $i$th column of $R$.
+Then $M=T_1 T_2^{-1} = A\Lambda A^{-1}$ with $\Lambda=\Lambda_1 \Lambda_2^{-1}=\text{diag}\left(\left(\frac{\phi_1^\top R_1}{\phi_2^\top R_1}\right)^2,\ldots,\left(\frac{\phi_1^\top R_d}{\phi_2^\top R_d}\right)^2\right)$. Thus, $A_i$ are again the eigenvectors of $M$, but now the eigenvalues of $M$ are defined in terms of the orthogonal matrix $R$ instead of $A$,
 and so the resulting minimum spacing
 \begin{equation}
 \label{def:gammaR}
@@ -777,13 +783,13 @@ The resulting algorithm, called Deterministic ICA (DICA), is shown in Algorithm 
 Similarly to HKICA, in theory DICA fails with probability 0 (giving, e.g., complex outputs), but this may be experienced due to numerical errors.
 The same resampling trick can be applied again, as in Remark \ref{rmk:symmetrization}. 
 \end{remark}
-Note that on the event $\Ephi$, $\|\phi_j^{\top}R\|_2\le L_u$, $j\in\{1,2\}$. 
-We will show later that this event $\Ephi$, as well as other events defined later, will hold simultaneously with high probability.
+%Note that on the event $\Epsi$, $\|\psi^{\top}R\|_2\le L_u$. 
+%We will show later that this event $\Ephi$, as well as other events defined later, will hold simultaneously with high probability.
 
 The DICA algorithm can be showed to have provable performance guarantees under some good events defined as follows:
 \begin{definition}
 Let $\Ephi$ denote the following event:
-For some fixed constant $L_u \ge \sqrt{2d}$ and $\ell_l$ such that $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$ for $0\le \ell\le 1$,
+For some fixed constants $0\le \ell\le 1$ and $L_u \ge \sqrt{2d}$, let $\ell_l = \frac{\sqrt{\pi}}{\sqrt{2}d}\ell$,
 % = \sqrt{2}\left(x^{1/2}+\sqrt{d}\right)$ for $x>0$,
 $\|\phi_1\|_2 \le L_u$, $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l$ hold simultaneously.
 % \begin{itemize}
@@ -800,7 +806,8 @@ on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants 
 %\|c_k\hat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\hat{T} - T\|_2\,,
 \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} Q,
 \]
-where $\hat{A}$ is the output of the DICA algorithm and $Q$ is polinomial in the usual problem parameters and decays roughly as $1/T$. This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
+where $\hat{A}$ is the output of the DICA algorithm and $Q$ is polinomial in the usual problem parameters and decays to 0 as $T$ grows. %roughly as $1/T$. 
+This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
 The proof is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
 
 \subsection{Analysis of $\gamma_R$}
@@ -908,11 +915,11 @@ When $A$ is highly coherent, we would expect that $\psi^{\top}A_i$'s are close t
 Given that $\phi^{\top}R_i$'s are well separated from each other, we intuitively expect the eigenvalues to be well-separated from each other. 
 However, we do not have a rigorous proof for this algorithm.
 Experimental results show that DICA\_Mod consistently outperforms DICA. 
-\eg
+
 \end{remark}
 %Note that the eigenvalues of the eigen-decomposition in MDICA are $\{ \frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}\}$.
 %Assume that $\kappa_i$ are all equal. 
-The following proposition shows that when $A$ is highly coherent, then the  minimal spacing of $m$ in MDICA is large, under some conditions (which hold with large probability). Instead of assuming the source function is bounded, we assume $\|A_i\|_2 = 1$.
+The following proposition shows that the minimal spacing of $M$ in MDICA is large when $A$ is highly coherent. Instead of assuming the source function is bounded, we assume $\|A_i\|_2 = 1$.
 \begin{prop}
 \label{prop:spacingMDICA}
 Let $c = \frac{\pi\delta}{2(d-1)^2}$. Under the event of $\Epsi\cap\Ephi\cap \EZ$, assume that
