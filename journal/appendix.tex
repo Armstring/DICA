@@ -599,6 +599,7 @@ M = A \Lambda_1 \Lambda_2^{-1} A^{-1} = A \Lambda A^{-1},
 \end{equation}
 where $\Lambda = \text{diag}\left((\frac{\phi_1^{\top}R^*R_1}{\phi_2^{\top}R^*R_1})^2, \cdots, (\frac{\phi_1^{\top}R^*R_d}{\phi_2^{\top}R^*R_d})^2\right)$. 
 
+\if0
 Similarly, we have the stability of the eigen-decomposition, as follows. 
 \begin{lemma}
 \label{lem:Teigenvectorvariation}
@@ -613,7 +614,9 @@ where $\hat{A}$ is the matrix of eigenvectors of $\hat{M}$.
 \begin{proof}
 The proof is straightforward by Lemma \ref{lem:eigenvectorvariation}.
 \end{proof}
-It still remains to bound $\|E\|_2$. In the event $\Ephi$, we take the orthogonal matrix $\tilde{R}$ as $R^*R$ in Equation \ref{eq:T} for the remaining of this paper.
+\fi
+It still remains to bound the perturbation of $M$. %$\|E\|_2$. 
+On the event $\Ephi$, we take the orthogonal matrix $\tilde{R}$ as $R^*R$ in Equation \ref{eq:T} for the remaining of this paper.
 
 \begin{lemma}
 \label{lem:Binversenablavariation1}
@@ -774,7 +777,7 @@ Note that by Lemma \ref{lem:Tvariantion},
 \[
 \|\hat{M} - M\|_2 \le \tQ.
 \]
-Then by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+Then by Lemma \ref{lem:eigenvectorvariation}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
 \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} \|\hat{M} - M\|_2.
 \]
@@ -803,7 +806,7 @@ We need to verify the validness of the conditions of Theorem~\ref{thm:Modefficie
 Note that the first condition holds with probability 1. 
 The other 5 conditions can be satisfied by small enough 
 $\hat{\xi}$, small enough $\bar{\xi}$, small enough $P(L_u)$, and small enough $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$.
-By Proposition~\ref{prop:denoise}, $P(L_u)$ and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$ can be arbitrarily small given large enough sample size 
+By Proposition \ref{prop:stochasticAss} and Proposition \ref{prop:denoise}, $P(L_u)$ and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$ can be arbitrarily small given large enough sample size 
 \[T = \poly{d.\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}.\] 
 $\hat{\xi}$ and $\bar{\xi}$ will be small if $\xi$ is small enough.
 Recall Equation \eqref{eq:xi} that 
@@ -1054,13 +1057,17 @@ It remains to bound
 \[
 \min_{i\neq j} \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2}\right\vert.
 \]
-For any $1\le i\neq j \le d$,
+Note that given $\phi$ uniformly sampled from the unit sphere, with probability at least $1-\delta$,
+\[
+\min_{i\neq j} |\phi^{\top} R_i - \phi^{\top} R_j| \ge \frac{\sqrt{\pi/2}\delta}{(d-1)^2}.
+\]
+Thus, for any $1\le i\neq j \le d$,
 \begin{align*}
  \left\vert  \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} -  \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2} \right\vert 
  &
   =  \left\vert \left(\frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} -   \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2}\right) - \left(\frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} - \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} \right) \right\vert \\
   & \ge  \left\vert \frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} -   \frac{\phi^{\top}R_j}{(\psi^{\top}A_j)^2} \right\vert - \left\vert \frac{\phi^{\top}R_i}{(\psi^{\top}A_j)^2} - \frac{\phi^{\top}R_i}{(\psi^{\top}A_i)^2} \right\vert \\
-  & \ge \frac{\vert \phi^{\top}R_i -  \phi^{\top}R_i \vert }{L_u^2} - \frac{\vert (\psi^{\top}A_i)^2 - (\psi^{\top}A_j)^2 \vert }{(\psi^{\top}A_i)^2(\psi^{\top}A_i)^2} \\
+  & \ge \frac{\vert \phi^{\top}R_i -  \phi^{\top}R_j \vert }{L_u^2} - \frac{\vert (\psi^{\top}A_i)^2 - (\psi^{\top}A_j)^2 \vert }{(\psi^{\top}A_i)^2(\psi^{\top}A_i)^2} \\
   & \ge \frac{c}{L_u^2} - \frac{2L_u\eps}{\ell^4} \ge \frac{c}{2L_u^2}.
 \end{align*}
 \end{proof}
