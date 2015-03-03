@@ -343,22 +343,23 @@ Before we can prove the theorem, we need to prove some lemmas.
 The following lemma shows that a small perturbation of $M$ will only result in a small variation of its eigenvectors, at least under some mild regularity conditions.
 \begin{lemma}
 \label{lem:eigenvectorvariation}
-Denote $\hat{M} = M+E$ be a perturbation of matrix $M$, where $M$ is defined in  \eqref{eq:M2}. 
+Denote $\hat{M} = M+E$ be a perturbation of matrix $M$, where $M = PDP^{-1}$ where $D$ is a diagonal matrix $\text{diag}(\sigma_1,\ldots, \sigma_d)$.
+% is defined in  \eqref{eq:M2}. 
 Assume $\hat{M}$ has distinct eigenvalues. 
-If $\gamma_A > 4 \frac{\sigma_{\max}}{\sigma_{\min}}\|E\|_2$, and $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_A}\frac{\sigma_{\max}^2}{\sigma_{\min} } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
+If $\gamma_D  = \min_{i\neq j} |\sigma_i - \sigma_j|> 4 \frac{\sigma_{\max}(P)}{\sigma_{\min}(P)}\|E\|_2$, and $\min_{i,j:i\neq j} \|P_i - P_j\|_2 > \frac{8}{\gamma_D}\frac{\sigma_{\max}^2(P)}{\sigma_{\min}(P) } \|E\|_2$, then there exist a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that 
 \[
-\max_{1\le k\le d} \| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le 4  \frac{\sigma_{\max}^2}{\gamma_A \sigma_{\min} } \|E\|_2\,,
+\max_{1\le k\le d} \| c_1\hat{P}_{\pi(k)} - P_k\|_2 \le 4  \frac{\sigma_{\max}^2(P)}{\gamma_D \sigma_{\min} (P)} \|E\|_2\,,
 \]
 and therefore
 \[
-\sum_{k=1}^{d}\| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le 4d  \frac{\sigma_{\max}^2}{\gamma_A \sigma_{\min}} \|E\|_2\,,
+\sum_{k=1}^{d}\| c_1\hat{P}_{\pi(k)} - P_k\|_2 \le 4d  \frac{\sigma_{\max}^2(P)}{\gamma_D \sigma_{\min}(P)} \|E\|_2\,,
 \]
-where $\hat{A}$ is the matrix of eigenvectors of $\hat{M}$. 
+where $\hat{P}$ is the matrix of eigenvectors of $\hat{M}$. 
 \end{lemma}
 \begin{proof}
 For $1\le k\le d$, assume 
 \[
-A_{(k)}^{-1} E A_{(k)} =  
+P_{(k)}^{-1} E P_{(k)} =  
 \left(
 \begin{array}{cc}
 F_{1k} & F_{2k}\\
@@ -366,32 +367,32 @@ F_{3k} & F_{4k} \\
 \end{array} 
 \right), 
 \]
-where $A_{(k)}$ is the matrix $(A_k, A_1, \cdots, A_{k-1}, A_{k+1}, \cdots, A_d)$.
+where $P_{(k)}$ is the matrix $(P_k, P_1, \cdots, P_{k-1}, P_{k+1}, \cdots, P_d)$.
 Let $\gamma_k = \|F_{3k}\|_2$, $\eta_k = \|F_{2k}\|_2$, and 
 \[
 \delta_k = \min_{j: j\neq k} 
-\left\vert \left(\frac{\phi^{\top}A_k}{\psi^{\top}A_k}\right)^2 -\left( \frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\,.
+\left\vert \left(\frac{\phi^{\top}P_k}{\psi^{\top}P_k}\right)^2 -\left( \frac{\phi^{\top}P_j}{\psi^{\top}P_j}\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\,.
 \]
-Note that by definition, $\gamma_k = \|F_{3k}\|_2\le\|A_{(k)}^{-1}EA_{k}\|_2\le\frac{\sigma_{\max}}{\sigma_{\min}}\|E\|_2$,
- $\eta_k = \|F_{2k}\|_2\le\|(A^{-1})_kEA_{(k)}\|_2\le\frac{\sigma_{\max}}{\sigma_{\min}}\|E\|_2$, 
- and $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|A_{(k)}^{-1} E A_{(k)}\|_2\le\frac{\sigma_{\max}}{\sigma_{\min}}\|E\|_2$. 
+Note that by definition, $\gamma_k = \|F_{3k}\|_2\le\|P_{(k)}^{-1}EP_{k}\|_2\le\frac{\sigma_{\max}(P)}{\sigma_{\min}(P)}\|E\|_2$,
+ $\eta_k = \|F_{2k}\|_2\le\|(P^{-1})_kEP_{(k)}\|_2\le\frac{\sigma_{\max}(P)}{\sigma_{\min}(P)}\|E\|_2$, 
+ and $\|F_{1k}\|_2,\|F_{4k}\|_2\le\|P_{(k)}^{-1} E P_{(k)}\|_2\le\frac{\sigma_{\max}(P)}{\sigma_{\min}(P)}\|E\|_2$. 
  Thus,
 \begin{align*}
 \delta_k & = \min_{j:j\neq k} 
-	\left\vert \left(\frac{\phi^{\top}A_k}{\psi^{\top}A_k}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
-	& \ge \min_{j:j\neq k} \left\vert \left(\frac{\phi^{\top}A_k}{\psi^{\top}A_k}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert - 2 \frac{\sigma_{\max}}{\sigma_{\min}}\|E\|_2\\
-	& \ge  \gamma_A -  2 \frac{\sigma_{\max}}{\sigma_{\min}}\|E\|_2 \\
-	& >  2 \frac{\sigma_{\max}}{\sigma_{\min}}\|E\|_2 >0,
+	\left\vert \left(\frac{\phi^{\top}P_k}{\psi^{\top}P_k}\right)^2 - \left(\frac{\phi^{\top}P_j}{\psi^{\top}P_j}\right)^2 \right\vert - \|F_{1k}\|_2 - \|F_{4k}\|_2\\
+	& \ge \min_{j:j\neq k} \left\vert \left(\frac{\phi^{\top}P_k}{\psi^{\top}P_k}\right)^2 - \left(\frac{\phi^{\top}P_j}{\psi^{\top}P_j}\right)^2 \right\vert - 2 \frac{\sigma_{\max}(P)}{\sigma_{\min}(P)}\|E\|_2\\
+	& \ge  \gamma_D -  2 \frac{\sigma_{\max}(P)}{\sigma_{\min}(P)}\|E\|_2 \\
+	& >  2 \frac{\sigma_{\max}(P)}{\sigma_{\min}(P)}\|E\|_2 >0,
 \end{align*}
 and $\delta_k^2 > 4\gamma_k\eta_k$. 
-Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$ such that there exists one of a eigenvector $\hat{A_k}$ of $\hat{M}$ satisfying
+Therefore, by Theorem 2.8, Chapter V of \citep{stewart1990matrix}, there exist a unique vector $v$ satisfying $\|v\|_2\le 2\frac{\gamma_k}{\delta_k}$ such that there exists one of a eigenvector $\hat{P_k}$ of $\hat{M}$ satisfying
  \[
- \|\hat{A_k} - A_k\|_2 \le \|A_{ck}\|_2 \|v\|_2 \le 2\sigma_{\max}\frac{\gamma_k}{\delta_k}
+ \|\hat{P_k} - P_k\|_2 \le \|P_{ck}\|_2 \|v\|_2 \le 2\sigma_{\max}(P)\frac{\gamma_k}{\delta_k}
  \le 
- \frac{4\sigma_{\max}^2}{\gamma_A \sigma_{\min}} \|E\|_2,
+ \frac{4\sigma_{\max}^2(P)}{\gamma_A \sigma_{\min}(P)} \|E\|_2,
  \]
- where $A_{ck}$ is the $d\times (d-1)$ matrix $(A_1,\ldots,A_{k-1}, A_{k+1},\ldots,A_d)$.
- By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2}{\gamma_A \sigma_{\min}} \|E\|_2 < \|A_i - A_j\|_2\le \|A_i - \hat{A_i}\|_2 + \|A_j - \hat{A_i}\|_2$, thus $\hat{A_i} \neq \hat{A_j}$.  Summing up the upper bound gets the result. 
+ where $P_{ck}$ is the $d\times (d-1)$ matrix $(P_1,\ldots,P_{k-1}, P_{k+1},\ldots,P_d)$.
+ By condition, for $i\neq j$,  $\frac{8\sigma_{\max}^2(P)}{\gamma_A \sigma_{\min}(P)} \|E\|_2 < \|P_i - P_j\|_2\le \|P_i - \hat{P_i}\|_2 + \|P_j - \hat{P_i}\|_2$, thus $\hat{P_i} \neq \hat{P_j}$.  Summing up the upper bound gets the result. 
 \end{proof}
 The next lemma shows that $\hat{X}^{-1}$ is close to $X^{-1}$ with respect to  matrix induced $2$-norm.
 \begin{lemma}
@@ -610,7 +611,7 @@ If $\gamma_R > 4 \frac{\sigma_{\max}^2}{\sigma_{\min} }\|E\|_2$ and $\min_{i,j:i
 where $\hat{A}$ is the matrix of eigenvectors of $\hat{M}$. 
 \end{lemma}
 \begin{proof}
-The proof is similar to that of Lemma \ref{lem:eigenvectorvariation}.
+The proof is straightforward by Lemma \ref{lem:eigenvectorvariation}.
 \end{proof}
 It still remains to bound $\|E\|_2$. In the event $\Ephi$, we take the orthogonal matrix $\tilde{R}$ as $R^*R$ in Equation \ref{eq:T} for the remaining of this paper.
 
