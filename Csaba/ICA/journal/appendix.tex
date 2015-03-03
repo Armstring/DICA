@@ -217,7 +217,7 @@ Combining the above two inequalities leads to the conclusion.
 \subsection{Proof of Theorem \ref{thm:efficiency}}
 \label{subsec:ProofEfficiency}
 The following result is proven by \citet{hsu2013learning}:
-\begin{thm}[\citet{hsu2013learning}, Theorem~4]
+\begin{theorem}[\citet{hsu2013learning}, Theorem~4]
 Assume $A$ is nonsingular. 
 Let $m_4,m_2:\real^d \ra \real$ be defined by Equation \eqref{eq:momnent} with respect to the product distribution $\mu$,
 	while $f_{\mu}: \real^d \ra \real$ be defined by Equation \eqref{eq:funcf}.
@@ -241,7 +241,7 @@ M = A
 A^{-1},
 \end{equation}
 where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
-\end{thm}
+\end{theorem}
 
 It follows from this theorem that 
 if $\phi,\psi$ are chosen independently from the uniform distribution on the unit sphere of $\real^d$, with probability one,
@@ -517,7 +517,7 @@ Let
 %Denote this event by $\Ephione$ (respectively $\Ephitwo$).
 
 First we start with proving the following theorem:
-\begin{thm}
+\begin{theorem}
 \label{thm:Modefficiency}
  Assume the following conditions hold:
  \begin{enumerate}
@@ -539,7 +539,7 @@ Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and consta
 \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} Q,
 \]
 where $\hat{A}$ is the output of the DICA algorithm.
-\end{thm}
+\end{theorem}
 
 Note that $\nabla^2f_{\mu}(\psi) = AKD_{\psi}A^{\top}$. Thus $B = AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
 We need to introduce some lemmas before we can prove the theorem. 
@@ -794,7 +794,7 @@ With Probability at least $1-\delta$ , the following inequalities holds simultan
 \end{lemma}
 Denote the above event by $\E$.
 \begin{remark}
-Note that all the constants in Lemma~\ref{lem:ConstantProb} are polynomial in $d$ (or $d^{-1}$ for the lower bound), thus the result of Theorem~\ref{thm:Modefficiency} is polynomial in $d$ and $\frac{1}{\delta}$ with probability at least $1-\delta$. \qed
+Note that all the constants in Lemma~\ref{lem:ConstantProb} are polynomial in $d$ (or $d^{-1}$ for the lower bound), thus the result of Theorem~\ref{thm:Modefficiency} is polynomial in $d$ and $\frac{1}{\delta}$ with probability at least $1-\delta$. %\qed
 \end{remark}
 
 \subsubsection{Proof of Theorem \ref{thm:finalRes}}
@@ -860,7 +860,7 @@ $\bar{R}_{m+1:d}^{\top} V^{(k-1)}$
 where $\Lambda_{1:m}$ and $\Lambda_{m+1:d}$ are the first $m\times m$  and last $(d-m)\times (d-m)$ submatrices of the diagonal matrix $\Lambda$.
 
 Recall that the diagonal elements of $\Lambda$ is the square of Cauchy random variables. The following proposition characterize the maximal spacing of i.i.d. Cauchy random variables.
-\begin{prop}
+\begin{proposition}
 \label{prop:maximalGapCauchy}
 Given $\{Z_1,\ldots, Z_d\}$ are i.i.d. Cauchy random variables, with probability at least $1-2\delta$, 
 \[
@@ -870,7 +870,7 @@ Also, with probability at least $1-\delta$,
 \[
 \max_i |Z_i| \le \frac{3d}{\pi\delta}.
 \]
-\end{prop}
+\end{proposition}
 \begin{proof}
 Let $Z_{(1)}\le \ldots \le Z_{(d)}$ denote the order statistics of $Z_i$. 
 WLOG, we fold the negative part of the Cauchy distribution to its positive part, leading to a density function $p_Z(z) = \frac{2}{\pi (1+z^2)}$ for $0\le z$.

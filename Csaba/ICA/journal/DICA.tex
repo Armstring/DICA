@@ -5,8 +5,8 @@
 % Use the following line _only_ if you're still using LaTeX 2.09.
 %\documentstyle[icml2015,epsf,natbib]{article}
 % If you rely on Latex2e packages, like most moden people use this:
-\documentclass[jmlr]{article}
-%\usepackage{jmlr2e} 
+\documentclass[twoside,11pt]{article}
+\usepackage{jmlr2e} 
 
 % use Times
 \usepackage{times}
@@ -47,7 +47,7 @@
 
 
 \usepackage{epstopdf}
-\usepackage{amsthm}
+%\usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{enumerate}
@@ -164,19 +164,19 @@
 \DeclareMathOperator{\pol}{Poly}
 \newcommand{\poly}[1]{\pol\left(#1\right)}
  %theorems/definitions
-\newtheorem{lemma}{Lemma}[section]
-\newtheorem{thm}[lemma]{Theorem}
+%\newtheorem{lemma}{Lemma}[section]
+%\newtheorem{theorem}[lemma]{Theorem}
 %\newtheorem{claim}[lemma]{Claim}
 %\newtheorem{cor}[lemma]{Corollary}
-\newtheorem{example}[lemma]{Example}
-\newtheorem{prop}[lemma]{Proposition}
-\theoremstyle{definition}
-\newtheorem{definition}[lemma]{Definition}
-\newtheorem{remark}[lemma]{Remark}
+%\newtheorem{example}[lemma]{Example}
+%\newtheorem{proposition}[lemma]{Proposition}
+%\theoremstyle{definition}
+%\newtheorem{definition}[lemma]{Definition}
+%\newtheorem{remark}[lemma]{Remark}
 %\newtheorem*{solution}[lemma]{Solution}
 %\newtheorem{note}[lemma]{Note}
 %\newtheorem{problem}[lemma]{Problem}
-\newtheorem{assumption}[lemma]{Assumption}
+\newtheorem{assumption}{Assumption}
 
 \newcommand{\FF}{\mathcal{F}}
 \newcommand{\TT}{\mathcal{T}}
@@ -189,7 +189,17 @@
 %\icmltitlerunning{Deterministic Independent Component Analysis}
 
 \title{Deterministic Independent Component Analysis}
-%\author{}
+\author{\name Ruitong Huang \email ruitong@ualberta.ca \\
+\name Andr\'as Gy\"orgy \email gyorgy@ualberta.ca \\
+\name Csaba Szepesv\'ari \email szepesva@ualberta.ca \\
+\addr Department of Computing Science, University of Alberta,
+Edmonton, AB, Canada T6G 2E8 }
+
+\editor{}
+
+\jmlrheading{x}{20xx}{x-xx}{xx/xx; Revised xx/xx}{xx/xx}{Ruitong Huang, Andr\'as Gy\"orgy, and Csaba Szepesv\'ari}
+\ShortHeadings{Deterministic Independent Component Analysise}{Huang, Gy\"orgy, and Szepesv\'ari}
+
 
 \begin{document} 
 \maketitle
@@ -295,7 +305,7 @@ Our method needs no parameter tuning, which makes it even more appealing. %a \em
 Another contribution of the present paper is that our analysis is conducted in a deterministic manner. 
 In practice, ICA is also known to work well for unmixing the mixture of various deterministic signals. 
 One of the classical demonstrations of ICA is showing that two periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
-Such an example is shown in Figure \ref{fig:demo}. 
+Such an example is shown in Figure~\ref{fig:demo}. 
 %It can be seen that our algorithm, DICA, designed for deterministic signals, can solve the problem better than other algorithms, FastICA \citep{hyvarinen1999fast} and HKICA \citep{hsu2013learning}.
 
 \begin{figure}[pt]
@@ -382,7 +392,7 @@ Finally, $\poly{\cdot,\cdots,\cdot}$ denotes a polynomial function of its argume
 % \end{definition}
 % A simple example of an ergodic function is a real periodic function.
 % The following lemma shows that once $\nu$ exists, it is a probability measure. 
-% \begin{prop}
+% \begin{proposition}
 % \label{prop:ergodicfunction}
 % Let $\scom{i}$ denote the $i$th coordinate function of $s$. Assume that
 % \[
@@ -390,7 +400,7 @@ Finally, $\poly{\cdot,\cdots,\cdot}$ denotes a polynomial function of its argume
 % \]
 % exists and is finite for all $1 \le i \le d$ and that $\esssup_{\mu_t} |\scom{i}|<\infty$ for any $1\le i \le d$ and $t\ge 0$.
 % Then all limit points of the sequence $\{\nu_t\}$, with respect to the weak topology, are probability measures over $\real^d$.
-% \end{prop}
+% \end{proposition}
 % \fi
 
 \section{The ICA Problem}
@@ -449,10 +459,10 @@ for the same function $g$ in Assumption \ref{ass:gauss}, where $(s,\epsilon)$ is
 \end{assumption}
 The sufficiency of such weaker assumptions is also discussed in the paper of \citet{frieze1996learning}.
 Similarly, the next proposition shows that the assumptions are satisfied, with high probability, for the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals.
-\begin{prop}
+\begin{proposition}
 \label{prop:stochasticAss}
 In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$,there exists $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$ and $g(t) = L/\sqrt{t}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
-\end{prop}
+\end{proposition}
 On the other hand, our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
 \begin{example} \em
 Assume that each unknown sources $s_i$s ($1\le i\le d$) are deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
@@ -493,7 +503,7 @@ Now we are ready to state our main result, which shows the existence of polynomi
 with error that vanishes at an $O(1/\sqrt{T})$ rate for $T$ samples and is also polynomial in the natural parameters of the problem:
 
 
-\begin{thm}
+\begin{theorem}
 \label{thm:finalRes} Consider the ICA problem \eqref{eq:ICA}. There exists an algorithm that estimates the mixing matrix $A$ from $T$ samples of $x$ such that (i) the computational complexity of the algorithm is $O(d^3 T)$ or $O(d^4 T)$; and (ii) if Assumptions~\ref{ass:gauss} and~\ref{ass:independence} are satisfied,
 \[
 T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}},
@@ -517,7 +527,7 @@ then, with probability at least $1-\delta$, there exists a permutation $\pi$ and
  \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le 
 & \frac{\poly{C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d}}{\sqrt{T}}.
 \end{align*}
-\end{thm}
+\end{theorem}
 \begin{remark}
 Our algorithms are randomized algorithms. The high probability $1-\delta$ in the first part of Theorem \ref{thm:finalRes} comes from the random sampling of the algorithm. The observations are deterministic and thus has no randomness. 
 \end{remark}
@@ -605,14 +615,14 @@ where
 and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu_T^{(x)}}$ and, in general, we will add a ``hat'' to quantities that are derived from the empirical distribution $\nu_T^{(x)}$. 
 %A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
 It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the following proposition. Similar result is also discussed by \citet{arora2012provable} and \citet{belkin2013blind}.
-\begin{prop}
+\begin{proposition}
  \label{prop:denoise}
  Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. Then,
 for any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
 \[
 \| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)(g(T)+1)g(T). 
 \] 
-\end{prop}
+\end{proposition}
 
 In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)(g(T)+1)g(T)$. Denote this quantity by $P(L_{\eta})$. 
 %Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
@@ -683,7 +693,7 @@ Let
 \gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert. 
 \end{equation}
 The performance of the HKICA algorithm will essentially depend on this parameters, as shown in the following theorem.
-\begin{thm}
+\begin{theorem}
  \label{thm:efficiency} 
 Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. 
 Furthermore, assume that
@@ -703,7 +713,7 @@ Then, on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_
 \end{equation}
 where $\hat{A}$ is the output of the HKICA algorithm, and 
 \[Q=\poly{d, L_u, \sigma_{\max}, \kappa_{\max}, \frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}}.\]
- \end{thm}
+ \end{theorem}
  \if0
 \begin{remark}
 Note that the first condition holds with probability 1. Also, the other three conditions will be satisfied when $\xi$ is small enough (for a fixed $\gamma_A$).
@@ -814,7 +824,7 @@ The proof is very similar to the result of Theorem~\ref{thm:efficiency}, with $\
 \label{sec:gamma}
 We empirically compare the behavior of $1/\gamma_A$ and $1/\gamma_R$ in this section.
 Figure~\ref{fig:miniSpacing} below shows the behavior of $1/\gamma_A$ and $1/\gamma_R$ for mixing matrices with different coherence (defined in Section~\ref{sec:ExpRes}), and for some random orthonormal matrix $R$. For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, pick the minimal values of $1/\gamma$, and plot the average value over 200 repetitions. %  (corresponding to the largest $\gamma_A$ and $\gamma_R$).
-% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
+% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure~\ref{fig:miniSpacing}.
 As expected, the value of $1/\gamma$ increases with the coherence of the matrix. However, it is similar to that of an orthonormal matrix unless the coherence is really large. 
 \begin{figure}[h]
 \centering
@@ -847,13 +857,13 @@ note that $\phi_1$ and $\phi_2$ are independently sampled from the  standard Gau
 Thus, $\{\phi_1^{\top}R_1, \cdots, \phi_1^{\top}R_d,$ $\phi_2^{\top}R_1, \cdots, \phi_2^{\top}R_d\}$ are $2d$ independent standard Gaussian random variables. 
 Let $Z_i = \frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. Using this observation, we show in following lemma that $\gamma_R$ is large with probability at least $1-\delta$. Denote this event by $\EZ$.
 
-\begin{prop}
+\begin{proposition}
 \label{prop:CauchyGap}
 With probability at least $1-\delta$,
 \[
 \gamma_R \ge \frac{\delta(1-\delta/2)^{1/d}}{2(d-1)^2}.
 \]
-\end{prop}
+\end{proposition}
 
 %Using this observation, we show in Lemma~\ref{lem:ConstantProb} in the appendix that, among others,  $\gamma_R \ge\frac{\delta}{2d^2}$ with probability at least $1-\delta$.
 
@@ -920,7 +930,7 @@ Experimental results show that DICA\_Mod consistently outperforms DICA.
 %Note that the eigenvalues of the eigen-decomposition in MDICA are $\{ \frac{(\phi^{\top}R_i)^2}{(\psi^{\top}A_i)^4\kappa_i}\}$.
 %Assume that $\kappa_i$ are all equal. 
 The following proposition shows that the minimal spacing of $M$ in MDICA is large when $A$ is highly coherent. Instead of assuming the source function is bounded, we assume $\|A_i\|_2 = 1$.
-\begin{prop}
+\begin{proposition}
 \label{prop:spacingMDICA}
 Let $c = \frac{\pi\delta}{2(d-1)^2}$. Under the event of $\Epsi\cap\Ephi\cap \EZ$, assume that
 \begin{itemize}
@@ -931,7 +941,7 @@ Let $c = \frac{\pi\delta}{2(d-1)^2}$. Under the event of $\Epsi\cap\Ephi\cap \EZ
 \item $<A_i, A_j> \,\ge 1-\eps$ for any $1\le i, j \le d$, such that $\eps \le \frac{\ell^4 c}{4L_u^3}$;
 \end{itemize}
 Then the minimal spacing of $M$  in the MDICA algorithm is at least $\frac{\pi\delta\ell_l}{2\kappa L_u^4 (d-1)^2}$. 
-\end{prop}
+\end{proposition}
 
 \subsection{Recursive Versions}
 Recently, \citet{vempala2014max} proposed a recursion idea to improve the sample complexity of the Fourier PCA algorithm of \citet{goyal2014fourier}. 
@@ -992,9 +1002,9 @@ Lastly, by separating the eigenvectors of $M$ according to its eigenvalues into 
 \begin{remark}
 % Other algorithms can be modified to use a recursive estimation in a similar way, based on the idea of mapping the estimated Hessian matrix into a small subspace by $M = P^{\top}TP$. 
 Other algorithms can be modified into a recursive version in a similar way. 
-\qed
+%\qed
 \end{remark}
-\begin{thm}
+\begin{theorem}
 \label{thm:recursiveAlg}
 Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with an error bound
 \begin{align*}
@@ -1002,7 +1012,7 @@ Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1
 \le & \poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}(Q^2 + \bar{\xi}).
 \end{align*}
 Here $D$ is some diagonal matrix and $P$ is some permutation matrix.
-\end{thm} 
+\end{theorem} 
 \begin{remark}
 Note that given large enough $T$, the term $Q^2$ will be dominated by $\bar{\xi}$, which is the error carried over from the quasi-whitening procedure.
 The recursion idea improves the sample complexity of the eigen-decomposition (to recover the orthonormal mixing matrix $R$).  
@@ -1027,7 +1037,7 @@ In this section we compare the performance of different ICA algorithms
 in some synthetic examples, with mixing matrices of different coherences.
 
 % For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, and pick the minimal values (corresponding to the largest $\gamma_A$ and $\gamma_R$).
-% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure \ref{fig:miniSpacing}.
+% We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure~\ref{fig:miniSpacing}.
 % \begin{figure}[h]
 % \label{fig:miniSpacing}
 % \centering
@@ -1168,7 +1178,7 @@ best. Also, the recursive idea is very helpful for small sample sizes.
 
 \newpage 
 \bibliography{DICA}
-\bibliographystyle{plainnat}
+%\bibliographystyle{plainnat}
 
 \include{appendix}
 \end{document}
