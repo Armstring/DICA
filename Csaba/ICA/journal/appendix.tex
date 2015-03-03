@@ -474,24 +474,24 @@ Thus,
 \begin{proof}[{\bf Proof of Theorem  \ref{thm:efficiency}}]
 Let 
  \begin{align*}
-Q = 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4\ell^4} + 
+\tQ = 2\left( \frac{2L_u^2d^2A_{(2,\max)}^2\kappa_{\max}\sigma_{\max}^2}{\pi\kappa^2_{\min}A^4_{(2,\min)}\sigma_{\min}^4\ell^4} + 
 \frac{\sqrt{2}d}{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2}
 \right)\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(L_u)\right)
  \end{align*}
  where $\xi$ is defined in Equation \eqref{eq:xi}.
  Note that $P(L_u)$ decays to 0 as $T$ grows, thus given large enough $T$ and small enough $\xi$, the following conditions hold:
  \begin{enumerate}
- \vspace{-3mm}
- \item $\gamma_A > 4\frac{\sigma_{\max}}{\sigma_{\min}} Q$
+ %\vspace{-3mm}
+ \item $\gamma_A > 4\frac{\sigma_{\max}}{\sigma_{\min}} \tQ$
  \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_A}\frac{\sigma_{\max}^2}{\sigma_{\min}} Q$;
  \item $\xi \le \frac{\sqrt{2\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2\ell^2}{8L_u^2d^6 A_{(2,\max)}^2A_{\max}^2}$;
  \item  $P(L_u) \le \frac{\sqrt{2\pi}}{8d}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2$. 
   \end{enumerate}
 
-Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$ and $\hat{M}$ has distinct eigen-values with probability 1,  then by Lemma \ref{lem:Mvariation_alg}, $\|M-\hat{M}\|_2 \le Q$.
+Note that $M = \nabla^2f(\phi))(\nabla^2f(\psi))^{-1}$ and $\hat{M}$ has distinct eigen-values with probability 1,  then by Lemma \ref{lem:Mvariation_alg}, $\|M-\hat{M}\|_2 \le \tQ$.
 Therefore, by lemma \ref{lem:eigenvectorvariation}, 
   \[
-  \max_{1\le k\le d}\| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le 4 \frac{\sigma_{\max}^2}{\gamma_A \sigma_{\min}}\|M - \hat{M} \|_2 \le 4 \frac{\sigma_{\max}^2}{\gamma_A \sigma_{\min}} Q. 
+  \max_{1\le k\le d}\| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le 4 \frac{\sigma_{\max}^2}{\gamma_A \sigma_{\min}}\|M - \hat{M} \|_2 \le 4 \frac{\sigma_{\max}^2}{\gamma_A \sigma_{\min}} \tQ. 
   \]
  %and 
  %\[
@@ -507,7 +507,7 @@ Let
 \begin{align*}
 \bar{\xi} &=   \frac{\sqrt{2}d\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P\right)}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}, \\
 \hat{\xi} &= \frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}, \\
- Q &=  
+ \tQ &=  
  %\frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\hat{\xi}}.
  \frac{4L_u^2A^6_{(2,\max)}}{l_l^4 A^6_{(2,\min)}}\left(\hat{\xi}
  +
@@ -521,10 +521,10 @@ First we start with proving the following theorem:
 \label{thm:Modefficiency}
  Assume the following conditions hold:
  \begin{enumerate}
- \vspace{-3mm}
+ %\vspace{-3mm}
  \item $\hat{T}$ has distinct eigenvalues;
- \item $\gamma_R > 4 \frac{\sigma_{\max}^2}{\sigma_{\min}}Q$; 
- \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2}{\sigma_{\min}} Q$;
+ \item $\gamma_R > 4 \frac{\sigma_{\max}^2}{\sigma_{\min}}\tQ$; 
+ \item $\min_{i,j:i\neq j} \|A_i - A_j\|_2 > \frac{8}{\gamma_R}\frac{\sigma_{\max}^2}{\sigma_{\min}} \tQ$;
  \item $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}d^6A_{(2,\max)}^2A_{\max}^2}$
  \item $P(L_u) \le \frac{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{6\sqrt{2}d}$
  (so $\bar{\xi} \le 1/3$);
@@ -532,11 +532,11 @@ First we start with proving the following theorem:
   +
   P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right) \le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$.
  \end{enumerate}
- \vspace{-2mm}
+ %\vspace{-2mm}
 Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
 %\|c_k\hat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\hat{T} - T\|_2\,,
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} Q,
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} \tQ,
 \]
 where $\hat{A}$ is the output of the DICA algorithm.
 \end{theorem}
@@ -748,7 +748,7 @@ Given the same conditions as Lemma \ref{lem:BhatinverseB}, On the event $\Epsi$ 
 P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$, then 
 \[
 \|M - \hat{M}\|_2 \le  \frac{128d^6A^6_{(2,\max)}}{\pi^3 A^6_{(2,\min)}}\left(\hat{\xi}+
-P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\right) = Q.
+P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\right) = \tQ.
 \]
 \end{lemma}
 
@@ -765,13 +765,13 @@ Apply Lemma \ref{lem:Mvariation},
 \frac{2\|T_1\|_2}{\sigma^2_{\min}(T_2)}\|E_2\|_2 + \frac{2}{\sigma_{\min}(T_2)}\|E_1\|_2 \\
 \le & \frac{4L_u^2A^6_{(2,\max)}}{l_l^4 A^6_{(2,\min)}}\left(\hat{\xi}
 +
-P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\right) = Q.
+P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\right) = \tQ.
 \end{align*}
 \end{proof}
 \begin{proof}[{\bf Proof of Theorem \ref{thm:Modefficiency}}]
 Note that by Lemma \ref{lem:Tvariantion},
 \[
-\|\hat{M} - M\|_2 \le Q.
+\|\hat{M} - M\|_2 \le \tQ.
 \]
 Then by Lemma \ref{lem:Teigenvectorvariation}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
@@ -836,7 +836,7 @@ for some polynomial, with probability at least $1-\delta$, there exists a permut
 Note that the calculation of $M$ in the helper function `Recur' is exactly the $M$ in the algorithm of DICA (we call it recursion version of HKICA, because in the helper function `Recur', it has the same format as HKICA).
 Therefore, by Lemma \ref{lem:Tvariantion},
 \[
-\|M-\hat{M}\|_2 \le Q.
+\|M-\hat{M}\|_2 \le \tQ.
 \]
 
 We now follow the idea of \citet{vempala2014max} to analyze the error accumulation of the recursion.
@@ -900,7 +900,7 @@ Z_{(d-1)} \ge \frac{d-1}{\pi\log \frac{d}{\delta}}.
 On the other hand, let $U_{(1)}, \ldots, U_{(d)}$ denote the order statistics of $d$ i.i.d random variables from the Uniform(0,1) distribution, and $E_{(1)}, \ldots, E_{(d)}$ denote the order statistics from the exponential distribution with density function $p_E(x) = \pi e^{-\pi x}$. 
 We will bound the probability of $Z_{(d)} - Z_{(d-1)} \ge L$ by $E_{(d)} - E_{(d-1)} \ge L$.
 
-First by the Quantile Transformation Theorem \citep{dasgupta2011finite}, the join distribution of $(F_{\text{C}}(Z_{(1)}), \ldots, F_{\text{C}}(Z_{(d)}))$ has the same distribution of $(U_{(1)}, \ldots, U_{(d)})$. So is the distribution of $(F_{\text{E}}(E_{(1)}), \ldots, F_{\text{E}}(E_{(d)}))$. 
+First by the Quantile Transformation Theorem \citep{dasgupta2011finite}, the join distribution of \\ $(F_{\text{C}}(Z_{(1)}), \ldots, F_{\text{C}}(Z_{(d)}))$ has the same distribution of $(U_{(1)}, \ldots, U_{(d)})$. So is the distribution of $(F_{\text{E}}(E_{(1)}), \ldots, F_{\text{E}}(E_{(d)}))$. 
 Here $F_{\text{C}}(\cdot)$ and $F_{\text{E}}(\cdot)$ are the c.d.f. of the folded Cauchy distribution and the exponential distribution with parameter $\pi$. 
 Recall $F_{\text{C}}(t) = \frac{2}{\pi}\arctan(t)$ and $F_{\text{E}}(t) = 1-e^{-\pi t}$. 
 Therefore,
@@ -948,7 +948,7 @@ the estimation error of ${V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m
 & \quad \| {V^{(k-1)}}^\top \hat{M}V^{(k-1)} - {V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m}^{\top} V^{(k-1)} \|_2 \\
 & \le \|{V^{(k-1)}}^\top \hat{M}V^{(k-1)} - {V^{(k-1)}}^\top MV^{(k-1)}\|_2 + \| {V^{(k-1)}}^\top MV^{(k-1)} -{V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m}^{\top} V^{(k-1)} \|_2 \\
 &  = \|{V^{(k-1)}}^\top \hat{M}V^{(k-1)} - {V^{(k-1)}}^\top MV^{(k-1)}\|_2 + \|{V^{(k-1)}}^\top\bar{R}_{m+1:d}\Lambda_{m+1:d}\bar{R}_{m+1:d}^{\top} V^{(k-1)} \|_2 \\
-& \le Q + E_{k-1}^2 \frac{9d^2}{\pi^2\delta^2} 
+& \le \tQ + E_{k-1}^2 \frac{9d^2}{\pi^2\delta^2} 
 \end{align*}
 Also, with probability at least $1-2\delta$ the maximal spacing of the diagonal elements of $\Lambda_{1:m}$ satisfying
 \[
@@ -956,15 +956,15 @@ Also, with probability at least $1-2\delta$ the maximal spacing of the diagonal 
 \] 
 By Wedin's Theorem \citep{stewart1990matrix}, 
 \[
-E_k \le \frac{Q + E_{k-1}^2 \frac{9d^2}{\pi^2\delta^2} }{\frac{2(d-1)}{\pi^2 \log(d/\delta)}\delta} = \frac{\pi^2 \log(d/\delta)Q}{2(d-1)\delta} + \frac{9d^2 \log(d/\delta)}{2(d-1)\delta^3}E_{k-1}^2.
+E_k \le \frac{\tQ + E_{k-1}^2 \frac{9d^2}{\pi^2\delta^2} }{\frac{2(d-1)}{\pi^2 \log(d/\delta)}\delta} = \frac{\pi^2 \log(d/\delta)\tQ}{2(d-1)\delta} + \frac{9d^2 \log(d/\delta)}{2(d-1)\delta^3}E_{k-1}^2.
 \]
-Therefore, by Claim 4.8 of \citet{vempala2014max}, given that $Q\le  \frac{81d^4\log^2(d/\delta)}{2(d-1)\pi^2\delta^5\log(d/\delta)}$, for $0\le k\le d$,
+Therefore, by Claim 4.8 of \citet{vempala2014max}, given that $\tQ\le  \frac{81d^4\log^2(d/\delta)}{2(d-1)\pi^2\delta^5\log(d/\delta)}$, for $0\le k\le d$,
 \[
-E_k \le \frac{\pi^2 \log(d/\delta)}{(d-1)\delta} Q. 
+E_k \le \frac{\pi^2 \log(d/\delta)}{(d-1)\delta} \tQ. 
 \]
 Thus Line 6 returns a matrix $\hat{R}$ s.t.
 \[
-\|\hat{R} - R^*R\|_2 = 2-2\cos(\Theta)= 2 - 2\sqrt{1-\sin^2(\Theta)} \le 2 - 2\sqrt{1-\frac{\pi^4 \log^2(d/\delta)}{(d-1)^2\delta^2} Q^2}
+\|\hat{R} - R^*R\|_2 = 2-2\cos(\Theta)= 2 - 2\sqrt{1-\sin^2(\Theta)} \le 2 - 2\sqrt{1-\frac{\pi^4 \log^2(d/\delta)}{(d-1)^2\delta^2} \tQ^2}
 \]
 Therefore,
 \begin{align*}
@@ -981,11 +981,11 @@ Similarly by Lemma \ref{lem:BhatinverseB}, $\| B^{-1}\hat{B}\|_2 \le (1+\bar{\xi
 Also, given that $\bar{xi} \le 1/2$, by Lemma \ref{lem:inversevariation}, $\|B^{-1}\hat{B} -{R^*}^{\top}\|_2 \le 2\bar{\xi}$.
 Adding all the terms together,
 \[
-\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le \sigma_{\max}L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\left(  2 - 2\sqrt{1-\frac{\pi^4 \log^2(d/\delta)}{(d-1)^2\delta^2} Q^2}\right) + 2\bar{\xi}\right).
+\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le \sigma_{\max}L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\left(  2 - 2\sqrt{1-\frac{\pi^4 \log^2(d/\delta)}{(d-1)^2\delta^2} \tQ^2}\right) + 2\bar{\xi}\right).
 \] 
 Note that for a small enough $\eps$, $\sqrt{1-\eps} \ge 1-\frac{2\eps}{3}$. Thus, given large enough $T$ such that $Q$ is small enough,
 \[
-\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le \sigma_{\max}L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\frac{4\pi^4 \log^2(d/\delta)}{3(d-1)^2\delta^2} Q^2+ 2\bar{\xi}\right).
+\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le \sigma_{\max}L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\frac{4\pi^4 \log^2(d/\delta)}{3(d-1)^2\delta^2} \tQ^2+ 2\bar{\xi}\right).
 \]
 
 It remains to bound the probability that the above result holds.

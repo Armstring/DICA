@@ -163,6 +163,7 @@
 \newcommand{\iid}{i.i.d.\xspace}
 \DeclareMathOperator{\pol}{Poly}
 \newcommand{\poly}[1]{\pol\left(#1\right)}
+\newcommand{\tQ}{\tilde{Q}}
  %theorems/definitions
 %\newtheorem{lemma}{Lemma}[section]
 %\newtheorem{theorem}[lemma]{Theorem}
@@ -461,7 +462,7 @@ The sufficiency of such weaker assumptions is also discussed in the paper of \ci
 Similarly, the next proposition shows that the assumptions are satisfied, with high probability, for the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals.
 \begin{proposition}
 \label{prop:stochasticAss}
-In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$,there exists $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$ and $g(t) = L/\sqrt{t}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
+In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$, there exists \\ $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$ and $g(t) = L/\sqrt{t}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
 \end{proposition}
 On the other hand, our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
 \begin{example} \em
@@ -814,9 +815,9 @@ hold with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt
 on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
 %\|c_k\hat{R}_{\pi(k)} - (R^*R)_k\|_2 \le \frac{4}{\gamma_R} \|\hat{T} - T\|_2\,,
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} Q,
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} (\xi + P(L_u))Q,
 \]
-where $\hat{A}$ is the output of the DICA algorithm and $Q$ is polinomial in the usual problem parameters and decays to 0 as $T$ grows. %roughly as $1/T$. 
+where $\hat{A}$ is the output of the DICA algorithm and $Q$ is polinomial in the usual problem parameters. %roughly as $1/T$. 
 This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
 The proof is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
 
@@ -1009,12 +1010,12 @@ Other algorithms can be modified into a recursive version in a similar way.
 Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with an error bound
 \begin{align*}
 & \quad \| \hat{A} - ADP\|_2 \\
-\le & \poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}(Q^2 + \bar{\xi}).
+\le & \poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}((\xi + P(L_u))^2 + \bar{\xi}).
 \end{align*}
 Here $D$ is some diagonal matrix and $P$ is some permutation matrix.
 \end{theorem} 
 \begin{remark}
-Note that given large enough $T$, the term $Q^2$ will be dominated by $\bar{\xi}$, which is the error carried over from the quasi-whitening procedure.
+Note that given large enough $T$, the term $(\xi + P(L_u))^2$ will be dominated by the error carried over from the quasi-whitening procedure, $\bar{\xi}$.
 The recursion idea improves the sample complexity of the eigen-decomposition (to recover the orthonormal mixing matrix $R$).  
 \end{remark}
 
