@@ -7,22 +7,22 @@
 \subsection{Proof of Proposition \ref{prop:stochasticAss}}
 Denote the population expectation by $\E$ and the empirical expectation by $\E_t$. We restate the assumptions here.
 \begin{enumerate}[(i).]
-\vspace{-3mm}
-\item $\| \E_t[S] \|_F\le L/\sqrt{t}$;
-\item $\| \E_t[\epsilon] \|_F \le L/\sqrt{t}$;
+%\vspace{-3mm}
+\item $\| \E_t[S] \|_F\le g(t)$;
+\item $\| \E_t[\epsilon] \|_F \le  g(t)$;
 \item $\| \E_t[\epsilon^{\otimes 2}] \|_F \le L$;
 \item $\| \E_t[\epsilon^{\otimes 3}] \|_F \le L$;
-\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le L/\sqrt{t} \|\eta\|_2^2$;
+\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le  g(t) \|\eta\|_2^2$;
 \item for $i_1,i_2,j_1,j_2 \ge 0$ that $i_1+i_2+j_1+j_2 \le 4$,  
 \begin{align*}
-\| \E_t[(AS)^{\otimes i_1} \otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F \le L/\sqrt{t},
+\| \E_t[(AS)^{\otimes i_1} \otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F \le  g(t),
 \end{align*}
 and 
 \begin{align*}
-\| \E_t[\epsilon^{\otimes j_1} \otimes \E_t[(AS)^{\otimes i_1}] \otimes \epsilon^{\otimes j_2}] - \E_t[ \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_2}]  \|_F \le L/\sqrt{t}.
+\| \E_t[\epsilon^{\otimes j_1} \otimes \E_t[(AS)^{\otimes i_1}] \otimes \epsilon^{\otimes j_2}] - \E_t[ \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_2}]  \|_F \le  g(t).
 \end{align*}
 \end{enumerate}
-Since $s$ is bounded by $C$, the first assumption will be satisfied with high probability $1-\delta$ by picking $L = C\sqrt{2d\log(\frac{1}{\delta})}$ by Hoeffding's inequality. Assumption (ii) to (v) are all about the moments of the Gaussian noise. 
+Since $s$ is bounded by $C$, the first assumption will be satisfied with high probability $1-\delta$ by picking $g(t) = C\sqrt{2d\log(\frac{1}{\delta})/t}$ by Hoeffding's inequality. Assumption (ii) to (v) are all about the moments of the Gaussian noise. 
 For i.i.d. standard Gaussian random variables, $X_1, \ldots, X_t$, note that
 \begin{itemize}
 \item $ \E[\sum_j X_j/t] = 0$, $\text{Var}(\sum_j X_j/t) = 1/t$;
@@ -132,7 +132,7 @@ Thus, with probability at least $1- 4d^{(i_1+j_1+i_2)}\delta$,
 12(1+\sqrt{2/t\delta})d^{(i_1+j_1+i_2)/2}A_{\max}^{i_1+i_2}C^{i_1+i_2}\sqrt{96/t\delta}.  
 \end{align*}
 Similar argument will go through for the second inequality.
-Therefore, there exists $\hat{L} = \text{Poly}(\frac{1}{\delta}, A_{\max}, C, d)$, such that for probability at least $1-\delta$, the above conclusions hold simultaneously.
+Therefore, there exists $\hat{L} = \text{Poly}(\frac{1}{\delta}, A_{\max}, C, d)$ and $g(t) = L/\sqrt{t}$, such that for probability at least $1-\delta$, the above conclusions hold simultaneously.
 
 Lastly, for general case where $\eps\sim {\cN}(0,\Sigma)$, the above conclusions will apply for $\Sigma^{-1/2}\eps$. Thus picking $L = \|\Sigma\|^4_2\hat{L}$, all bounds will still hold. 
 \subsection{Proof of Proposition \ref{prop:denoise}} 
