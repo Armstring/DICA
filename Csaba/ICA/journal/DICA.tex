@@ -933,7 +933,7 @@ Experimental results show that DICA\_Mod consistently outperforms DICA.
 The following proposition shows that the minimal spacing of $M$ in MDICA is large when $A$ is highly coherent. Instead of assuming the source function is bounded, we assume $\|A_i\|_2 = 1$.
 \begin{proposition}
 \label{prop:spacingMDICA}
-Let $c = \frac{\pi\delta}{2(d-1)^2}$. Under the event of $\Epsi\cap\Ephi\cap \EZ$, assume that
+For $0<\delta <1$, let $c = \frac{\sqrt{\pi/2}\delta}{(d-1)^2}$. Under the event of $\Epsi\cap\Ephi$, assume that
 \begin{itemize}
 %\item $L_u \ge |\psi^{\top}A_i| \ge \ell$ for any $1\le i\le d$;
 %\item $| \phi^{\top}R_i - \phi^{\top}R_j| \ge c$ for any $1\le i\neq j \le d$;
@@ -941,7 +941,7 @@ Let $c = \frac{\pi\delta}{2(d-1)^2}$. Under the event of $\Epsi\cap\Ephi\cap \EZ
 \item $\kappa_i = \kappa$ for any $1\le i\le d$;
 \item $<A_i, A_j> \,\ge 1-\eps$ for any $1\le i, j \le d$, such that $\eps \le \frac{\ell^4 c}{4L_u^3}$;
 \end{itemize}
-Then the minimal spacing of $M$  in the MDICA algorithm is at least $\frac{\pi\delta\ell_l}{2\kappa L_u^4 (d-1)^2}$. 
+Then with probability at least $1-\delta$, the minimal spacing of $M$  in the MDICA algorithm is at least $\frac{\pi\delta\ell_l}{2\kappa L_u^4 (d-1)^2}$. 
 \end{proposition}
 
 \subsection{Recursive Versions}
