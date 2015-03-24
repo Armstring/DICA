@@ -13,7 +13,7 @@
 % For figures
 \usepackage{graphicx} % more modern
 %\usepackage{epsfig} % less modern
-\usepackage{subfigure} 
+%\usepackage{subfigure} 
 
 % For citations
 \usepackage{natbib}
@@ -312,8 +312,9 @@ Such an example is shown in Figure~\ref{fig:demo}.
 \begin{figure}[pt]
 \captionsetup{singlelinecheck=off}
 \centering
+\vspace{-1in}
 	\includegraphics[width = \textwidth]{demo}
-
+	\vspace{-1.1in}
 \caption{Example of ICA for deterministic sources: The first two rows show the source signals
 $s_1(t)=\lfloor t-2\lfloor t/2 \rfloor \rfloor-0.5$, 
 $s_2=\cos(t)$, the next two rows present the observations with mixing matrix 
