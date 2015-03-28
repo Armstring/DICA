@@ -312,19 +312,17 @@ Such an example is shown in Figure~\ref{fig:demo}.
 \begin{figure}[pt]
 \captionsetup{singlelinecheck=off}
 \centering
-\vspace{-1in}
-	\includegraphics[width = \textwidth]{demo}
-	\vspace{-1.1in}
+	\includegraphics[width = 1.05\textwidth]{demo}
 \caption{Example of ICA for deterministic sources: The first two rows show the source signals
 $s_1(t)=\lfloor t-2\lfloor t/2 \rfloor \rfloor-0.5$, 
 $s_2=\cos(t)$, the next two rows present the observations with mixing matrix 
 $A=\left(
 \protect\begin{array}{cc}
 1&-2\\
-2.6 & 1.3
+2.6 & -5.1
 \protect\end{array}
 \right)$. 
-The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 10000 uniformly spaced points in the interval $\left[0,15\right]$.}
+The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 3000 uniformly spaced points in the interval $\left[0,15\right]$.}
 \label{fig:demo}
 \end{figure}
 
