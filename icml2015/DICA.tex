@@ -36,12 +36,12 @@
 % Employ the following version of the ``usepackage'' statement for
 % submitting the draft version of the paper for review.  This will set
 % the note in the first column to ``Under review.  Do not distribute.''
-\usepackage{icml2015} 
+%\usepackage{icml2015} 
 
 % Employ this version of the ``usepackage'' statement after the paper has
 % been accepted, when creating the final version.  This will set the
 % note in the first column to ``Proceedings of the...''
-%\usepackage[accepted]{icml2015}
+\usepackage[accepted]{icml2015}
 
 
 \usepackage{epstopdf}
@@ -195,12 +195,15 @@
 % submissions: the style file will automatically remove it for you
 % unless you've provided the [accepted] option to the icml2015
 % package.
-\icmlauthor{Your Name}{email@yourdomain.edu}
-\icmladdress{Your Fantastic Institute,
-            314159 Pi St., Palo Alto, CA 94306 USA}
-\icmlauthor{Your CoAuthor's Name}{email@coauthordomain.edu}
-\icmladdress{Their Fantastic Institute,
-            27182 Exp St., Toronto, ON M6H 2T1 CANADA}
+\icmlauthor{Ruitong Huang}{ruitong@ualberta.ca}
+\icmladdress{Department of Computing Science, University of Alberta,
+            Edmonton, AB T6G2E8 Canada}
+\icmlauthor{Andr\'as Gy\"orgy}{gyorgy@gmail.com}
+\icmladdress{Department of Computing Science, University of Alberta,
+            Edmonton, AB T6G2E8 Canada}
+\icmlauthor{Csaba Szepesv\'ari}{szepesva@ualberta.ca}
+\icmladdress{Department of Computing Science, University of Alberta,
+                        Edmonton, AB T6G2E8 Canada}
 
 % You may provide any keywords that you 
 % find helpful for describing your paper; these are used to populate 
@@ -452,8 +455,16 @@ In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is
 \end{prop}
 On the other hand, our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
 \begin{example} \em
-Assume that each unknown sources $s_i$s ($1\le i\le d$) are deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
+\label{ex:periodic}
+Assume that each unknown sources $s_i$ ($1\le i\le d$) are deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
 Even though $\eps$ is i.i.d. for every time step, the observations can not satisfy the traditional i.i.d. assumption, since the source $s$ is deterministic. However, it can be proved that if the ratio of the periods of each pair of $(s_i, s_j)$ is irrational, then this example satisfies all the assumptions above, given large enough $T$.   
+\end{example}
+
+Another practically important case to which our setting extends the traditional setting is the Markov sources.  
+\begin{example} \em
+\label{ex:markov}
+Assume that unknown sources $s_i$'s ($1\le i\le d$) are independent (between different components), stationary and ergodic Markov sources. Our observations are similar to the setting in the previous example. 
+Because of the Markov property, the observations do not satisfy the i.i.d. assumptions. On the other hand, it can be verified that this example satisfies the above assumptions.
 \end{example}
 % \todoa{The following example seems to be incorrect}
 % Another example is a source with both deterministic component and stochastic component, as follows.
@@ -482,8 +493,20 @@ To measure the distance of $\nu_T^{(s)}$ from $\mu$, define the following family
 %\begin{remark}
 In general, we will need a condition that $\xi$ is small enough, so that the components of $s$ are ``independent'' enough. To this end, one should choose
 $\mu$ to minimize $\xi$; however, such a minimizer does not always exists.
+Generally, $\mu$ could be selected as the product of the limit distributions, if applicable, of the individual sources. 
 On the other hand, in the traditional stochastic setting where the observations are \iid samples, the empirical distribution will converge to the population distribution, which, based on the independence assumption, is a product probability measure. 
 Therefore, in this case, $\xi$ will be small for large enough sample sizes. 
+
+\begin{example}\em
+Let $\mu_1$ to be a Benoulli distribution with probability $0.5$ taking value $0.5$ and probability $0.5$ taking value $-0.5$, and $\mu_2$ to be a distribution with density function $p(x) = \frac{1}{\pi \sqrt{1-x^2}}$ for $-1\le x \le 1$. 
+For the demonstration example in Figure \ref{fig:demo}, pick $\mu = \mu_1 \otimes \mu_2$.
+It is easy to see that $\mu_1$ is the limit distribution of source 1 and $\mu_2$ is the limit distribution of source 2.
+For each component, the difference of the induced distribution and its limit distribution is caused by the remaining tail after previous complete periods, thus in a rate $1/T$.
+Therefore, it can be verified that the total variance of $\nu_T$ and $\mu$ is also in a $1/T$ rate. 
+Thus, $D_4$ is bounded in a rate of $1/T$, since the monomials in the definition of $D_4$ is upper bounded by $1$.
+Lastly, note that $D_2$ is upper bounded by $D_4$ by definition, so $\xi$ is in a rate of $1/T$.  
+ 
+\end{example}
 %\end{remark}
 
 Now we are ready to state our main result, which shows the existence of polynomial-time algorithms for ICA that reconstructs the mixing matrix $A$ 
@@ -940,7 +963,7 @@ DICA  (DICA), and its recursive version (DICA\_recur);
 the modified version of  DICA  (MDICA), and its recursive version (MDICA\_recur);
 the default FastICA algorithm from the 'ITE' toolbox \citep{szabo12separation} (FICA);
 the recursive Fourier PCA algorithm of \citet{xiao2014FPCAPackage} (FPCA);
-and random guessing (Random).
+and random guessing (Random). FPCA is modified so that it can be applied to the case of non-orthogonal mixing matrix.
 %\item Symmetrizing version of  HKICA  (HKICA\_Symm), and its recursive version (HKICA\_Symm\_recur);
 %\item Symmetrizing version of  DICA  (DICA\_Symm), and its recursive version (DICA\_Symm\_recur);
 %Recall that the re-sampling version and the symmetrizing version are two different ways for the algorithms to deal with complex (invalid) output, as discussed in Remark \ref{rmk:symmetrization}.
@@ -957,6 +980,7 @@ $A_2 = v_b\times\boldsymbol{1}' + 0.3\times P$;
 $A_3 = v_b\times\boldsymbol{1}' + 0.05\times P$;
 and $A_4 = v_b\times\boldsymbol{1}' + 0.005\times P$.
 Here the vector $v_b$ and the matrix $P$ are both generated from standard normal distribution (with different dimensions).
+Then all the mixing matrices are rescaled to a same magnitude.
 We also generate an orthonormal mixing matrix R, obtained by computing the left column space of a non-singular random matrix (from standard normal distribution).  
 Then we generate a $6$-dimensional BPSK signal $s$ as follows. Let $p=(\sqrt{2},\sqrt{5},\sqrt{7},\sqrt{11},\sqrt{13},\sqrt{19})$.
 We generate a $\{+1,-1\}$ valued sequence $q(t)$ uniformly at random for $1 \le t \le T$, and set
@@ -1011,17 +1035,11 @@ The experimental results suggest that moment methods are more robust
 to high-coherence mixing matrices and Gaussian noise than FastICA.
 FastICA achieves the best performance in case of low coherence.
 As the coherence of the mixing matrix $A$ increases, its performance decreases quickly and becomes sensitive to noise. 
-The Fourier PCA algorithm performs poorly, because its assumption that
-$A$ is orthonormal is barely satisfied. 
-When the mixing matrix is indeed orthonormal, it achieves good performance.
+%The Fourier PCA algorithm performs poorly, because its assumption that
+%$A$ is orthonormal is barely satisfied. 
+%When the mixing matrix is indeed orthonormal, it achieves good performance.
 %This is also confirmed in the result of the case of orthonormal mixing matrix $R$. 
 %Due to the time limit, we haven't investigate the performance of Fourier PCA with a quasi-whitening procedure.
-
-However, the recursive idea is not always helpful for the moment methods. For a highly coherent $A$, the recursive versions outperform their non-recursive counterparts.
-Note that in this case, $A$ is close to singular (small minimal
-singular value), and thus it requires more samples.
-On the other hand, when $A$ has relatively low coherence,  the estimation error of the fourth moments contributes more to the reconstruction error. 
-Recursive algorithms suffers from making several such estimations.
 
 \if0
 Non-recursive algorithms in the symmetrizing version are consistently outperformed by their re-sampling version, as expected. 
@@ -1030,7 +1048,7 @@ On the other hand, when estimating a missing dimension (due to numerical accurac
 \fi
 %The higher coherent it is, the easier problem, for low noise? Why?
 
-We have expected that DICA will achieve smaller error for an extremely coherent $A$, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
+We expected that DICA will achieve smaller error for an extremely coherent $A$, since $1/\gamma_A$ will be much larger than $1/\gamma_R$. 
 However, the experimental results indicate the opposite. 
 Note that high coherence implies small minimal singular value.
 In this case, the estimation error of $M$ in DICA could be much larger than that in HKICA, because of the fourth degree of $A^{-1}$.
@@ -1041,10 +1059,15 @@ The investigation of this phenomenon is left for future work.
 %Due to the time limit, we haven't confirm this argument by more experiments yet.
 
 On the other hand, based on the discussion in Remark~\ref{rmk:DICA_Mod} in the appendix, 
-MDICA needs to estimate the fourth moments one time less than
-DICA, while we expect that it keeps the eigenvalue spacing large
+MDICA tries to achieve a small estimation error, meanwhile we expect it to keep the eigenvalue spacing large
 (intuitively, it is approximately the spacing of the square of $d$ Gaussian random variables), leading to good performance.
 This is confirmed by the experimental results, in both the non-recursive and recursive versions.
+
+The recursive idea is not always helpful for the moment methods. For a highly coherent $A$, the recursive versions outperform their non-recursive counterparts.
+Note that in this case, $A$ is close to singular (small minimal
+singular value), and thus it requires more samples.
+On the other hand, when $A$ has relatively low coherence,  the estimation error of the fourth moments contributes more to the reconstruction error. 
+Recursive algorithms suffers from making several such estimations.
 
 In summary, the results suggest that these moment methods are comparable to each other in practice,
 while FastICA  is better for mixing matrices with low coherence or mild coherence with low noise.
