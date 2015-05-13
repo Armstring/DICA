@@ -743,8 +743,8 @@ The idea is inspired by \citet{arora2012provable} and \citet{frieze1996learning}
 
 One can show that $\nabla^2 f_\mu(\psi)=A K D_{\psi} A^\top$ where $D_{\psi}=\text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$,
 and so $B=AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. Defining $T_i=\nabla^2 f_\mu(B^{-\top} \phi_i)$, one can calculate that
-$T_i=A K^{1/2} D_\psi^{-1/2} \Lambda_i A^\top$ where $\Lambda_i=\text{diag}\left(\phi_i^\top R_1,\ldots,\phi_i^\top R_d\right)$ and $R_i$ denote the $i$th column of $R$.
-Then $M=T_1 T_2^{-1} = A\Lambda A^{-1}$ with $\Lambda=\Lambda_1 \Lambda_2^{-1}=\text{diag}\left(\frac{\phi_1^\top R_1}{\phi_2^\top R_1},\ldots,\frac{\phi_1^\top R_d}{\phi_2^\top R_d}\right)$. Thus, $A_i$ are again the eigenvectors of $M$, but now the eigenvalues of $M$ are defined in terms of the orthogonal matrix $R$ instead of $A$,
+$T_i=A K^{1/2} D_\psi^{-1/2} \Lambda_i A^\top$ where $\Lambda_i=\text{diag}\left( (\phi_i^\top R_1)^2,\ldots,(\phi_i^\top R_d)^2 \right)$ and $R_i$ denote the $i$th column of $R$.
+Then $M=T_1 T_2^{-1} = A\Lambda A^{-1}$ with $\Lambda=\Lambda_1 \Lambda_2^{-1}=\text{diag}\left( \left(\frac{\phi_1^\top R_1}{\phi_2^\top R_1}\right)^2,\ldots,\left(\frac{\phi_1^\top R_d}{\phi_2^\top R_d}\right)^2 \right)$. Thus, $A_i$ are again the eigenvectors of $M$, but now the eigenvalues of $M$ are defined in terms of the orthogonal matrix $R$ instead of $A$,
 and so the resulting minimum spacing
 \begin{equation}
 \label{def:gammaR}
