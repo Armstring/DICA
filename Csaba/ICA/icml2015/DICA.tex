@@ -315,6 +315,7 @@ other algorithms, FastICA \citep{hyvarinen1999fast} and HKICA \citep{hsu2013lear
 	\includegraphics[width = \linewidth]{demo}
 \vspace{-10mm}
 \caption{Example of ICA for deterministic sources: The first two rows show the source signals $s_1(t)=0.5 - \lfloor t-2\lfloor t/2 \rfloor \rfloor$, $s_2=\cos(t)$, the next two rows present the observations with mixing matrix $A=\left(\begin{array}{cc}1&-2\\2.6&1.3\end{array}\right)$. The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 10000 uniformly spaced points in the interval $[0,15]$.}
+\vspace{-4mm}
 \end{figure}
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
 Our deterministic analysis helps investigate this curious phenomenon without losing any generality to the traditional stochastic setting. Formally, instead of observing $T$ \iid samples from \eqref{eq:stoch-ICA}, the source signals are defined by the function $s:\natural \ra \real^d$ be a $d$-dimensional deterministic ``signal'', and
@@ -331,7 +332,7 @@ The rest of this paper is organized as follows:
 The ICA problem is introduced in detail in Section~\ref{sec:Preliminaries} and  our main results are highlighted in Section~\ref{sec:main}.
 The polynomial-time algorithms underlying these results are developed through the next two sections: Section~\ref{sec:AnalysisHK} is devoted to the analysis of the HKICA algorithm, also showing its disadvantages, while our new algorithms are presented in Section~\ref{sec:DICA}.
 Experimental results are reported in Section \ref{sec:ExpRes}.
-All proofs are provided in the appendix.
+Proofs are presented in the full version of the paper \citep{HuGySz15}. %appendix.
 
 \subsection{Notation}
 %All vectors, matrices and tensors are real or complex valued, unless otherwise stated; below $K$ denotes either the set of real or complex numbers. 
@@ -572,7 +573,7 @@ Then with probability at least $1-\delta$, there exists a permutation $\pi$ and 
 \end{align*}
 where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$.
 
-In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the appendix),
+In particular, in the traditional stochastic setting, given large enough $T$ (but still polynomial in all the parameters), % as specified in the appendix),
  with probability at most $1-\delta$, 
  DICA will generate an estimate $\hat{A}$ of the mixing matrix $A$ in
  time complexity of $O(d^3T)$, 
@@ -627,7 +628,8 @@ where
 \end{align*} 
 and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu_T^{(x)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu_T^{(x)}$. 
 %A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
-It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the appendix, Section \ref{subsec:denoise}. 
+It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the full version of the paper \citep{HuGySz15}.
+%the appendix, Section \ref{subsec:denoise}. 
 In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\poly{L_{\eta}, L, d, \sigma_{\max}, C}\left(g(T)+1\right)g(T)$. Denote this quantity by $P(L_{\eta})$. 
 Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
 %We also assume that $T$ is large enough such that $P\le 1/6$.
@@ -815,9 +817,10 @@ on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants 
 \[
 \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}}\tilde{Q},
 \]
-where $\hat{A}$ is the output of the DICA algorithm and $\tilde{Q}$ is polinomial in the usual problem parameters and decays roughly as $(\xi + P(L_u))$. This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
+where $\hat{A}$ is the output of the DICA algorithm and $\tilde{Q}$ is polinomial in the usual problem parameters and decays roughly as $(\xi + P(L_u))$. This is proved in the full version \citep{HuGySz15}. %Theorem~\ref{thm:Modefficiency} in the appendix.
 It is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
-An empirical comparison of $1/\gamma_A$ and $1/\gamma_R$ is provided in Section~\ref{sec:gamma} in the appendix.
+%An empirical comparison of $1/\gamma_A$ and $1/\gamma_R$ is provided in Section~\ref{sec:gamma} in the appendix.
+
 %\begin{remark}
 % Note that all the conditions of Theorem~\ref{thm:Modefficiency} will be satisfied with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right)$  are small enough.
 
@@ -837,7 +840,8 @@ To analyze $\gamma_R$ analytically,
 note that $\phi_1$ and $\phi_2$ are independently sampled from standard Gaussian distribution. 
 Thus, $\{\phi_1^{\top}R_1, \cdots, \phi_1^{\top}R_d,$ $\phi_2^{\top}R_1, \cdots, \phi_2^{\top}R_d\}$ are $2d$ independent standard Gaussian random variables. 
 Let $Z_i = \frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}$. Therefore, $Z_i$, $1\le i\le d$ are $d$ independent Cauchy$(0,1)$ random variables. 
-Using this observation, we show in Lemma~\ref{lem:ConstantProb} in the appendix that, among others,  $\gamma_R \ge\frac{\delta}{2d^2}$ with probability at least $1-\delta$.
+Using this observation, we show in the full version \citep{HuGySz15} %Lemma~\ref{lem:ConstantProb} in the appendix 
+that, among others,  $\gamma_R \ge\frac{\delta}{2d^2}$ with probability at least $1-\delta$.
 
 % We would need a high probability lower bound for $\gamma_R$
 % %Recall that on the event $\Ephione$, $\min_i\vert Z_i \vert \ge \frac{\sqrt{2\pi}}{2d}$. 
@@ -858,8 +862,11 @@ Using this observation, we show in Lemma~\ref{lem:ConstantProb} in the appendix 
 % Note that all the constants in Lemma~\ref{lem:ConstantProb} are polynomial in $d$ (or $d^{-1}$ for the lower bound), thus the result of Theorem~\ref{thm:Modefficiency} is polynomial in $d$ and $\frac{1}{\delta}$ with probability at least $1-\delta$. \qed
 % \end{remark}
 
-Based on the above, we show in the appendix that Theorem~\ref{thm:finalRes} holds for DICA.
-Furthermore, in Section~\ref{subsec:modifiedDICA} in the appendix, we provide a heuristic modification of DICA that performs better in the experiments (proving performance guarantees for that algorithm has defied our efforts so far).
+Based on the above, one can show
+%we show in the appendix 
+that Theorem~\ref{thm:finalRes} holds for DICA \citep{HuGySz15}.
+Furthermore, a heuristic modification of DICA can also be derived that performs better in the experiments, but proving performance guarantees for that algorithm has defied our efforts so far (details are given  in the full version of the paper, \citealt{HuGySz15}).
+%Furthermore, in Section~\ref{subsec:modifiedDICA} in the appendix, we provide a heuristic modification of DICA that performs better in the experiments (proving performance guarantees for that algorithm has defied our efforts so far).
 
 \subsection{Recursive Versions}
 Recently, \citet{vempala2014max} proposed a recursion idea to improve the sample complexity of the Fourier PCA algorithm of \citet{goyal2014fourier}. 
@@ -1063,7 +1070,7 @@ spacings, if the sample size is not large enough.
 The investigation of this phenomenon is left for future work.
 %Due to the time limit, we haven't confirm this argument by more experiments yet.
 
-On the other hand, based on the discussion in Remark~\ref{rmk:DICA_Mod} in the appendix, 
+On the other hand, %based on the discussion in Remark~\ref{rmk:DICA_Mod} in the appendix, 
 MDICA tries to achieve a small estimation error, meanwhile we expect it to keep the eigenvalue spacing large
 (intuitively, it is approximately the spacing of the square of $d$ Gaussian random variables), leading to good performance.
 This is confirmed by the experimental results, in both the non-recursive and recursive versions.
@@ -1103,7 +1110,7 @@ and NSERC.
 \setlength{\bibsep}{0.5\baselineskip}
 \bibliography{DICA}
 
-\include{appendix}
+%\include{appendix}
 \end{document}
 
 \if0
