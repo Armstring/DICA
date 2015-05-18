@@ -549,7 +549,7 @@ then, with probability at least $1-\delta$, there exists a permutation $\pi$ and
 Note that the result is polynomial in $1/\delta$ which is weaker than being polynomial in $\log(1/\delta)$.
 \end{remark}
 
-In the next sections, we will present two algorithms, DICA (Algorithm~\ref{alg:DICA} and HKICA\_recur (Algorithm~\ref{alg:HKICA_recur}) in Section~\ref{sec:DICA} that 
+In the next sections, we will present two algorithms, DICA (Algorithm~\ref{alg:DICA} and HKICA.R (Algorithm~\ref{alg:HKICA_recur}) in Section~\ref{sec:DICA} that 
 satisfy the theorem.
 
 
@@ -875,21 +875,21 @@ then recursively decomposes each subspaces until they are all 1-dimensional.
 The insight of this recursive procedure is the following: when the maximal spacing of the eigenvalues are much larger than the minimal one, the algorithm may win over a single decomposition even with the accumulating errors through the recursion.
 However, this algorithm is based on the assumption that the mixing matrix is orthonormal, so that the projection to its subspaces can always eliminate some component of the source signal. 
 
-We adapt the above idea to our algorithms. Due to space limit, we will only take the simplest recursive algorithm, recursive version of HKICA, as an example.
+We adapt the above idea to our algorithms. Due to space limitations, we will only consider the simplest recursive algorithm, the recursive version of HKICA, as an example.
 
-To force a orthonormal mixing matrix, we will first compute the square root matrix $B$ of  $\nabla^2f(\psi) = AD_{\psi}KA^{\top}$. 
+To force an orthonormal mixing matrix, we will first compute the square root matrix $B$ of  $\nabla^2f(\psi) = AD_{\psi}KA^{\top}$. 
 Thus $B = AD_{\psi}^{1/2}K^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
-Transform our observation by $B^{-1}$, we then have the new observation $y(t) = B^{-1}x(t) + B^{-1}\eps(t) = RD_{\psi}^{1/2}K^{1/2}s(t) + B^{-1}\eps(t)$. 
-Note that $B^{-1}\eps(t)$ is still a Gaussian noise. Also $D_{\psi}^{1/2}K^{1/2}$ is diagonal, thus $RD_{\psi}^{1/2}K^{1/2}s(t)$ is an orthonormal mixture of independent sources.
-We then apply the recursive algorithm to recover the mixing matrix $R$. Finally, $BR$ gives an estimation of $A$ up to scaling.
+Transforming our observations by $B^{-1}$, we have the new observations $y(t) = B^{-1}x(t) + B^{-1}\eps(t) = RD_{\psi}^{1/2}K^{1/2}s(t) + B^{-1}\eps(t)$. 
+Note that transformed noise vector $B^{-1}\eps(t)$ is still Gaussian. Also, $D_{\psi}^{1/2}K^{1/2}$ is diagonal, thus $RD_{\psi}^{1/2}K^{1/2}s(t)$ is an orthonormal mixture of independent sources.
+We then apply the recursive algorithm to recover the mixing matrix $R$. Finally, $BR$ gives an estimate of $A$ up to scaling.
 
 To recover $R$ using a recursive algorithm, we follow the idea of HKICA (and DICA) to compute two Hessian matrices $T_1 = RD_{\psi}^{-1}\Lambda_1R^{\top}$ and $T_2 = RD_{\psi}^{-1}\Lambda_2R^{\top}$. 
-Then, instead of computing the eigen-decomposition of $T = T_1 T_2^{-1}$ (as in HKICA), we only decompose its eigenspace into two subspaces, according to the maximal spacing of the eigenvalues of $T$. The `Recur' helper takes a projection matrix $P$ of a subspace spanned
-by some columns of $R$ (WLOG we assume it is the first $k$ columns of $R$). Then we compute the projection of $T$ as $M = P^{\top}TP$. Thus the eigenspace of $PMP^{\top}$ is in the span of $P$. 
-Lastly, by separating the eigenvectors of $M$ according to its eigenvalues into $PP_1$ and $PP_2$, the `Recur' helper decomposes the subspaces into two smaller subspaces.  
+Then, instead of computing the eigen-decomposition of $T_0=T_1 T_2^{-1}$ (as in HKICA), we only decompose its eigenspace into two subspaces, according to the maximal spacing of the eigenvalues of $T_0$. The \emph{Decompose} helper function takes a projection matrix $P$ of a subspace spanned
+by some columns of $R$ (WLOG we assume it is the first $k$ columns of $R$). Then we compute the projection of $T_0$ as $M = P^{\top}T_0P$. Thus the eigenspace of $PMP^{\top}$ is in the span of $P$. 
+Lastly, by separating the eigenvectors of $M$ according to its eigenvalues into $PP_1$ and $PP_2$, the Decompose function repeatedly decomposes the subspaces into two smaller subspaces.  
 
 \begin{algorithm}[thb] 
-\caption{Recursive version of HKICA (HKICA\_recur)}
+\caption{Recursive version of HKICA (HKICA.R)}
 \label{alg:HKICA_recur}
 \begin{algorithmic}[1]
 \INPUT $x(t)$ for $1\le t \le T$. 
@@ -899,12 +899,12 @@ Lastly, by separating the eigenvectors of $M$ according to its eigenvalues into 
 \STATE Compute $\hat{B}$ such that $\nabla^2\hat{f}(\psi) = \hat{B}\hat{B}^{\top}$;
 \STATE Compute $\hat{y}(t) = \hat{B}^{-1}x(t)$ for $1\le t \le T$;
 \STATE Let $P = I_d$;
-\STATE Compute $\hat{R} = \text{Recur}(\hat{y}, P)$;
+\STATE Compute $\hat{R} = \text{Decompose}(\hat{y}, P)$;
 \STATE Return $\hat{B}\hat{R}$;
 \end{algorithmic}
 \end{algorithm}
 \begin{algorithm}[thb] 
-\caption{The `Recur' Helper}
+\caption{The Decompose helper function}
 \label{alg:recur}
 \begin{algorithmic}[1]
 \INPUT $x(t)$ for $1\le t \le T$, a projection matrix $P\in \R^{d\times k}$ ($d\ge k$). 
@@ -918,7 +918,7 @@ Lastly, by separating the eigenvectors of $M$ according to its eigenvalues into 
 \STATE Compute all the eigen-decomposition of $\hat{M}$, its eigenvalues$\{\sigma_1,\ldots,\sigma_d\}$ where $\sigma_1\ge\ldots\ge \sigma_k$ and their corresponding eigenvectors $\{\mu_1,\ldots, \mu_k\}$;
 \STATE Find the index $m = \arg\max \sigma_m - \sigma_{m+1}$; 
 \STATE Let $P_1 = (\mu_1,\ldots,\mu_m)$, and $P_2 = (\mu_{m+1},\ldots,\mu_k)$;
-\STATE Compute $W_1 = \text{Recur} (x, PP_1)$, and  $W_2 = \text{Recur} (x, PP_2)$;
+\STATE Compute $W_1 = \text{Decompose} (x, PP_1)$, and  $W_2 = \text{Decompose} (x, PP_2)$;
 \STATE Return $[W_1,W_2]$;
 \end{algorithmic}
 \end{algorithm}
@@ -926,13 +926,13 @@ Lastly, by separating the eigenvectors of $M$ according to its eigenvalues into 
 \begin{remark}
 % Other algorithms can be modified to use a recursive estimation in a similar way, based on the idea of mapping the estimated Hessian matrix into a small subspace by $M = P^{\top}TP$. 
 Other algorithms can be modified into a recursive version in a similar way. 
-\qed
+%\qed
 \end{remark}
 \begin{thm}
 \label{thm:recursiveAlg}
 Under the conditions of Theorem~\ref{thm:finalRes}, with probability
 at least $1-\delta$, the recursive version of HKICA returns a mixing
-matrix $\hat{A}$ with an error $ \| \hat{A} - ADP\|_2$ bound by
+matrix $\hat{A}$ with an error $ \| \hat{A} - ADP\|_2$ bounded by
 \begin{align*}
 %& \quad \| \hat{A} - ADP\|_2 \\
 %\le & 
@@ -974,14 +974,14 @@ in some synthetic examples, with mixing matrices of different coherences.
 
 
 We test 9 algorithms: 
-HKICA (HKICA), and its recursive version (HKICA\_recur); 
-DICA  (DICA), and its recursive version (DICA\_recur);  
-the modified version of  DICA  (MDICA), and its recursive version (MDICA\_recur);
+HKICA (HKICA), and its recursive version (HKICA.R); 
+DICA  (DICA), and its recursive version (DICA.R);  
+the modified version of  DICA  (MDICA), and its recursive version (MDICA.R);
 the default FastICA algorithm from the 'ITE' toolbox \citep{szabo12separation} (FICA);
 the recursive Fourier PCA algorithm of \citet{xiao2014FPCAPackage} (FPCA);
 and random guessing (Random). FPCA is modified so that it can be applied to the case of non-orthogonal mixing matrix.
-%\item Symmetrizing version of  HKICA  (HKICA\_Symm), and its recursive version (HKICA\_Symm\_recur);
-%\item Symmetrizing version of  DICA  (DICA\_Symm), and its recursive version (DICA\_Symm\_recur);
+%\item Symmetrizing version of  HKICA  (HKICA\_Symm), and its recursive version (HKICA\_Symm.R);
+%\item Symmetrizing version of  DICA  (DICA\_Symm), and its recursive version (DICA\_Symm.R);
 %Recall that the re-sampling version and the symmetrizing version are two different ways for the algorithms to deal with complex (invalid) output, as discussed in Remark \ref{rmk:symmetrization}.
 %FastICA, as one of the most popular ICA algorithm in the literature, is evaluated and reported as a baseline. 
 %We will discuss the intuition of the DICA\_Int algorithm later. 
@@ -1005,7 +1005,7 @@ Note that in order to have the components of $s$ close to independent, we need t
 
 Lastly, the observed signal is generated as $x = As+c\epsilon$ where $\epsilon$ is the noise generated from a $d$-dimensional normal distribution with randomly generated covariance. 
 We take $T=20000$ instances of the observed signal on time steps $t= 1,\ldots, 20000$.
-We test the noise ratio $c$ from 0 (noise-free) to 1 (heavily noisy). 
+We test the noise ratio $c$ from 0 (noise-free) to 1 (very noisy). 
 All the algorithms are evaluated on a $150$ repetitions. For each repetition, we try $3$ times and report the best.
 
 We measure the performances of the algorithms by its actual reconstruction error.
@@ -1034,11 +1034,11 @@ where $\hat{x} = \hat{A}^{-1}y$, and $|\hat{A}|$ is the absolute value of the de
 We report the reconstruction errors for different kinds of mixing matrices and noise ratios.
 
 \begin{figure}[t] %pt]
-	\includegraphics[width =0.47\columnwidth]{errorR}
-	\includegraphics[width =0.47\columnwidth]{error1} \medskip \\
-	\includegraphics[width =0.47\columnwidth]{error2}
-	\includegraphics[width =0.47\columnwidth]{error3} \medskip \\
-	\includegraphics[width =0.47\columnwidth]{error4}
+	\includegraphics[width =0.49\columnwidth]{errorR}
+	\includegraphics[width =0.49\columnwidth]{error1} \medskip \\
+	\includegraphics[width =0.49\columnwidth]{error2}
+	\includegraphics[width =0.49\columnwidth]{error3} \medskip \\
+	\includegraphics[width =0.49\columnwidth]{error4}
 \vspace{-3mm}
 \caption{\label{fig:Error} Reconstruction Error}
 \vspace{-5mm}
@@ -1085,7 +1085,7 @@ In summary, the results suggest that these moment methods are comparable to each
 while FastICA  is better for mixing matrices with low coherence or mild coherence with low noise.
 If the mixing matrix is orthonormal, then FPCA performs better than
 the other algorithms.
-If the observations have heavy noise and the mixing matrix is not extremely coherent, then HKICA may be the best choice.
+If the observations have large noise and the mixing matrix is not extremely coherent, then HKICA may be the best choice.
 In the case of an extremely coherent mixing matrix, MDICA performs the
 best. Also, the recursive idea is very helpful for small sample sizes.
 
