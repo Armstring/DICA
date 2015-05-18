@@ -213,7 +213,7 @@
 \begin{abstract}
 We study independent component analysis with noisy observations. 
 We present, for the first time in the literature, consistent, polynomial-time algorithms to recover non-Gaussian source signals and the mixing matrix with 
-a reconstruction error that vanishes at a rate of $\sqrt{T}$ using $T$ observations and scales only polynomially with
+a reconstruction error that vanishes at a $1/\sqrt{T}$ rate using $T$ observations and scales only polynomially with
 the natural parameters of the problem. 
 Our algorithms and analysis also extend to deterministic source signals whose empirical distributions are approximately independent.
 \end{abstract}
@@ -308,7 +308,7 @@ In practice, ICA is also known to work well for unmixing the mixture of various 
 One of the classical demonstrations of ICA is showing that two periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
 Such an example is shown in Figure~\ref{fig:demo}. It can be seen that our algorithm, DICA, in this particular example, can solve the problem better than
 other algorithms, FastICA \citep{hyvarinen1999fast} and HKICA \citep{hsu2013learning}.
-\begin{figure}[thb]
+\begin{figure}[t]
 \vspace{-3mm}
 \label{fig:demo}
 \centering
@@ -452,14 +452,14 @@ In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is
 On the other hand, our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
 \begin{example} \em
 \label{ex:periodic}
-Assume that each unknown sources $s_i$ ($1\le i\le d$) are deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by an i.i.d Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian noise.   
-Even though $\eps$ is i.i.d. for every time step, the observations can not satisfy the traditional i.i.d. assumption, since the source $s$ is deterministic. However, it can be proved that if the ratio of the periods of each pair of $(s_i, s_j)$ is irrational, then this example satisfies all the assumptions above, given large enough $T$.   
+Assume that the unknown sources $s_i$ ($1\le i\le d$) are deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by i.i.d.\ Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian.   
+Even though $\eps$ is i.i.d.\ for every time step, the observations cannot satisfy the traditional i.i.d.\ assumption, since the source $s$ is deterministic. However, it can be proved that if the ratio of the periods of each pair of $(s_i, s_j)$ is irrational, this example satisfies all the assumptions above for $T$ large enough.   
 \end{example}
 
 Our setting also extends the traditional one to a practically important case, Markov sources.  
 \begin{example} \em
 \label{ex:markov}
-Assume that unknown sources $s_i$'s ($1\le i\le d$) are independent (between different components), stationary and ergodic Markov sources. Our observations are similar to the setting in Example \ref{ex:periodic}. 
+Assume that $s_i$ is a stationary and ergodic Markov source, and the sources are independent of each other for $1\le i\le d$. Our observations are similar to the setting in Example \ref{ex:periodic}. 
 Because of the Markov property, the observations do not satisfy the i.i.d. assumptions. On the other hand, it can be verified that this example satisfies the above assumptions.
 \end{example}
 % \todoa{The following example seems to be incorrect}
@@ -495,15 +495,16 @@ On the other hand, in the traditional stochastic setting where the observations 
 Therefore, in this case, $\xi$ will be small for large enough sample sizes. 
 
 \begin{example}\em
-Let $\mu_1$ to be a Bernoulli distribution $\mu_1(\{0.5\}) = 1/2$ and $\mu_1(\{-0.5\}) = 1/2$, and $\mu_2$ to be a distribution with density function $p(x) = \frac{1}{\pi \sqrt{1-x^2}}$ for $-1\le x \le 1$. 
+Let $\mu_1$ be a Bernoulli distribution $\mu_1(\{0.5\}) = 1/2$ and $\mu_1(\{-0.5\}) = 1/2$, and $\mu_2$ to be a distribution with density function $p(x) = \frac{1}{\pi \sqrt{1-x^2}}$ for $-1\le x \le 1$. 
 For the demonstration example in Figure \ref{fig:demo}, pick $\mu = \mu_1 \otimes \mu_2$.
 It is easy to see that $\mu_1$ ($\mu_2$) is the limit distribution of source 1 (respectively, source 2). Let $T = 2*u + b$ as the division with remainder, where $u$ is integer and $0\le b<2$. 
 Moreover, assume $b\le 1$ (similar analysis will go through for the case of $b>1$).  
 The induced distribution $\nu_T^{s_1}$ of source 1 is $\nu_T^{s_1}(\{0.5\}) = \frac{u+b}{T}$ and $\nu_T^{s_1}(\{-0.5\}) = \frac{u}{T}$. 
 Thus the total variance distance of $\mu_1$ and $\nu_T^{s_1}$ is at most $\frac{0.5}{T}$, in a rate of $1/T$. 
 Similarly, it can be verified that the total variance of $\nu_T$ and $\mu$ is also in a rate of $1/T$. 
-Thus, $D_4$ is bounded in a rate of $1/T$, since the monomials $f(s)$ in the definition of $D_4$ is upper bounded by $1$.
-Lastly, note that $D_2$ is upper bounded by $D_4$ by definition, so $\xi$ is in a rate of $1/T$.  
+Thus, $D_4$ is $O(1/T)$, since the monomials $f(s)$ in the definition
+of $D_4$ are bounded from above by $1$.
+Lastly, note that $D_2$ is upper bounded by $D_4$ by definition, so $\xi$ decays at a $1/T$ rate.
  
 \end{example}
 %\end{remark}
@@ -570,7 +571,7 @@ Then with probability at least $1-\delta$, there exists a permutation $\pi$ and 
 \end{align*}
 where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$.
 
-In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the Appendix),
+In particular, in the traditional stochastic setting given large enough $T$ (but still polynomial in all the parameters, as specified in the appendix),
  with probability at most $1-\delta$, 
  DICA will generate an estimate $\hat{A}$ of the mixing matrix $A$ in
  time complexity of $O(d^3T)$, 
@@ -601,7 +602,7 @@ m_p^{(\nu)}(\eta) = \E_{X\sim \nu}[ (\eta^\top X)^p ],
 \begin{equation}
 \vspace{-3mm}
 \label{eq:funcf}
-f_{\nu}(\eta) = \frac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)\,.
+f_{\nu}(\eta) = \tfrac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)\,.
 \end{equation}
 \citet{hsu2013learning} showed that $\nabla^2f_{\nu_T^{(x)}}(\eta)$, the second derivative of the function $f_{\nu_T^{(x)}}$, is extremely useful for the ICA problem:
 They showed that if $\mu^{(X)}$ is the distribution of the observations $X$ in the stochastic setting where $S$ comes from the product distribution $\mu$, then
@@ -802,7 +803,7 @@ $\|\phi_1\|_2 \le L_u$, $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|
 % \begin{itemize}
 % \vspace{-3mm}
 % \item $\|\phi_1\|_2 \le L_u$;
-% \item $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l$ where $R_i$ is the $i$th column of some orthonormal matrix $R$ (specified in the Appendix);
+% \item $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|\} \ge \ell_l$ where $R_i$ is the $i$th column of some orthonormal matrix $R$ (specified in the appendix);
 % \end{itemize} 
 \end{definition}  
 %Note that $\phi_1$ and $\phi_2$ are sampled independently from standard normal distribution. 
@@ -880,7 +881,7 @@ by some columns of $R$ (WLOG we assume it is the first $k$ columns of $R$). Then
 Lastly, by separating the eigenvectors of $M$ according to its eigenvalues into $PP_1$ and $PP_2$, the `Recur' helper decomposes the subspaces into two smaller subspaces.  
 
 \begin{algorithm}[thb] 
-\caption{recursive version of HKICA (HKICA\_recur)}
+\caption{Recursive version of HKICA (HKICA\_recur)}
 \label{alg:HKICA_recur}
 \begin{algorithmic}[1]
 \INPUT $x(t)$ for $1\le t \le T$. 
@@ -921,15 +922,18 @@ Other algorithms can be modified into a recursive version in a similar way.
 \end{remark}
 \begin{thm}
 \label{thm:recursiveAlg}
-Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with an error bound
+Under the conditions of Theorem~\ref{thm:finalRes}, with probability
+at least $1-\delta$, the recursive version of HKICA returns a mixing
+matrix $\hat{A}$ with an error $ \| \hat{A} - ADP\|_2$ bound by
 \begin{align*}
-& \quad \| \hat{A} - ADP\|_2 \\
-\le & \poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}(Q^2 + \bar{\xi}).
+%& \quad \| \hat{A} - ADP\|_2 \\
+%\le & 
+\poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}(Q^2 + \bar{\xi})
 \end{align*}
-Here $D$ is some diagonal matrix and $P$ is some permutation matrix.
+for some diagonal matrix $D$ and permutation matrix $P$.
 \end{thm} 
 \begin{remark}
-Note that given large enough $T$, the term $Q^2$ will be dominated by $\bar{\xi}$, which is the error carried over from quasi-whitening.
+Note that when $T$ is large enough, the term $Q^2$ will be dominated by $\bar{\xi}$, which is the error carried over from quasi-whitening.
 The recursion idea improves the sample complexity of the eigen-decomposition (to recover the orthonormal mixing matrix $R$).  
 \end{remark}
 
@@ -1076,18 +1080,27 @@ If the observations have heavy noise and the mixing matrix is not extremely cohe
 In the case of an extremely coherent mixing matrix, MDICA performs the
 best. Also, the recursive idea is very helpful for small sample sizes.
 
-% \section{Conclusion}
-% We presented the first ICA algorithms with polynomial computational
-% complexity and provable performance guarantees on the reconstruction
-% error for the ICA problem
+\section{Conclusion}
+We considered the problem of independent component analysis with noisy
+observation. For the first time in the literature, we presented ICA algorithms that can recover non-Gaussian
+source signals with polynomial computational complexity and provable performance guarantees on the reconstruction
+error that guarantee that for $T$ samples the reconstruction error
+vanishes at a $1/\sqrt{T}$ rate and depends only polynomially on the
+natural parameters of the problem. The algorithms do not depend on
+unknown problem parameters, and also extend to deterministic sources
+with approximately independent empirical distributions.
 
 
-%\subsubsection*{Acknowledgements}
+\subsection*{Acknowledgements}
 
+This work was supported by the Alberta Innovates Technology Futures
+%through the Alberta Innovates Centre for Machine Learning 
+and NSERC.
 
 \newpage 
-\bibliography{DICA}
 \bibliographystyle{plainnat}
+\setlength{\bibsep}{0.5\baselineskip}
+\bibliography{DICA}
 
 \include{appendix}
 \end{document}
