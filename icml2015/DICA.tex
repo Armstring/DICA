@@ -413,27 +413,27 @@ $\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $
 
 \begin{assumption}
 \label{ass:gauss}
-Assume there exists a constant $L$ and a function $g:[T]\rightarrow \real$ such that $g(t)$ approaches 0 as $t$ approaching infinity, and
+Assume there exists a constant $L$ and a function $g:\natural\rightarrow \real$ such that $g(t) \to 0$ as $t \to \infty$ and
 \begin{enumerate}[(i)]
 \vspace{-2mm}
 \item $\| \E_{S_i\sim \nu_t^{(s_i)}} [S_i] \|_F,\, \| \E_{Y \sim \nu_t^{(\epsilon)}} [Y] \|_F \le g(t)$;
 \item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F,\, \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L$;
-\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le g(t)\|\eta\|_2^2$.
+\item $\Bigl\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot) \\ - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\Bigr\|_F\le g(t)\|\eta\|_2^2$.
 \end{enumerate}
 Here $L$ and the function $g$ may depend on $\{A,\Sigma,C,d\}$.
 \end{assumption}
 \begin{remark}
-The first assumption forces the average of $s$ and $\epsilon$ decay to 0 in a rate of $g(t)$.
-The next assumption requires that both the second and third moments of the noise be bounded.
+The first assumption forces the average of $s$ and $\epsilon$ decay to 0 at a rate of $g(t)$.
+The next one requires that both the second and third moments of the noise be bounded.
 The last assumption basically says that the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit.
 \end{remark}
-Moreover, we will need to guarantee that the source signals and the noise are approximately independent:
+We will also need to guarantee that the source signals and the noise be approximately independent:
 \begin{assumption}
 \label{ass:independence}
 Assume the source signal function and the noise function are `independent' up to the 4th moment in the sense that for any $i_1,i_2,j_1,j_2 \ge 0$ such that $i_1+i_2+j_1+j_2 \le 4$,  
 \begin{align*}
-& \| \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \otimes (AS)^{\otimes i_2}]\\
-& \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [(AS)^{\otimes i_1}\otimes Y^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F 
+& \| \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}\!\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \!\otimes (AS)^{\otimes i_2}]\\
+& \ - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [(AS)^{\otimes i_1}\!\otimes Y^{\otimes j_1}\!\otimes (AS)^{\otimes i_2}]  \|_F 
  \le g(t),
 \end{align*}
 \vspace{-3mm}
@@ -501,8 +501,8 @@ For the demonstration example in Figure \ref{fig:demo}, pick $\mu = \mu_1 \otime
 It is easy to see that $\mu_1$ ($\mu_2$) is the limit distribution of source 1 (respectively, source 2). Let $T = 2*u + b$ as the division with remainder, where $u$ is integer and $0\le b<2$. 
 Moreover, assume $b\le 1$ (similar analysis will go through for the case of $b>1$).  
 The induced distribution $\nu_T^{s_1}$ of source 1 is $\nu_T^{s_1}(\{0.5\}) = \frac{u+b}{T}$ and $\nu_T^{s_1}(\{-0.5\}) = \frac{u}{T}$. 
-Thus the total variance distance of $\mu_1$ and $\nu_T^{s_1}$ is at most $\frac{0.5}{T}$, in a rate of $1/T$. 
-Similarly, it can be verified that the total variance of $\nu_T$ and $\mu$ is also in a rate of $1/T$. 
+Thus the total variation distance of $\mu_1$ and $\nu_T^{s_1}$ is at most $1/(2T)$. 
+Similarly, it can be verified that the total variation distance of $\nu_T$ and $\mu$ also decays as $1/T$. 
 Thus, $D_4$ is $O(1/T)$, since the monomials $f(s)$ in the definition
 of $D_4$ are bounded from above by $1$.
 Lastly, note that $D_2$ is upper bounded by $D_4$ by definition, so $\xi$ decays at a $1/T$ rate.
@@ -532,7 +532,7 @@ then, with probability at least $1-\delta$, there exists a permutation $\pi$ and
 \]
 where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$, and $\hat{A}$ is the output of the algorithm.
 
-In particular, in the traditional stochastic setting, if $S$ has a distribution $\mu$,
+In particular, in the traditional stochastic setting, if $S$ has distribution $\mu$ and
 \vspace{-2mm} 
 \[
 T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \|\Sigma\|_2},
@@ -1026,14 +1026,15 @@ where $\hat{x} = \hat{A}^{-1}y$, and $|\hat{A}|$ is the absolute value of the de
 \label{subsubsec:results}
 We report the reconstruction errors for different kinds of mixing matrices and noise ratios.
 
-\begin{figure}[thb] %pt]
-	\includegraphics[width =0.49\columnwidth]{errorR}
-	\includegraphics[width =0.49\columnwidth]{error1} \medskip \\
-	\includegraphics[width =0.49\columnwidth]{error2}
-	\includegraphics[width =0.49\columnwidth]{error3} \medskip \\
-	\includegraphics[width =0.49\columnwidth]{error4}
+\begin{figure}[t] %pt]
+	\includegraphics[width =0.47\columnwidth]{errorR}
+	\includegraphics[width =0.47\columnwidth]{error1} \medskip \\
+	\includegraphics[width =0.47\columnwidth]{error2}
+	\includegraphics[width =0.47\columnwidth]{error3} \medskip \\
+	\includegraphics[width =0.47\columnwidth]{error4}
 \vspace{-3mm}
 \caption{\label{fig:Error} Reconstruction Error}
+\vspace{-5mm}
 \end{figure}
 The experimental results suggest that moment methods are more robust
 to high-coherence mixing matrices and Gaussian noise than FastICA.
