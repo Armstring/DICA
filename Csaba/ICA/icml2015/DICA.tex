@@ -413,16 +413,17 @@ $\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $
 
 \begin{assumption}
 \label{ass:gauss}
-Assume there exists a constant $L\ge 1$, such that 
+Assume there exists a constant $L$ and a function $g:[T]\rightarrow \real$ such that $g(t)$ approaches 0 as $t$ approaching infinity, and
 \begin{enumerate}[(i)]
 \vspace{-2mm}
-\item $\| \E_{S_i\sim \nu_t^{(s_i)}} [S_i] \|_F,\, \| \E_{Y \sim \nu_t^{(\epsilon)}} [Y] \|_F \le L/\sqrt{t}$;
+\item $\| \E_{S_i\sim \nu_t^{(s_i)}} [S_i] \|_F,\, \| \E_{Y \sim \nu_t^{(\epsilon)}} [Y] \|_F \le g(t)$;
 \item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F,\, \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L$;
-\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le L/\sqrt{t}\|\eta\|_2^2$.
+\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le g(t)\|\eta\|_2^2$.
 \end{enumerate}
+Here $L$ and the function $g$ may depend on $\{A,\Sigma,C,d\}$.
 \end{assumption}
 \begin{remark}
-The first assumption forces the average of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
+The first assumption forces the average of $s$ and $\epsilon$ decay to 0 in a rate of $g(t)$.
 The next assumption requires that both the second and third moments of the noise be bounded.
 The last assumption basically says that the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit.
 \end{remark}
@@ -433,21 +434,21 @@ Assume the source signal function and the noise function are `independent' up to
 \begin{align*}
 & \| \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \otimes (AS)^{\otimes i_2}]\\
 & \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [(AS)^{\otimes i_1}\otimes Y^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F 
- \le\frac{L}{\sqrt{t}},
+ \le g(t),
 \end{align*}
 \vspace{-3mm}
 \begin{align*}
 & \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1} \otimes \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}] \otimes Y^{\otimes j_2}] \\
 & \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes Y^{\otimes j_2}] \|_F 
-\le\frac{L}{\sqrt{t}}, % \le L/\sqrt{t},
+\le g(t), % \le L/\sqrt{t},
 \end{align*}
-for some $L \ge 1$, where $(s,\epsilon)$ is the function obtained by concatenating $s$ and $\epsilon$ together.  
+for the same function $g$ in Assumption \ref{ass:gauss}, where $(s,\epsilon)$ is the function obtained by concatenating $s$ and $\epsilon$ together.  
 \end{assumption}
 The sufficiency of such weaker assumptions is also discussed in the paper of \citet{frieze1996learning}.
 The next proposition shows that these assumptions are all satisfied, with high probability, for the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals.
 \begin{prop}
 \label{prop:stochasticAss}
-In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$,there exists $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
+In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$,there exists $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$ and $g(t) = L/\sqrt{t}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
 \end{prop}
 On the other hand, our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
 \begin{example} \em
@@ -527,7 +528,7 @@ D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},
 then, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$,
 \vspace{-3mm}
 \[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+\frac{1}{\sqrt{T}}\right),
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+g^2(T) +g(T) \right),
 \]
 where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$, and $\hat{A}$ is the output of the algorithm.
 
@@ -608,7 +609,7 @@ f_{\nu}(\eta) = \tfrac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \ri
 They showed that if $\mu^{(X)}$ is the distribution of the observations $X$ in the stochastic setting where $S$ comes from the product distribution $\mu$, then
 $f_{\mu^{(X)}}(\eta)=f_{A\mu}(\eta)$ for all $\eta$ (where $A\mu$ denotes the distribution of $AS$) and, consequently, the eigenvectors\footnote{Throughout the paper eigenvectors always mean right eigenvectors, unless specified otherwise.} of the matrix $M=\nabla^2f_{\mu^{(X)}}(\phi)(\nabla^2f_{\mu^{(X)}}(\psi))^{-1}$ are the rescaled columns of $A$ if $\frac{\phi^\top A_i}{\psi^\top A_i}$ are distinct for all $i$. Thus, to obtain an algorithm, one needs to estimate $\nabla^2 f_{\mu^{(X)}}$ in such a way that the noise $\epsilon$ could still be neglected.
 
-Providing an estimate $\nabla^2 \hat{f}$ of $\nabla^2f_{\mu^{(X)}}$ is not hard, since for any $\nu$,
+An estimate $\nabla^2 \hat{f}$ of $\nabla^2f_{\mu^{(X)}}$ is not hard, since for any $\nu$,
 $\nabla^2f_{\nu}(\eta)$  can be computed as
 \vspace{-3mm}
 \begin{equation}
@@ -627,7 +628,7 @@ where
 and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu_T^{(x)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu_T^{(x)}$. 
 %A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
 It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the appendix, Section \ref{subsec:denoise}. 
-In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\frac{\poly{L_{\eta}, L, d, \sigma_{\max}(A), C}}{\sqrt{T}}$. Denote this quantity by $P(L_{\eta})$. 
+In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\poly{L_{\eta}, L, d, \sigma_{\max}(A), C}\left(g(T)+1\right)g(T)$. Denote this quantity by $P(L_{\eta})$. 
 Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
 %We also assume that $T$ is large enough such that $P\le 1/6$.
 Putting everything together, we obtain the algorithm HKICA, named after \citet{hsu2013learning}, which is shown in Algorithm~\ref{alg:HKICA},
@@ -720,7 +721,7 @@ In particular, as mentioned in the Remark \ref{rmk:xi}, these conditions will be
 \end{remark}
 \fi
 \begin{remark}
-(i) Note that the bound in \eqref{eq:HKICA-bound} goes to zero at an $O(1/\sqrt{T})$ rate whenever $D_4(\mu,\nu_T^{(s)})=O(1/\sqrt{T})$, as, e.g., in the stochastic setting.
+(i) Note that the bound in \eqref{eq:HKICA-bound} goes to zero at an $O(1/\sqrt{T})$ rate whenever $D_4(\mu,\nu_T^{(s)})=O(1/\sqrt{T})$ and $g(T) = O(1/\sqrt{T})$, as, e.g., in the stochastic setting.
 (ii) The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the condition also requires a small $1/\gamma_A$ so that the above error bound is valid. Also, since $\gamma_A$ is the minimum spacing of the eigenvalues of $M=\nabla^2 f_{A\mu}(\phi) (\nabla^2 f_{A\mu}(\psi))^{-1}$, the eigenvalue perturbations imposed by the noise cannot be too large compared to $\gamma_A$ without potentially  ruining the eigenvectors of $M$; thus, the dependence on $\gamma_A$ seems to necessary.
 
 % Note that $\gamma_A$ is actually the minimal gap of the eigenvalues of $M = (\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1}$.
@@ -812,9 +813,9 @@ hold with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt
 on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \vspace{-2mm}
 \[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)} Q,
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)}\tilde{Q},
 \]
-where $\hat{A}$ is the output of the DICA algorithm and $Q$ is polinomial in the usual problem parameters and decays roughly as $1/T$. This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
+where $\hat{A}$ is the output of the DICA algorithm and $\tilde{Q}$ is polinomial in the usual problem parameters and decays roughly as $(\xi + P(L_u))$. This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
 It is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
 An empirical comparison of $1/\gamma_A$ and $1/\gamma_R$ is provided in Section~\ref{sec:gamma} in the appendix.
 %\begin{remark}
@@ -928,12 +929,12 @@ matrix $\hat{A}$ with an error $ \| \hat{A} - ADP\|_2$ bound by
 \begin{align*}
 %& \quad \| \hat{A} - ADP\|_2 \\
 %\le & 
-\poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}(Q^2 + \bar{\xi})
+\poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}(\tilde{Q}^2 + \bar{\xi})
 \end{align*}
 for some diagonal matrix $D$ and permutation matrix $P$.
 \end{thm} 
 \begin{remark}
-Note that when $T$ is large enough, the term $Q^2$ will be dominated by $\bar{\xi}$, which is the error carried over from quasi-whitening.
+Note that when $T$ is large enough, the term $\tilde{Q}^2$ will be dominated by $\bar{\xi}$, which is the error carried over from quasi-whitening.
 The recursion idea improves the sample complexity of the eigen-decomposition (to recover the orthonormal mixing matrix $R$).  
 \end{remark}
 
@@ -1097,7 +1098,6 @@ This work was supported by the Alberta Innovates Technology Futures
 %through the Alberta Innovates Centre for Machine Learning 
 and NSERC.
 
-\newpage 
 \bibliographystyle{plainnat}
 \setlength{\bibsep}{0.5\baselineskip}
 \bibliography{DICA}
