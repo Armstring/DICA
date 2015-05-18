@@ -899,11 +899,11 @@ Therefore, by Lemma \ref{lem:Tvariantion},
 
 We now follow the idea of \citet{vempala2014max} to analyze the error accumulation of the recursion.
 Recall that $M = \bar{R}\Lambda\bar{R}^{\top}$, where $\bar{R} = R^*R$ is an orthonormal matrix.
-Assume we have computed a m-dimensional subspace in a recursion of depth $k-1$ whose orthonormal projection matrix is $V^{(k-1)} \in \R^{d\times m}$, such that there exists $m$ columns of $\bar{R}$ (WLOG assume it is $1,\ldots,m$.) satisfying
+Assume we have computed an $m$-dimensional subspace in a recursion of depth $k-1$ whose orthonormal projection matrix is $V^{(k-1)} \in \R^{d\times m}$, such that there exist $m$ columns of $\bar{R}$ (WLOG assume it is $1,\ldots,m$) satisfying
 \[
 \sin\left(\Theta\left(V^{(k-1)}, \bar{R}_{1:m}\right)\right) \le E_{k-1},
 \] 
-Where $\bar{R}_{1:m}$ is the first $m$ columns of $\bar{R}$ and $E_{k-1}$ is a error upper bound for depth $k-1$ recursion.
+where $\bar{R}_{1:m}$ is the first $m$ columns of $\bar{R}$ and $E_{k-1}$ is an error upper bound for depth $k-1$ recursion.
 Then
 \begin{align*}
 & \quad {V^{(k-1)}}^\top MV^{(k-1)} = \left( {V^{(k-1)}}^\top\bar{R}_{1:m}, {V^{(k-1)}}^\top\bar{R}_{m+1:d}\right)\Lambda
@@ -917,7 +917,7 @@ $\bar{R}_{m+1:d}^{\top} V^{(k-1)}$
 \end{align*}
 where $\Lambda_{1:m}$ and $\Lambda_{m+1:d}$ are the first $m\times m$  and last $(d-m)\times (d-m)$ submatrices of the diagonal matrix $\Lambda$.
 
-Recall that the diagonal elements of $\Lambda$ is the square of Cauchy random variables. The following proposition characterize the maximal spacing of i.i.d. Cauchy random variables.
+Recall that the diagonal elements of $\Lambda$ are squared Cauchy random variables. The following proposition characterizes the maximal spacing of i.i.d. Cauchy random variables.
 \begin{prop}
 \label{prop:maximalGapCauchy}
 Given $\{Z_1,\ldots, Z_d\}$ are i.i.d. Cauchy random variables, with probability at least $1-2\delta$, 
