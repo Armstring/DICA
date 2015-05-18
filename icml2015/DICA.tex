@@ -314,7 +314,7 @@ other algorithms, FastICA \citep{hyvarinen1999fast} and HKICA \citep{hsu2013lear
 \centering
 	\includegraphics[width = \linewidth]{demo}
 \vspace{-10mm}
-\caption{Example of ICA for deterministic sources: The first two rows show the source signals $s_1(t)=\lfloor t-2\lfloor t/2 \rfloor \rfloor-0.5$, $s_2=\cos(t)$, the next two rows present the observations with mixing matrix $A=\left(\begin{array}{cc}1&-2\\2.6&1.3\end{array}\right)$. The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 10000 uniformly spaced points in the interval $[0,15]$.}
+\caption{Example of ICA for deterministic sources: The first two rows show the source signals $s_1(t)=0.5 - \lfloor t-2\lfloor t/2 \rfloor \rfloor$, $s_2=\cos(t)$, the next two rows present the observations with mixing matrix $A=\left(\begin{array}{cc}1&-2\\2.6&1.3\end{array}\right)$. The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 10000 uniformly spaced points in the interval $[0,15]$.}
 \end{figure}
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.   
 Our deterministic analysis helps investigate this curious phenomenon without losing any generality to the traditional stochastic setting. Formally, instead of observing $T$ \iid samples from \eqref{eq:stoch-ICA}, the source signals are defined by the function $s:\natural \ra \real^d$ be a $d$-dimensional deterministic ``signal'', and
@@ -562,13 +562,13 @@ Under the assumptions of Theorem~\ref{thm:finalRes}, the reconstructed signal $\
 \begin{itemize}
 
 \item $T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}}$;
-\item $D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min}(A),  \frac{1}{\sigma_{\max}(A)},\frac{1}{d}, \delta, \kappa_{\min}}$.
+\item $D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},\frac{1}{d}, \delta, \kappa_{\min}}$.
 \end{itemize}
 
 Then with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \begin{align*}
-\| \hat{s}_{\pi(k)} - s \|_2 & \le \mathcal{C}(\|s\|_2+\frac{1}{\sigma_{\min}(A)}\|\eps\|_2)(D_4(\mu,\nu_T)+\frac{1}{\sqrt{T}}) \\
-& \quad +\frac{\|\eps\|_2}{\sigma_{\min}(A)},
+\| \hat{s}_{\pi(k)} - s \|_2 & \le \mathcal{C}(\|s\|_2+\frac{1}{\sigma_{\min}}\|\eps\|_2)(D_4(\mu,\nu_T)+\frac{1}{\sqrt{T}}) \\
+& \quad +\frac{\|\eps\|_2}{\sigma_{\min}},
 \end{align*}
 where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$.
 
@@ -579,7 +579,7 @@ In particular, in the traditional stochastic setting given large enough $T$ (but
  such that there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \begin{align*}
 & \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \\
-& \quad\frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}(\|s\|_2+\frac{1}{\sigma_{\min}(A)}\|\eps\|_2)\text{Poly} +\frac{\|\eps\|_2}{\sigma_{\min}(A)},
+& \quad\frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}(\|s\|_2+\frac{1}{\sigma_{\min}}\|\eps\|_2)\text{Poly} +\frac{\|\eps\|_2}{\sigma_{\min}},
 \end{align*}
 where $\text{Poly}$ is a polynomial in $(C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d)$.
 \end{cor}
@@ -628,7 +628,7 @@ where
 and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu_T^{(x)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu_T^{(x)}$. 
 %A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
 It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the appendix, Section \ref{subsec:denoise}. 
-In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\poly{L_{\eta}, L, d, \sigma_{\max}(A), C}\left(g(T)+1\right)g(T)$. Denote this quantity by $P(L_{\eta})$. 
+In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\poly{L_{\eta}, L, d, \sigma_{\max}, C}\left(g(T)+1\right)g(T)$. Denote this quantity by $P(L_{\eta})$. 
 Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
 %We also assume that $T$ is large enough such that $P\le 1/6$.
 Putting everything together, we obtain the algorithm HKICA, named after \citet{hsu2013learning}, which is shown in Algorithm~\ref{alg:HKICA},
@@ -809,11 +809,11 @@ $\|\phi_1\|_2 \le L_u$, $\|\phi_2\|_2 \le L_u$, and $\min_i \{|\phi_2^{\top}R_i|
 \end{definition}  
 %Note that $\phi_1$ and $\phi_2$ are sampled independently from standard normal distribution. 
 Similarly to Theorem~\ref{thm:efficiency}, one can show that under some technical assumptions, which 
-hold with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}(A)\kappa_{\min}^{1/2}C_1}\right)$  are small enough,
+hold with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$  are small enough,
 on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \vspace{-2mm}
 \[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}(A)}{\gamma_R\sigma_{\min}(A)}\tilde{Q},
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}}\tilde{Q},
 \]
 where $\hat{A}$ is the output of the DICA algorithm and $\tilde{Q}$ is polinomial in the usual problem parameters and decays roughly as $(\xi + P(L_u))$. This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
 It is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
