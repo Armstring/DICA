@@ -61,18 +61,18 @@ Experimental results show that DICA\_Mod consistently outperforms DICA.
 Denote the population expectation by $\E$ and the empirical expectation by $\E_t$. We restate the assumptions here.
 \begin{enumerate}[(i).]
 \vspace{-3mm}
-\item $\| \E_t[S] \|_F\le L/\sqrt{t}$;
-\item $\| \E_t[\epsilon] \|_F \le L/\sqrt{t}$;
+\item $\| \E_t[S] \|_F\le g(t)$;
+\item $\| \E_t[\epsilon] \|_F \le g(t)$;
 \item $\| \E_t[\epsilon^{\otimes 2}] \|_F \le L$;
 \item $\| \E_t[\epsilon^{\otimes 3}] \|_F \le L$;
-\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le L/\sqrt{t} \|\eta\|_2^2$;
+\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le g(t) \|\eta\|_2^2$;
 \item for $i_1,i_2,j_1,j_2 \ge 0$ that $i_1+i_2+j_1+j_2 \le 4$,  
 \begin{align*}
-\| \E_t[(AS)^{\otimes i_1} \otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F \le L/\sqrt{t},
+\| \E_t[(AS)^{\otimes i_1} \otimes \E_t[\epsilon^{\otimes j_1}] \otimes (AS)^{\otimes i_2}] - \E_t[(AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F \le g(t),
 \end{align*}
 and 
 \begin{align*}
-\| \E_t[\epsilon^{\otimes j_1} \otimes \E_t[(AS)^{\otimes i_1}] \otimes \epsilon^{\otimes j_2}] - \E_t[ \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_2}]  \|_F \le L/\sqrt{t}.
+\| \E_t[\epsilon^{\otimes j_1} \otimes \E_t[(AS)^{\otimes i_1}] \otimes \epsilon^{\otimes j_2}] - \E_t[ \epsilon^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes \epsilon^{\otimes j_2}]  \|_F \le g(t).
 \end{align*}
 \end{enumerate}
 Since $s$ is bounded by $C$, the first assumption will be satisfied with high probability $1-\delta$ by picking $L = C\sqrt{2d\log(\frac{1}{\delta})}$ by Hoeffding's inequality. Assumption (ii) to (v) are all about the moments of the Gaussian noise. 
@@ -184,7 +184,7 @@ Thus, with probability at least $1- 4d^{(i_1+j_1+i_2)}\delta$,
 12(1+\sqrt{2/t\delta})d^{(i_1+j_1+i_2)/2}A_{\max}^{i_1+i_2}C^{i_1+i_2}\sqrt{96/t\delta}.  
 \]
 Similar argument will go through for the second inequality.
-Therefore, there exists $\hat{L} = \text{Poly}(\frac{1}{\delta}, A_{\max}, C, d)$, such that for probability at least $1-\delta$, the above conclusions hold simultaneously.
+Therefore, there exists $\hat{L} = \text{Poly}(\frac{1}{\delta}, A_{\max}, C, d)$ and $g(t) = L/\sqrt{t}$, such that for probability at least $1-\delta$, the above conclusions hold simultaneously.
 
 Lastly, for general case where $\eps\sim {\cN}(0,\Sigma)$, the above conclusions will apply for $\Sigma^{-1/2}\eps$. Thus picking $L = \|\Sigma\|^4_2\hat{L}$, all bounds will still hold. 
 \subsection{Limit Effect of the Noise} 
@@ -194,7 +194,7 @@ Lastly, for general case where $\eps\sim {\cN}(0,\Sigma)$, the above conclusions
  Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. Then,
 for any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
 \[
-\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \frac{\poly{L_{\eta}, L, d, \sigma_{\max}(A), C}}{\sqrt{T}}. 
+\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \poly{L_{\eta}, L, d, \sigma_{\max}(A), C}(g(T)+1)g(T). 
 \] 
 \end{prop}
 Note that 
@@ -211,19 +211,19 @@ We can bound
 \begin{align*}
 & \| \E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [(AX)^{\otimes 3}\otimes Y + (AX)^{\otimes 2}\otimes Y\otimes (AX) + (AX)\otimes Y\otimes (AX)^{\otimes 2} + Y\otimes (AX)^{\otimes 3}] \|_F \\
 \le \,& \,  \| \E_{X\sim \nu_T^{(s)}} [(AX)^{\otimes 3}] \otimes \E_{Y\sim \nu_T^{(\epsilon)}}[Y] + \E_{X\sim \nu_T^{(s)}} [(AX)^{\otimes 2} \otimes \E_{Y\sim \nu_T^{(\epsilon)}}[Y] \otimes (AX)] \\
-& \quad + \E_{X\sim \nu_T^{(s)}} [(AX) \otimes \E_{Y\sim \nu_T^{(\epsilon)}}[Y] \otimes (AX)^{\otimes 2}]  + \E_{Y\sim \nu_T^{(\epsilon)}}[Y] \otimes \E_{X\sim \nu_T^{(s)}} [(AX)^{\otimes 3}] \|_F + \frac{4L}{\sqrt{T}} \\
-\le \, & \,\frac{4L(d^{3/2}\sigma^3_{\max}(A)C^3 +1)}{\sqrt{T}},
+& \quad + \E_{X\sim \nu_T^{(s)}} [(AX) \otimes \E_{Y\sim \nu_T^{(\epsilon)}}[Y] \otimes (AX)^{\otimes 2}]  + \E_{Y\sim \nu_T^{(\epsilon)}}[Y] \otimes \E_{X\sim \nu_T^{(s)}} [(AX)^{\otimes 3}] \|_F + 4g(T) \\
+\le \, & \, 4(d^{3/2}\sigma^3_{\max}(A)C^3 +1)g(T),
 \end{align*}
 and similarly, 
 \[
-\| E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [Y^{\otimes 3}\otimes (AX) + Y^{\otimes 2}\otimes (AX)\otimes Y + Y\otimes (AX)\otimes Y^{\otimes 2} + (AX)\otimes Y^{\otimes 3}] \|_F \le \frac{4L(L+1)}{\sqrt{T}}.
+\| E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [Y^{\otimes 3}\otimes (AX) + Y^{\otimes 2}\otimes (AX)\otimes Y + Y\otimes (AX)\otimes Y^{\otimes 2} + (AX)\otimes Y^{\otimes 3}] \|_F \le 4(Ld^{1/2}\sigma_{\max}+1)g(T).
 \]
 Combining these two terms together, we have 
 \begin{align*}
 & \E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [(AX+Y)^{\otimes 4}]\\
  = & \,\E_{X\sim \nu_T^{(s)}}[(AX)^{\otimes 4}] + \E_{Y\sim \nu_T^{(\epsilon)}}[Y^{\otimes 4}] + K_1 +K_2,
 \end{align*}
-where $\|K_1\|_F \le\frac{\text{Poly}(L, d, \sigma_{\max}(A), C)}{\sqrt{T}} $, and 
+where $\|K_1\|_F \le\text{Poly}(L, d, \sigma_{\max}, C)g(T) $, and 
 \begin{align*}
 K2  = & E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [ (AX)^{\otimes 2}\otimes Y^{\otimes 2} + (AX)\otimes Y\otimes (AX)\otimes Y + (AX)\otimes Y^{\otimes 2}\otimes (AX)]\\
 & \quad+  E_{(X,Y)\sim \nu_T^{(s,\epsilon)}} [ (Y)^{\otimes 2}\otimes (AX)^{\otimes 2} + (Y)\otimes (AX)\otimes Y\otimes (AX) + Y\otimes (AX)^{\otimes 2}\otimes Y]. 
@@ -234,13 +234,13 @@ A similar computation can be applied to $\E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [(A
 \end{align*}
 Then again,
 \[
-\|\E_{(X,Y)\sim \nu_t^{(s,\epsilon)}}[(AX)\otimes Y + Y\otimes (AX)]\|_F \le \frac{2L(L+1)}{\sqrt{T}}.
+\|\E_{(X,Y)\sim \nu_t^{(s,\epsilon)}}[(AX)\otimes Y + Y\otimes (AX)]\|_F \le 2(g(T)+1)g(T).
 \]
 Thus, 
 \[
 \left( \E_{(X,Y)\sim \nu_t^{(s,\epsilon)}} [(AX+Y)^{\otimes 2}]\right)^{\otimes2} =  \left(\E_{X\sim \nu_t^{(s)}}[(AX)^{\otimes 2}]\right)^{\otimes2} + \left( \E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 2}]\right)^{\otimes 2} + K_3+K_4,
 \]
-where $\|K_3\|_F \le \frac{\text{Poly}(L, d, \sigma_{\max}, C)}{\sqrt{T}}$, and $K_4 = \E_{X\sim \nu_t^{(s)}}[(AX)^{\otimes 2}] \otimes \E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 2}] + \E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 2}] \otimes \E_{X\sim \nu_t^{(s)}}[(AX)^{\otimes 2}]$.
+where $\|K_3\|_F \le \text{Poly}(L, d, \sigma_{\max}, C)(g(T)+1)g(T)$, and $K_4 = \E_{X\sim \nu_t^{(s)}}[(AX)^{\otimes 2}] \otimes \E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 2}] + \E_{Y\sim \nu_t^{(\epsilon)}}[Y^{\otimes 2}] \otimes \E_{X\sim \nu_t^{(s)}}[(AX)^{\otimes 2}]$.
 
 Note that $\nabla^2f_{\nu_T^{(x)}}(\eta)$ and $\nabla^2f_{\nu_T^{(As)}}(\eta)$ are the matrices generated by marginalizing 2 dimensions of the tensors on the direction $\eta$:  
 \begin{align*}
