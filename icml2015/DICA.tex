@@ -299,8 +299,8 @@ In this paper we propose a \emph{provably polynomial-time} algorithm for the noi
 Our algorithm is a refined version of the ICA method proposed by \cite{hsu2013learning} (HKICA). 
 However, we propose two simpler ways, one inspired by \citet{frieze1996learning}, \citet{arora2012provable}, and another based on \citet{vempala2014max}, to deal with the spacing problem of the eigenvalues under similar conditions to those of \citet{goyal2014fourier}.
 Unlike the method proposed by \citet{goyal2014fourier}, our first method can force the eigenvalues to be well-separated with a gap that is independent of the mixing matrix $A$, while our second method, based on the recursive decomposition idea of \citet{vempala2014max}, avoids dealing with the minimum gap (on the price of introducing other complications).
-We prove that our methods achieve an $O(1/\sqrt{T})$ error in estimating $A$ and the source signals, with high probability, such that both the convergence rate and the computational complexity scale \emph{polynomially} with the natural parameters of the problem. %  is $\sqrt{n}$-consistent.
-Our method needs no parameter tuning, which makes it even more appealing. %a \emph{real} provable algorithm.  
+We prove that our methods achieve an $O(1/\sqrt{T})$ error in estimating $A$ and the source signals, with high probability, such that both the convergence rate and the computational complexity scale \emph{polynomially} with the natural parameters of the problem. 
+Our method needs no parameter tuning, which makes it even more appealing. 
 
 
 Another contribution of the present paper is that our analysis is conducted in a deterministic manner. 
@@ -407,7 +407,7 @@ x(t) = As(t)+\epsilon(t),
 \vspace{-2mm} 
 \end{equation}
 where $A$ is a $d\times d$ nonsingular mixing matrix,  $s:[T] \to [-C,C]^d$ is a bounded, $d$-dimensional source function for some constant $C \ge 1$. , and $\epsilon:[T] \to \R^d$ is the noise function. We will denote the $i$th component of $s$ by $s_i$. Furthermore, we will use the notation $\sigma_{\min}=\sigma_{\min}(A)$ and
-$\sigma_{\max}=\sigma_{\max}(A)$
+$\sigma_{\max}=\sigma_{\max}(A)$.
 
 For any $t,k \ge 1$ and signal $u:[t] \to \R^k$, we introduce the empirical distribution $\nu_t^{(u)}$ defined by
 $\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $B \subset \R^k$. Next we will impose assumptions on the empirical measure that guarantee that on the average we do not deviate too much from the stochastic model. The next assumption implies that the empirical distributions of the source signals are approximately zero mean, and that the noise is approximately zero-mean Gaussian.
@@ -687,14 +687,14 @@ Let $\Epsi$ denote the following event: For some fixed $C_1 = \frac{\sqrt{\pi}A_
 $\min_i |\psi^{\top}A_i| \ge C_1$ and $\|\psi\|_2 \le L_u$ hold simultaneously. 
 \end{definition}
 
-The performance of the HKICA algorithm will essentially depend on the parameter $ $, as shown in the following theorem, where 
+The performance of the HKICA algorithm will essentially depend on the parameter $\gamma_A$, as shown in the following theorem, where 
 \vspace{-3mm}
 \begin{equation}
 \label{def:kappa}
 \gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert. 
 \end{equation}
 \begin{thm}
- \label{thm:efficiency} 
+\label{thm:efficiency} 
 Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. 
 Furthermore, assume that
 \begin{align*}
@@ -724,7 +724,7 @@ In particular, as mentioned in the Remark \ref{rmk:xi}, these conditions will be
 \fi
 \begin{remark}
 (i) Note that the bound in \eqref{eq:HKICA-bound} goes to zero at an $O(1/\sqrt{T})$ rate whenever $D_4(\mu,\nu_T^{(s)})=O(1/\sqrt{T})$ and $g(T) = O(1/\sqrt{T})$, as, e.g., in the stochastic setting.
-(ii) The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the condition also requires a small $1/\gamma_A$ so that the above error bound is valid. Also, since $\gamma_A$ is the minimum spacing of the eigenvalues of $M=\nabla^2 f_{A\mu}(\phi) (\nabla^2 f_{A\mu}(\psi))^{-1}$, the eigenvalue perturbations imposed by the noise cannot be too large compared to $\gamma_A$ without potentially  ruining the eigenvectors of $M$; thus, the dependence on $\gamma_A$ seems to necessary.
+(ii) The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the condition also requires a small $1/\gamma_A$ so that the above error bound is valid. Also, since $\gamma_A$ is the minimum spacing of the eigenvalues of $M=\nabla^2 f_{A\mu}(\phi) (\nabla^2 f_{A\mu}(\psi))^{-1}$, the eigenvalue perturbations imposed by the noise cannot be too large compared to $\gamma_A$ without potentially  ruining the eigenvectors of $M$; thus, the dependence on $\gamma_A$ seems necessary.
 
 % Note that $\gamma_A$ is actually the minimal gap of the eigenvalues of $M = (\nabla^2 f(\phi))(\nabla^2f(\psi))^{-1}$.
 % We would like to claim that such dependence on the minimal gap of the eigenvalues is necessary.
