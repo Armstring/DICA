@@ -591,7 +591,9 @@ where the last inequality is by $\bar{\xi} \le 1/3$.
 \end{proof}
 
 Define $T_i$ by $T_i = G(B^{-\top}{R^*}^{\top}\phi_i) = A D_{\psi}^{-1}\Lambda_iA^{\top}$ for $i \in \{1,2\}$,
-where $\Lambda_i = \text{diag}\left((\phi_i^{\top}R^*R_1)^2, \cdots, (\phi_i^{\top}R^*R_d)^2\right)$. 
+where 
+\[\Lambda_i = \text{diag}\left((\phi_i^{\top}R^*R_1)^2, \cdots, (\phi_i^{\top}R^*R_d)^2\right).
+\] 
 Then, 
 \begin{equation}
 \label{eq:T}
@@ -1174,60 +1176,56 @@ Then with probability $1-\delta$,
 We report the reconstruction errors for different kinds of mixing matrices (dimension 3) and noise ratios.
 
 \begin{figure}[t] %pt]
-	\includegraphics[width =0.49\columnwidth]{errorR_d3}
-	\includegraphics[width =0.49\columnwidth]{error1_d3} \medskip \\
-	\includegraphics[width =0.49\columnwidth]{error2_d3}
-	\includegraphics[width =0.49\columnwidth]{error3_d3} \medskip \\
-	\includegraphics[width =0.49\columnwidth]{error4_d3}
-\vspace{-0.5cm}
+	\includegraphics[width =0.45\columnwidth]{errorR_d3}
+	\includegraphics[width =0.45\columnwidth]{error1_d3} \\
+	\includegraphics[width =0.45\columnwidth]{error2_d3}
+	\includegraphics[width =0.45\columnwidth]{error3_d3}  \\
+	\includegraphics[width =0.45\columnwidth]{error4_d3}
 \caption{
 \label{fig:Error_d3}
- Reconstruction Error}
+ Reconstruction Errors: Dimension 3; X axis: noise ratio; Sample size: 20000.}
 \end{figure}
 
-\if0
-\subsection{Proof of Corollary \ref{cor:signalerror}}
+\section{Experimental Results of different sample sizes}
+\subsection{noise-free case}
+The reconstruction errors for different sample sizes in a noise-free setting are as follows. 
+\begin{figure}[t] %pt]
+	\includegraphics[width =0.45\columnwidth]{errorR_sample_noise0}
+	\includegraphics[width =0.45\columnwidth]{error1_sample_noise0} \\
+	\includegraphics[width =0.45\columnwidth]{error2_sample_noise0}
+	\includegraphics[width =0.45\columnwidth]{error3_sample_noise0} \\
+	\includegraphics[width =0.45\columnwidth]{error4_sample_noise0}
+\caption{
+\label{fig:Error_sample_noise0}
+ Reconstruction Errors: Dimension 6; X axis: sample size; Noise ratio: 0.}
+\end{figure}
 
- Given a large enough $T$, if there exists a product measure $\mu$  such that  $D_4(\mu, \nu_T)$ is small enough satisfying
-\begin{itemize}
-\vspace{-3mm}
-\item $T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}}$;
-\item $D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},\frac{1}{d}, \delta, \kappa_{\min}}$.
-\end{itemize}
-\vspace{-2mm}
-Then with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
-\[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+\frac{1}{\sqrt{T}}\right),
-\]
-where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$, and $\hat{A}$ is the output of the DICA algorithm.
-\begin{proof}
-Note that by Lemma \ref{lem:Tvariantion},
-\[
-\|M - \hat{M}\|_2 \le  \frac{128d^6A^6_{(2,\max)}}{\pi^3 A^6_{(2,\min)}}\hat{\xi} = Q.
-\]
-So, 
-\[
-\|A^{-1}\hat{M}A -A^{-1}MA \|_2 \le \frac{\sigma_{\max}}{\sigma_{\min}}Q.
-\]
-Moreover, $A^{-1}MA = \Lambda$, thus its eigenvectors are $\{e_1,\ldots,e_d\}$.
-By Lemma \ref{lem:Teigenvectorvariation}, given $\gamma_R \ge 4\sqrt{2} \frac{\sigma_{\max}}{\sigma_{\min}}Q$, there exist a permutation $\pi$ and constants ${c_1,\ldots,c_d}$ such that for $1\le k\le d$,
-\[
-\|c_k\hat{A}^{-1}_{\pi(k):}A - e_k^{\top}\| \le \frac{4}{\gamma_R}\frac{\sigma_{\max}}{\sigma_{\min}}Q.
-\]
-Here $\hat{A}^{-1}_{\pi(k):}$ is the $\pi(k)$th row of $\hat{A}^{-1}$.
-On the other hand, keeping the same permutation $\pi$,
-\begin{align*}
-\| \hat{s}_{\pi(k)} - s \|_2 & = \|(\hat{A}^{-1})_{\pi(k):}As + (\hat{A}^{-1})_{\pi(k)}\eps - A^{-1}_kAs \|_2 \\
-& \le \|(\hat{A}^{-1})_{\pi(k):}A - e_k^{\top}\|_2\|s\|_2 + \|(\hat{A}^{-1})_{\pi(k):}A - e_k^{\top}\|_2\|A^{-1}\eps\|_2 + \|(A^{-1})_{k:}\eps\|_2 \\
-& \le (\|s\|_2+\frac{1}{\sigma_{\min}}\|\eps\|_2)\frac{4}{\gamma_R}\frac{\sigma_{\max}}{\sigma_{\min}}Q + \frac{1}{\sigma_{\min}}\|\eps\|_2
-\end{align*}  
-Note that under the event $\E$,  $Q$ and $\gamma_R$ are both polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L)$. 
-\[
-\| \hat{s}_{\pi(k)} - s \|_2 \le \mathcal{C}(\|s\|_2+\frac{1}{\sigma_{\min}}\|\eps\|_2)(D_4(\mu,\nu_T)+\frac{1}{\sqrt{T}})+\frac{\|\eps\|_2}{\sigma_{\min}},
-\]
-where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$.
-\end{proof}
-\fi
+\subsection{the case of noise ratio 0.3}
+The reconstruction errors for different sample sizes in a noise-free setting are as follows. 
+\begin{figure}[t] %pt]
+	\includegraphics[width =0.45\columnwidth]{errorR_sample_noise3}
+	\includegraphics[width =0.45\columnwidth]{error1_sample_noise3} \\
+	\includegraphics[width =0.45\columnwidth]{error2_sample_noise3}
+	\includegraphics[width =0.45\columnwidth]{error3_sample_noise3} \\
+	\includegraphics[width =0.45\columnwidth]{error4_sample_noise3}
+\caption{
+\label{fig:Error_sample_noise3}
+ Reconstruction Errors: Dimension 6; X axis: sample size; Noise ratio: 0.3.}
+\end{figure}
+
+\subsection{the case of noise ratio 0.3}
+The reconstruction errors for different sample sizes in a noise-free setting are as follows. 
+\begin{figure}[t] %pt]
+	\includegraphics[width =0.45\columnwidth]{errorR_sample_noise6}
+	\includegraphics[width =0.45\columnwidth]{error1_sample_noise6} \\
+	\includegraphics[width =0.45\columnwidth]{error2_sample_noise6}
+	\includegraphics[width =0.45\columnwidth]{error3_sample_noise6} \\
+	\includegraphics[width =0.45\columnwidth]{error4_sample_noise6}
+\caption{
+\label{fig:Error_sample_noise6}
+ Reconstruction Errors: Dimension 6; X axis: sample size; Noise ratio: 0.6.}
+\end{figure}
+
 
 %%% Local Variables: 
 %%% mode: latex
