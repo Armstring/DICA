@@ -43,7 +43,7 @@
 
 %\addtobeamertemplate{block begin}{}{\setlength{\parskip}{35pt plus 1pt minus 1pt}}
 
-\title{Deterministic Independent Component Analysis }
+\title{Deterministic Independent Component Analysis (ICA)}
 \author{Ruitong Huang, Andr\'as Gy\"orgy, Csaba Szepesv\'{a}ri}
 
 
@@ -61,7 +61,7 @@
 %------------------------------------------------------------------------------	
 
  	\begin{column}{.24\textwidth}% the right size for a 3-column layout
-		\begin{block}{Indep. Component Analysis (ICA)}
+		\begin{block}{Classical ICA}
 			\centering
 			\includegraphics[width=0.7\textwidth]{ICA_model.eps}
 			\begin{equation*}
@@ -71,15 +71,23 @@
 			\vspace{-1.5cm}
 			\begin{itemize}
 				\item $S = (S_1,\ldots, S_d)$ are non-Gaussian variables, and	$\eps \sim \mathcal{N}(0,\Sigma)$ is a Gaussian noise. 
-				\item Goal: Given independent observations $X(1), \ldots, X(T)$, reconstruct $A$ up to scaling and permutation.
-				\item Independence? $S_1(t),\ldots, S_d(t)$, $\eps_1(t), \ldots, \eps_d(t)$ are mutually independent for any $t$.
-				\item for simplicity, we assume $A$ is non-singular. 
+				\item Goal: Given independent observations $X(1), \ldots, X(T) \sim X$, reconstruct $A$ up to scaling and permutation.
+\item Assumptions:
+                          \begin{itemize}
+				\item $S_1(t),\ldots, S_d(t)$, $\eps_1(t), \ldots, \eps_d(t)$ are mutually independent for any $t$.
+				\item $A$ is non-singular
+                                  (for simplicity). 
+                             \end{itemize}
 				\item Applications of ICA	
 				\begin{itemize}
 						\item Blind Source (Signal) Separation;
 						\item Medical Imaging.
 				\end{itemize}				
-			\end{itemize}		
+			\end{itemize}	
+\end{block}
+
+\begin{block}{Standard demonstration}
+Deterministic signals
 			\begin{figure}
 				\includegraphics[width = 0.8\textwidth]{demo}
 				\caption*{An example of different ICA methods}
