@@ -65,7 +65,7 @@
 	
 		\begin{block}{What is ICA?}
 			\begin{figure}
-				\includegraphics[width = 0.8\textwidth]{demo}
+				\includegraphics[width = 0.9\textwidth]{demo}
 				%\caption*{Behavior of various ICA methods}
 			\end{figure}
 			\vspace{-0.5cm} 					
@@ -140,7 +140,7 @@
 			\vspace{0.5cm}
 			\item[$\diamondsuit$] Extend ICA to a non-stochastic setting that covers
 			\begin{itemize}
-			\item[--] the classic stochastic setting;
+			\item[--] the classical stochastic setting;
 			\item[--] Markov sources;
 			\item[--] deterministic source signals.
 			\end{itemize} 
@@ -150,7 +150,7 @@
 			have
 				\begin{itemize}
 					\item[--] $\mathrm{poly}(T,d)$ runtime;
-					\item[--] $\mathrm{poly}(D_4+1/\sqrt{T})$ accuracy (with i.i.d. noise);%
+					\item[--] $\mathrm{lin}(D_4+1/\sqrt{T})$ accuracy (with i.i.d. noise).%
 					\footnote{For the definition of $D_4$ see below.}
 				\end{itemize}
 			\end{itemize}		
@@ -184,13 +184,13 @@
 			\begin{itemize}
 				\item The computational complexity is $O(d^3 T)$;
 				\item With high probability there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$, 
-				\[\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le g(T),\]
+				\[\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathrm{lin}(D_4(\nu_T^{(s)},\mu)+1/\sqrt{T}),\]
 				given that 
 				\begin{itemize}
 					\item[-]  $T$ is large enough;
 					\item[-]  there exists a product measure $\mu$ such that $D_4(\nu_T^{(s)},\mu)$ is small enough ($s$ independent enough).
 				\end{itemize}
-				\item Here $g(T)$ is a function of $D_4(\nu_T^{(s)},\mu)$. In the classic stochastic setting, $g(T) = O(\frac{1}{\sqrt{T}})$.
+				\item  In the classical stochastic setting, $D_4(\nu_T^{(s)},\mu)= O(\frac{1}{\sqrt{T}})$.
 			\end{itemize}
 		\end{block}
 		\vspace{0.5ex}
