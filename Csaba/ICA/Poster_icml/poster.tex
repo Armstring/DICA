@@ -54,7 +54,7 @@
 
 	\begin{columns}[t,totalwidth=\textwidth]
 	
-	\begin{column}{0.01\textwidth}
+	\begin{column}{0.0045\textwidth}
 	\end{column}
 %------------------------------------------------------------------------------
 % The first column
@@ -180,7 +180,8 @@
 	\end{column}
 	\begin{column} {.24\textwidth}
 		\begin{block}{Result}
-			$\exists$ method to estimate $A$ from $x(t)=A s(t)$, $t=1,\dots,T$ s.t.:
+			There exists a method to estimate $A$ from
+                        $x(t)=A s(t)+\epsilon(t)$, $t=1,\dots,T,$ such that
 			\begin{itemize}
 				\item The computational complexity is $O(d^3 T)$;
 				\item With high probability there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$, 
@@ -190,7 +191,7 @@
 					\item[-]  $T$ is large enough;
 					\item[-]  there exists a product measure $\mu$ such that $D_4(\nu_T^{(s)},\mu)$ is small enough ($s$ independent enough).
 				\end{itemize}
-				\item Here $g(T)$ is a function of $D_4(\nu_T^{(s)},\mu)$. In the classic stochastic setting, $g(T) = O(\frac{1}{\sqrt{T}})$.
+				\item Here $g(T)$ is a function of $D_4(\nu_T^{(s)},\mu)$. In the classical stochastic setting, $g(T) = O(\frac{1}{\sqrt{T}})$.
 			\end{itemize}
 		\end{block}
 		\vspace{0.5ex}
