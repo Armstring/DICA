@@ -54,7 +54,7 @@
 
 	\begin{columns}[t,totalwidth=\textwidth]
 	
-	\begin{column}{0.0045\textwidth}
+	\begin{column}{0.01\textwidth}
 	\end{column}
 %------------------------------------------------------------------------------
 % The first column
@@ -140,7 +140,7 @@
 			\vspace{0.5cm}
 			\item[$\diamondsuit$] Extend ICA to a non-stochastic setting that covers
 			\begin{itemize}
-			\item[--] the classical stochastic setting;
+			\item[--] the classic stochastic setting;
 			\item[--] Markov sources;
 			\item[--] deterministic source signals.
 			\end{itemize} 
@@ -148,12 +148,11 @@
 			\item[$\diamondsuit$] Develop, \emph{for the first time in the literature}, ICA methods that have
 				\begin{itemize}
 					\item[--] $\mathrm{poly}(T,d)$ runtime;
-					\item[--] $\mathrm{poly}(D_4)$ accuracy;%
+					\item[--] $\mathrm{poly}(D_4+1/\sqrt{T})$ accuracy (with i.i.d. noise);%
 					\footnote{For the definition of $D_4$ see below.}
 					\item[--] no free parameters
 				\end{itemize}
-			\vspace{1cm}
-			\end{itemize}	
+			\end{itemize}		
 			\end{tcolorbox}
 		\end{block}
 		\vspace{0.5ex}
@@ -180,8 +179,7 @@
 	\end{column}
 	\begin{column} {.24\textwidth}
 		\begin{block}{Result}
-			There exists a method to estimate $A$ from
-                        $x(t)=A s(t)+\epsilon(t)$, $t=1,\dots,T,$ such that
+			$\exists$ method to estimate $A$ from $x(t)=A s(t)$, $t=1,\dots,T$ s.t.:
 			\begin{itemize}
 				\item The computational complexity is $O(d^3 T)$;
 				\item With high probability there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$, 
@@ -191,7 +189,7 @@
 					\item[-]  $T$ is large enough;
 					\item[-]  there exists a product measure $\mu$ such that $D_4(\nu_T^{(s)},\mu)$ is small enough ($s$ independent enough).
 				\end{itemize}
-				\item Here $g(T)$ is a function of $D_4(\nu_T^{(s)},\mu)$. In the classical stochastic setting, $g(T) = O(\frac{1}{\sqrt{T}})$.
+				\item Here $g(T)$ is a function of $D_4(\nu_T^{(s)},\mu)$. In the classic stochastic setting, $g(T) = O(\frac{1}{\sqrt{T}})$.
 			\end{itemize}
 		\end{block}
 		\vspace{0.5ex}
@@ -199,7 +197,7 @@
 			\begin{figure}
 			\begin{algorithmic}[1]
 				\STATE Let $f(\eta) = \EEp{(\eta^{\top}x)^4} - 3 \EEp{(\eta^{\top}x)^2}^2$.
-				\STATE  Choose $\phi$ and $\psi$. \emph{(How?)}
+				\STATE  Choose $\phi$ and $\psi$. (How?)
 				\STATE Let $T(\phi) = \nabla^2 f(\phi)$. Then 
 					\[T(\phi) = AK \triangle\left( (\sigma_1,\ldots,  \sigma_d)\right)A^{\top},
 					\]
