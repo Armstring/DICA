@@ -60,8 +60,21 @@
 % The first column
 %------------------------------------------------------------------------------	
 
+		
  	\begin{column}{.24\textwidth}% the right size for a 3-column layout
-		\begin{block}{Classical ICA}
+	
+		\begin{block}{What is ICA?}
+			\begin{figure}
+				\includegraphics[width = 0.8\textwidth]{demo}
+				%\caption*{Behavior of various ICA methods}
+			\end{figure}
+			\vspace{-0.5cm} 					
+		\end{block}
+%		Deterministic signals
+		\vspace{0.5ex}
+
+	
+		\begin{block}{Classical Definition}
 			\centering
 			\includegraphics[width=0.7\textwidth]{ICA_model.eps}
 			\begin{equation*}
@@ -70,40 +83,36 @@
 			\end{equation*}
 			\vspace{-1.5cm}
 			\begin{itemize}
-				\item $S = (S_1,\ldots, S_d)$ are non-Gaussian variables, and	$\eps \sim \mathcal{N}(0,\Sigma)$ is a Gaussian noise. 
-				\item Goal: Given independent observations $X(1), \ldots, X(T) \sim X$, reconstruct $A$ up to scaling and permutation.
+				\item $S = (S_1,\ldots, S_d)$ non-Gaussian, $\eps \sim \mathcal{N}(0,\Sigma)$ Gaussian random variables.
+				\item Goal: Given $T$ independent observations $X(1), \ldots, X(T) \sim X$, reconstruct $A$ up to scaling and permutation.
 \item Assumptions:
                           \begin{itemize}
 				\item $S_1(t),\ldots, S_d(t)$, $\eps_1(t), \ldots, \eps_d(t)$ are mutually independent for any $t$.
 				\item $A$ is non-singular
                                   (for simplicity). 
                              \end{itemize}
-				\item Applications of ICA	
+				\item Applications:
 				\begin{itemize}
-						\item Blind Source (Signal) Separation;
-						\item Medical Imaging.
+						\item Optical imaging;
+						\item Communications;
+						\item Neuroscience, EEG, etc.
 				\end{itemize}				
 			\end{itemize}	
 \end{block}
 
-\begin{block}{Standard demonstration}
-Deterministic signals
-			\begin{figure}
-				\includegraphics[width = 0.8\textwidth]{demo}
-				\caption*{An example of different ICA methods}
-			\end{figure}
-			\vspace{-0.5cm} 					
-		\end{block}
-		\vspace{0.5ex}
+
 			
 		\begin{block}{Previous works}
 		\vspace{-0.5cm}
 			\begin{itemize}
 				\item The literature in ICA is vast, but only for stochastic setting.
 				\begin{itemize}
-					\item Fast ICA \citep{hyvarinen1999fast}; Arora et al.'s method \citep{arora2012provable}; Moment methods (Hsu and Kakade's method \citep{hsu2013learning} (HKICA), Frourier PCA \citep{goyal2014fourier} (FPCA)).	
+					\item Fast ICA \citep{hyvarinen1999fast}; Moment methods:
+					Arora et al.'s method \citep{arora2012provable},
+					Hsu and Kakade's method \citep{hsu2013learning} (HKICA), 
+					Fourier PCA \citep{goyal2014fourier} (FPCA).	
 				\end{itemize}
-				\item Has no theoretical guarantee / depends of unspecified parameters.
+				\item No or weak theoretical guarantees / free parameters. % / depends of unspecified parameters.
 			\end{itemize}
 		\end{block}
 
@@ -117,9 +126,9 @@ Deterministic signals
 	\begin{column}{.24\textwidth}% the right size for a 3-column layout
 		\begin{block}{Deterministic?}
 			\begin{itemize}
-				\item It is also known that ICA also works well on unmixing deterministic signals;
-				\item All deterministic sequences satisfy the independence assumption;
-				\item Could ICA separate any deterministic sequences?
+				\item It is well known that ICA works well on unmixing deterministic signals!
+				\item All deterministic sequences satisfy the independence assumption $\dots$
+				\item Can some ICA method unmix \alert{any} deterministic signals?
 			\end{itemize}
 			\begin{center}
 				{\large Not really!}
@@ -132,15 +141,16 @@ Deterministic signals
 			\item[$\diamondsuit$] Extend ICA to a non-stochastic setting that covers
 			\begin{itemize}
 			\item[--] the classic stochastic setting;
-			\item[--] deterministic source signals;
-			\item[--] another practically important case, Markov sources.
+			\item[--] Markov sources;
+			\item[--] deterministic source signals.
 			\end{itemize} 
 			\vspace{1cm}
-			\item[$\diamondsuit$] Develop, \emph{for the first time in the literature}, ICA methods that 
+			\item[$\diamondsuit$] Develop, \emph{for the first time in the literature}, ICA methods that have
 				\begin{itemize}
-					\item[--] have provable performance;
-					\item[--] are polynomial in both computational and sample complexity;
-					\item[--] Only depend on natural parameters of the problem.
+					\item[--] $\mathrm{poly}(T,d)$ runtime;
+					\item[--] $\mathrm{poly}(D_4)$ accuracy;%
+					\footnote{For the definition of $D_4$ see below.}
+					\item[--] no free parameters
 				\end{itemize}
 			\end{itemize}		
 			\end{tcolorbox}
@@ -148,13 +158,17 @@ Deterministic signals
 		\vspace{0.5ex}
 		\begin{block}{Non-stochastic settings}
 			\begin{itemize}
-				\item The source signals are function over time step t: $s:[T] \to [-C,C]^d$.
-				\item Define empirical distribution induced by function $s$ by $\nu_t^{(s)}(B)=\tfrac{1}{t}|\{\tau \in [t]: s(\tau) \in B\}|$.
-				\item Measure the independence of the sources by 
+				\item The source signals are a function of time: $s:[T] \to [-C,C]^d$.
+				\item Empirical distribution induced by function $s$:
 				\[
-				D_4(\nu_T^{(s)},\mu) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_T^{(s)} - \int f(s)d\mu(s)|,
+					\nu_t^{(s)}(B)=\tfrac{1}{t}|\{\tau \in [t]: s(\tau) \in B\}|.
 				\]
-				for some product measure $\mu$, where $\mathcal{F}$ is the set of all monomials up to degree $4$.
+				\item Independence measure of the sources:
+				Let $\mu$ be a product measure and let
+				\[
+				D_4(\nu_T^{(s)},\mu) = \sup_{f\in\mathcal{F}} \Big|\int f(s)d\nu_T^{(s)} - \int f(s)d\mu(s)\Big|,
+				\]
+				where $\mathcal{F}$ is the set of all monomials up to degree $4$.
 			\end{itemize}
 		\end{block}
 	\end{column}
@@ -165,9 +179,9 @@ Deterministic signals
 	\end{column}
 	\begin{column} {.24\textwidth}
 		\begin{block}{Result}
-			Our method estimates the mixing matrix $A$ from $T$ samples of $x$ such that: 
+			$\exists$ method to estimate $A$ from $x(t)=A s(t)$, $t=1,\dots,T$ s.t.:
 			\begin{itemize}
-				\item The computational complexity of the algorithm is $O(d^3 T)$;
+				\item The computational complexity is $O(d^3 T)$;
 				\item With high probability there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$, 
 				\[\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le g(T),\]
 				given that 
@@ -182,8 +196,8 @@ Deterministic signals
 		\begin{block}{Hsu and Kakade's method (HKICA)}
 			\begin{figure}
 			\begin{algorithmic}[1]
-				\STATE Let $f(\eta) = \EEp{(\eta^{\top}x)^4} - 3 \EEp{(\eta^{\top}x)^2}^2$;
-				\STATE  Choose $\phi$ and $\psi$; (How?)
+				\STATE Let $f(\eta) = \EEp{(\eta^{\top}x)^4} - 3 \EEp{(\eta^{\top}x)^2}^2$.
+				\STATE  Choose $\phi$ and $\psi$. (How?)
 				\STATE Let $T(\phi) = \nabla^2 f(\phi)$. Then 
 					\[T(\phi) = AK \triangle\left( (\sigma_1,\ldots,  \sigma_d)\right)A^{\top},
 					\]
@@ -230,7 +244,7 @@ Deterministic signals
 			\end{algorithmic}
 			\end{figure}
 			\begin{itemize}
-				\item $\tilde{\lambda}$ (and its minimal gap) is now independent to $A$, and easier to analyze.
+				\item $\tilde{\lambda}$ (and its minimal gap) is now independent of $A$, and easier to analyze.
 				\item Simulation results are provided in the paper.
 			\end{itemize}
 		\end{block}
