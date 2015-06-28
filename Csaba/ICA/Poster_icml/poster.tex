@@ -74,7 +74,7 @@
 		\vspace{0.5ex}
 
 	
-		\begin{block}{Classical Definition}
+		\begin{block}{Classical definition}
 			\centering
 			\includegraphics[width=0.7\textwidth]{ICA_model.eps}
 			\begin{equation*}
@@ -140,7 +140,7 @@
 			\vspace{0.5cm}
 			\item[$\diamondsuit$] Extend ICA to a non-stochastic setting that covers
 			\begin{itemize}
-			\item[--] the classical stochastic setting;
+			\item[--] the classic stochastic setting;
 			\item[--] Markov sources;
 			\item[--] deterministic source signals.
 			\end{itemize} 
@@ -184,7 +184,9 @@
 			\begin{itemize}
 				\item The computational complexity is $O(d^3 T)$;
 				\item With high probability there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$, 
-				\[\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathrm{lin}(D_4(\nu_T^{(s)},\mu)+1/\sqrt{T}),\]
+				\[\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \theta_1 \min( D_4 + 1/\sqrt{T}, \theta_2 )
+%				\mathrm{lin}( D_4(\nu_T^{(s)},\mu)+1/\sqrt{T}),\]
+				\]
 				given that 
 				\begin{itemize}
 					\item[-]  $T$ is large enough;
