@@ -180,18 +180,19 @@
 	\end{column}
 	\begin{column} {.24\textwidth}
 		\begin{block}{Result}
-			$\exists$ method to estimate $A$ from $x(t)=A s(t)$, $t=1,\dots,T$ s.t.:
+			$\exists$ randomized method to estimate $A$ from $x(t)=A s(t)$, $t=1,\dots,T$ s.t.:
 			\begin{itemize}
 				\item The computational complexity is $O(d^3 T)$;
-				\item With high probability there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$, 
-				\[\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \theta_1 \min( D_4 + 1/\sqrt{T}, \theta_2 )
+				\item For any product measure $\mu$ 
+				(possibly dependent on $\nu_T^{(s)}$ but not the randomization of the method or the noise),
+				letting $D_4 =D_4(\nu_T^{(s)},\mu)$;
+				\item With high probability there exists a permutation $\pi$ and 
+				constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$, 
+				\[\| 
+				c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \theta_1 \min( D_4 + 1/\sqrt{T}, \theta_2 )\,.
 %				\mathrm{lin}( D_4(\nu_T^{(s)},\mu)+1/\sqrt{T}),\]
 				\]
-				given that 
-				\begin{itemize}
-					\item[-]  $T$ is large enough;
-					\item[-]  there exists a product measure $\mu$ such that $D_4(\nu_T^{(s)},\mu)$ is small enough ($s$ independent enough).
-				\end{itemize}
+				\item Here, $\theta_1,\theta_2$ problem dependent, polynomial in the parameters.
 				\item  In the classical stochastic setting, $D_4(\nu_T^{(s)},\mu)= O(\frac{1}{\sqrt{T}})$.
 			\end{itemize}
 		\end{block}
