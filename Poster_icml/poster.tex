@@ -94,8 +94,8 @@
 				\item Applications:
 				\begin{itemize}
 						\item Optical imaging;
-						\item Communications;
-						\item Neuroscience, EEG, etc.
+						\item Telecommunications;
+						\item Biology, medicine (neuroscience, EEG, etc.)
 				\end{itemize}				
 			\end{itemize}	
 \end{block}
@@ -166,11 +166,14 @@
 					\nu_t^{(s)}(B)=\tfrac{1}{t}|\{\tau \in [t]: s(\tau) \in B\}|.
 				\]
 				\item Independence measure of the sources:
-				Let $\mu$ be a product measure and let
+%				Let $\mu$ be a product measure and let
 				\[
-				D_4(\nu_T^{(s)},\mu) = \sup_{f\in\mathcal{F}} \Big|\int f(s)d\nu_T^{(s)} - \int f(s)d\mu(s)\Big|,
+				D_4
+				%(\nu_T^{(s)},\mu) 
+				= \inf_{\mu} \sup_{f\in\mathcal{F}} \Big|\int f(s)d\nu_T^{(s)} - \int f(s)d\mu(s)\Big|,
 				\]
-				where $\mathcal{F}$ is the set of all monomials up to degree $4$.
+				where $\mathcal{F}$ is the set of all monomials up to degree $4$
+				and $\mu$ ranges over all product measures.
 			\end{itemize}
 		\end{block}
 	\end{column}
@@ -184,9 +187,9 @@
 			$\exists$ randomized method to estimate $A$ from $x(t)=A s(t)$, $t=1,\dots,T$ s.t.:
 			\begin{itemize}
 				\item The computational complexity is $O(d^3 T)$;
-				\item For any product measure $\mu$ 
-				(possibly dependent on $\nu_T^{(s)}$ but not the randomization of the method or the noise),
-				letting $D_4 =D_4(\nu_T^{(s)},\mu)$;
+%				\item For any product measure $\mu$ 
+%				(possibly dependent on $\nu_T^{(s)}$ but not the randomization of the method or the noise),
+%				letting $D_4 =D_4(\nu_T^{(s)},\mu)$;
 				\item With high probability there exists a permutation $\pi$ and 
 				constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$, 
 				\[\| 
@@ -194,7 +197,9 @@
 				\]
 				\vspace{-1.5cm}
 				\item Here, $\theta_1,\theta_2$ problem dependent, polynomial in the parameters.
-				\item  In the classical stochastic setting, $D_4(\nu_T^{(s)},\mu)= O(\frac{1}{\sqrt{T}})$.
+				\item  In the classical stochastic setting, $D_4
+				%(\nu_T^{(s)},\mu)
+				= O(\frac{1}{\sqrt{T}})$.
 			\end{itemize}
 		\end{block}
 		\vspace{0.5ex}
@@ -216,13 +221,16 @@
 			\end{figure}
 			\vspace{1cm}
 			{\it\large{Problem: Minimal gap of the eigenvalues.}}
+			\vspace{1cm}
 			\begin{itemize}
-				\item Theoretical analysis shows that the performance depends on 
+				\item Theoretical analysis shows that the performance depends on $\gamma_A^{-1}$,
+				where
 					\[
 					\gamma_A = \min_{i\neq j} \left\vert \lambda_i - \lambda_j\right \vert.
 					\]
 				\vspace{-1cm}
-				\item $\gamma_A$ is not yet well understood.
+				\item $\gamma_A$ is not yet well understood
+				\item[] in particular, it is not known whether $\gamma_A^{-1} = \mathrm{Poly}(d,A)$\,.
 			\end{itemize}
 		\end{block}
 	\end{column}
