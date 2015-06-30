@@ -184,7 +184,7 @@
 	\end{column}
 	\begin{column} {.24\textwidth}
 		\begin{block}{Result}
-			$\exists$ randomized method to estimate $A$ from $x(t)=A s(t)$, $t=1,\dots,T$ s.t.:
+			$\exists$ randomized method to estimate $A$ from $x(t)=A s(t) + \eps(t)$, $t=1,\dots,T$ s.t.:
 			\begin{itemize}
 				\item The computational complexity is $O(d^3 T)$;
 %				\item For any product measure $\mu$ 
@@ -249,7 +249,7 @@
 				\STATE Calculate $T(\phi_1) = \nabla^2 f(B^{-\top}\phi_1)$ and $T(\phi_2) = \nabla^2 f(B^{-\top}\phi_2)$.
 				\STATE Calculate $M = T(\phi_1)(T(\phi_2))^{-1}$.
 					\[
-					M = R \left( \tilde{\lambda}_1, \ldots, \tilde{\lambda}_d \right)R^{\top},
+					M = R \triangle\left( \tilde{\lambda}_1, \ldots, \tilde{\lambda}_d \right)R^{\top},
 					\]
 					where $\tilde{\lambda}_i = \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2$ and $R$ is some orthonormal matrix.
 				\STATE Do an eigen-decomposition of $M$ to recover $R$.
