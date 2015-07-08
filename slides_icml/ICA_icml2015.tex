@@ -74,6 +74,7 @@
 \newcommand{\ec}{\end{center}}
 \newcommand{\eps}{\epsilon}
 \newcommand{\nologo}{\setbeamertemplate{logo}{}} 
+\newcommand{\ds}{$\diamondsuit$}
 
 \begin{document}
 
@@ -307,7 +308,6 @@ Assuming $x(t) = A s(t) + \eps(t)$, $t=1,\dots, T$;
 Can we find a method with the following characteristics?
 
 \bi
-\newcommand{\ds}{$\diamondsuit$}
 \setlength{\itemsep}{10pt}
 \item[\ds] Universal: No free parameters!
 \item[\ds] Efficient:  $\mathrm{poly}(T,d)$ runtime (no dependence on $C$, $A$, $\dots$);
@@ -535,12 +535,132 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 \ei
 }
 
-\section{Experiments}
+\section{Empirical Illustration}
 \begin{frame}{Outline}
 \tableofcontents[currentsection]
 \end{frame}
 
 \frame{ \frametitle{Setting}
+\begin{columns}[t]
+\column{0.5\textwidth}
+\uncover<+->{Questions:}
+\bi
+	\item Does noise matter?
+		\bi
+		\item[-] Additive Gaussian noise with std $=0.3$.
+		\ei
+	\item Does coherence matter? 
+		\bi 
+		\item[-] $A_1$: Gaussian matrix; $A_4$: more coherent matrix.
+		\ei
+	\item Do the recursive versions improve the results?
+\ei
+\column{0.5\textwidth}
+\uncover<+->{Algorithms:}
+\bi
+	\item FastICA  \citep{szabo12separation};
+	\item HKICA/HKICA.R; 
+	\item (recursive) FPCA due to \citet{vempala2014max};
+%	\item<1-> Random guessing (Random).
+	\\ \mbox{}\\
+	\item DICA/DICA.R; 
+	\item MDICA/MDICA.R (heuristic version of DICA)
+\ei
+\end{columns}
+
+}
+
+\frame{
+\frametitle{Sources}
+
+Noise-free BPSK sources, $T=20,000$:
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/Hidden-noisefree}
+\ec
+
+Noisy BPSK sources:
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/Hidden-noisy}
+\ec
+}
+
+\frame{
+\frametitle{Observations}
+
+Noise-free observation:
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/Observed-noisefree}
+\ec
+
+Noisy observation:
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/Observed-noisy}
+\ec
+
+}
+
+\frame{
+\frametitle{Example reconstructions: Noise-free case}
+Noise-free BPSK sources:
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/Hidden-noisefree}
+\ec
+
+Reconstruction:
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/Reconstructed-noisefree}
+\ec
+
+}
+
+\frame{
+\frametitle{Example reconstructions: Noisy case}
+Noisy-free BPSK sources:
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/Hidden-noisy}
+\ec
+
+Reconstruction:
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/Reconstructed-noisy}
+\ec
+
+}
+
+\frame{
+\frametitle{Turf: Noise and coherence}
+\begin{columns}[t]
+\column{0.5\textwidth}
+\includegraphics[width=\textwidth]{Diagrams/barchart-A1-noisefree}
+\bc
+Noise-free
+\ec
+
+\column{0.5\textwidth}
+\includegraphics[width=\textwidth]{Diagrams/barchart-A1vsA4-noisy}
+\bc
+Noisy
+\ec
+\end{columns}
+
+\bigskip
+
+\bc
+Reconstruction error of ``random'' matrix: $2.2$
+\ec
+}
+
+\frame{
+\frametitle{Recursive versions}
+\bc
+\includegraphics[width=0.5\textwidth]{Diagrams/barchart-recursive-noisy}
+\ec
+}
+
+
+%\frame{
+%\frametitle{
+\if0
 \vspace{-1cm}
 \bi 
 \item 9 different algorithms: 
@@ -563,7 +683,9 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 	\ei
 \ei
 }
+\fi
 
+\if0
 \frame{ \frametitle{Setting}
 \bi
 \item 6-dimensional BPSK signals with different periods;
@@ -589,7 +711,30 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 \end{multicols}
 }
 }
+\fi
 
+\section{Conclusions}
+\begin{frame}{Outline}
+\tableofcontents[currentsection]
+\end{frame}
+
+\frame{\frametitle{Conclusions}
+
+\bi
+\item[\ds] Independent Component Analysis without probabilities! 
+\item[\ds] Deterministic analysis: Cleaner, more general, should do it more often! Limits?
+\item[\ds] New method: DICA. Universal, strong guarantees.
+\item[\ds] In practice, moment-methods are indeed more robust to noise.
+\item[\ds] HKICA is great! Why? MDICA is also good. Why?
+\item[\ds] ``Recursive versions'': No significant advantage was found (limited study?).
+\ei
+
+\uncover<+->{
+\centering \LARGE \textcolor{blue}{Questions?}
+}
+}
+
+\if0
 \frame{ \frametitle{Simulation results} 
 \bi
 	\item Moment methods are more robust to high-coherence mixing matrices and Gaussian noise;
@@ -598,7 +743,7 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 	\item The recursive idea seems not always helpful: theoretically it only helps in the eigen-decomposition step.
 \ei
 } 
-
+\fi
 
 \frame{ \frametitle{References}
 \tiny
@@ -606,6 +751,7 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 \bibliography{DICA}
 }
 
+\if0
 
 \frame{ \frametitle{\,}
 \begin{center}
@@ -615,4 +761,5 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 {\huge Questions?}
 \par\end{center}{\huge \par}
 } 
+\fi
 \end{document}
