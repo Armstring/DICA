@@ -419,10 +419,16 @@ There exist a randomized method to estimate $A$ from $(x(t))_{t=1}^T$, with $x(t
 
 
 \frame{ \frametitle{Hsu-Kakade method (HKICA)} 
+\uncover<+->{For $x\sim \mu=\mu_1\otimes \dots \otimes \mu_d$,
+$\eta \in \R^d$, let 
+\vspace*{-0.15in}
+\[
+f(\eta) = \EEp{(\eta^{\top}x)^4} - 3 \EEp{(\eta^{\top}x)^2}^2\,.
+\]}
+\vspace*{-0.35in}
 \begin{columns}[t]
 \column{0.5\textwidth}
 \bi
-\item[-] For $\eta \in \R^d$, let $f(\eta) = \EEp{(\eta^{\top}x)^4} - 3 \EEp{(\eta^{\top}x)^2}^2$;
 \item[-] Choose $\phi$ and $\psi$. \emph{(How?)}
 \item[-] Let $T(\phi) = \nabla^2 f(\phi)$. Then 
 \[T(\phi) = AK 
@@ -453,10 +459,13 @@ A^{-1},
 \]
 where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 \item[-] Do an eigen-decomposition of $M$ to recover $A$, assuming all $\lambda_i$'s are distinct.
-\item[-] Given finite sample $(x(t))_{t=1}^T$, replace $\mathbb{E}[\cdot]$ with $\mathbb{E}_n[\cdot]$.
+%\item[-] 
 \ei
-
 \end{columns}
+\medskip
+\uncover<+->{
+\centering
+Given finite sample $(x(t))_{t=1}^T$, replace $\mathbb{E}[\cdot]$ with $\mathbb{E}_n[\cdot]$.}
 }
 
 \if0
@@ -573,17 +582,18 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 \frame{
 \frametitle{Sources}
 
-Noise-free BPSK sources, $T=20,000$:
+BPSK sources, $T=20,000$:
 \bc
-\includegraphics[width=0.5\textwidth]{Diagrams/Hidden-noisefree}
+\includegraphics[width=0.75\textwidth]{Diagrams/Hidden-noisefree}
 \ec
 
-Noisy BPSK sources:
-\bc
-\includegraphics[width=0.5\textwidth]{Diagrams/Hidden-noisy}
-\ec
+%Noisy BPSK sources:
+%\bc
+%\includegraphics[width=0.5\textwidth]{Diagrams/Hidden-noisy}
+%\ec
 }
 
+\if0
 \frame{
 \frametitle{Observations}
 
@@ -598,21 +608,23 @@ Noisy observation:
 \ec
 
 }
+\fi
 
 \frame{
 \frametitle{Example reconstructions: Noise-free case}
-Noise-free BPSK sources:
-\bc
-\includegraphics[width=0.5\textwidth]{Diagrams/Hidden-noisefree}
-\ec
+%Noise-free BPSK sources:
+%\bc
+%\includegraphics[width=0.75\textwidth]{Diagrams/Hidden-noisefree}
+%\ec
 
 Reconstruction:
 \bc
-\includegraphics[width=0.5\textwidth]{Diagrams/Reconstructed-noisefree}
+\includegraphics[width=0.75\textwidth]{Diagrams/Reconstructed-noisefree}
 \ec
 
 }
 
+\if0
 \frame{
 \frametitle{Example reconstructions: Noisy case}
 Noisy-free BPSK sources:
@@ -626,6 +638,7 @@ Reconstruction:
 \ec
 
 }
+\fi
 
 \frame{
 \frametitle{Turf: Noise and coherence}
@@ -646,7 +659,8 @@ Noisy
 \bigskip
 
 \bc
-Reconstruction error of ``random'' matrix: $2.2$
+Reconstruction error of ``random'' matrix: $2.2$.\\
+Error bars are based on $150$ runs.
 \ec
 }
 
@@ -718,13 +732,14 @@ Reconstruction error of ``random'' matrix: $2.2$
 \tableofcontents[currentsection]
 \end{frame}
 
-\frame{\frametitle{Conclusions}
+\frame{\frametitle{Conclusions and Open Questions}
 
 \bi
 \item[\ds] Independent Component Analysis without probabilities! 
 \item[\ds] Deterministic analysis: Cleaner, more general, should do it more often! Limits?
 \item[\ds] New method: DICA. Universal, strong guarantees.
 \item[\ds] In practice, moment-methods are indeed more robust to noise.
+\item[\ds] Why does coherence help?
 \item[\ds] HKICA is great! Why? MDICA is also good. Why?
 \item[\ds] ``Recursive versions'': No significant advantage was found (limited study?).
 \ei
