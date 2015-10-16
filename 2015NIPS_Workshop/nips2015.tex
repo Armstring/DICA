@@ -101,11 +101,12 @@ we refer to the book of \citet{comon2010handbook} for a comprehensive survey.
 In practice, ICA is also known to work well for unmixing the mixture of various deterministic signals. 
 One of the classical demonstrations of ICA is showing that two periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
 Such an example is shown in Figure~\ref{fig:demo}. 
-\begin{figure}[t]
+\begin{figure}[h]
 \label{fig:demo}
 \centering
-	\includegraphics[width = 0.9\textwidth]{demo}
-	\vspace{-8mm}
+	\includegraphics[width = 0.49\linewidth]{demo_source}
+	\includegraphics[width = 0.49\linewidth]{demo_res}
+	\vspace{-6mm}
 \caption{Example of ICA: The first two rows show the source signals $s_1(t)=0.5 - \lfloor t-2\lfloor t/2 \rfloor \rfloor$, $s_2=\cos(t)$, the next two rows present the observations with mixing matrix 
 %$A=\left(\begin{array}{cc}1&-2\\2.6& -5.1 \\\end{array}\right)$
 The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 10000 uniformly spaced points in the interval $[0,15]$.}
@@ -278,10 +279,8 @@ The resulting algorithm, called Deterministic ICA (DICA), is shown in Algorithm 
 \end{algorithmic}
 \end{algorithm}
 
-
-
-%\subsubsection*{Acknowledgments}
-%This work was supported by the Alberta Innovates Technology Futures and NSERC.
+\subsubsection*{Acknowledgments}
+This work was supported by the Alberta Innovates Technology Futures and NSERC.
 \bibliographystyle{plainnat}
 \bibliography{DICA}
 \end{document}
