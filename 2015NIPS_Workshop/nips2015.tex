@@ -210,7 +210,7 @@ there exists an algorithm that returns $\hat{A}$
 %Consider the ICA problem \eqref{eq:ICA}. There exists an algorithm that estimates the mixing matrix $A$ from $T$ samples of $x$ 
 such that (i) the computational complexity of the algorithm is $O(d^3 T)$; and (ii) with probability at least $1-\delta$,
 \[
-d(\hat{A}, A) \le \mathcal{C} \min\left(D_4(\nu_T)+ G^2 +G, \Theta \right),
+d(\hat{A}, A) \le \mathcal{C} \min\left(D_4(\nu_T^{(s)})+ G^2 +G, \Theta \right),
 \]
 where $T$ is the number of samples, $\mathcal{C}$ and $\Theta$ are problem depedent constant, polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L)$, and $\hat{A}$ is the output of the algorithm.
 
