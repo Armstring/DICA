@@ -184,7 +184,21 @@ $K$ denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$, and defi
 
 To measure the distance of $\nu_T^{(s)}$ from $\mu$, define the following family of ``distances'' to measure the closeness of two distributions: Given two distributions $\nu_1$ and $\nu_2$ over $\real^d$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\nu_2(s)|$, where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ is the set of all monomials up to degree $k$.
 Also let $D_k(\nu)  = \min_{\mu} D_k(\mu, \nu)$ where the minimization of $\mu$ is taken over the set of all the product measures. 
+Also, let 
+\[
+L = \max \left( \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 2}] \|_F,\, \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 3}] \|_F \right).
+\]
+For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\real^d$,
+let 
+$m_p^{(\nu)}(\eta) = \E_{X\sim \nu}[ (\eta^\top X)^p ],\, f_{\nu}(\eta) = \tfrac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)$.
+We also need to measure the perturbation of the second derivative of the function $f_{\nu_T^{(x)}}(\eta)$ caused by the noise function $\epsilon$, by 
+\[
+\mathcal{C}G(T) = \max_{\|\eta\|_2\le 1}\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2, 
+\] 
+for some problem dependent constant $\mathcal{C} = \poly{\sigma_{\max}, d, L}$. Note that $G(T)$ depends on how Gaussian $\epsilon$ is and how independent $\epsilon$ and $s$ are. 
+In the standard stochastic setting, $G(T) = O(\frac{1}{\sqrt{T}})$.
 
+\if0
 We also need to measure how approximately $s$ and $\epsilon$ are 0 mean, how Gaussian the noise function $\epsilon$ is, and lastly how independent $s$ and $\epsilon$ are. Let 
 \begin{align*}
 G = &  \max \Huge{\{} \, \| \E_{S_i\sim \nu_T^{(s_i)}} [S_i] \|_F,\quad \| \E_{Y \sim \nu_T^{(\epsilon)}} [Y] \|_F, \\
@@ -198,10 +212,7 @@ G = &  \max \Huge{\{} \, \| \E_{S_i\sim \nu_T^{(s_i)}} [S_i] \|_F,\quad \| \E_{Y
 \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes j_1} \otimes \E_{S\sim \nu_T^{(s)}} [(AS)^{\otimes i_1}] \otimes Y^{\otimes j_2}] \\
 & \quad \quad \quad \quad - \E_{(S, Y)\sim \nu_T^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes Y^{\otimes j_2}] \|_F \, \Huge{\}}.
 \end{align*}
-Also, let 
-\[
-L = \max \left( \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 2}] \|_F,\, \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 3}] \|_F \right).
-\]
+\fi
 
 Now we are ready to state our main result. 
 \begin{thm}
@@ -211,7 +222,7 @@ there exists an algorithm that returns $\hat{A}$
 %Consider the ICA problem \eqref{eq:ICA}. There exists an algorithm that estimates the mixing matrix $A$ from $T$ samples of $x$ 
 such that (i) the computational complexity of the algorithm is $O(d^3 T)$; and (ii) with probability at least $1-\delta$,
 \[
-d(\hat{A}, A) \le \mathcal{C} \min\left(D_4(\nu_T^{(s)})+ G^2 +G, \Theta \right),
+d(\hat{A}, A) \le \mathcal{C} \min\left(D_4(\nu_T^{(s)})+ G, \Theta \right),
 \]
 where $T$ is the number of samples, $\mathcal{C}$ and $\Theta$ are problem dependent constants, polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, L)$.
 
@@ -268,9 +279,9 @@ Assumption \ref{ass:independence} is to guarantee that the source signals and th
 \section{A deterministic ICA Algorithm}
 \label{sec:DICA}
 The algorithm is inspired by \citet{hsu2013learning}, \citet{arora2012provable}, and \citet{frieze1996learning} using a quasi-whitening procedure:
-For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\real^d$,
-let 
-$m_p^{(\nu)}(\eta) = \E_{X\sim \nu}[ (\eta^\top X)^p ],\, f_{\nu}(\eta) = \tfrac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)$.
+%For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\real^d$,
+%let 
+%$m_p^{(\nu)}(\eta) = \E_{X\sim \nu}[ (\eta^\top X)^p ],\, f_{\nu}(\eta) = \tfrac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)$.
 One can show that $\nabla^2 f_\mu(\psi)=A K D_{\psi} A^\top$ for any product measure $\mu$ where $D_{\psi} =\text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$,
 and so $B= AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. Defining $T_i=\nabla^2 f_\mu(B^{-\top} \phi_i)$, one can calculate that
 $T_i=A K^{1/2} D_\psi^{-1/2} \Lambda_i A^\top$ where $\Lambda_i =\text{diag}\left( (\phi_i^\top R_1)^2,\ldots,(\phi_i^\top R_d)^2 \right)$ and $R_i$ denote the $i$th column of $R$.
