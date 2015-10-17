@@ -28,15 +28,16 @@ Edmonton, AB T6G2E8 Canada\\
 \texttt{ruitong@ualberta.ca} \\
 \And
 Andr\'as Gy\"orgy \\
-Affiliation \\
-Address \\
-\texttt{email} \\
+Department of Electrical and Electronic Engineering\\ 
+Imperial College London\\ 
+South Kensington Campus, London SW7 2BT, UK \\
+\texttt{a.gyorgy@imperial.ac.uk} \\
 \And
 Csaba Szepesv\'ari \\
 Department of Computing Science\\
 University of Alberta \\
 Edmonton, AB T6G2E8 Canada\\
-\texttt{email}
+\texttt{szepesva@ualberta.ca}
 }
 
 % The \author macro works with any number of authors. There are two commands
@@ -79,6 +80,7 @@ Edmonton, AB T6G2E8 Canada\\
 
 \begin{abstract}
 We study independent component analysis with noisy observations in a deterministic manner. We present a consistent, polynomial-time algorithms to reconstruct the mixing matrix with a data-dependent error bound. 
+Our result can be applied to more general setting without losing any generality to the traditional stochastic ICA model. 
 When applied to the standard stochastic ICA model, 
 our algorithm, for the first time in the literature, achieves a reconstruction error that vanishes at a $1/\sqrt{T}$ rate using $T$ observations and scales only polynomially with the natural parameters of the problem.  
 \end{abstract}
@@ -108,6 +110,7 @@ Such an example is shown in Figure~\ref{fig:demo}.
 	\includegraphics[width = 0.49\linewidth]{demo_res}
 	\vspace{-6mm}
 \caption{Example of ICA: The black signals are the source signals, red ones observed signals, and blue ones the reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA (3 different ICA algorithms, see Section \ref{subsec:relatedWorks} and \ref{sec:DICA} for details ) after sampling $As(t)$ at 2500 uniformly spaced points in the interval $[0,50]$.}
+\vspace{-5mm}
 \end{figure}
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.  
 
