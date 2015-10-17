@@ -79,9 +79,8 @@ Edmonton, AB T6G2E8 Canada\\
 \maketitle
 
 \begin{abstract}
-We study independent component analysis with noisy observations in a deterministic manner. We present a consistent, polynomial-time algorithms to reconstruct the mixing matrix with a data-dependent error bound. 
-Our result can be applied to more general setting without losing any generality to the traditional stochastic ICA model. 
-When applied to the standard stochastic ICA model, 
+We study independent component analysis with noisy observations in a deterministic framework. We present a consistent, polynomial-time algorithm to reconstruct the mixing matrix with a data-dependent error bound. In contrast to earlier work, our results hold without any stochastic assumptions on the source signals and the observation noise. When applied
+to the standard i.i.d.\ stochastic ICA model, 
 our algorithm, for the first time in the literature, achieves a reconstruction error that vanishes at a $1/\sqrt{T}$ rate using $T$ observations and scales only polynomially with the natural parameters of the problem.  
 \end{abstract}
 
@@ -112,9 +111,9 @@ Such an example is shown in Figure~\ref{fig:demo}.
 \caption{Example of ICA: The black signals are the source signals, red ones observed signals, and blue ones the reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA (3 different ICA algorithms, see Section \ref{subsec:relatedWorks} and \ref{sec:DICA} for details ) after sampling $As(t)$ at 2500 uniformly spaced points in the interval $[0,50]$.}
 \vspace{-5mm}
 \end{figure}
-Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.  
+This phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have a deeper understanding of ICA.  
 
-The main contribution of our paper is to analyze ICA algorithms in a deterministic manner. 
+The main contribution of our paper is to analyze ICA algorithms in a deterministic framework. 
 Our deterministic analysis helps investigate this curious phenomenon. Our result can be applied to more general setting without losing any generality to the traditional stochastic setting. 
 Formally, instead of observing $T$ \iid samples from \eqref{eq:stoch-ICA}, the observations and the source signals are defined by the functions  $x:\natural \ra \real^d$ and $s:\natural \ra \real^d$ as $d$-dimensional deterministic functions. 
 We study the question that to what extent can the mixture of signals be separated. 
