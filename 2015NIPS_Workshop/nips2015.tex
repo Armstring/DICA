@@ -107,28 +107,27 @@ Such an example is shown in Figure~\ref{fig:demo}.
 	\includegraphics[width = 0.49\linewidth]{demo_source}
 	\includegraphics[width = 0.49\linewidth]{demo_res}
 	\vspace{-6mm}
-\caption{Example of ICA: The first two rows show the source signals $s_1(t)=0.5 - \lfloor t-2\lfloor t/2 \rfloor \rfloor$, $s_2=\cos(t)$, the next two rows present the observations with mixing matrix 
-%$A=\left(\begin{array}{cc}1&-2\\2.6& -5.1 \\\end{array}\right)$
-The reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA after sampling $As(t)$ at 10000 uniformly spaced points in the interval $[0,15]$.}
+\caption{Example of ICA: The black signals are the source signals, red ones observed signals, and blue ones the reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA (3 different ICA algorithms, see Section \ref{subsec:relatedWorks} and \ref{sec:DICA} for details ) after sampling $As(t)$ at 2500 uniformly spaced points in the interval $[0,50]$.}
 \end{figure}
 Such phenomenon suggests that the usual probabilistic notion is unsatisfactory if one wishes to have deeper understanding of ICA.  
 
 The main contribution of our paper is to analyze ICA algorithms in a deterministic manner. 
-Our deterministic analysis helps investigate this curious phenomenon without losing any generality to the traditional stochastic setting. 
+Our deterministic analysis helps investigate this curious phenomenon. Our result can be applied to more general setting without losing any generality to the traditional stochastic setting. 
 Formally, instead of observing $T$ \iid samples from \eqref{eq:stoch-ICA}, the observations and the source signals are defined by the functions  $x:\natural \ra \real^d$ and $s:\natural \ra \real^d$ as $d$-dimensional deterministic functions. 
 We study the question that to what extent can the mixture of signals be separated. 
 We proposed a \emph{provable polynomial-time} algorithm that has \emph{no free parameter} for the noisy ICA model.
-The performance of the algorithm depends on how much the observation function is deviated from the stochastic model. 
+The analysis of the algorithm's performance is reduced to perturbation analysis, which depends on how much the observation function is deviated from the stochastic model. 
 We proposed a data-dependent measure for such deviation based on the empirical distribution of data.
-It can be shown that this measure converges to 0 in a rate of $O(\sqrt{T})$ for T \iid samples from  \eqref{eq:stoch-ICA}.
+It can be shown that this measure converges to 0 in a rate of $O(\sqrt{T})$ for $T$ \iid samples from  \eqref{eq:stoch-ICA}.
 Therefore when applied to the stochastic model, our algorithm is guaranteed to correctly reconstruct the mixing matrix $A$.
 
 The rest of this paper is organized as follows: 
 Our main results are highlighted in Section~\ref{sec:main}.
 The polynomial-time algorithms underlying these results are developed through Section~\ref{sec:DICA}.
-Proofs are presented in the full version of the paper \citep{HuGySz15}.
+Due to space limit, proofs and experimental results are presented in the full version of the paper \citep{HuGySz15}.
 
 \subsection{Related Works}
+\label{subsec:relatedWorks}
 Perheps the most popular approach to the ICA problem is the FastICA algorithm \citep{hyvarinen1999fast}. 
 Great progress has been made to analyze FastICA theoretically \citep{tichavsky2006performance,oja2006fastica,ollila2010deflation,dermoune2013fastica,wei2014convergence}.
 In particular, recently \citet{miettinen2014fourth} showed that in the noise-free case (i.e., when $X = AS$), the error of FastICA (when using a particular forth-moments-based contrast function) vanishes at a rate of $1/\sqrt{T}$ where $T$ is the sample size.
@@ -139,11 +138,13 @@ On the other hand, promising algorithms based on moment methods are available in
 In particular, the results of \citep{arora2012provable} and \cite{goyal2014fourier} depend on some  unspecified parameters ($\beta$ in the paper of \citep{arora2012provable} and $\sigma$ in the paper of \citep{goyal2014fourier}) that are belong some specific range, making their algorithms impossible to tune.
 A common problem faced by the other methods (\citep{anandkumar2012tensordecomposition,anandkumar2012method,hsu2013learning}) is a minimal gap of the eigenvalues, which may result in an exponential dependence on the number of source signals $d$. 
 Recently, \citet{vempala2014max} proposed an ICA algorithm based on an elegant, recursive version of the method of \citet{goyal2014fourier} that avoids dealing with the aforementioned minimal gap; however, they still need an oracle to set the unspecified parameter of \citet{goyal2014fourier}.
+
+The problem of separating mixture of deterministic signals are also consider in \citep{kirimoto2011separation} and \citep{forootan2013separation}. But the analysis is restricted to particular signals, while our result is applicable to general ones. 
 \subsection{Notation}
 We denote the set of real and natural numbers by $\real$ and $\natural$, respectively.
 A vector $v \in K^d$ for a field $K$ is assumed to be a column vector.
-Let $\|v\|_2$ denote its $L_2$-norm, and for any matrix $Z$ let $\|Z\|_2=\max_{v:\|v\|_2=1}{\|Z v\|_2}$ denote the corresponding induced norm. Denote the maximal and minimal singular value of $Z$ by $\sigma_{\max}(Z)$ and  $\sigma_{\min}(Z)$, respectively. Also, let $Z_i$ and $Z_{i:}$ denote the $i$th column and, resp., row of $Z$, and let $Z_{(2,\min)} = \min_{i} \|Z_i\|_2$, $Z_{(2,\max)} = \max_{i} \|Z_i\|_2$ and $Z_{\max} = \max_{i,j} |Z_{i,j}|$. 
-Clearly, $\sigma_{\max}(Z) =\|Z\|_2 \ge Z_{(2,\max)} \ge Z_{\max}$, and $\sigma_{\min}(Z) \le Z_{(2,\min)}$. For a tensor (including vectors and matrices) $T$, its Frobenious norm (or $L_2$ norm) $\|T\|_F$  is defined as the square root of the sum of the square of all the entries.  
+Let $\|v\|_2$ denote its $L_2$-norm, and for any matrix $Z$ let $\|Z\|_2=\max_{v:\|v\|_2=1}{\|Z v\|_2}$ denote the corresponding induced norm. Denote the maximal and minimal singular value of $Z$ by $\sigma_{\max}(Z)$ and  $\sigma_{\min}(Z)$, respectively. Also, let $Z_i$ and $Z_{i:}$ denote the $i$th column and, resp., row of $Z$.
+For a tensor (including vectors and matrices) $T$, its Frobenious norm (or $L_2$ norm) $\|T\|_F$  is defined as the square root of the sum of the square of all the entries.  
 For a vector $v=(v_1,\ldots,v_d) \in K^d$, $\vert v \vert$ is defined coordinatewise, that is $\vert v \vert=(\vert v_1 \vert,\ldots,\vert v_d\vert)$. 
 The transpose of a vector/matrix $Z$ is denoted by $Z^\top$, while the inverse of the transpose is denoted by $Z^{-\top}$.  
 The outer product of two vectors $v, u \in K^d$ is denoted by $u\otimes v=u v^\top$. 
@@ -156,6 +157,7 @@ Finally, $\poly{\cdot,\cdots,\cdot}$ denotes a polynomial function of its argume
 
 \section{Main Results}
 \label{sec:main}
+In this paper, we consider the problem that given $x(t), t\in [T]$, to what extent we can reconstruct the true mixing matrix $A$, as shown in Theorem \ref{thm:finalRes}.
 Assume that we can observe the $d$ dimensional mixed signal $x(t) \in \real^d, t \in [T]:=\{1,2,\ldots,T\}$ generated by  
 \vspace{-2mm}
 \begin{equation}
@@ -163,7 +165,7 @@ Assume that we can observe the $d$ dimensional mixed signal $x(t) \in \real^d, t
 x(t) = As(t)+\epsilon(t),
 \end{equation}
 where $A$ is a $d\times d$ nonsingular mixing matrix,  $s:[T] \to [-C,C]^d$ is a bounded, $d$-dimensional source function for some constant $C \ge 1$. , and $\epsilon:[T] \to \real^d$ is the noise function. 
-In this paper, we consider the problem that given $x(t), t\in [T]$, to what extent we can reconstruct the true mixing matrix $A$, as shown in Theorem \ref{thm:finalRes}.
+
 
 We will denote the $i$th component of $s$ by $s_i$. 
 Furthermore, we will use the notation $\sigma_{\min}=\sigma_{\min}(A)$ and
@@ -172,7 +174,7 @@ For any $t,k \ge 1$ and a function $u:[t] \to \real^k$, we introduce the empiric
 $\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(\tau) \in B\}|$ for all Borel sets $B \subset \real^k$.
 Fix some product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\real^d$ 
 such that $\E_{S_i\sim\mu_i}[S_i]=0$ and $\kappa_i := \vert \E_{S_i\sim \mu_i}[S_i^4] - 3\left(\E_{S_i\sim \mu_i}[S_i^2]\right)^2 \vert \neq 0$. Let
-$K$ denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$, and define $\kappa_{\max}=\max_{i} \kappa_i$ and $\kappa_{\min}=\min_{i} \kappa_i$.
+$K$ denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$, and define $\kappa_{\min}=\min_{i} \kappa_i$.
 
 
 To measure the distance of $\nu_T^{(s)}$ from $\mu$, define the following family of ``distances'' to measure the closeness of two distributions: Given two distributions $\nu_1$ and $\nu_2$ over $\real^d$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\nu_2(s)|$, where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ is the set of all monomials up to degree $k$. 
