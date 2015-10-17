@@ -17,7 +17,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 
-\title{Formatting Instructions for NIPS 2015}
+\title{Deterministic Independent Component Analysis}
 
 
 \author{
@@ -108,7 +108,7 @@ Such an example is shown in Figure~\ref{fig:demo}.
 \centering
 	\includegraphics[width = 0.49\linewidth]{demo_source}
 	\includegraphics[width = 0.49\linewidth]{demo_res}
-	\vspace{-6mm}
+	\vspace{-4mm}
 \caption{Example of ICA: The black signals are the source signals, red ones observed signals, and blue ones the reconstructed (and rescaled) signals are shown for FastICA, HKICA, and DICA (3 different ICA algorithms, see Section \ref{subsec:relatedWorks} and \ref{sec:DICA} for details ) after sampling $As(t)$ at 2500 uniformly spaced points in the interval $[0,50]$.}
 \vspace{-5mm}
 \end{figure}
@@ -180,21 +180,21 @@ such that $\E_{S_i\sim\mu_i}[S_i]=0$ and $\kappa_i := \vert \E_{S_i\sim \mu_i}[S
 $K$ denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$, and define $\kappa_{\min}=\min_{i} \kappa_i$.
 
 
-To measure the distance of $\nu_T^{(s)}$ from $\mu$, define the following family of ``distances'' to measure the closeness of two distributions: Given two distributions $\nu_1$ and $\nu_2$ over $\real^d$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\nu_2(s)|$, where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ is the set of all monomials up to degree $k$. 
-
+To measure the distance of $\nu_T^{(s)}$ from $\mu$, define the following family of ``distances'' to measure the closeness of two distributions: Given two distributions $\nu_1$ and $\nu_2$ over $\real^d$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\nu_2(s)|$, where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ is the set of all monomials up to degree $k$.
+Also let $D_k(\nu)  = \min_{\mu} D_k(\mu, \nu)$ where the minimization of $\mu$ is taken over the set of all the product measures. 
 
 \begin{thm}
 \label{thm:finalRes} Consider the ICA problem \eqref{eq:ICA}. There exists an algorithm that estimates the mixing matrix $A$ from $T$ samples of $x$ such that (i) the computational complexity of the algorithm is $O(d^3 T)$; and (ii) with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$,
 \[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+g^2(T) +g(T) \right),
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\nu_T)+g^2(T) +g(T) \right),
 \]
 under the following conditions:
 \begin{enumerate}
 \vspace{-2mm}
 \item $T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}}$;
 \vspace{-2mm}
-\item  there exists a product distribution  $\mu$  such that 
-$D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},\frac{1}{d}, \delta, \kappa_{\min}};$
+\item  %there exists a product distribution  $\mu$  such that 
+$D_4(\nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},\frac{1}{d}, \delta, \kappa_{\min}};$
 \vspace{-2mm}
 \item  Assumptions~\ref{ass:gauss} and~\ref{ass:independence} in Section \ref{subsec:assumptions} are satisfied,
 \end{enumerate}
