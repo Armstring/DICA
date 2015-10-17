@@ -214,7 +214,12 @@ d(\hat{A}, A) \le \mathcal{C} \min\left(D_4(\nu_T^{(s)})+ G^2 +G, \Theta \right)
 \]
 where $T$ is the number of samples, $\mathcal{C}$ and $\Theta$ are problem depedent constant, polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L)$, and $\hat{A}$ is the output of the algorithm.
 
-In particular, in the traditional stochastic setting, if $S$ has distribution $\mu$ and
+In particular, in the traditional stochastic setting, with probability at least $1-\delta$,
+\[
+d(\hat{A}, A) \le \mathcal{C} \min\left(O(\frac{1}{\sqrt{T}}), \Theta \right),
+\]
+\if0
+if $S$ has distribution $\mu$ and
 \[
 T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \|\Sigma\|_2},
 \]
@@ -223,6 +228,7 @@ then, with probability at least $1-\delta$, there exists a permutation $\pi$ and
  \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le 
 & \frac{\poly{C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d}}{\sqrt{2T}}.
 \end{align*}
+\fi
 \end{thm}
 
 \if0
