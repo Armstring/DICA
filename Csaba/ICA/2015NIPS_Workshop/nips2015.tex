@@ -85,9 +85,16 @@ Edmonton, AB T6G2E8 Canada\\
 \maketitle
 
 \begin{abstract}
-We study independent component analysis with noisy observations in a deterministic framework. We present a consistent, polynomial-time algorithm to reconstruct the mixing matrix with a data-dependent error bound. In contrast to earlier work, our results hold without any stochastic assumptions on the source signals and the observation noise. When applied
-to the standard i.i.d.\ stochastic ICA model, 
-our algorithm, for the first time in the literature, achieves a reconstruction error that vanishes at a $1/\sqrt{T}$ rate using $T$ observations and scales only polynomially with the natural parameters of the problem.  
+Independent component analysis (ICA) is concerned with the reconstruction of sources from their mixture, assuming the sources
+are independent. 
+Any collection of deterministic numbers are independent of each other.
+In fact, oftentimes the power of ICA algorithms is illustrated by separating mixtures of periodic, deterministic signals.
+These signals are ``easy'' for ICA, even though they show strong temporal dependencies.
+What then makes ICA algorithms capable of recovering sources (or the unknown mixing matrix)? 
+This paper is an attempt to provide answers to these intriguing questions by promoting to replace statistical assumptions
+and analysis with carefully constructed data dependent bounds.
+We also describe the first algorithm free of unspecific parameters whose runtime is polynomial and whose
+reconstruction error scales only polynomially with the natural parameters of the problem.  
 \end{abstract}
 
 \section{Introduction}
