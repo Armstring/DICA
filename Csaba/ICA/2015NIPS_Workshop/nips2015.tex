@@ -1,5 +1,7 @@
 \documentclass{article} % For LaTeX2e
 \usepackage{nips15submit_e,times}
+% why is marginparwidth messed up???
+\marginparwidth 0.75 true in
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{natbib}
@@ -14,6 +16,11 @@
 \usepackage{enumerate}
 \usepackage{paralist}
 \usepackage[capitalize]{cleveref}
+
+%\usepackage[disable]{todonotes}
+\usepackage{todonotes}
+\newcommand{\todoc}[2][]{\xspace\todo[color=red!20!white,size=\tiny,#1]{Cs: #2}}
+\newcommand{\todoh}[2][]{\xspace\todo[color=orange!20!white,size=\tiny,#1]{H: #2}}
 
 % For algorithms
 \usepackage{algorithm}
@@ -211,10 +218,10 @@ Starting from the classical setting, we will define this tuple nicer if the resp
 distributions approximately satisfy the usual assumptions: 
 \begin{inparaenum}[\itshape a\upshape)]
 \item the source ($s$) components are independent;
-\item they have high absolute excess kurtosis;
+\item they have high absolute $4^{\rm th}$-order cumulants (kurtosis);
 \item they have zero mean;
 \item the noise ($\eps$) has  zero mean;
-\item it has low absolute excess kurtosis;
+\item it has low absolute $4^{\rm th}$-order cross cumulants;
 \item the noise and source are independent.
 \end{inparaenum}
 
@@ -222,11 +229,13 @@ distributions approximately satisfy the usual assumptions:
 For a function $u:[T] \to \real^k$, we let $\nu^{(u)}$ stand for the empirical distribution of $u$,
 defined by
 $\nu^{(u)}(B)=\tfrac{1}{T}|\{t \in [T]: u(t) \in B\}|$ for Borel sets $B \subset \real^k$.
-For a distribution $\mu$ over the reals we let $\kappa(\mu)$ be the (absolute excess) kurtosis of $\mu$: 
-$\kappa(\mu) = |\int x^4 \mu(dx) - 3 (\int x^2 \mu(dx))^2|$.
+For a distribution $\mu$ over the reals we let $\kappa(\mu)$ be the (absolute) $4^{\rm th}$-order cumulant of $\mu$: 
+$\kappa(\mu) = |\int x^4 \mu(dx) - 3 (\int x^2 \mu(dx))^2|$, which, for brevity, we also call ``kurtosis'' (by slightly abusing terminology).
 For a product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\real^d$, we let $\kappa_{\min}(\mu)
 =\min_{1\le i \le d} \kappa(\mu_i)$ to denote the minimum kurtosis of the components of $\mu$.
-When $\mu$ is a distribution over $\real^d$, we define the $d$-dimensional excess absolute kurtosis of $\mu$ by
+When $\mu$ is a distribution over $\real^d$, we define the $d$-dimensional absolute 
+$4^{\rm th}$-order cumulant of $\mu$ by \todoc{I wonder if this should be
+$M_{i,j,k,l} - (M_{i,j}M_{k,l} + M_{i,k}M_{j,l} + M_{i,l}M_{j,k})$, as show e.g. in \citep{Lee98:ICAbook} page 23.}
 $\kappa^2(\mu) = \max_{1\le i,j\le d} \sum_{k,l} 
 \left\{ 
 M_{i,j,k,l}(\mu)  - (M_{i,j}(\mu) M_{k,l}(\mu)+ 2 M_{i,k}(\mu) M_{j,l}(\mu))
@@ -351,6 +360,7 @@ Assumption \ref{ass:independence} is to guarantee that the source signals and th
 \section{A ``Deterministic'' ICA Algorithm}
 \label{sec:DICA}
 The algorithm builds on the works of \citet{frieze1996learning,hsu2013learning,arora2012provable}.
+\todoc{How about Section 3.4.3 of \citet{comon2010handbook}, which mentions diagonalization in connection to fourth order cumulants and cites papers which precede all these works?}
 For a measure $\mu$ over $\real^d$, define
  $g_\mu, f_\mu:\real^d \to \real$ by
 $g_\mu(u) = \int (u^\top x)^4 \mu(dx) - 3 (\int (u^\top x)^2 \mu(dx) )^2$
