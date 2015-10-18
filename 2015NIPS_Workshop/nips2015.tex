@@ -12,6 +12,7 @@
 \usepackage{array}
 \usepackage{xspace}
 \usepackage{enumerate}
+\usepackage{paralist}
 \usepackage[capitalize]{cleveref}
 
 % For algorithms
@@ -154,28 +155,16 @@ Therefore when applied to the stochastic model, our algorithm is guaranteed to c
 The rest of this paper is organized as follows: 
 Our main results are highlighted in Section~\ref{sec:main}.
 The polynomial-time algorithms underlying these results are developed through Section~\ref{sec:DICA}.
-Due to space limit, proofs and experimental results are presented in the full version of the paper \citep{HuGySze15}.
+Due to space limit, proofs and experimental results are presented in the full version of the paper \citep{HuGySz15}.
 \fi
-
-\subsection{Related Works}
-\label{subsec:relatedWorks}
-Perhaps the most popular approach to the ICA problem is the FastICA algorithm \citep{hyvarinen1999fast}. 
-Great progress has been made to analyze FastICA theoretically \citep{tichavsky2006performance,oja2006fastica,ollila2010deflation,dermoune2013fastica,wei2014convergence}.
-In particular, recently \citet{miettinen2014fourth} showed that in the noise-free case (i.e., when $X = AS$), the error of FastICA (when using a particular forth-moments-based contrast function) vanishes at a rate of $1/\sqrt{T}$ where $T$ is the sample size.
-In addition, several other methods have been shown to achieve similar error rates in the noise-free setting \citep[e.g.,][]{eriksson2003characteristic,samarov2004nonparametric,chen2005consistent,chen2006efficient}.
-However, to our knowledge, no similar finite sample results are available in the noisy case.
-
-On the other hand, promising algorithms based on moment methods are available in the noisy case that make significant advances towards provably efficient and effective ICA algorithms, albeit fall short of either providing a complete solution or providing rigorous proofs. \citep{anandkumar2012tensordecomposition,anandkumar2012method, arora2012provable, hsu2013learning, goyal2014fourier}
-In particular, the results of \citep{arora2012provable} and \cite{goyal2014fourier} depend on some  unspecified parameters ($\beta$ in the paper of \citep{arora2012provable} and $\sigma$ in the paper of \citep{goyal2014fourier}) that are belong some specific range, making their algorithms impossible to tune.
-A common problem faced by the other methods (\citep{anandkumar2012tensordecomposition,anandkumar2012method,hsu2013learning}) is a minimal gap of the eigenvalues, which may result in an exponential dependence on the number of source signals $d$. 
-Recently, \citet{vempala2014max} proposed an ICA algorithm based on an elegant, recursive version of the method of \citet{goyal2014fourier} that avoids dealing with the aforementioned minimal gap; however, they still need an oracle to set the unspecified parameter of \citet{goyal2014fourier}.
-
-The problem of separating mixture of deterministic signals are also consider in \citep{kirimoto2011separation} and \citep{forootan2013separation}. But the analysis is restricted to particular signals, while our result is applicable to general ones. 
+ 
 \subsection{Notation}
 We denote the set of real and natural numbers by $\real$ and $\natural$, respectively.
 A vector $v \in K^d$ for a field $K$ is assumed to be a column vector.
-Let $\|v\|_2$ denote its $L_2$-norm, and for any matrix $Z$ let $\|Z\|_2=\max_{v:\|v\|_2=1}{\|Z v\|_2}$ denote the corresponding induced norm. Denote the maximal and minimal singular value of $Z$ by $\sigma_{\max}(Z)$ and  $\sigma_{\min}(Z)$, respectively. Also, let $Z_{:i}$ denote the $i$th column of $Z$.
-For a tensor (including vectors and matrices) $T$, its Frobenious norm (or $L_2$ norm) $\|T\|_F$  is defined as the square root of the sum of the square of all the entries.  
+The $2$-norm of $v$ is denoted by  $\|v\|_2$ and for any matrix $Z$ we let $\|Z\|_2=\max_{v:\|v\|_2=1}{\|Z v\|_2}$ denote the corresponding induced norm. 
+%We denote the largest (smallest) singular value of $Z$ by $\sigma_{\max}(Z)$ (resp., by $\sigma_{\min}(Z)$). 
+%Also, let $Z_{:i}$ denote the $i$th column of $Z$.
+For a tensor (including vectors and matrices) $T$, its Frobenius norm (or $\ell_2$ norm) $\|T\|_F$  is defined as the square root of the sum of the square of all the entries.  
 %For a vector $v=(v_1,\ldots,v_d) \in K^d$, $\vert v \vert$ is defined coordinatewise, that is $\vert v \vert=(\vert v_1 \vert,\ldots,\vert v_d\vert)$. 
 The transpose of a vector/matrix $Z$ is denoted by $Z^\top$, while the inverse of the transpose is denoted by $Z^{-\top}$.  
 The outer product of two vectors $v, u \in K^d$ is denoted by $u\otimes v=u v^\top$. 
@@ -191,23 +180,36 @@ Finally, $\poly{\cdot,\cdots,\cdot}$ denotes a polynomial function of its argume
 Let $x$, $s$, and $\epsilon$ be $\real^d$-valued functions from $[T]\doteq\{1,2,\ldots,T\}$, and $A$ be $d\times d$ nonsingular ``mixing'' matrix, such that 
 \begin{equation}
 \label{eq:ICA}
-x(t) = As(t)+\epsilon(t),
+x(t) = As(t)+\epsilon(t), \qquad 1\le t\le T\,.
 \end{equation}
-We consider the problem of reconstructing $A$ having observed $x$.
+We consider the problem of reconstructing $A$ having observed $x$ provided that $(A,s,\epsilon)$ are ``nice'' as it will be defined later. Intuitively, $s$ is the source whose components are ``independent'' while $\epsilon$ is ``noise''.
 %Assume that we can observe the $d$ dimensional mixed signal $x(t) \in \real^d, t \in [T]:=\{1,2,\ldots,T\}$ generated by  
 %Given observations  $x(t) \in \real^d, t \in [T]:=\{1,2,\ldots,T\}$, for any $d\times d$ nonsingular mixing matrix $A$, bounded $d$-dimensional function $s:[T] \to [-C,C]^d$, and $\epsilon:[T] \to \real^d$ such that
 %where $A$ is a $d\times d$ nonsingular mixing matrix,  $s:[T] \to [-C,C]^d$ is a bounded, $d$-dimensional source function for some constant $C \ge 1$. , and $\epsilon:[T] \to \real^d$ is the noise function. 
-We measure how well a matrix $\hat{A}$ proposed by an algorithm recovers $A$ by the reconstruction error defined as
+We measure how well a matrix $\hat{A}$ returned by an algorithm working on data $x$ 
+recovers $A$ by the reconstruction error defined as
 \[
 d(\hat{A}, A) = \inf_{
 		\substack{\pi \in \mathrm{Perm}([d]) \\ c\in \real^d}} 
 		\max_{k} || c_k A_{:\pi(k)} - A_{:k} ||_2\,,
 \]
-where $\mathrm{Perm}([d])$ is the set of all the permutations on the set $[d]$.
+where $A_{:i}$ stands for the $i$th column of $A$ and
+$\mathrm{Perm}([d])$ is the set of all the permutations on the set $[d]$.
+This measure compensates for the inherent indeterminacy in reconstructing the scale and ordering of sources.
+
+Let us now develop the ``niceness'' measure of the $(x,A,s,\eps)$. 
+Starting from the classical setting, we will define this tuple nicer if the respective \emph{empirical} 
+distributions approximately satisfy the usual assumptions: 
+\begin{inparaenum}[\itshape a\upshape)]
+\item the source ($s$) components are independent;
+\item they have high absolute excess kurtosis;
+\item they have zero mean;
+\item the noise ($\eps$) has  zero mean;
+\item it has low absolute excess kurtosis;
+\item the noise and sources are independent.
+\end{inparaenum}
 
 %We will denote the $i$th component of $s$ by $s_i$. 
-We will use $\sigma_{\min}=\sigma_{\min}(A)$ ($\sigma_{\max}=\sigma_{\max}(A)$) to denote 
-the smallest (resp., largest) singular value of $A$.
 For a function $u:[T] \to \real^k$, we let $\nu^{(u)}$ stand for the empirical distribution of $u$,
 defined by
 $\nu^{(u)}(B)=\tfrac{1}{T}|\{t \in [T]: u(t) \in B\}|$ for Borel sets $B \subset \real^k$.
@@ -223,20 +225,22 @@ M_{i,j,k,l}(\mu)  - (M_{i,j}(\mu) M_{k,l}(\mu)+ 2 M_{i,k}(\mu) M_{j,l}(\mu))
 We will also use $N(\nu) = \|\int x \nu(dx)\|$.
 
 To measure the degree of independence of the components of the source $s$, we define
-a family of ``distances'' to between distributions.
+a family of ``distances'' to between distributions (strictly speaking, these are only pseudo-distances).
 In particular, given two distributions $\nu_1$ and $\nu_2$ over $\real^d$ and an integer $k\ge 1$, we
 let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)\nu_1(ds) - \int f(s)\nu_2(ds)|$, 
 where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ 
 is the set of all monomials up to degree $k$.
-Also let $D_k(\nu)  = \inf_{\mu} D_k(\mu, \nu)$ where the infimum is taken over all the product measures.
-Hence, $D_k(\nu)$ measures how close is $\nu$ to be a product measure, i.e., $D_k(\nu)$ quantifies the degree of independence of the individual components of $X\sim \nu$.
+When $\mu$ is a product measure, $D_k(\mu,\nu)$ measures how close the components of $X\sim \nu$ are to being independent.
+%Also let $D_k(\nu)  = \inf_{\mu} D_k(\mu, \nu)$ where the infimum is taken over all the product measures.
+%Hence, $D_k(\nu)$ measures how close is $\nu$ to be a product measure, i.e., $D_k(\nu)$ quantifies the degree of independence of the individual components of $X\sim \nu$.
 When $\nu$ is a measure of $p+q$ variables (i.e., $X\in \real^{p+q}$) 
-we also need a measure that quantifies the degree of independence of the vectors $(X_1,\dots,X_p)$ and $(X_{p+1},\dots,X_{p+q})$. This measure we will denote by $D_k^{(p,q)}(\nu)$ and is defined as $D_k^{(p,q)} = \inf_{\mu_1,\mu_2} D_k(\mu_1\otimes \mu_2,\nu)$ where $\mu_1$ ranges over all measures on $\real^p$ and $\mu_2$ ranges over all measures on $\real^q$. 
+we also need a measure that quantifies the degree of independence of the vectors $(X_1,\dots,X_p)$ and $(X_{p+1},\dots,X_{p+q})$. We will denote this measure by $D_k^{(p,q)}(\nu)$ and is defined as $D_k^{(p,q)} (\nu)= \inf_{\mu_1,\mu_2} D_k(\mu_1\otimes \mu_2,\nu)$, where $\mu_1$ ranges over all measures on $\real^p$ and $\mu_2$ ranges over all measures on $\real^q$. 
 Finally, we let 
 \[
 L = \max \left( \| \textstyle\int  [y^{\otimes 2}] \nu^{(\epsilon)}(dy) \|_F,\, 
-			  \| \int  [y^{\otimes 3}] \nu^{(\epsilon)}(dy) \|_F \right).
+			  \| \int  [y^{\otimes 3}] \nu^{(\epsilon)}(dy) \|_F \right),
 \]
+which captures the magnitude of second and third moments of the noise.
 \if0
 For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\real^d$,
 let 
@@ -248,7 +252,7 @@ We also need to measure the perturbation of the second derivative of the functio
 for some problem dependent constant $\mathcal{C} = \poly{\sigma_{\max}, d, L}$. Note that $G(T)$ depends on how Gaussian $\epsilon$ is and how independent $\epsilon$ and $s$ are. 
 In the standard stochastic setting, $G(T) = O(\frac{1}{\sqrt{T}})$.
 \fi
-
+%
 \if0
 We also need to measure how approximately $s$ and $\epsilon$ are 0 mean, how Gaussian the noise function $\epsilon$ is, and lastly how independent $s$ and $\epsilon$ are. Let 
 \begin{align*}
@@ -265,6 +269,7 @@ G = &  \max \Huge{\{} \, \| \E_{S_i\sim \nu_T^{(s_i)}} [S_i] \|_F,\quad \| \E_{Y
 \end{align*}
 \fi
 We let $\Pi_0$ to be the set of zero mean product distributions over $\real^d$.
+
 Now we are ready to state our main result. 
 \begin{thm}
 \label{thm:finalRes} 
@@ -278,7 +283,7 @@ d(\hat{A}, A) \le
 \inf_{\mu\in \Pi_0} \mathcal{C}(\mu) \min\left(D_4(\nu^{(s)},\mu)+ \kappa(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
 +N(\nu^{(\eps)}) + N( \nu^{(s)}), \Theta(\mu) \right),
 \]
-where $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min}(\mu),1/\delta, d, L)$.
+where $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}(A), 1/\sigma_{\min}(A), 1/\kappa_{\min}(\mu),1/\delta, d, L)$.
 Further, the computational complexity of the algorithm is $O(d^3 T)$ when used on any data $x$ of dimensions $T\times d$.
 
 \if0
@@ -293,11 +298,14 @@ then, with probability at least $1-\delta$, there exists a permutation $\pi$ and
 \end{align*}
 \fi
 \end{thm}
-Note that the above result implies that in the standard stochastic setting, with probability at least $1-\delta$,
+Note that the above result implies that in the standard stochastic setting
+with independent sources and Gaussian noise, independently generated from the sources, 
+with probability at least $1-\delta$,
 \[
 d(\hat{A}, A) \le \mathcal{C} \min\left(\tfrac{1}{\sqrt{T}}, \Theta \right),
 \]
-
+for some problem dependent constants $\mathcal{C}$ and $\Theta$.
+The next section describes the algorithm that achieves this bound.
 \if0
 \subsection{Assumptions about the data}
 \label{subsec:assumptions}
@@ -347,7 +355,7 @@ and so it is easy to handle the resulting minimum spacing
 \label{def:gammaR}
 \gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2 - \left(\frac{\phi_1^{\top}R_j}{\phi_2^{\top}R_j}\right)^2 \right\vert.
 \end{equation}
-We show in the full version \citep{HuGySze15} %Lemma~\ref{lem:ConstantProb} in the appendix 
+We show in the full version \citep{HuGySz15} %Lemma~\ref{lem:ConstantProb} in the appendix 
 that, among others,  $\gamma_R \ge\frac{\delta}{2d^2}$ with probability at least $1-\delta$.
 The resulting algorithm, called Deterministic ICA (DICA), is shown in Algorithm \ref{alg:DICA}. 
 \begin{algorithm}
@@ -367,6 +375,21 @@ The resulting algorithm, called Deterministic ICA (DICA), is shown in Algorithm 
 \STATE Return $\hat{A} = \{\mu_1,\ldots,\mu_d\}$.
 \end{algorithmic}
 \end{algorithm}
+
+\subsection{Related Works}
+\label{subsec:relatedWorks}
+Perhaps the most popular approach to the ICA problem is the FastICA algorithm \citep{hyvarinen1999fast}. 
+Great progress has been made to analyze FastICA theoretically \citep{tichavsky2006performance,oja2006fastica,ollila2010deflation,dermoune2013fastica,wei2014convergence}.
+In particular, recently \citet{miettinen2014fourth} showed that in the noise-free case (i.e., when $X = AS$), the error of FastICA (when using a particular forth-moments-based contrast function) vanishes at a rate of $1/\sqrt{T}$ where $T$ is the sample size.
+In addition, several other methods have been shown to achieve similar error rates in the noise-free setting \citep[e.g.,][]{eriksson2003characteristic,samarov2004nonparametric,chen2005consistent,chen2006efficient}.
+However, to our knowledge, no similar finite sample results are available in the noisy case.
+
+On the other hand, promising algorithms based on moment methods are available in the noisy case that make significant advances towards provably efficient and effective ICA algorithms, albeit fall short of either providing a complete solution or providing rigorous proofs. \citep{anandkumar2012tensordecomposition,anandkumar2012method, arora2012provable, hsu2013learning, goyal2014fourier}
+In particular, the results of \citep{arora2012provable} and \cite{goyal2014fourier} depend on some  unspecified parameters ($\beta$ in the paper of \citep{arora2012provable} and $\sigma$ in the paper of \citep{goyal2014fourier}) that are belong some specific range, making their algorithms impossible to tune.
+A common problem faced by the other methods (\citep{anandkumar2012tensordecomposition,anandkumar2012method,hsu2013learning}) is a minimal gap of the eigenvalues, which may result in an exponential dependence on the number of source signals $d$. 
+Recently, \citet{vempala2014max} proposed an ICA algorithm based on an elegant, recursive version of the method of \citet{goyal2014fourier} that avoids dealing with the aforementioned minimal gap; however, they still need an oracle to set the unspecified parameter of \citet{goyal2014fourier}.
+
+The problem of separating mixture of deterministic signals are also consider in \citep{kirimoto2011separation} and \citep{forootan2013separation}. But the analysis is restricted to particular signals, while our result is applicable to general ones.
 
 \subsubsection*{Acknowledgments}
 This work was supported by the Alberta Innovates Technology Futures and NSERC.
