@@ -194,12 +194,12 @@ $\kappa^2(\mu) = \max_{1\le i,j\le d} \sum_{k,l}
 \left\{ 
 M_{i,j}(\mu) M_{k,l}(\mu) - (M_{i,j,k,l}(\mu) + 2 M_{i,k}(\mu) M_{j,l}(\mu))
 \right\}^2$, where $M_{a,\dots,z}(\mu) = \int y_a \dots y_z \mu(dy)$.
-We will also use $M_{\norm{\cdot}}(\nu) = \|\int x \nu(dx)\|$.
+We will also use $N(\nu) = \|\int x \nu(dx)\|$.
 
 To measure the degree of independence of the components of the source $s$, we define
 a family of ``distances'' to between distributions.
 In particular, given two distributions $\nu_1$ and $\nu_2$ over $\real^d$ and an integer $k\ge 1$, we
-let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\nu_2(s)|$, 
+let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)\nu_1(ds) - \int f(s)\nu_2(ds)|$, 
 where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ 
 is the set of all monomials up to degree $k$.
 Also let $D_k(\nu)  = \inf_{\mu} D_k(\mu, \nu)$ where the infimum is taken over all the product measures.
@@ -208,7 +208,8 @@ When $\nu$ is a measure of $p+q$ variables (i.e., $X\in \real^{p+q}$)
 we also need a measure that quantifies the degree of independence of the vectors $(X_1,\dots,X_p)$ and $(X_{p+1},\dots,X_{p+q})$. This measure we will denote by $D_k^{(p,q)}(\nu)$ and is defined as $D_k^{(p,q)} = \inf_{\mu_1,\mu_2} D_k(\mu_1\otimes \mu_2,\nu)$ where $\mu_1$ ranges over all measures on $\real^p$ and $\mu_2$ ranges over all measures on $\real^q$. 
 Finally, we let 
 \[
-L = \max \left( \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 2}] \|_F,\, \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 3}] \|_F \right).
+L = \max \left( \| \textstyle\int  [y^{\otimes 2}] \nu^{(\epsilon)}(dy) \|_F,\, 
+			  \| \int  [y^{\otimes 3}] \nu^{(\epsilon)}(dy) \|_F \right).
 \]
 \if0
 For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\real^d$,
@@ -249,7 +250,7 @@ such that with probability at least $1-\delta$,
 \[
 d(\hat{A}, A) \le
 \inf_{\mu\in \Pi_0} \mathcal{C}(\mu) \min\left(D_4(\nu^{(s)},\mu)+ \kappa(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
-+M_{\norm{\cdot}}(\nu^{(\eps)}) + M_{\norm{\cdot}}( \nu^{(s)}), \Theta(\mu) \right),
++N(\nu^{(\eps)}) + N( \nu^{(s)}), \Theta(\mu) \right),
 \]
 where $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min}(\mu),1/\delta, d, L)$.
 Further, the computational complexity of the algorithm when run on data $x$ is $O(d^3 T)$.
