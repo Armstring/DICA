@@ -192,7 +192,7 @@ For a product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\real^
 When $\mu$ is a distribution over $\real^d$, we define the $d$-dimensional excess absolute kurtosis of $\mu$ by
 $\kappa^2(\mu) = \max_{1\le i,j\le d} \sum_{k,l} 
 \left\{ 
-M_{i,j}(\mu) M_{k,l}(\mu) - (M_{i,j,k,l}(\mu) + 2 M_{i,k}(\mu) M_{j,l}(\mu))
+M_{i,j,k,l}(\mu)  - (M_{i,j}(\mu) M_{k,l}(\mu)+ 2 M_{i,k}(\mu) M_{j,l}(\mu))
 \right\}^2$, where $M_{a,\dots,z}(\mu) = \int y_a \dots y_z \mu(dy)$.
 We will also use $N(\nu) = \|\int x \nu(dx)\|$.
 
@@ -269,7 +269,7 @@ then, with probability at least $1-\delta$, there exists a permutation $\pi$ and
 \end{thm}
 Note that the above result implies that in the standard stochastic setting, with probability at least $1-\delta$,
 \[
-d(\hat{A}, A) \le \mathcal{C} \min\left(O(\frac{1}{\sqrt{T}}), \Theta \right),
+d(\hat{A}, A) \le \mathcal{C} \min\left(\tfrac{1}{\sqrt{T}}, \Theta \right),
 \]
 
 \if0
