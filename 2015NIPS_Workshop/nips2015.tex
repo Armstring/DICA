@@ -18,7 +18,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 
-\title{Deterministic Independent Component Analysis}
+\title{Easy Data for Independent Component Analysis}
 
 
 \author{
@@ -58,6 +58,8 @@ Edmonton, AB T6G2E8 Canada\\
 \DeclareMathOperator{\pol}{Poly}
 \newcommand{\poly}[1]{\pol\left(#1\right)}
 \newcommand{\E}{\mathbb{E}}
+\newcommand{\eps}{\epsilon}
+\renewcommand{\epsilon}{\varepsilon}
 
 \newtheorem{lemma}{Lemma}[section]
 \newtheorem{thm}[lemma]{Theorem}
@@ -86,6 +88,9 @@ our algorithm, for the first time in the literature, achieves a reconstruction e
 \end{abstract}
 
 \section{Introduction}
+Consider 
+
+
 Independent Component Analysis (ICA)
 %, as a main tool of blind source separation, 
 has received much attention in the past decades. 
@@ -183,11 +188,16 @@ such that $\E_{S_i\sim\mu_i}[S_i]=0$ and $\kappa_i := \vert \E_{S_i\sim \mu_i}[S
 $K$ denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$, and define $\kappa_{\min}=\min_{i} \kappa_i$.
 
 To measure the distance of $\nu_T^{(s)}$ from $\mu$, define the following family of ``distances'' to measure the closeness of two distributions: Given two distributions $\nu_1$ and $\nu_2$ over $\real^d$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\nu_2(s)|$, where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ is the set of all monomials up to degree $k$.
-Also let $D_k(\nu)  = \min_{\mu} D_k(\mu, \nu)$ where the minimization of $\mu$ is taken over the set of all the product measures. 
-Also, let 
+Also let $D_k(\nu)  = \inf_{\mu} D_k(\mu, \nu)$ where the minimization of $\mu$ is taken over the set of all the product measures. 
+Hence, $D_k(\nu)$ measures how close is $\nu$ to be a product measure, i.e., $D_k(\nu)$ quantifies the degree of independence of the individual components of $X\sim \nu$.
+When $\nu$ is a measure of $p+q$ variables (i.e., $X\in \real^{p+q}$) 
+we also need a measure that quantifies the degree of independence of the vectors $(X_1,\dots,X_p)$ and $(X_{p+1},\dots,X_{p+q})$. This measure we will denote by $D_k^{(p,q)}(\nu)$ and is defined as $D_k^{(p,q)} = \inf_{\mu_1,\mu_2} D_k(\mu_1\otimes \mu_2,\nu)$ where $\mu_1$ ranges over all measures on $\real^p$ and $\mu_2$ ranges over all measures on $\real^q$. 
+
+Let
 \[
 L = \max \left( \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 2}] \|_F,\, \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 3}] \|_F \right).
 \]
+\if0
 For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\real^d$,
 let 
 $m_p^{(\nu)}(\eta) = \E_{X\sim \nu}[ (\eta^\top X)^p ],\, f_{\nu}(\eta) = \tfrac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)$.
@@ -197,6 +207,7 @@ We also need to measure the perturbation of the second derivative of the functio
 \] 
 for some problem dependent constant $\mathcal{C} = \poly{\sigma_{\max}, d, L}$. Note that $G(T)$ depends on how Gaussian $\epsilon$ is and how independent $\epsilon$ and $s$ are. 
 In the standard stochastic setting, $G(T) = O(\frac{1}{\sqrt{T}})$.
+\fi
 
 \if0
 We also need to measure how approximately $s$ and $\epsilon$ are 0 mean, how Gaussian the noise function $\epsilon$ is, and lastly how independent $s$ and $\epsilon$ are. Let 
@@ -217,19 +228,18 @@ G = &  \max \Huge{\{} \, \| \E_{S_i\sim \nu_T^{(s_i)}} [S_i] \|_F,\quad \| \E_{Y
 Now we are ready to state our main result. 
 \begin{thm}
 \label{thm:finalRes} 
-For any $A\in \real^{d\times d}$, and $x(t)$, $s(t)$, and $\epsilon: [T] \rightarrow \real^d$ such that Equation \ref{eq:ICA} holds,
-there exists an algorithm that returns $\hat{A}$
+There exists a randomized algorithm such that 
+for any $A\in \real^{d\times d}$, and $x, s, \epsilon: [T] \rightarrow \real^d$ satisfying Equation \eqref{eq:ICA},
+the algorithm returns $\hat{A}$
 %Consider the ICA problem \eqref{eq:ICA}. There exists an algorithm that estimates the mixing matrix $A$ from $T$ samples of $x$ 
-such that (i) the computational complexity of the algorithm is $O(d^3 T)$; and (ii) with probability at least $1-\delta$,
+such that with probability at least $1-\delta$,
 \[
-d(\hat{A}, A) \le \mathcal{C} \min\left(D_4(\nu_T^{(s)})+ G, \Theta \right),
+d(\hat{A}, A) \le \mathcal{C} \min\left(D_4(\nu^{(s)})+ D_4(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
++M(\nu^{(\eps)}) + M( \nu^{(s)}), \Theta \right),
 \]
-where $T$ is the number of samples, $\mathcal{C}$ and $\Theta$ are problem dependent constants, polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, L)$.
+where $\mathcal{C}$ and $\Theta$ are problem dependent constants, polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, L)$.
+Further, the computational complexity of the algorithm when run on data $x$ is $O(d^3 T)$.
 
-In particular, in the traditional stochastic setting, with probability at least $1-\delta$,
-\[
-d(\hat{A}, A) \le \mathcal{C} \min\left(O(\frac{1}{\sqrt{T}}), \Theta \right),
-\]
 \if0
 if $S$ has distribution $\mu$ and
 \[
@@ -242,6 +252,10 @@ then, with probability at least $1-\delta$, there exists a permutation $\pi$ and
 \end{align*}
 \fi
 \end{thm}
+Note that the above result implies that in the standard stochastic setting, with probability at least $1-\delta$,
+\[
+d(\hat{A}, A) \le \mathcal{C} \min\left(O(\frac{1}{\sqrt{T}}), \Theta \right),
+\]
 
 \if0
 \subsection{Assumptions about the data}
