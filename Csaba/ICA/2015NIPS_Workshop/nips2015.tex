@@ -49,6 +49,7 @@ Edmonton, AB T6G2E8 Canada\\
 % puts 3 of 4 authors names on the first line, and the last on the second
 % line, try using \AND instead of \And before the third author name.
 
+\newcommand{\norm}[1]{\|#1\|}
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 \newcommand{\iid}{i.i.d.\xspace}
@@ -179,14 +180,21 @@ d(\hat{A}, A) = \inf_{
 where $\mathrm{Perm}([d])$ is the set of all the permutations on the set $[d]$.
 
 %We will denote the $i$th component of $s$ by $s_i$. 
-We will use the notation $\sigma_{\min}=\sigma_{\min}(A)$ and
-$\sigma_{\max}=\sigma_{\max}(A)$ for the smallest (resp., largest) singular value of $A$.
-For a function $u:[T] \to \real^k$, we introduce the empirical distribution $\nu^{(u)}$ defined by
+We will use $\sigma_{\min}=\sigma_{\min}(A)$ ($\sigma_{\max}=\sigma_{\max}(A)$) to denote 
+the smallest (resp., largest) singular value of $A$.
+For a function $u:[T] \to \real^k$, we let $\nu^{(u)}$ stand for the empirical distribution of $u$,
+defined by
 $\nu^{(u)}(B)=\tfrac{1}{T}|\{t \in [T]: u(t) \in B\}|$ for Borel sets $B \subset \real^k$.
-For a distribution $\mu$ over the reals and let $\kappa(\mu)$ be the absolute kurtosis of $\mu$: 
+For a distribution $\mu$ over the reals we let $\kappa(\mu)$ be the (absolute excess) kurtosis of $\mu$: 
 $\kappa(\mu) = |\int x^4 \mu(dx) - 3 (\int x^2 \mu(dx))^2|$.
-For a product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\real^d$ we let $\kappa_{\min}(\mu)
-=\min_{1\le i \le d} \kappa(\mu_i)$.
+For a product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\real^d$, we let $\kappa_{\min}(\mu)
+=\min_{1\le i \le d} \kappa(\mu_i)$ to denote the minimum kurtosis of the components of $\mu$.
+When $\mu$ is a distribution over $\real^d$, we define the $d$-dimensional excess absolute kurtosis of $\mu$ by
+$\kappa^2(\mu) = \max_{1\le i,j\le d} \sum_{k,l} 
+\left\{ 
+M_{i,j}(\mu) M_{k,l}(\mu) - (M_{i,j,k,l}(\mu) + 2 M_{i,k}(\mu) M_{j,l}(\mu))
+\right\}^2$, where $M_{a,\dots,z}(\mu) = \int y_a \dots y_z \mu(dy)$.
+We will also use $M_{\norm{\cdot}}(\nu) = \|\int x \nu(dx)\|$.
 
 To measure the degree of independence of the components of the source $s$, we define
 a family of ``distances'' to between distributions.
@@ -195,11 +203,10 @@ let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\
 where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ 
 is the set of all monomials up to degree $k$.
 Also let $D_k(\nu)  = \inf_{\mu} D_k(\mu, \nu)$ where the infimum is taken over all the product measures.
-When the infimum is taken over all product measures with zero mean, the measure is denoted by $D_{k}^\circ$.
 Hence, $D_k(\nu)$ measures how close is $\nu$ to be a product measure, i.e., $D_k(\nu)$ quantifies the degree of independence of the individual components of $X\sim \nu$.
 When $\nu$ is a measure of $p+q$ variables (i.e., $X\in \real^{p+q}$) 
 we also need a measure that quantifies the degree of independence of the vectors $(X_1,\dots,X_p)$ and $(X_{p+1},\dots,X_{p+q})$. This measure we will denote by $D_k^{(p,q)}(\nu)$ and is defined as $D_k^{(p,q)} = \inf_{\mu_1,\mu_2} D_k(\mu_1\otimes \mu_2,\nu)$ where $\mu_1$ ranges over all measures on $\real^p$ and $\mu_2$ ranges over all measures on $\real^q$. 
-Finally, we let $M(\nu) = \|\int x \nu(dx)\|$ and
+Finally, we let 
 \[
 L = \max \left( \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 2}] \|_F,\, \| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes 3}] \|_F \right).
 \]
@@ -241,8 +248,8 @@ the algorithm returns $\hat{A}$
 such that with probability at least $1-\delta$,
 \[
 d(\hat{A}, A) \le
-\inf_{\mu\in \Pi_0} \mathcal{C}(\mu) \min\left(D_4(\nu^{(s)},\mu)+ D_4(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
-+M(\nu^{(\eps)}) + M( \nu^{(s)}), \Theta(\mu) \right),
+\inf_{\mu\in \Pi_0} \mathcal{C}(\mu) \min\left(D_4(\nu^{(s)},\mu)+ \kappa(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
++M_{\norm{\cdot}}(\nu^{(\eps)}) + M_{\norm{\cdot}}( \nu^{(s)}), \Theta(\mu) \right),
 \]
 where $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min}(\mu),1/\delta, d, L)$.
 Further, the computational complexity of the algorithm when run on data $x$ is $O(d^3 T)$.
