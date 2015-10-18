@@ -124,11 +124,12 @@ and a measure of the success of the algorithm and then postulating the requireme
 ICA settings so that the usual statistical results can be recovered from our results.
 The key feature of the approach is that no probabilistic assumptions are made on the data (the algorithms may randomize though), and thus this work can be thought as the natural extension of online learning
 where learning algorithms are analyzed without making any probabilistic assumptions \citep{CBLu06:book}.
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 	\includegraphics[width = 0.49\linewidth]{demo_source}
 	\includegraphics[width = 0.49\linewidth]{demo_res}
-\caption{Example of ICA: The black signals are the source signals, red ones observed signals (left). The right figure shows the reconstructed (and rescaled) signals from FastICA, HKICA, and DICA (3 different ICA algorithms, see Section \ref{subsec:relatedWorks} and \ref{sec:DICA} for details ) after sampling $As(t)$ at 2500 uniformly spaced points in the interval $[0,50]$.}
+\caption{Example of ICA: The black signals are the source signals, red ones observed signals (left). The right figure shows the reconstructed (and rescaled) signals from FastICA, HKICA, and DICA (3 different ICA algorithms, see Section \ref{subsec:relatedWorks} and \ref{sec:DICA} for details ).}
+% after sampling $As(t)$ at 2500 uniformly spaced points in the interval $[0,50]$.}
 \label{fig:demo}
 \end{figure}
 
@@ -349,9 +350,7 @@ Assumption \ref{ass:independence} is to guarantee that the source signals and th
 \fi
 \section{A ``Deterministic'' ICA Algorithm}
 \label{sec:DICA}
-The algorithm is inspired by the work of 
-\citet{hsu2013learning}, which is combined with that of \citet{arora2012provable}. However, the core ideas
-can be traced back to at least  \citet{frieze1996learning}.
+The algorithm builds on the works of \citet{frieze1996learning,hsu2013learning,arora2012provable}.
 For a measure $\mu$ over $\real^d$, define
  $g_\mu, f_\mu:\real^d \to \real$ by
 $g_\mu(u) = \int (u^\top x)^4 \mu(dx) - 3 (\int (u^\top x)^2 \mu(dx) )^2$
@@ -373,10 +372,9 @@ $T_i=A K^{1/2} D_\psi^{-1/2} \Lambda_i A^\top$ where $\Lambda_i =\text{diag}\lef
 Then $M=T_1 T_2^{-1} = A\Lambda A^{-1}$ with $\Lambda=\Lambda_1 \Lambda_2^{-1}=\text{diag}\left( \left(\frac{\phi_1^\top R_1}{\phi_2^\top R_1}\right)^2,\ldots,\left(\frac{\phi_1^\top R_d}{\phi_2^\top R_d}\right)^2 \right)$. Thus, $A_i$ are the eigenvectors of $M$.
 Note that the eigenvalues of $M$ are defined in terms of the orthogonal matrix $R$,
 and so it is easy to handle the resulting minimum spacing
-\begin{equation}
-\label{def:gammaR}
+\begin{align*}
 \gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2 - \left(\frac{\phi_1^{\top}R_j}{\phi_2^{\top}R_j}\right)^2 \right\vert.
-\end{equation}
+\end{align*}
 We show in the full version \citep{HuGySz15} %Lemma~\ref{lem:ConstantProb} in the appendix 
 that,  when $\phi_1,\phi_2,\psi$ are independent standard $d$-dimensional normally distributed random vectors then
  $\gamma_R \ge\frac{\delta}{2d^2}$ with probability at least $1-\delta$.
@@ -394,30 +392,35 @@ The name is somewhat misleading, as the algorithm randomizes; the intention is t
 \STATE Compute $\hat{B}$ such that $\nabla^2\hat{g}(\psi) = \hat{B}\hat{B}^{\top}$;
 \STATE Compute $\hat{T}_1 =\nabla^2\hat{g}(\hat{B}^{-\top}\phi_1)$ and  $\hat{T}_2 =\nabla^2\hat{g}(\hat{B}^{-\top}\phi_2)$;
 
-\STATE Compute the eigenvectors $\{\mu_1,\ldots,\mu_d\}$ of $\hat{M} = \hat{T}_1\left(\hat{T}_2\right)^{-1}$;
+\STATE Compute the eigenvectors $\{\mu_1,\ldots,\mu_d\}$ of $\hat{M} = \hat{T}_1\hat{T}_2^{-1}$;
 \STATE Return $\hat{A} = \{\mu_1,\ldots,\mu_d\}$.
 \end{algorithmic}
 \end{algorithm}
-
+\vspace*{-0.2in}
 \subsection{Related Works}
 \label{subsec:relatedWorks}
-Perhaps the most popular ICA method is FastICA \citep{hyvarinen1999fast}.
-Great progress has been made to analyze FastICA theoretically \citep{tichavsky2006performance,oja2006fastica,ollila2010deflation,dermoune2013fastica,wei2014convergence}.
-In particular, recently \citet{miettinen2014fourth} showed that in the noise-free case (i.e., when $X = AS$), the error of FastICA (when using a particular fourth-moments-based contrast function) vanishes at a rate of $1/\sqrt{T}$ where $T$ is the sample size.
-Several other ICA methods have also been shown to achieve similar error rates in the noise-free setting \citep[e.g.,][]{eriksson2003characteristic,samarov2004nonparametric,chen2005consistent,chen2006efficient}.
-However, to our knowledge, no finite sample results are available in the ``noisy'' case, which better suits the so-called moment methods, a class that our method also belongs to.
+Perhaps FastICA is the most popular ICA method  \citep{hyvarinen1999fast}, which is quite well understood by now.
+%Great progress has been made to analyze FastICA theoretically \citep{tichavsky2006performance,oja2006fastica,ollila2010deflation,dermoune2013fastica,wei2014convergence}.
+In particular, recently \citet{miettinen2014fourth} showed that in the noise-free case (i.e., when $X = AS$), FastICA's error (when it uses a particular fourth-moments-based contrast function) vanishes at a rate of $1/\sqrt{T}$. % where $T$ is the sample size.
+Similar results (mostly asymptotic) exists for several other ICA methods
+%Several other ICA methods have also been shown to achieve similar error rates in the noise-free setting 
+\citep[e.g.,][]{eriksson2003characteristic,samarov2004nonparametric,chen2005consistent,chen2006efficient},
+However, no finite-sample bounds are available for these methods in the ``noisy'' case, which seems to better suit the so-called moment methods, a class that our method also belongs to.
 
 %On the other hand, promising algorithms based on moment methods are available in the noisy case that make significant advances towards provably efficient and effective ICA algorithms, albeit fall short of either providing a complete solution or providing rigorous proofs. \citep{anandkumar2012tensordecomposition,anandkumar2012method, arora2012provable, hsu2013learning, goyal2014fourier}
 While recent years have seen much advance in the design and analysis of these methods, up to the present work all these works lacked in some respects.
-In particular, the algorithms of \citep{arora2012provable} and \cite{goyal2014fourier} make use of some  parameters ($\beta$ in the paper of \citet{arora2012provable} and $\sigma$ in the paper of \citet{goyal2014fourier}) and their guarantees hold only when these parameter belong to some unobservable interval of an uncontrolled measure, preventing the easy escape of choosing the parameters randomly. In other methods
-(\citep{anandkumar2012tensordecomposition,anandkumar2012method,hsu2013learning}) 
-a common problem is that the minimum gap between the eigenvalues may potentially be exponentially large in $d$.
-Although this is avoided by \citet{vempala2014max}, this work still inherits a free parameter from \citet{goyal2014fourier}.
+In particular, the algorithms of \citet{arora2012provable} and \citet{goyal2014fourier} make use of some  parameters ($\beta$ in the paper of \citet{arora2012provable} and $\sigma$ in the paper of \citet{goyal2014fourier}) and their guarantees hold only when these parameter belong to some unobservable interval of an uncontrolled measure, preventing the easy escape of choosing these parameters randomly. In other methods
+\citep{anandkumar2012tensordecomposition,anandkumar2012method,hsu2013learning} 
+a common problem is that the minimum gap between the eigenvalues is uncontrolled; 
+it could potentially be exponentially large in $d$.
+Although this is avoided by \citet{vempala2014max}, their algorithm still inherits a free parameter from \citet{goyal2014fourier}.
 %Recently, \citet{vempala2014max} proposed an ICA algorithm based on an elegant, recursive version of the method of \citet{goyal2014fourier} that avoids dealing with the aforementioned minimal gap; however, they still need an oracle to set the unspecified parameter of \citet{goyal2014fourier}.
 The problem of separating mixture of deterministic signals is also consider in \citep{kirimoto2011separation} and \citep{forootan2013separation}. But their analysis is restricted to particular signals, while our result is applicable to general ones.
 
+\if0
 \subsubsection*{Acknowledgments}
 This work was supported by the Alberta Innovates Technology Futures and NSERC.
+\fi
 \bibliographystyle{plainnat}
 \bibliography{DICA}
 \end{document}
