@@ -207,7 +207,7 @@ recovers $A$ by the reconstruction error defined as
 \[
 d(\hat{A}, A) = \inf_{
 		\substack{\pi \in \mathrm{Perm}([d]) \\ c\in \real^d}} 
-		\max_{k} || c_k A_{:\pi(k)} - A_{:k} ||_2\,,
+		\max_{k} || c_k \hat{A}_{:\pi(k)} - A_{:k} ||_2\,,
 \]
 where $A_{:i}$ stands for the $i$th column of $A$ and
 $\mathrm{Perm}([d])$ is the set of all the permutations on the set $[d]$.
@@ -259,33 +259,6 @@ L = \max \left( \| \textstyle\int  [y^{\otimes 2}] \nu^{(\epsilon)}(dy) \|_F,\,
 			  \| \int  [y^{\otimes 3}] \nu^{(\epsilon)}(dy) \|_F \right),
 \]
 which captures the magnitude of second and third moments of the noise.
-\if0
-For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\real^d$,
-let 
-$m_p^{(\nu)}(\eta) = \E_{X\sim \nu}[ (\eta^\top X)^p ],\, f_{\nu}(\eta) = \tfrac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)$.
-We also need to measure the perturbation of the second derivative of the function $f_{\nu_T^{(x)}}(\eta)$ caused by the noise function $\epsilon$, by 
-\[
-\mathcal{C}G(T) = \max_{\|\eta\|_2\le 1}\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2, 
-\] 
-for some problem dependent constant $\mathcal{C} = \poly{\sigma_{\max}, d, L}$. Note that $G(T)$ depends on how Gaussian $\epsilon$ is and how independent $\epsilon$ and $s$ are. 
-In the standard stochastic setting, $G(T) = O(\frac{1}{\sqrt{T}})$.
-\fi
-%
-\if0
-We also need to measure how approximately $s$ and $\epsilon$ are 0 mean, how Gaussian the noise function $\epsilon$ is, and lastly how independent $s$ and $\epsilon$ are. Let 
-\begin{align*}
-G = &  \max \Huge{\{} \, \| \E_{S_i\sim \nu_T^{(s_i)}} [S_i] \|_F,\quad \| \E_{Y \sim \nu_T^{(\epsilon)}} [Y] \|_F, \\
-& \quad  \max_{\|\eta\| \le 1} \Bigl\| \left(\E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\Bigr\|_F, \\
-& \quad \max_{
-	\substack{i_1,i_2,j_1,j_2 \ge 0 \\ i_1+i_2+j_1+j_2 \le 4}}
- \| \E_{S\sim \nu_T^{(s)}} [(AS)^{\otimes i_1}\!\otimes \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes j_1}] \!\otimes (AS)^{\otimes i_2}] \\
-& \quad \quad \quad \quad - \E_{(S, Y)\sim \nu_T^{(s, \epsilon)}} [(AS)^{\otimes i_1}\!\otimes Y^{\otimes j_1}\!\otimes (AS)^{\otimes i_2}]  \|_F, \\
-& \quad \max_{
-	\substack{i_1,i_2,j_1,j_2 \ge 0 \\ i_1+i_2+j_1+j_2 \le 4}}
-\| \E_{Y\sim \nu_T^{(\epsilon)}} [Y^{\otimes j_1} \otimes \E_{S\sim \nu_T^{(s)}} [(AS)^{\otimes i_1}] \otimes Y^{\otimes j_2}] \\
-& \quad \quad \quad \quad - \E_{(S, Y)\sim \nu_T^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes Y^{\otimes j_2}] \|_F \, \Huge{\}}.
-\end{align*}
-\fi
 We let $\Pi_0$ to be the set of zero mean product distributions over $\real^d$.
 
 Now we are ready to state our main result. 
