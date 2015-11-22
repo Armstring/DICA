@@ -251,16 +251,17 @@ This is quite obvious for the first two components, while the third, being gener
 Also, as the reader may recall, any two constant numbers $a,b \in \real$ are independent of each other when viewed as degenerate random variables. Thus, $s_1(t)$, $s_2(t)$, and $s_3(t)$ are independent. 
 Does the success of the algorithms on this example implies that they will also work for other mixtures of deterministic sources? Of course not. 
 For example, if one source is a linear function of other sources, then no algorithm will be able to recover the sources from their mixture.
- Another question is whether the temporal dependency of the sources may hamper performance. 
+ Another question is whether the temporal dependency of the sources may hamper the performance. 
 If $s(1) = s(2) = \dots = s(T)$ then the algorithms effectively need to work with a single vector observation and no algorithm will be able to perform a successful reconstruction. 
 
 In this paper, we attempted to provide some answers to the question: to what extents can ICA algorithms separate the mixture of some sources? 
 In particular, can we redefine the problem of ICA in a meaningful way so tat we can explain the success of the particular ICA algorithms on the above example?
-We propose the "niceness" of data based on its empirical measure. 
-Then a \emph{provably polynomial-time} algorithm for the noisy ICA model is developed and its performance is built on the "niceness" of the observed data. 
+The essence of our approach is to define an empirical measure of the ``niceness'' of data and then postulating the requirement that good algorithms are those that get better results on `nice' data.
+The niceness measure should behave in a controlled fashion in the classical ICA setting, so that the usual statistical results can be recovered from our results. 
+We also propose a \emph{provably polynomial-time} algorithm for the noisy ICA model and analyze its performance based on the "niceness" of the observed data. 
 The key feature of our approach is that no probabilistic assumptions are made on the data (the algorithm may randomize though), and thus this work can be thought as the natural extension of online learning
 where learning algorithms are analyzed without making any probabilistic assumptions \citep{CBLu06:book}.
-We also require that the niceness measure should behave in a controlled fashion in the classical ICA setting, so that the usual statistical results can be recovered from our results. 
+
 
 The rest of this paper is organized as follows: 
 We review some previous works in the literature and compare them to our algorithm in Section \ref{subsec:relatedWorks}.
@@ -270,6 +271,9 @@ Experimental results are reported in Section \ref{sec:ExpRes}.
 
 \subsection{Related Works}
 \label{subsec:relatedWorks}
+We explain the difference between our ICA algorithm and the previous methods in this section. 
+However, as mentioned above, the key feature of this paper is rather the removal of the probabilistic assumptions on the observed data.
+ 
 A popular approach to the ICA problem is to find a linear transformation $W$ for $X$ by optimizing a \emph{contrast function} 
 that measures dependence or non-gaussianity of the resulting coordinates of $WX$.
 The optimal $W$ then can serve as an estimate of $A^{-1}$, thereby recovering the mixing matrix $A$.
@@ -279,7 +283,6 @@ FastICA has been analyzed theoretically from many aspects \citep{tichavsky2006pe
 In particular, recently \citet{miettinen2014fourth} showed  that in the noise-free case (i.e., when $X = AS$), the error of FastICA (when using a particular forth-moments-based contrast function) vanishes at a rate of $1/\sqrt{T}$ where $T$ is the sample size.
 In addition, several other methods have been shown to achieve similar error rates in the noise-free setting \citep[e.g.,][]{eriksson2003characteristic,samarov2004nonparametric,chen2005consistent,chen2006efficient}.
 However, to our knowledge, no similar finite sample results are available in the noisy case.
-
 
 On the other hand, several promising algorithms are available in the noisy case that make significant advances towards provably efficient and effective ICA algorithms, albeit fall short of providing a complete solution. 
 Using a quasi-whitening procedure, \citet{arora2012provable} reduces the problem to finding all the local optima of a specific function defined using the forth order cumulant, 
@@ -302,8 +305,9 @@ Recently, \citet{vempala2014max} proposed an ICA algorithm based on an elegant, 
 Our ICA algorithm is a refined version of the ICA method proposed by \cite{hsu2013learning} (HKICA). 
 However, we propose two simpler ways, one inspired by \citet{frieze1996learning}, \citet{arora2012provable}, and another based on \citet{vempala2014max}, to deal with the spacing problem of the eigenvalues under similar conditions to those of \citet{goyal2014fourier}.
 Unlike the method proposed by \citet{goyal2014fourier}, our first method can force the eigenvalues to be well-separated with a gap that is independent of the mixing matrix $A$, while our second method, based on the recursive decomposition idea of \citet{vempala2014max}, avoids dealing with the minimum gap (on the price of introducing other complications).
-We prove that our methods achieve an $O(1/\sqrt{T})$ error in estimating $A$ and the source signals, with high probability, such that both the convergence rate and the computational complexity scale \emph{polynomially} with the natural parameters of the problem. 
+We prove that our methods achieve an $O(1/\sqrt{T})$ error in estimating $A$ in the classical setting, with high probability, such that both the convergence rate and the computational complexity scale \emph{polynomially} with the natural parameters of the problem. 
 Our method needs no parameter tuning, which makes it even more appealing. 
+
 
 %Another contribution of the present paper is that our analysis is conducted in a deterministic manner. 
 %In practice, ICA is also known to work well for unmixing the mixture of various deterministic signals. 
@@ -373,14 +377,26 @@ $\sigma_{\max}=\sigma_{\max}(A)$.
 Let us now develop the ``niceness'' measure of the $(x,A,s,\eps)$. 
 Starting from the classical setting, we will define this tuple nicer if the respective \emph{empirical} 
 distributions approximately satisfy the usual assumptions: 
-\begin{inparaenum}[\itshape a\upshape)]
+\begin{enumerate}[(a)]
 \item the source ($s$) components are independent;
-\item they have high absolute $4^{\rm th}$-order cumulants (kurtosis);
-\item they have zero mean;
-\item the noise ($\eps$) has  zero mean;
-\item it has low absolute $4^{\rm th}$-order cross cumulants;
 \item the noise and source are independent.
-\end{inparaenum}
+\item the source ($s$) have high absolute $4^{\rm th}$-order cumulants (kurtosis);
+\item the noise ($\eps$) has low absolute $4^{\rm th}$-order cross cumulants;
+\item the source ($s$) have zero mean;
+\item the noise ($\eps$) has  zero mean;
+\end{enumerate}
+
+To measure the degree of independence of the components of the source $s$, we define
+a family of ``distances'' between distributions (strictly speaking, these are only pseudo-distances).
+In particular, given two distributions $\nu_1$ and $\nu_2$ over $\real^d$ and an integer $k\ge 1$, we
+let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)\nu_1(ds) - \int f(s)\nu_2(ds)|$, 
+where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ 
+is the set of all monomials up to degree $k$.
+When $\mu$ is a product measure, $D_k(\mu,\nu)$ measures how close the components of $X\sim \nu$ are to being independent.
+When $\nu$ is a measure of $p+q$ variables (i.e., $X\in \real^{p+q}$) 
+we also need a measure that quantifies the degree of independence of the vectors $(X_1,\dots,X_p)$ and $(X_{p+1},\dots,X_{p+q})$. We will denote this measure by $D_k^{(p,q)}(\nu)$ and is defined as $D_k^{(p,q)} (\nu)= \inf_{\mu_1,\mu_2} D_k(\mu_1\otimes \mu_2,\nu)$, where $\mu_1$ ranges over all measures on $\real^p$ and $\mu_2$ ranges over all measures on $\real^q$. 
+As can be seen later, $D_k^{(p,q)}(\nu)$ will be used to measure the independence between the source ($s$)) and the noise ($\eps$).
+
 For any $t,k \ge 1$ and signal $u:[t] \to \R^k$, we introduce the empirical distribution $\nu_t^{(u)}$ defined by
 $\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $B \subset \R^k$. 
 For a distribution $\mu$ over the reals we let $\kappa(\mu)$ be the (absolute) $4^{\rm th}$-order cumulant of $\mu$: 
@@ -390,30 +406,18 @@ For a product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\real^
 When $\mu$ is a distribution over $\real^d$, we define the $d$-dimensional absolute 
 $4^{\rm th}$-order cumulant of $\mu$ by 
 %\todoc{I wonder if this should be $M_{i,j,k,l} - (M_{i,j}M_{k,l} + M_{i,k}M_{j,l} + M_{i,l}M_{j,k})$, as show e.g. in \citep{Lee98:ICAbook} page 23.}
-$\cQ(\mu) = \max_{\|\mu\|_2 \le 1}\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F $.
-%$\max_{1\le i,j\le d} \sum_{k,l} \left\{ M_{i,j,k,l}(\mu)  - (M_{i,j}(\mu) M_{k,l}(\mu)+ 2 M_{i,k}(\mu) M_{j,l}(\mu)) \right\}^2$, where $M_{a,\dots,z}(\mu) = \int y_a \dots y_z \mu(dy)$.
-We will also use $N(\nu) = \|\int x \nu(dx)\|_F$.
+$\cQ(\mu) = \max_{\|\eta\|_2 \le 1}\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F $.
 
-To measure the degree of independence of the components of the source $s$, we define
-a family of ``distances'' between distributions (strictly speaking, these are only pseudo-distances).
-In particular, given two distributions $\nu_1$ and $\nu_2$ over $\real^d$ and an integer $k\ge 1$, we
-let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)\nu_1(ds) - \int f(s)\nu_2(ds)|$, 
-where $\mathcal{F}=\{f:\real^d \to \real : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ 
-is the set of all monomials up to degree $k$.
-When $\mu$ is a product measure, $D_k(\mu,\nu)$ measures how close the components of $X\sim \nu$ are to being independent.
-%Also let $D_k(\nu)  = \inf_{\mu} D_k(\mu, \nu)$ where the infimum is taken over all the product measures.
-%Hence, $D_k(\nu)$ measures how close is $\nu$ to be a product measure, i.e., $D_k(\nu)$ quantifies the degree of independence of the individual components of $X\sim \nu$.
-When $\nu$ is a measure of $p+q$ variables (i.e., $X\in \real^{p+q}$) 
-we also need a measure that quantifies the degree of independence of the vectors $(X_1,\dots,X_p)$ and $(X_{p+1},\dots,X_{p+q})$. We will denote this measure by $D_k^{(p,q)}(\nu)$ and is defined as $D_k^{(p,q)} (\nu)= \inf_{\mu_1,\mu_2} D_k(\mu_1\otimes \mu_2,\nu)$, where $\mu_1$ ranges over all measures on $\real^p$ and $\mu_2$ ranges over all measures on $\real^q$. 
-Finally, we let 
+We will also use $N(\nu) = \|\int x \nu(dx)\|_F$ to denote the mean of the distribution $\nu$. Finally, we let 
 \[
 L = \max \left( \| \textstyle\int  [y^{\otimes 2}] \nu^{(\epsilon)}(dy) \|_F,\, 
 			  \| \int  [y^{\otimes 3}] \nu^{(\epsilon)}(dy) \|_F \right),
 \]
 which captures the magnitude of second and third moments of the noise.
-We let $\Pi_0$ to be the set of zero mean product distributions over $\real^d$.
+We let $\Pi_0$ to be the set of zero mean product distributions over $\real^d$. 
 
-Now we are ready to state our main result. 
+Now we are ready to state our main result. The algorithm that achieves this bound will be described later in the paper.
+
 \begin{theorem}
 \label{thm:finalRes} 
 There exists a randomized algorithm such that 
@@ -437,8 +441,8 @@ Our algorithms are randomized algorithms. The high probability $1-\delta$ in the
 The dependence on $\delta$ in our result is $\poly{\frac{1}{\delta}}$, which is weaker than the usual $\log(\frac{1}{\delta})$.
 \end{remark}
 
-\subsection{Applied to various ICA setting}
-To apply Theorem \ref{thm:finalRes} to various ICA setting, we only need to replace the terms in the right hand side of the inequality by their upper bounds.
+\subsection{Applicability of Theorem \ref{thm:finalRes}}
+Theorem \ref{thm:finalRes} can be applied to a variety of different ICA settings.
 \begin{proposition}
 \label{prop:stochasticAss}
 In the classical stochastic setting of ICA, i.e. when $(s(t))_{t\in[T]}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$, with probability at least $1-\delta$, $L = \poly{A_{\rm max}, \|\Sigma\|_2,C,d,\frac{1}{\delta}}$.
@@ -451,7 +455,6 @@ with probability at least $1-\delta$,
 d(\hat{A}, A) \le \mathcal{C} \min\left(\tfrac{1}{\sqrt{T}}, \Theta \right),
 \]
 for some problem dependent constants $\mathcal{C}$ and $\Theta$.
-The next sections describes the algorithm that achieves this bound.
 
 Our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
 \begin{example} \em
@@ -460,6 +463,19 @@ Assume that the unknown sources $s_i$ ($1\le i\le d$) are deterministic and peri
 Even though $\eps$ is i.i.d.\ for every time step, the observations cannot satisfy the traditional i.i.d.\ assumption, since the source $s$ is deterministic. 
 However, it can be proved that if the ratio of the periods of each pair of $(s_i, s_j)$ is irrational, then the reconstruction error would approach 0 for $T$ large enough.   
 \end{example}
+\begin{remark}
+To have a concrete (noise-free) example, let $s_1(t)=0.5 - \lfloor t-2\lfloor t/2 \rfloor \rfloor$, $s_2=\cos(t)$. 
+It is easy to see that the limit distribution of source 1 is a Bernoulli distribution $\mu_1$ with $\mu_1(\{0.5\}) = 1/2$ and $\mu_1(\{-0.5\}) = 1/2$, and the limit distribution of source 2 is a distribution $\mu_2$ with density function $p(x) = \frac{1}{\pi \sqrt{1-x^2}}$ for $-1\le x \le 1$.
+Pick $\mu = \mu_1 \otimes \mu_2$.
+Let $T = 2*u + b$ as the division with remainder, where $u$ is integer and $0\le b<2$. 
+Moreover, assume $b\le 1$ (similar analysis will go through for the case of $b>1$).  
+The induced distribution $\nu_T^{s_1}$ of source 1 is $\nu_T^{s_1}(\{0.5\}) = \frac{u+b}{T}$ and $\nu_T^{s_1}(\{-0.5\}) = \frac{u}{T}$. 
+Thus the total variation distance of $\mu_1$ and $\nu_T^{s_1}$ is at most $1/(2T)$. 
+Similarly, it can be verified that the total variation distance of $\nu_T^{s_2}$ and $\mu_2$  and that of $\nu_T$ and $\mu$ also decay as $1/T$. 
+Thus, $D_4$ is $O(1/T)$, since the monomials $f(s)$ in the definition
+of $D_4$ are bounded from above by $1$, and $N(\nu^{(s)})$ is also $O(1/T)$.
+Therefore we achieve an error rate of $\frac{1}{T}$.
+\end{remark}
 Our setting also extends the traditional one to a practically important case, Markov sources.  
 \begin{example} \em
 \label{ex:markov}
@@ -467,152 +483,16 @@ Assume that $s_i$ is a stationary and ergodic Markov source, and the sources are
 Because of the Markov property, the observations do not satisfy the i.i.d. assumptions.
 \end{example}
 
-\if0
-\section{The ICA Problem}
-\label{sec:Preliminaries}
-In this paper we consider the following non-stochastic version of the ICA problem.
-Assume that we can observe the $d$ dimensional mixed signal $x(t) \in \R^d, t \in [T]:=\{1,2,\ldots,T\}$ generated by  
-\begin{equation}
-\label{eq:ICA}
-x(t) = As(t)+\epsilon(t), 
-\end{equation}
-where $A$ is a $d\times d$ nonsingular mixing matrix,  $s:[T] \to [-C,C]^d$ is a bounded, $d$-dimensional source function for some constant $C \ge 1$. , and $\epsilon:[T] \to \R^d$ is the noise function. We will denote the $i$th component of $s$ by $s_i$. Furthermore, we will use the notation $\sigma_{\min}=\sigma_{\min}(A)$ and
-$\sigma_{\max}=\sigma_{\max}(A)$.
+In the next sections, we will present two algorithms that satisfy Theorem \ref{thm:finalRes}.
 
-For any $t,k \ge 1$ and signal $u:[t] \to \R^k$, we introduce the empirical distribution $\nu_t^{(u)}$ defined by
-$\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $B \subset \R^k$. Next we will impose assumptions on the empirical measure that guarantee that on the average we do not deviate too much from the stochastic model. The next assumption implies that the empirical distributions of the source signals are approximately zero mean, and that the noise is approximately zero-mean Gaussian.
+\section{A ``Deterministic'' ICA Algorithm}
+Our algorithm builds on the works of \citet{frieze1996learning,hsu2013learning,arora2012provable}. In this section we will first introduce the ICA algorithm of  \citet{hsu2013learning} and analyze its performance.
+The result suggests a dependence on a spacing problem that is dependent on the mixing matrix $A$ and difficult to analyze.
+Such problem motivates us to refine the algorithm, which leads to our algorithm, deterministic ICA (DICA). 
 
-\begin{assumption}
-\label{ass:gauss}
-Assume there exists a constant $L$ and a function $g:[T]\rightarrow \real$ such that $g(t)$ approaches 0 as $t$ approaching infinity, and
-%Assume there exists a constant $L\ge 1$, such that 
-\begin{enumerate}[(i)]
-%\vspace{-3mm}
-\item $\| \E_{S_i\sim \nu_t^{(s_i)}} [S_i] \|_F\le g(t)$; % L/\sqrt{t}$;
-\item $\| \E_{Y \sim \nu_t^{(\epsilon)}} [Y] \|_F \le g(t)$; %L/\sqrt{t}$;
-\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 2}] \|_F \le L$;
-\item $\| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes 3}] \|_F \le L$;
-\item $\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F\le g(t)\|\eta\|_2^2$. %$.
-\end{enumerate}
-Here $L$ and the function $g$ may depend on $\{A,\Sigma,C,d\}$.
-\end{assumption}
-\begin{remark}
-The first two statements force the averages of $s$ and $\epsilon$ decay to 0 in a rate of $\sqrt{n}$.
-The next two assumptions require that both the second and third moments of the noise be bounded.
-The last assumption basically says that the induced measure of the noise function $\epsilon$ has 0 kurtosis in the limit.
-All these assumptions about $\epsilon$ are satisfied with high probability for \iid Gaussian noise $\mathcal{N}(0,\Sigma)$ with fixed $\Sigma$, as proved later in Proposition~\ref{prop:stochasticAss}.
-\end{remark}
-We will also need to guarantee that the source signals and the noise be approximately independent:
-\begin{assumption}
-\label{ass:independence}
-Assume the source signal function and the noise function are `independent' up to the 4th moment in the sense that for any $i_1,i_2,j_1,j_2 \ge 0$ such that $i_1+i_2+j_1+j_2 \le 4$,  
-\begin{align*}
-& \| \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}\otimes \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1}] \otimes (AS)^{\otimes i_2}]\\
-& \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [(AS)^{\otimes i_1}\otimes Y^{\otimes j_1}\otimes (AS)^{\otimes i_2}]  \|_F 
- \le g(t); %\frac{L}{\sqrt{t}},
-\end{align*}
-and 
-\begin{align*}
-& \| \E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes j_1} \otimes \E_{S\sim \nu_t^{(s)}} [(AS)^{\otimes i_1}] \otimes Y^{\otimes j_2}] \\
-& \quad - \E_{(S, Y)\sim \nu_t^{(s, \epsilon)}} [ Y^{\otimes j_1}\otimes (AS)^{\otimes i_1}\otimes Y^{\otimes j_2}] \|_F 
-\le g(t). %\frac{L}{\sqrt{t}}, % \le L/\sqrt{t},
-\end{align*}
-for the same function $g$ in Assumption \ref{ass:gauss}, where $(s,\epsilon)$ is the function obtained by concatenating $s$ and $\epsilon$ together.  
-\end{assumption}
-The sufficiency of such weaker assumptions is also discussed in the paper of \citet{frieze1996learning}.
-Similarly, the next proposition shows that the assumptions are satisfied, with high probability, for the traditional stochastic setting of the ICA model with Gaussian noise independent to the source signals.
-\begin{proposition}
-\label{prop:stochasticAss}
-In the traditional stochastic setting of ICA, that is, when $(s(t))_{t\in[T}$ is an \iid sequence, independent of the \iid Gaussian noise sequence $(\epsilon(t))_{t\in[T]}$, there exists \\ $L = \poly{A_{\max}, \|\Sigma\|_2, C, d,\frac{1}{\delta}}$ and $g(t) = L/\sqrt{t}$, such that Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold with probability at least $1-\delta$.
-\end{proposition}
-On the other hand, our setting can also cover some other examples excluded by the traditional setting, such as the example of Figure~\ref{fig:demo} in Section~\ref{sec:Intro}.
-\begin{example} \em
-\label{ex:periodic}
-Assume that the unknown sources $s_i$ ($1\le i\le d$) are deterministic and periodic. Our observation $x=As+\eps$ is a linear mixture of $s$ contaminated by i.i.d.\ Gaussian noise for each time step, where $A$ is a non-singular matrix and $\eps\sim {\cN}(0,\Sigma)$ is Gaussian.   
-Even though $\eps$ is i.i.d.\ for every time step, the observations cannot satisfy the traditional i.i.d.\ assumption, since the source $s$ is deterministic. However, it can be proved that if the ratio of the periods of each pair of $(s_i, s_j)$ is irrational, this example satisfies all the assumptions above for $T$ large enough.   
-\end{example}
-Our setting also extends the traditional one to a practically important case, Markov sources.  
-\begin{example} \em
-\label{ex:markov}
-Assume that $s_i$ is a stationary and ergodic Markov source, and the sources are independent of each other for $1\le i\le d$. Our observations are similar to the setting in Example \ref{ex:periodic}. 
-Because of the Markov property, the observations do not satisfy the i.i.d. assumptions. On the other hand, it can be verified that this example satisfies the above assumptions.
-\end{example}
-
-
-\section{Main Results}
-\label{sec:main}
-
-The ICA approach requires that the components $s_i$ of the source signal $s$ be statistically independent. In our setup, we require that the empirical distribution $\nu_T^{(s)}$ be close to a product distribution.
-
-Fix some product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\R^d$ 
-such that $\E_{S_i\sim\mu_i}[S_i]=0$ and $\kappa_i := \vert \E_{S_i\sim \mu_i}[S_i^4] - 3\left(\E_{S_i\sim \mu_i}[S_i^2]\right)^2 \vert \neq 0$. Let
-$K$ denote the diagonal matrix $\text{diag}(\kappa_1,\cdots,\kappa_d)$, and define $\kappa_{\max}=\max_{i} \kappa_i$ and $\kappa_{\min}=\min_{i} \kappa_i$.
-
-To measure the distance of $\nu_T^{(s)}$ from $\mu$, define the following family of ``distances'' to measure the closeness of two distributions: Given two distributions $\nu_1$ and $\nu_2$ over $\R^d$, let $D_k(\nu_1,\nu_2) = \sup_{f\in\mathcal{F}} |\int f(s)d\nu_1(s) - \int f(s)d\nu_2(s)|$, where $\mathcal{F}=\{f:\R^d \to \R : f(s)=\prod_{j=1}^k s_{i_j}, 1 \le i_1,\ldots,i_k \le d\}$ is the set of all monomials up to degree $k$. Finally let
-\begin{equation}
-\label{eq:xi}
-\xi = \left( 6C^2D_2(\mu, \nu_T^{(s)}) + D_4(\mu, \nu_T^{(s)})\right).
-\end{equation}
-In general, we will need a condition that $\xi$ is small enough, so that the components of $s$ are ``independent'' enough. To this end, one should choose
-$\mu$ to minimize $\xi$; however, such a minimizer does not always exists.
-Generally, $\mu$ could be selected as the product of the limit distributions, if applicable, of the individual sources. 
-On the other hand, in the traditional stochastic setting where the observations are \iid samples, the empirical distribution will converge to the population distribution, which, based on the independence assumption, is a product probability measure. 
-Therefore, in this case, $\xi$ will be small for large enough sample sizes. 
-\begin{example}\em
-Let $\mu_1$ be a Bernoulli distribution $\mu_1(\{0.5\}) = 1/2$ and $\mu_1(\{-0.5\}) = 1/2$, and $\mu_2$ to be a distribution with density function $p(x) = \frac{1}{\pi \sqrt{1-x^2}}$ for $-1\le x \le 1$. 
-For the demonstration example in Figure \ref{fig:demo}, pick $\mu = \mu_1 \otimes \mu_2$.
-It is easy to see that $\mu_1$ ($\mu_2$) is the limit distribution of source 1 (respectively, source 2). Let $T = 2*u + b$ as the division with remainder, where $u$ is integer and $0\le b<2$. 
-Moreover, assume $b\le 1$ (similar analysis will go through for the case of $b>1$).  
-The induced distribution $\nu_T^{s_1}$ of source 1 is $\nu_T^{s_1}(\{0.5\}) = \frac{u+b}{T}$ and $\nu_T^{s_1}(\{-0.5\}) = \frac{u}{T}$. 
-Thus the total variation distance of $\mu_1$ and $\nu_T^{s_1}$ is at most $1/(2T)$. 
-Similarly, it can be verified that the total variation distance of $\nu_T$ and $\mu$ also decays as $1/T$. 
-Thus, $D_4$ is $O(1/T)$, since the monomials $f(s)$ in the definition
-of $D_4$ are bounded from above by $1$.
-Lastly, note that $D_2$ is upper bounded by $D_4$ by definition, so $\xi$ decays at a $1/T$ rate.
-\end{example}
-
-Now we are ready to state our main result, which shows the existence of polynomial-time algorithms for ICA that reconstructs the mixing matrix $A$ 
-with error that vanishes at an $O(1/\sqrt{T})$ rate for $T$ samples and is also polynomial in the natural parameters of the problem:
-
-
-\begin{theorem}
-\label{thm:finalRes} Consider the ICA problem \eqref{eq:ICA}. There exists an algorithm that estimates the mixing matrix $A$ from $T$ samples of $x$ such that (i) the computational complexity of the algorithm is $O(d^3 T)$; and (ii) if Assumptions~\ref{ass:gauss} and~\ref{ass:independence} are satisfied,
-\vspace{-2mm}
-\[
-T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, L, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}},
-\]
-and there exists a product distribution  $\mu$  such that 
-\vspace{-2mm}
-\[
-D_4(\mu, \nu_T) \le \poly{\frac{1}{C},  \sigma_{\min},  \frac{1}{\sigma_{\max}},\frac{1}{d}, \delta, \kappa_{\min}},
-\]
-then, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$,
-\vspace{-3mm}
-\[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}\left(D_4(\mu, \nu_T)+g^2(T) +g(T) \right),
-\]
-where $\mathcal{C} = \poly{\sigma_{\max}, 1/\sigma_{\min}, 1/\kappa_{\min},1/\delta, d, C, L}$, and $\hat{A}$ is the output of the algorithm.
-
-In particular, in the traditional stochastic setting, if $S$ has distribution $\mu$ and
-\vspace{-2mm} 
-\[
-T \ge \poly{d, \frac{1}{\kappa_{\min}}, \frac{1}{\delta}, C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \|\Sigma\|_2},
-\]
-then, with probability at least $1-\delta$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for all $1\le k\le d$,
-\vspace{-3mm}
-\begin{align*}
- \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le 
-& \frac{\poly{C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d}}{\sqrt{2T}}.
-\end{align*}
-\end{theorem}
-
-In the next sections, we will present two algorithms, DICA (Algorithm~\ref{alg:DICA}) and HKICA\_recur (Algorithm~\ref{alg:HKICA_recur}) in Section~\ref{sec:DICA} that 
-satisfy the theorem.
-\fi
-
-\section{Estimating Moments: the HKICA Algorithm}
+\subsection{Estimating Moments: the HKICA Algorithm}
 \label{sec:HKICA}
-In this section we introduce the ICA method of \citet{hsu2013learning} which is based on the well-known excess-kurtosis-like quantity
+The ICA algorithm of \citet{hsu2013learning} is based on the well-known excess-kurtosis-like quantity
 defined as follows:
 
 For any $p\ge 1$, $\eta\in \real^d$, and distribution $\nu$ over $\R^d$,
