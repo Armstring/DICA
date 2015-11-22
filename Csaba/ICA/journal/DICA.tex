@@ -398,7 +398,7 @@ we also need a measure that quantifies the degree of independence of the vectors
 As can be seen later, $D_k^{(p,q)}(\nu)$ will be used to measure the independence between the source ($s$)) and the noise ($\eps$).
 
 For any $t,k \ge 1$ and signal $u:[t] \to \R^k$, we introduce the empirical distribution $\nu_t^{(u)}$ defined by
-$\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $B \subset \R^k$. 
+$\nu_t^{(u)}(B)=\tfrac{1}{t}|\{\tau \in [t]: u(t) \in B\}|$ for all Borel sets $B \subset \R^k$. We omit the index $t$ when the time range is $T$, e.g. denote $\nu_T^{(\eps)}$ by $\nu^{(\eps)}$. 
 For a distribution $\mu$ over the reals we let $\kappa(\mu)$ be the (absolute) $4^{\rm th}$-order cumulant of $\mu$: 
 $\kappa(\mu) = |\int x^4 \mu(dx) - 3 (\int x^2 \mu(dx))^2|$, which, for brevity, we also call ``kurtosis'' (by slightly abusing terminology).
 For a product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\real^d$, we let $\kappa_{\min}(\mu)
@@ -406,7 +406,7 @@ For a product distribution $\mu= \mu_1\otimes \ldots \otimes \mu_d$ over $\real^
 When $\mu$ is a distribution over $\real^d$, we define the $d$-dimensional absolute 
 $4^{\rm th}$-order cumulant of $\mu$ by 
 %\todoc{I wonder if this should be $M_{i,j,k,l} - (M_{i,j}M_{k,l} + M_{i,k}M_{j,l} + M_{i,l}M_{j,k})$, as show e.g. in \citep{Lee98:ICAbook} page 23.}
-$\cQ(\mu) = \max_{\|\eta\|_2 \le 1}\| \left(\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes4}] - (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \nu_t^{(\epsilon)}} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F $.
+$\cQ(\mu) = \max_{\|\eta\|_2 \le 1}\| \left(\E_{Y\sim \mu} [Y^{\otimes4}] - (\E_{Y\sim \mu} [Y^{\otimes2}])^{\otimes 2}\right)(\eta,\eta,\cdot,\cdot)  - 2 (\E_{Y\sim \mu} [Y^{\otimes2}])^{\otimes 2}(\eta,\cdot,\eta,\cdot)\|_F $.
 
 We will also use $N(\nu) = \|\int x \nu(dx)\|_F$ to denote the mean of the distribution $\nu$. Finally, we let 
 \[
@@ -469,9 +469,9 @@ It is easy to see that the limit distribution of source 1 is a Bernoulli distrib
 Pick $\mu = \mu_1 \otimes \mu_2$.
 Let $T = 2*u + b$ as the division with remainder, where $u$ is integer and $0\le b<2$. 
 Moreover, assume $b\le 1$ (similar analysis will go through for the case of $b>1$).  
-The induced distribution $\nu_T^{s_1}$ of source 1 is $\nu_T^{s_1}(\{0.5\}) = \frac{u+b}{T}$ and $\nu_T^{s_1}(\{-0.5\}) = \frac{u}{T}$. 
-Thus the total variation distance of $\mu_1$ and $\nu_T^{s_1}$ is at most $1/(2T)$. 
-Similarly, it can be verified that the total variation distance of $\nu_T^{s_2}$ and $\mu_2$  and that of $\nu_T$ and $\mu$ also decay as $1/T$. 
+The induced distribution $\nu^{s_1}$ of source 1 is $\nu^{s_1}(\{0.5\}) = \frac{u+b}{T}$ and $\nu^{s_1}(\{-0.5\}) = \frac{u}{T}$. 
+Thus the total variation distance of $\mu_1$ and $\nu^{s_1}$ is at most $1/(2T)$. 
+Similarly, it can be verified that the total variation distance of $\nu^{s_2}$ and $\mu_2$  and that of $\nu$ and $\mu$ also decay as $1/T$. 
 Thus, $D_4$ is $O(1/T)$, since the monomials $f(s)$ in the definition
 of $D_4$ are bounded from above by $1$, and $N(\nu^{(s)})$ is also $O(1/T)$.
 Therefore we achieve an error rate of $\frac{1}{T}$.
@@ -487,8 +487,7 @@ In the next sections, we will present two algorithms that satisfy Theorem \ref{t
 
 \section{A ``Deterministic'' ICA Algorithm}
 Our algorithm builds on the works of \citet{frieze1996learning,hsu2013learning,arora2012provable}. In this section we will first introduce the ICA algorithm of  \citet{hsu2013learning} and analyze its performance.
-The result suggests a dependence on a spacing problem that is dependent on the mixing matrix $A$ and difficult to analyze.
-Such problem motivates us to refine the algorithm, which leads to our algorithm, deterministic ICA (DICA). 
+The result reveals some unexpected complications that motivate us to refine the algorithm, which leads to our algorithm, deterministic ICA (DICA). 
 
 \subsection{Estimating Moments: the HKICA Algorithm}
 \label{sec:HKICA}
@@ -506,7 +505,7 @@ and let
 \label{eq:funcf}
 f_{\nu}(\eta) = \frac1{12} \left( m_4^{(\nu)}(\eta) - 3 m_2^{(\nu)}(\eta)^2 \right)\,.
 \end{equation}
-\citet{hsu2013learning} showed that $\nabla^2f_{\nu_T^{(x)}}(\eta)$, the second derivative of the function $f_{\nu_T^{(x)}}$, is extremely useful for the ICA problem:
+\citet{hsu2013learning} showed that $\nabla^2f_{\nu^{(x)}}(\eta)$, the second derivative of the function $f_{\nu^{(x)}}$, is extremely useful for the ICA problem:
 They showed that if $\mu^{(X)}$ is the distribution of the observations $X$ in the stochastic setting where $S$ comes from the product distribution $\mu$, then
 $f_{\mu^{(X)}}(\eta)=f_{A\mu}(\eta)$ for all $\eta$ (where $A\mu$ denotes the distribution of $AS$) and, consequently, the eigenvectors\footnote{Throughout the paper eigenvectors always mean right eigenvectors, unless specified otherwise.} of the matrix $M=\nabla^2f_{\mu^{(X)}}(\phi)(\nabla^2f_{\mu^{(X)}}(\psi))^{-1}$ are the rescaled columns of $A$ if $\frac{\phi^\top A_i}{\psi^\top A_i}$ are distinct for all $i$. 
 Thus, to obtain an algorithm, one needs to estimate $\nabla^2 f_{\mu^{(X)}}$ in such a way that the noise $\epsilon$ could still be neglected.
@@ -525,22 +524,21 @@ where
 & G_3^{(\nu)}(\eta) = \E_{X\sim \nu} [\big(\eta^{\top}X\big)X] \E_{X\sim \nu} [\big(\eta^{\top}X\big)X^{\top}],
 %\frac{1}{T^2}\Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
 \end{align*} 
-and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu_T^{(x)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu_T^{(x)}$. 
+and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu^{(x)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu^{(x)}$. 
 %A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
 It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the following proposition. 
 Similar result is also discussed by \citet{arora2012provable} and \citet{belkin2013blind}.
 
 \begin{proposition}
  \label{prop:denoise}
- Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. Then,
-for any vector $\eta$ satisfying $\|\eta\|_2\le L_{\eta}$,
+ For any vector $\eta$,
 \[
-\| \nabla^2f_{\nu_T^{(x)}}(\eta) - \nabla^2f_{\nu_T^{(As)}}(\eta) \|_2 \le \text{Poly}(L_{\eta}, L, d, \sigma_{\max}, C)(g(T)+1)g(T). 
+\| \nabla^2f_{\nu^{(x)}}(\eta) - \nabla^2f_{\nu^{(As)}}(\eta) \|_2 \le \text{Poly}(\|\eta\|_2, L, d, \sigma_{\max}, C)\left(\cQ(\nu^{(\epsilon)}) + N(\nu^{(s)})+ N(\nu^{(\eps)})+ D_4^{(d,d)}(\nu^{(As,\eps)}) \right). 
 \] 
 \end{proposition}
 
-In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\poly{L_{\eta}, L, d, \sigma_{\max}, C}\left(g(T)+1\right)g(T)$.
-Denote this quantity by $P(L_{\eta})$. 
+In particular, the difference in the estimation of the Hessian matrix caused by the noise is $\poly{\|\eta\|_2, L, d, \sigma_{\max}, C}\left(\cQ(\nu^{(\epsilon)}) + N(\nu^{(s)})+ N(\nu^{(\eps)})+ D_4^{(d,d)}(\nu^{(As,\eps)}) \right)$.
+Denote this quantity by $P(\|\eta\|_2)$. 
 Note that this error caused by the noise decays at a rate of $\sqrt{T}$.
 Putting everything together, we obtain the algorithm HKICA, named after \citet{hsu2013learning}, which is shown in Algorithm~\ref{alg:HKICA},
 \begin{algorithm}[H]
@@ -562,10 +560,7 @@ Putting everything together, we obtain the algorithm HKICA, named after \citet{h
 Although in theory, HKICA generates a valid, real output almost surely, in practice this may not happen always as, due to numerical errors, $\nabla^2\hat{f}(\psi)$ may become singular or the ratio $(\phi^\top A_i)/(\psi^\top A_i)$ may become the same for multiple indices $i$. A simple way to fix this problem is re-sampling $\phi$ and $\psi$ until a real eigen-decomposition exists.
 \end{remark}
 
-
-\subsection{Analysis of HKICA}
-\label{sec:AnalysisHK}
-\citet{hsu2013learning} claimed that HKICA is easy to analyze using matrix perturbation techniques. In this section we provide a rigorous analysis of the algorithm, which reveals some unexpected complications.
+\citet{hsu2013learning} claimed that HKICA is easy to analyze using matrix perturbation techniques. In this section we provide a rigorous analysis of the algorithm, which suggests a dependence on a minimal gap of eigenvalues that depends on the mixing matrix $A$ and is difficult to analyze.
 \begin{definition}
 Let $\Epsi$ denote the following event: For some fixed $0\le \ell\le 1$, let $\ell_l = \frac{\sqrt{\pi}A_{(2,\min)}}{\sqrt{2}d} \ell$, and $ L_u \ge \sqrt{2d}$,
 $\min_i |\psi^{\top}A_i| \ge \ell_l$ and $\|\psi\|_2 \le L_u$ hold simultaneously. 
@@ -573,14 +568,17 @@ $\min_i |\psi^{\top}A_i| \ge \ell_l$ and $\|\psi\|_2 \le L_u$ hold simultaneousl
 Let 
 \begin{equation}
 \label{def:kappa}
-\gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert. 
+\gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert,
 \end{equation}
-
-The performance of the HKICA algorithm will essentially depend on this parameters, as shown in the following theorem.
+and 
+\begin{equation}
+\label{eq:xi}
+\xi = 6C^2D_2(\mu, \nu^{(s)}) + D_4(\mu, \nu^{(s)}.
+\end{equation}
+The performance of the HKICA algorithm will essentially depend on this parameters, as shown in the following theorem. 
 \begin{theorem}
 \label{thm:efficiency} 
-Suppose Assumptions~\ref{ass:gauss} and~\ref{ass:independence} hold. 
-Furthermore, assume that
+Assume that
 \begin{align*}
 T & \ge \poly{d, L_u, C, \sigma_{\max},\kappa_{\max}, L,\frac{1}{\ell}, \frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\gamma_A}},
 \end{align*}
