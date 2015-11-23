@@ -524,7 +524,7 @@ where
 & G_3^{(\nu)}(\eta) = \E_{X\sim \nu} [\big(\eta^{\top}X\big)X] \E_{X\sim \nu} [\big(\eta^{\top}X\big)X^{\top}],
 %\frac{1}{T^2}\Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big) \Big(\sum_{t=1}^{T} \big(\eta^{\top}x(t)\big)x(t)\Big)^{\top}.
 \end{align*} 
-and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \hat{f}:=\nabla^2 f_{\nu^{(x)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu^{(x)}$. 
+and these quantities can be estimated using the observed samples. In what follows, we will use the estimate $\nabla^2 \widehat{f}:=\nabla^2 f_{\nu^{(x)}}$, $\nabla^2 f:=\nabla^2 f_{\mu^{(X)}}$ and, in general, we will add a ``hat'' to quantities which are derived from the empirical distribution $\nu^{(x)}$. 
 %A un-hatted notion is estimated w.r.t. some product measure $\mu$. 
 It is important to note that, under our assumptions, the noise $\epsilon$ has limited effect in the estimation procedure, as shown in the following proposition. 
 Similar result is also discussed by \citet{arora2012provable} and \citet{belkin2013blind}.
@@ -588,7 +588,7 @@ On the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldo
  \mathcal{C}(\mu)\min\left( \frac{1}{\gamma_A} (D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
   +N(\nu^{(\eps)}) + N( \nu^{(s)})), \Theta(\mu) \right)
 \end{equation}
-where $\hat{A}$ is the output of the HKICA algorithm, $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}(A), 1/\sigma_{\min}(A), 1/\kappa_{\min}(\mu),1/\delta, d, L)$.
+where $\hat{A}$ is the output of the HKICA algorithm, $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}(A), 1/\sigma_{\min}(A), 1/\kappa_{\min}(\mu),1/\delta, d, L, L_u, \ell)$.
 \end{theorem}
 \begin{remark}
 (i) $\Theta(\mu)$ in the result gives trivial bound for the problem. Interesting result happens when $D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
@@ -658,7 +658,7 @@ on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants 
 where $\hat{A}$ is the output of the DICA algorithm. 
 This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
 The proof is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
-Note that the $\mathcal{C}(\mu)$ here may be different from that in Theorem \ref{thm:efficiency}.
+Note that the $\mathcal{C}(\mu)$ here is different from that in Theorem \ref{thm:efficiency}.
 \subsection{Analysis of $\gamma_R$}
 \label{sec:gamma}
 We empirically compare the behavior of $1/\gamma_A$ and $1/\gamma_R$ in this section.
@@ -844,7 +844,7 @@ Other algorithms can be modified into a recursive version in a similar way.
 \end{remark}
 \begin{theorem}
 \label{thm:recursiveAlg}
-Given the conditions in Theorem~\ref{thm:finalRes}, with probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with an error bound
+With probability at least $1-\delta$, the recursive version of HKICA returns the mixing matrix with an error bound
 \begin{align*}
 & \quad \| \hat{A} - ADP\|_2 \\
 \le & \poly{d,\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}((\xi + P(L_u))^2 + \bar{\xi}).

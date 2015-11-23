@@ -529,13 +529,13 @@ Combining both upper bounds leads to the final conclusion.
 Let 
 \begin{align*}
 \bar{\xi} &=   \frac{\sqrt{2}d\left(L_u^2d^5 A_{(2,\max)}^2A_{\max}^2\xi + P(L_u)\right)}{\sqrt{\pi}\ell^2\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}, \\
-\hat{\xi} &= \frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}, \\
+\hat{\xi} &= \frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}\ell_l^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{\ell_l^2}\bar{\xi}, \\
  \tQ &=  
- %\frac{32\sqrt{2}d^5\kappa^{3/2}_{\max}A^6_{(2,\max)}}{\pi^{5/2}\kappa_{\min}A^4_{(2,\min)}} \sqrt{\hat{\xi}}.
  \frac{4L_u^2A^6_{(2,\max)}}{l_l^4 A^6_{(2,\min)}}\left(\hat{\xi}
  +
- P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\right).
+ P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right)\right).
 \end{align*} 
+Here with a little abuse of notations, we use $\ell_l$ as the smaller one of the lower bounds of $|\psi^{\top}A_i|$ and $|\phi^{\top}A_i|$ on event $\Epsi$ and $\Ephi$.
 %Similar to Lemma~\ref{lem:dmin}, on the event $\Ephi$ with probability at least $1/4$, $\text{min}_i |\phi_1^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$ (respectively $\text{min}_i |\phi_2^{\top}R_i| \ge \frac{\sqrt{2\pi}}{2d}$). 
 %Denote this event by $\Ephione$ (respectively $\Ephitwo$).
 
@@ -553,7 +553,7 @@ First we start with proving the following theorem:
  (so $\bar{\xi} \le 1/3$);
  \item $\hat{\xi}
   +
-  P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right) \le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$.
+  P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right) \le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$.
  \end{enumerate}
  %\vspace{-2mm}
 Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
@@ -564,7 +564,7 @@ Then on the event $\Epsi \cap\Ephi$, there exists a permutation $\pi$ and consta
 where $\hat{A}$ is the output of the DICA algorithm.
 \end{theorem}
 
-Note that $\nabla^2f_{\mu}(\psi) = AKD_{\psi}A^{\top}$. Thus $B = AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
+Note that $\nabla^2f_{A\mu}(\psi) = AKD_{\psi}A^{\top}$. Thus $B = AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. 
 We need to introduce some lemmas before we can prove the theorem. 
 The following lemma shows the stability of the square root of matrix.
 \begin{lemma}
@@ -578,7 +578,7 @@ For any unit vector $x$,
 & x^{\top}H^{-1}\hat{H}\hat{H}^{\top}H^{-\top}x - x^{\top}x\\
 & \quad = x^{\top}H^{-1}\left( \hat{H}\hat{H}^{\top} - HH^{\top}\right)H^{-\top}x \\
 & \quad \le \|H^{-\top}x\|^2_2 \|E\|_2 \\
-& \quad \le \|X^{-1}\|_2^2 \|E\|_2.
+& \quad \le \|X^{-1}\|_2 \|E\|_2.
 \end{align*}
 Thus every singular value of $H^{-1}\hat{H}$ is bounded between $\sqrt{1- \|X^{-1}\|_2 \|E\|_2}$ and $\sqrt{1+ \|X^{-1}\|_2 \|E\|_2}$, 
 and every singular value of $\hat{H}^{-1}H$ is bounded between $\frac{1}{\sqrt{1 + \|X^{-1}\|_2 \|E\|_2}}$ and $\frac{1}{\sqrt{1 - \|X^{-1}\|_2 \|E\|_2}}$.
@@ -648,84 +648,84 @@ Given that $\xi \le \frac{\sqrt{\pi}\kappa_{\min}A^2_{(2,\min)}\sigma_{\min}^2}{
 (so $\bar{\xi} \le 1/3$), then on the event $\Epsi$ and $\Ephi$ for $\phi \in \{\phi_1, \phi_2\}$,
 \begin{align*}
 \|\nabla^2 f_{A\mu}(B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
- & = \|G(B^{-\top}{R^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2\\
+ & = \|G_{A\mu}(B^{-\top}{R^*}^{\top}\phi) - G_{\nu^{(As)}}(\hat{B}^{-\top}\phi)\|_2\\
 & \le 
-\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}
+\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}\ell_l^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{\ell_l^2}\bar{\xi}
 \le \hat{\xi}.
 \end{align*}
 \end{lemma}
 \begin{proof}
-Note that by Lemma \ref{lem:nablavariation} $\|\nabla^2 f(\psi) - \nabla^2 \hat{f}(\psi)\|_2 \le L_u^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi$, and 
+Note that by Lemma \ref{lem:nablavariation} $\|\nabla^2 f_{A\mu}(\psi) - \nabla^2 \widehat{f}_{A\mu}(\psi)\|_2 \le L_u^2  d^5 A_{(2,\max)}^2A_{\max}^2\xi$, and 
 \[
-\|G(B^{-\top}R{^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2
+\|G_{A\mu}(B^{-\top}R{^*}^{\top}\phi) - G_{\nu^{(As)}}(\hat{B}^{-\top}\phi)\|_2
 \le 
-\|G(B^{-\top}{R^*}^{\top}\phi) - G(\hat{B}^{-\top}\phi)\|_2
-+ \|G(\hat{B}^{-\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2.
+\|G_{A\mu}(B^{-\top}{R^*}^{\top}\phi) - G_{A\mu}(\hat{B}^{-\top}\phi)\|_2
++ \|G_{A\mu}(\hat{B}^{-\top}\phi) - G_{\nu^{(As)}}(\hat{B}^{-\top}\phi)\|_2.
 \]
 
-To Bound $\|G(\hat{B}^{-\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2$, we will need the following properties which are straightforward based on Lemma \ref{lem:BhatinverseB}: 
+To Bound $\|G_{A\mu}(\hat{B}^{-\top}\phi) - G_{\nu^{(As)}}(\hat{B}^{-\top}\phi)\|_2$, we will need the following properties which are straightforward based on Lemma \ref{lem:BhatinverseB}: 
 under the event $ \Epsi\cap \Ephi $ for $1\le i, j\le d$,
 \begin{itemize}
 \item $|\phi^{\top}\hat{B}^{-1}A_i| \le \|\phi\|_2\|\hat{B}^{-1}B\|_2\|B^{-1}A_i\|_2\le
  \frac{L_u}{\sqrt{1-\bar{\xi}}} (K^{-1/2}D^{-1/2}_{\psi})_{ii} \le
- \frac{L_u}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}C_1}$.
+ \frac{L_u}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}\ell_l}$.
 \end{itemize}
 Thus for $1\le i, j\le d$,
 \[
 |(G_1(\hat{B}^{-\top}\phi))_{i,j} - (\hat{G_1}(\hat{B}^{-\top}\phi))_{i,j}| \le
-d^4A^2_{\max}\frac{L_u^2}{(1-\bar{\xi})\kappa_{\min}C_1^2}D_4(\nu,\nu_t).
+d^4A^2_{\max}\frac{L_u^2}{(1-\bar{\xi})\kappa_{\min}\ell_l^2}D_4(\mu,\nu^{(s)}).
 \]
 Also note that for $1\le i, j\le d$,
 \begin{itemize}
 \item $|\int(\phi^{\top}\hat{B}^{-1}x)x_i d\Prob{s}| 
 \le L_u\int \|\hat{B}^{-1}A\|_2\|s\|_2 |A_{i:}s| d\Prob{s}
-\le \frac{L_ud^{3/2}C^2A_{\max}}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}C_1}$; 
-\item $|(\hat{B}^{-1}A)_{ij}| \le \frac{1}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}C_1}$;
+\le \frac{L_ud^{3/2}C^2A_{\max}}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}\ell_l}$; 
+\item $|(\hat{B}^{-1}A)_{ij}| \le \frac{1}{\sqrt{1-\bar{\xi}}\kappa_{\min}^{1/2}\ell_l}$;
 \item $|\int(\phi^{\top}\hat{B}^{-1}x)^2 d\Prob{s}|\le
- \int \|\phi\|_2^2 \|\hat{B}^{-1}A\|_2^2\|s\|_2^2 d\Prob{s} \le \frac{L_u^2dC^2}{(1-\bar{\xi})\kappa_{\min}C_1^2}$.
+ \int \|\phi\|_2^2 \|\hat{B}^{-1}A\|_2^2\|s\|_2^2 d\Prob{s} \le \frac{L_u^2dC^2}{(1-\bar{\xi})\kappa_{\min}\ell_l^2}$.
 \end{itemize}
 Thus, similar to \ref{lem:nablavariation},
 \[
 |(G_2(\hat{B}^{-\top}\phi))_{i,j} - (\hat{G_2}(\hat{B}^{-\top}\phi))_{i,j}| \le
-\frac{2L_u^2d^3C^2A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}C_1^2}D_2(\nu,\nu_t),
+\frac{2L_u^2d^3C^2A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}\ell_l^2}D_2(\mu,\nu^{(s)}),
 \]
 and 
 \[
 |(G_3(\hat{B}^{-\top}\phi))_{i,j} - (\hat{G_3}(\hat{B}^{-\top}\phi))_{i,j}| \le
-\frac{2L_u^2d^{7/2}C^2A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}C_1^2}D_2(\nu,\nu_t).
+\frac{2L_u^2d^{7/2}C^2A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}\ell_l^2}D_2(\mu,\nu^{(s)}).
 \]
 Therefore for $1\le i,j\le d$,
 \[
-\left|\left(G(\hat{B}^{-\top}\phi)\right)_{i,j} - \left(\hat{G}(\hat{B}^{-\top}\phi)\right)_{i,j}\right| 
+\left|\left(G_{A\mu}(\hat{B}^{-\top}\phi)\right)_{i,j} - \left(G_{\nu^{(As)}}(\hat{B}^{-\top}\phi)\right)_{i,j}\right| 
 \le
-\frac{L_u^2d^4A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}C_1^2}D_2(\nu,\nu_t). 
+\frac{L_u^2d^4A^2_{\max}}{(1-\bar{\xi})\kappa_{\min}\ell_l^2}D_2(\mu,\nu^{(s)}). 
 \]
 Thus, 
 \begin{equation}
 \label{eq:fBhatfhatBhat}
- \|G(\hat{B}^{-\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2 \le 
-\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi.
+ \|G_{A\mu}(\hat{B}^{-\top}\phi) - G_{\nu^{(As)}}(\hat{B}^{-\top}\phi)\|_2 \le 
+\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}\ell_l^2}\xi.
 \end{equation}
 
 On the other hand, 
 \begin{align*}
-\|G(B^{-\top}{R^*}^{\top}\phi_i) - G(\hat{B}^{-\top}\phi_i)\|_2 
+\|G_{A\mu}(B^{-\top}{R^*}^{\top}\phi_i) - G_{A\mu}(\hat{B}^{-\top}\phi_i)\|_2 
 = & \, \|A D_{\psi}^{-1}\Lambda_iA^{\top}- A D_{\psi}^{-1}\hat{\Lambda}_iA^{\top}\|_2 \\
 \le & \, \|A\|^2_2 \|D_{\psi}^{-1}\|_2 \|\Lambda_i - \hat{\Lambda}_i\|_2\\
-\le & \, 2\frac{\sigma_{\max}^2}{C_1^2}\frac{L_u^2\bar{\xi}}{\sqrt{1-\bar{\xi}}},
+\le & \, 2\frac{\sigma_{\max}^2}{\ell_l^2}\frac{L_u^2\bar{\xi}}{\sqrt{1-\bar{\xi}}},
 \end{align*}
 where $\hat{\Lambda}_i = \text{diag}\left((\phi_i^{\top}\hat{B}^{-1}BR_1)^2, \cdots, (\phi_i^{\top}\hat{B}^{-1}BR_d)^2\right)$.
 Thus,
 \begin{equation}
 \label{eq:fBfBhat}
-\|G(B^{-\top}{R^*}^{\top}\phi) - G(\hat{B}^{-\top}\phi)\|_2 \le  \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}. 
+\|G_{A\mu}(B^{-\top}{R^*}^{\top}\phi) - G_{A\mu}(\hat{B}^{-\top}\phi)\|_2 \le  \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{\ell_l^2}\bar{\xi}. 
 \end{equation}
 
 Combine Equation \eqref{eq:fBhatfhatBhat} and Equation \eqref{eq:fBfBhat},
 \[
-\|G(B^{-\top}{R^*}^{\top}\phi) - \hat{G}(\hat{B}^{-\top}\phi)\|_2
+\|G_{A\mu}(B^{-\top}{R^*}^{\top}\phi) - G_{\nu^{(As)}}(\hat{B}^{-\top}\phi)\|_2
 \le 
-\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}C_1^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{C_1^2}\bar{\xi}.
+\frac{3L_u^2d^5A^2_{\max}}{2\kappa_{\min}\ell_l^2}\xi + \frac{\sqrt{6}L_u^2\sigma_{\max}^2}{\ell_l^2}\bar{\xi}.
 \]
 \end{proof}
 
@@ -733,32 +733,32 @@ Combine Equation \eqref{eq:fBhatfhatBhat} and Equation \eqref{eq:fBfBhat},
 \label{lem:Binversenablavariation2}
 Given the same conditions as Lemma \ref{lem:BhatinverseB}, then on the event $\Epsi$ and $\Ephi$ for $\phi \in \{\phi_1, \phi_2\}$,
 \[
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
+\|\nabla^2 f_{A\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f}(\hat{B}^{-\top}\phi)  \|_2 
 \le
  \hat{\xi}
 +
-\frac{1}{T}\text{Poly}\left(\frac{1}{\sigma_{\min}}, \frac{1}{C_1}, L_u, \frac{1}{\kappa_{\min}}, L, d, \sigma_{\max}, C\right).
+P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right).
 \]
 \end{lemma}
 \begin{proof}
 By triangular inequality, 
 \begin{align*}
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2 
+\|\nabla^2 f_{A\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2 
 & \le 
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 \\
+\|\nabla^2 f_{A\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 \\
 & \quad +
-\|\nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2. 
+\|\nabla^2 \widehat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi) - \nabla^2 \widehat{f}(\hat{B}^{-\top}\phi)  \|_2. 
 \end{align*}
 By Lemma \ref{lem:Binversenablavariation1}, 
 \[
-\|\nabla^2 f_{\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
+\|\nabla^2 f_{A\mu}(A^{\top}B^{-\top}{R^*}^{\top}\phi) - \nabla^2 \widehat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi)  \|_2 
 \le \hat{\xi}. 
 \]
 It remains to bound the second term. 
-Note that on the event $\Epsi\cap\Ephi$, $\|\hat{B}^{-\top}\phi\|_2 \le \frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}$. 
+Note that on the event $\Epsi\cap\Ephi$, $\|\hat{B}^{-\top}\phi\|_2 \le \frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}$. 
 Thus by Proposition \ref{prop:denoise}, 
 \[
-\|\nabla^2 \hat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi) - \nabla^2 \hat{f}(\hat{B}^{-\top}\phi)  \|_2 \le P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right).
+\|\nabla^2 \widehat{f}_{\nu_T^{(As)}}(\hat{B}^{-\top}\phi) - \nabla^2 \widehat{f}(\hat{B}^{-\top}\phi)  \|_2 \le P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right).
 \]
 Therefore, 
 \[
@@ -766,17 +766,17 @@ Therefore,
 \le 
  \hat{\xi}
 +
-P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right).
+P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right).
 \]
 \end{proof}
 \begin{lemma}
 \label{lem:Tvariantion}
 Given the same conditions as Lemma \ref{lem:BhatinverseB}, On the event $\Epsi$ and $\Ephi$, assume that $\hat{\xi}
 +
-P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$, then 
+P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right)\le \frac{l_l^2 A^2_{(2,\min)}}{2A^2_{(2,\max)}}$, then 
 \[
 \|M - \hat{M}\|_2 \le  \frac{128d^6A^6_{(2,\max)}}{\pi^3 A^6_{(2,\min)}}\left(\hat{\xi}+
-P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\right) = \tQ.
+P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right)\right) = \tQ.
 \]
 \end{lemma}
 
@@ -793,7 +793,7 @@ Apply Lemma \ref{lem:Mvariation},
 \frac{2\|T_1\|_2}{\sigma^2_{\min}(T_2)}\|E_2\|_2 + \frac{2}{\sigma_{\min}(T_2)}\|E_1\|_2 \\
 \le & \frac{4L_u^2A^6_{(2,\max)}}{l_l^4 A^6_{(2,\min)}}\left(\hat{\xi}
 +
-P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)\right) = \tQ.
+P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right)\right) = \tQ.
 \end{align*}
 \end{proof}
 \begin{proof}[{\bf Proof of Theorem \ref{thm:Modefficiency}}]
@@ -826,12 +826,42 @@ Note that all the constants in Lemma~\ref{lem:ConstantProb} are polynomial in $d
 \end{remark}
 
 \subsubsection{Proof of Theorem \ref{thm:finalRes}}
+By Theorem \ref{thm:Modefficiency}, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
+\[
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} \tQ.
+\]
+Note that $\cQ = \mathcal{C}(\mu)\left(D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
++N(\nu^{(\eps)}) + N( \nu^{(s)})\right)$ where $\mathcal{C}(\mu)$ is polynomial in $\{\sigma_{\max}(A), 1/\sigma_{\min}(A), 1/\kappa_{\min}(\mu),1/\delta, d, L, L_u, \ell_l\}$.
+When the conditions in Theorem \ref{thm:Modefficiency} are not satisfied, by Proposition \ref{prop:trivialres}, 
+\[
+  \max_{1\le k\le d}\| c_1\widehat{A}_{\pi(k)} - A_k\|_2 \le\sigma_{\max}.
+\]
+Combining both upper bounds, we have 
+\[
+ d(\hat{A}, A) \le \mathcal{C}(\mu)\min\left(\frac{1}{\gamma_R}(D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
++N(\nu^{(\eps)}) + N( \nu^{(s)})), \Theta(\mu) \right),
+\]
+where $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}(A), 1/\sigma_{\min}(A), 1/\kappa_{\min}(\mu),1/\delta, d, L, L_u, \ell_l)$.
+Note that by Lemma \ref{lem:ConstantProb}, with probability at least $1-\delta$, $\gamma_R$, $L_u$ and $\ell_l$ are also polynomial in $\{1/\delta, d, \sigma_{\min}\}$. 
+Therefore, 
+\[
+ d(\hat{A}, A) \le \mathcal{C}(\mu)\min\left(D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
++N(\nu^{(\eps)}) + N( \nu^{(s)}), \Theta(\mu) \right),
+\]
+where $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}(A), 1/\sigma_{\min}(A), 1/\kappa_{\min}(\mu),1/\delta, d, L)$.
+Finally, by the arbitrariness of $\mu$,
+\[
+ d(\hat{A}, A) \le \inf_{\mu\in \Pi_0}\mathcal{C}(\mu)\min\left(D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
++N(\nu^{(\eps)}) + N( \nu^{(s)}), \Theta(\mu) \right).
+\]
+
+\if0
 We need to verify the validness of the conditions of Theorem~\ref{thm:Modefficiency} in the traditional stochastic setting. 
 Note that the first condition holds with probability 1. 
 The other 5 conditions can be satisfied by small enough 
-$\hat{\xi}$, small enough $\bar{\xi}$, small enough $P(L_u)$, and small enough $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$.
-By Proposition \ref{prop:stochasticAss} and Proposition \ref{prop:denoise}, $P(L_u)$ and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$ can be arbitrarily small given large enough sample size 
-\[T = \poly{d.\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}}.\] 
+$\hat{\xi}$, small enough $\bar{\xi}$, small enough $P(L_u)$, and small enough $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right)$.
+By Proposition \ref{prop:stochasticAss} and Proposition \ref{prop:denoise}, $P(L_u)$ and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}\ell_l}\right)$ can be arbitrarily small given large enough sample size 
+\[T = \poly{d.\frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}, L_u, L, C, \sigma_{\max}, \ell_l}.\] 
 $\hat{\xi}$ and $\bar{\xi}$ will be small if $\xi$ is small enough.
 Recall Equation \eqref{eq:xi} that 
 \[\xi = \left( 6C^2D_2(\mu, \nu_T) + D_4(\mu, \nu_T)\right) \le 7C^2D_4(\mu, \nu_T),\]
@@ -858,7 +888,7 @@ for some polynomial, with probability at least $1-\delta$, there exists a permut
 \[
 \| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{\sqrt{\log(1/\delta)}}{\sqrt{2T}}\poly{C, \sigma_{\max}, \frac{1}{\sigma_{\min}}, \frac{1}{\kappa_{\min}},\frac{1}{\delta}, d}.
 \]
-
+\fi
 
 \subsection{Proof of Theorem \ref{thm:recursiveAlg}}
 Note that the calculation of $M$ in the helper function `Recur' is exactly the $M$ in the algorithm of DICA (we call it recursion version of HKICA, because in the helper function `Recur', it has the same format as HKICA).
