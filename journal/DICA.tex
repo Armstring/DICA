@@ -265,9 +265,11 @@ where learning algorithms are analyzed without making any probabilistic assumpti
 
 The rest of this paper is organized as follows: 
 We review some previous works in the literature and compare them to our algorithm in Section \ref{subsec:relatedWorks}.
-The ICA problem is introduced in detail in Section~\ref{sec:Preliminaries} and  our main results are highlighted in Section~\ref{sec:main}.
-The polynomial-time algorithms underlying these results are developed through the next two sections: Section~\ref{sec:AnalysisHK} is devoted to the analysis of the HKICA algorithm, also showing its disadvantages, while our new algorithms are presented in Section~\ref{sec:DICA}.
+The ICA problem is introduced and  our main results are highlighted in Section~\ref{sec:main}.
+The polynomial-time algorithms underlying these results are developed through Section \ref{sec:adeticaalg}:
+Section~\ref{subsec:HKICA} is devoted to the analysis of the HKICA algorithm, also showing its disadvantages, while our new algorithms are presented and analyzed from Section~\ref{subsec:DICA} to Section \ref{subsec:modifiedDICA}. Then Section \ref{subsec:recurICA} proposes a recursive version of DICA.
 Experimental results are reported in Section \ref{sec:ExpRes}.
+All the auxiliary proofs are deferred to Section \ref{sec:proofs}.  
 
 \subsection{Related Works}
 \label{subsec:relatedWorks}
@@ -308,7 +310,7 @@ Unlike the method proposed by \citet{goyal2014fourier}, our first method can for
 We prove that our methods achieve an $O(1/\sqrt{T})$ error in estimating $A$ in the classical setting, with high probability, such that both the convergence rate and the computational complexity scale \emph{polynomially} with the natural parameters of the problem. 
 Our method needs no parameter tuning, which makes it even more appealing. 
 
-
+The problem of separating mixture of deterministic signals is also consider in \citep{kirimoto2011separation} and \citep{forootan2013separation}. But their analysis is restricted to particular signals, while our result is applicable to general ones.
 %Another contribution of the present paper is that our analysis is conducted in a deterministic manner. 
 %In practice, ICA is also known to work well for unmixing the mixture of various deterministic signals. 
 %One of the classical demonstrations of ICA is showing that two periodic signals can be well recovered from their mixtures \citep{HyvOja00}.
@@ -486,11 +488,12 @@ Because of the Markov property, the observations do not satisfy the i.i.d. assum
 In the next sections, we will present two algorithms that satisfy Theorem \ref{thm:finalRes}.
 
 \section{A ``Deterministic'' ICA Algorithm}
+\label{sec:adeticaalg}
 Our algorithm builds on the works of \citet{frieze1996learning,hsu2013learning,arora2012provable}. In this section we will first introduce the ICA algorithm of  \citet{hsu2013learning} and analyze its performance.
 The result reveals some unexpected complications that motivate us to refine the algorithm, which leads to our algorithm, deterministic ICA (DICA). 
 
 \subsection{Estimating Moments: the HKICA Algorithm}
-\label{sec:HKICA}
+\label{subsec:HKICA}
 The ICA algorithm of \citet{hsu2013learning} is based on the well-known excess-kurtosis-like quantity
 defined as follows:
 
@@ -603,7 +606,7 @@ To the best of our knowledge, even a polynomial (in the dimension $d$) lower bou
 Similar problems have been discussed by  \citet{husler1987minimal} and \citet{goyal2014fourier}, but solutions there are not applicable to our case.
 
 \subsection{A Refined HKICA Algorithm}
-\label{sec:DICA}
+\label{subsec:DICA}
 The problems with $\gamma_A$ motivate us to refine the HKICA algorithm.
 The idea is inspired by \citet{arora2012provable} and \citet{frieze1996learning} using a quasi-whitening procedure:
 
@@ -660,7 +663,7 @@ This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
 The proof is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
 Note that the $\mathcal{C}(\mu)$ here is different from that in Theorem \ref{thm:efficiency}.
 \subsection{Analysis of $\gamma_R$}
-\label{sec:gamma}
+\label{subsec:gamma}
 We empirically compare the behavior of $1/\gamma_A$ and $1/\gamma_R$ in this section.
 Figure~\ref{fig:miniSpacing} below shows the behavior of $1/\gamma_A$ and $1/\gamma_R$ for mixing matrices with different coherence (defined in Section~\ref{sec:ExpRes}), and for some random orthonormal matrix $R$. For each of the matrices, we generate $\phi$ and $\psi$ from standard normal distribution for 3 times, pick the minimal values of $1/\gamma$, and plot the average value over 200 repetitions. %  (corresponding to the largest $\gamma_A$ and $\gamma_R$).
 % We run 200 repetitions and take the average of each $1/\gamma$. The logarithm of the average is reported in Figure~\ref{fig:miniSpacing}.
@@ -783,6 +786,7 @@ Then with probability at least $1-\delta$, the minimal spacing of $M$  in the MD
 \end{proposition}
 
 \subsection{Recursive Versions}
+\label{subsec:recurICA}
 Recently, \citet{vempala2014max} proposed a recursion idea to improve the sample complexity of the Fourier PCA algorithm of \citet{goyal2014fourier}. 
 Instead of recovering all the columns of $A$ in a single eigen-decomposition, the recursive algorithm only decomposes the whole space into two subspaces according to the maximal spacing of the eigenvalues, 
 then recursively decomposes each subspaces until they are all 1-dimensional.
@@ -977,7 +981,7 @@ with approximately independent empirical distributions.
 \end{figure}
 
 \section{Proofs}
-\label{sec:Appendix}
+\label{sec:proofs}
 \subsection{Proof of Proposition \ref{prop:stochasticAss}}
 \label{subsec:proofPropA1}
 Denote the population expectation by $\E$ and the empirical expectation by $\E_t$. We actually prove a stronger result as follows:
@@ -2236,5 +2240,5 @@ and NSERC.
 \bibliography{DICA}
 %\bibliographystyle{plainnat}
 
-\include{appendix}
+%\include{appendix}
 \end{document}
