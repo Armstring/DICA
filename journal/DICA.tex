@@ -171,7 +171,7 @@
 %\newtheorem{claim}[lemma]{Claim}
 %\newtheorem{cor}[lemma]{Corollary}
 %\newtheorem{example}[lemma]{Example}
-%\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem{prop}[theorem]{Proposition}
 %\theoremstyle{definition}
 %\newtheorem{definition}[lemma]{Definition}
 %\newtheorem{remark}[lemma]{Remark}
@@ -568,56 +568,50 @@ $\min_i |\psi^{\top}A_i| \ge \ell_l$ and $\|\psi\|_2 \le L_u$ hold simultaneousl
 Let 
 \begin{equation}
 \label{def:kappa}
-\gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert,
-\end{equation}
-and 
-\begin{equation}
-\label{eq:xi}
-\xi = 6C^2D_2(\mu, \nu^{(s)}) + D_4(\mu, \nu^{(s)}.
+\gamma_A =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2 - \left(\frac{\phi^{\top}A_j}{\psi^{\top}A_j}\right)^2 \right\vert.
 \end{equation}
 The performance of the HKICA algorithm will essentially depend on this parameters, as shown in the following theorem. 
 \begin{theorem}
 \label{thm:efficiency} 
-Assume that
-\begin{align*}
-T & \ge \poly{d, L_u, C, \sigma_{\max},\kappa_{\max}, L,\frac{1}{\ell}, \frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\gamma_A}},
-\end{align*}
-and that there exist a product measure $\mu$ such that 
-\[
-\xi \le \poly{\gamma_A, \frac{1}{d}, \frac{1}{L_u}, \frac{1}{\sigma_{\max}}, \frac{1}{\kappa_{\max}}, \kappa_{\min}, \sigma_{\min}, \ell}.
-\] 
-Then, on the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for any $k$,
+%Assume that
+%\begin{align*}
+%T & \ge \poly{d, L_u, C, \sigma_{\max},\kappa_{\max}, L,\frac{1}{\ell}, \frac{1}{\kappa_{\min}}, %\frac{1}{\sigma_{\min}}, \frac{1}{\gamma_A}},
+%\end{align*}
+%and that there exist a product measure $\mu$ such that 
+%\[
+%\xi \le \poly{\gamma_A, \frac{1}{d}, \frac{1}{L_u}, \frac{1}{\sigma_{\max}}, \frac{1}{\kappa_{\max}}, \kappa_{\min}, \sigma_{\min}, \ell}.
+%\] 
+On the event $\Epsi$, there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that,
 \begin{equation}
 \label{eq:HKICA-bound}
   \max_{1\le k\le d}\| c_1\hat{A}_{\pi(k)} - A_k\|_2 \le
-  % \frac{4}{\gamma_A} \frac{\sigma_{\max}^2(A)}{ \sigma_{\min}}Q,
-  \frac{1}{\gamma_A} (\xi + P(L_u))Q
+ \mathcal{C}(\mu)\min\left( \frac{1}{\gamma_A} (D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
+  +N(\nu^{(\eps)}) + N( \nu^{(s)})), \Theta(\mu) \right)
 \end{equation}
-where $\hat{A}$ is the output of the HKICA algorithm, and 
-\[Q=\poly{d, L_u, \sigma_{\max}, \kappa_{\max}, \frac{1}{\kappa_{\min}}, \frac{1}{\sigma_{\min}}, \frac{1}{\ell}}.\]
+where $\hat{A}$ is the output of the HKICA algorithm, $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in $(\sigma_{\max}(A), 1/\sigma_{\min}(A), 1/\kappa_{\min}(\mu),1/\delta, d, L)$.
 \end{theorem}
 \begin{remark}
-(i) Note that the bound in \eqref{eq:HKICA-bound} goes to zero at an $O(1/\sqrt{T})$ rate whenever $D_4(\mu,\nu_T^{(s)})=O(1/\sqrt{T})$ and $g(T) = O(1/\sqrt{T})$, as, e.g., in the stochastic setting.
-(ii) The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the condition also requires a small $1/\gamma_A$ so that the above error bound is valid. 
+(i) $\Theta(\mu)$ in the result gives trivial bound for the problem. Interesting result happens when $D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
+  +N(\nu^{(\eps)}) + N( \nu^{(s)})$ is small enough.
+(ii) Note that the bound in \eqref{eq:HKICA-bound} goes to zero at an $O(1/\sqrt{T})$ rate in the stochastic setting.
+(iii) The parameter $1/\gamma_A$ is essential in the above theorem, in the sense that not only the reconstruction error bound is linear in $1/\gamma_A$, but the condition also requires a small $1/\gamma_A$ so that the above error bound is valid. 
 Also, since $\gamma_A$ is the minimum spacing of the eigenvalues of $M=\nabla^2 f_{A\mu}(\phi) (\nabla^2 f_{A\mu}(\psi))^{-1}$, the eigenvalue perturbations imposed by the noise cannot be too large compared to $\gamma_A$ without potentially  ruining the eigenvectors of $M$; thus, the dependence on $\gamma_A$ seems necessary.
 \end{remark}
 
 Despite the important role that $\gamma_A$ plays in the efficiency of the HKICA algorithm, it is not clear how it depends on different properties of $A$.
 To the best of our knowledge, even a polynomial (in the dimension $d$) lower bound of $\gamma_A$ is not yet available in the literature. 
-Similar problems have been discussed by  \citet{husler1987minimal} and \citet{goyal2014fourier}, but there solutions are not applicable to our case.
+Similar problems have been discussed by  \citet{husler1987minimal} and \citet{goyal2014fourier}, but solutions there are not applicable to our case.
 
-\section{A Refined HKICA Algorithm}
+\subsection{A Refined HKICA Algorithm}
 \label{sec:DICA}
-
 The problems with $\gamma_A$ motivate us to refine the HKICA algorithm.
 The idea is inspired by \citet{arora2012provable} and \citet{frieze1996learning} using a quasi-whitening procedure:
 
-One can show that $\nabla^2 f_\mu(\psi)=A K D_{\psi} A^\top$ where $D_{\psi} =\text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$,
-and so $B= AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. Defining $T_i=\nabla^2 f_\mu(B^{-\top} \phi_i)$, one can calculate that
+One can show that $\nabla^2 f_{A\mu}(\psi)=A K D_{\psi} A^\top$ where $D_{\psi} =\text{diag}\left((\psi^{\top}A_1)^2,\cdots, (\psi^{\top}A_d)^2\right)$,
+and so $B= AK^{1/2}D_{\psi}^{1/2}R^{\top}$ for some orthonormal matrix $R$. Defining $T_i=\nabla^2 f_{A\mu}(B^{-\top} \phi_i)$, one can calculate that
 $T_i=A K^{1/2} D_\psi^{-1/2} \Lambda_i A^\top$ where $\Lambda_i =\text{diag}\left( (\phi_i^\top R_1)^2,\ldots,(\phi_i^\top R_d)^2 \right)$ and $R_i$ denote the $i$th column of $R$.
 Then $M=T_1 T_2^{-1} = A\Lambda A^{-1}$ with $\Lambda=\Lambda_1 \Lambda_2^{-1}=\text{diag}\left( \left(\frac{\phi_1^\top R_1}{\phi_2^\top R_1}\right)^2,\ldots,\left(\frac{\phi_1^\top R_d}{\phi_2^\top R_d}\right)^2 \right)$. Thus, $A_i$ are again the eigenvectors of $M$, but now the eigenvalues of $M$ are defined in terms of the orthogonal matrix $R$ instead of $A$,
 and so the resulting minimum spacing
-\vspace{-4mm}
 \begin{equation}
 \label{def:gammaR}
 \gamma_R =  \min_{i,j: i\neq j} \left\vert \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2 - \left(\frac{\phi_1^{\top}R_j}{\phi_2^{\top}R_j}\right)^2 \right\vert
@@ -658,12 +652,13 @@ Similarly to Theorem~\ref{thm:efficiency}, one can show that under some technica
 hold with probability 1 if $\xi$, $P(L_u)$, and $P\left(\frac{\sqrt{3}L_u}{\sqrt{2}\sigma_{\min}\kappa_{\min}^{1/2}C_1}\right)$  are small enough,
 on the event $\Epsi \cap\Ephi$,  there exists a permutation $\pi$ and constants $\{c_1,\ldots,c_d\}$, such that for $1\le k\le d$,
 \[
-\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \frac{4\sigma^2_{\max}}{\gamma_R\sigma_{\min}} (\xi + P(L_u))Q,
+\| c_k\hat{A}_{\pi(k)} - A_k\|_2 \le \mathcal{C}(\mu)\min\left(\frac{1}{\gamma_R} (D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
+  +N(\nu^{(\eps)}) + N( \nu^{(s)})), \Theta(\mu) \right),
 \]
-where $\hat{A}$ is the output of the DICA algorithm and $Q$ is polinomial in the usual problem parameters. 
+where $\hat{A}$ is the output of the DICA algorithm. 
 This is proved in Theorem~\ref{thm:Modefficiency} in the appendix.
 The proof is very similar to the result of Theorem~\ref{thm:efficiency}, with $\gamma_R$ in place of $\gamma_A$, as required.
-
+Note that the $\mathcal{C}(\mu)$ here may be different from that in Theorem \ref{thm:efficiency}.
 \subsection{Analysis of $\gamma_R$}
 \label{sec:gamma}
 We empirically compare the behavior of $1/\gamma_A$ and $1/\gamma_R$ in this section.
