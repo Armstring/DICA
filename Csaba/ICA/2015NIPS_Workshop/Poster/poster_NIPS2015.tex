@@ -154,8 +154,9 @@
 					where $M_{a,\dots,z}(\mu) = \int y_a \dots y_z \mu(dy)$.
 				\item Measure of centrality: 
 					\[
-				 	N(\nu) = \left\|\int x \nu(dx) \right\|_F
+				 	N(\nu) = \bigl\|\textstyle\int x \nu(dx) \bigr\|_F\,.
 					\]
+					\vspace*{-1.0cm}
 				\item Accuracy of reconstruction:
 					\[
 					d(\hat{A},A) = \inf_{
@@ -165,7 +166,10 @@
 					\]
 			\end{itemize}
 		\end{block}
-		\vspace{0.5ex}
+		\bigskip
+		\bigskip
+		\medskip
+		%\vspace{1.5ex}
 		\begin{block}{Main Result}
 		\begin{center}
 				\begin{tcolorbox}[title = \vspace{0.4cm}\textbf{\large Main Result} \vspace{0.4cm}, title filled, width = 0.95\textwidth, colback = uofagreen!10, colframe = red]
@@ -177,6 +181,7 @@
 								\item[--] The computational complexity is $O(d^3 T)$;
 								\item[--] Universal: No free parameters;
 								\item[--] With high probability, 
+									\vspace*{0.2cm}
 									\begin{align*}
 									d(\hat{A}, A) & \le 
 									\inf_{\mu\in \Pi_0} \mathcal{C}(\mu) \min\Big(D_4(\nu^{(s)},\mu) \\
@@ -211,8 +216,9 @@
 						\item restricted to particular source signals.
 						\end{itemize}
 					\end{itemize}
+		\bigskip
 		\end{block}
-		\vspace{0.5ex}
+		\bigskip
 			\begin{block}{Hsu and Kakade's Method (HKICA)}
 				\begin{figure}
 				\begin{algorithmic}[1]
@@ -241,7 +247,7 @@
 	\end{column}
 	\begin{column}{0.32\textwidth}
 			
-			\vspace{0.5ex}
+%			\vspace{0.5ex}
 		\begin{block}{Our method: Deterministic ICA (DICA)}	
 			\begin{itemize}
 				\item In its theoretical analysis,  the performance of HKICA depends on $\gamma_A^{-1}$, where
@@ -269,10 +275,14 @@
 				\item $\tilde{\lambda}$ (and its minimal gap) is now independent of $A$, and easier to analyze.
 				\item Can be reduced to the minimal spacing of Cauchy random variables.
 			\end{itemize}
+			\bigskip
 		\end{block}
 		\vspace{0.5ex}
+		\bigskip
+		\bigskip
+		\bigskip
 		\begin{block}{Simulation Results}
-			Algorithms:
+			\noindent Algorithms:
 			\begin{itemize}
 				\item FastICA  \citep{szabo12separation};
 				\item HKICA; 
@@ -299,6 +309,8 @@
 			\ec
 		\end{block}
 		\vspace{0.5ex}
+		\bigskip
+		\bigskip
 		\begin{block}{Conclusions}
 			\begin{itemize}
 			\item Independent Component Analysis without probabilities! 
@@ -307,12 +319,16 @@
 			\end{itemize}
 		\end{block}		
 		\vspace{0.5ex}
+		\bigskip
+		\bigskip
 		\begin{block}{References}
 			\tiny
 			\bibliographystyle{abbrvnat}
 			\bibliography{DICA}
 		\end{block}
 		\vspace{0.5ex}
+		\bigskip
+		\bigskip
 		\begin{block}{Acknowledgements}
 			\small
 			This work was supported by Alberta Innovates Technology Futures and NSERC.
