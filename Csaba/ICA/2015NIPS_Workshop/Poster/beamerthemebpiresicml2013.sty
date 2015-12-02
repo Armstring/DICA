@@ -1,0 +1,217 @@
+% !TEX root = poster.tex
+\ProvidesPackage{beamerthemebpiresicml2013}  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\RequirePackage{tangocolors}
+\RequirePackage{pgfpages}
+%\RequirePackage{pgfmath}
+%\selectcolormodel{cmyk}
+\mode<presentation>
+
+\definecolor{uofagreen}{RGB}{0,124,65}
+\definecolor{uofagold}{RGB}{255,219,5}
+%From http://www.toolkit.ualberta.ca/VisualIdentityGuidelines/OurColours/SecondaryPalette.aspx
+\definecolor{uofa00}{RGB}{125,154,170}
+\definecolor{uofa01}{RGB}{168,180,0}
+\definecolor{uofa02}{RGB}{167,158,112}
+\definecolor{uofa10}{RGB}{124,162,149}
+\definecolor{uofa11}{RGB}{224,215,96}
+\definecolor{uofa12}{RGB}{199,210,138}
+\definecolor{uofa20}{RGB}{60,182,206}
+\definecolor{uofa21}{RGB}{163,168,107}
+\definecolor{uofa22}{RGB}{122,184,0}
+\definecolor{uofa30}{RGB}{212,186,0}
+\definecolor{uofa31}{RGB}{103,115,182}
+\definecolor{uofa32}{RGB}{42,110,187}
+\definecolor{uofa40}{RGB}{202,119,0}
+\definecolor{uofa41}{RGB}{152,50,34}
+\definecolor{uofa42}{RGB}{130,120,111}
+\definecolor{uofa50}{RGB}{116,118,120}
+\definecolor{uofa51}{RGB}{100,31,69}
+\definecolor{uofa52}{RGB}{22,87,136}
+\definecolor{uofa60}{RGB}{141,60,30}
+\definecolor{uofa61}{RGB}{69,35,37}
+\definecolor{uofa62}{RGB}{79,76,37}
+\definecolor{uofa70}{RGB}{40,78,54}
+\definecolor{uofa71}{RGB}{64,69,69}
+\definecolor{uofa72}{RGB}{0,66,80}
+
+%\definecolor{uofagreen}{CMYK}{95,8,93,27}
+%\definecolor{uofagold}{CMYK}{0,11,97,0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%
+%\pgfpagesuselayout{resize to}[a0paper, landscape, border shrink=5mm]
+%\pgfsetfillcolor{uofagreen}
+%\pgfpageslogicalpageoptions{1}{border code=\pgfusepath{stroke}}
+
+%\pgfpagesdeclarelayout{boxed}
+%{
+%  \edef\pgfpageoptionborder{0pt}
+%}
+%{
+%  \pgfpagesphysicalpageoptions
+%  {%
+%    logical pages=1,%
+%  }
+%  \pgfpageslogicalpageoptions{1}
+%  {
+%    border code=\pgfsetfillcolor{white}\pgfsetlinewidth{1pt}\pgfstroke,%
+%    border shrink=\pgfpageoptionborder,%
+%    resized height=.98\pgfphysicalheight,
+%    resized width=.98\pgfphysicalwidth,%
+%    center=\pgfpoint{.5\pgfphysicalwidth}{.5\pgfphysicalheight}%
+%  }%
+%}
+
+%\pgfpagesuselayout{boxed}
+
+\setbeamercolor{headline}{fg=black}
+\setbeamercolor{footline}{fg=uofagreen,bg=uofagreen}
+\setbeamerfont{footline}{size=\large,series=\tt}
+\setbeamercolor{separation line}{bg=uofagreen}
+\setbeamercolor{title in headline}{fg=black}
+\setbeamercolor{author in headline}{fg=black}
+\setbeamercolor{institute in headline}{fg=black}
+
+\setbeamercolor{thin line}{fg=uofagreen, bg=uofagreen}
+\setbeamercolor{thick line}{fg=uofagreen, bg=uofagreen}
+
+\setbeamercolor{framesubtitle}{fg=black}
+\setbeamercolor{author}{fg=black}
+\setbeamercolor{title}{fg=black}
+
+\setbeamercolor*{normal text}{fg=black}
+\setbeamercolor*{block body}{bg=uofagreen!10}
+\setbeamercolor*{block title}{fg=white, bg=uofagreen}
+\setbeamerfont{block title}{size=\large,series=\bf}
+\setbeamercolor{upper separation line head}{fg=uofagreen}
+
+\setbeamercolor{bibliography entry author}{fg=black}
+
+\setbeamercolor{alerted text}{fg=uofa40}
+
+%\setbeamercolor{example text}{fg=white}
+\setbeamercolor{structure}{fg=uofagreen}
+
+\setbeamertemplate{itemize items}[bullet]
+\setbeamertemplate{navigation symbols}{}  % no navigation on a poster
+
+\setbeamercolor{math text}{fg=uofa32}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{block begin}{
+  \vskip.75ex
+  \begin{beamercolorbox}[rounded=true,ht=3.5ex,dp=0ex,center,leftskip=-1em,colsep*=.75ex]{block title}%
+    \usebeamerfont*{block title}%
+    {\begin{center}\insertblocktitle\end{center}}% phantom because of baseline problem
+  \end{beamercolorbox}%
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[rounded=true,leftskip=1em,colsep*=.75ex,sep=0.5ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+  }
+  \setbeamertemplate{block end}{
+  \end{beamercolorbox}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{headline}{  
+  \leavevmode
+\begin{beamercolorbox}[ht=0.01\paperheight,wd=\paperwidth]{thin line}
+%    \rule{0pt}{8pt}
+  \end{beamercolorbox}
+  
+  \vspace{-1cm}
+  
+  \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \begin{columns}[T,totalwidth=\paperwidth]
+      \begin{column}{.02\paperwidth}
+      \end{column}
+      
+      \begin{column}{.8\paperwidth}
+        \vskip8ex
+        \usebeamercolor{title in headline}{\color{fg}\textbf{\LARGE{\inserttitle}}\\[2ex]}
+%        \usebeamercolor{institute in headline}{\color{fg}\large{\insertinstitute}\\[1ex]}	
+		\vskip2ex
+      \end{column}
+      \begin{column}{.19\paperwidth}
+      \end{column}
+    \end{columns}
+    \begin{columns}
+    	\begin{column}{.05\paperwidth}
+    	\end{column}
+    	      
+    	\begin{column}{0.50\paperwidth}
+    	\usebeamercolor{author in headline}{\color{fg}\large{\insertauthor}}
+    	\end{column}
+    	\begin{column}{0.45\paperwidth}
+    		\begin{center}
+    		\vspace{-1cm}
+    		\includegraphics[height=3cm]{UA-CMPSCI-COLOUR}
+    		\end{center}
+    	\end{column}
+
+    \end{columns}
+    
+	\vskip2ex
+  \end{beamercolorbox}
+
+
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{0pt}{3pt}
+  \end{beamercolorbox}
+}
+
+%  \setbeamertemplate{headline}{  
+%    \leavevmode
+%    \begin{beamercolorbox}[sep=0.5cm,wd=.8\paperwidth]{headline}
+%      \usebeamercolor{title in headline}{\raggedleft\color{fg}\textbf{\LARGE{\inserttitle}}\\[1ex]}
+%      \usebeamercolor{author in headline}{\raggedleft\color{fg}\large{\insertauthor}\\[1ex]}
+%      \usebeamercolor{institute in headline}{\raggedleft\color{fg}\large{\insertinstitute}\\[1ex]}     
+%    \end{beamercolorbox}%
+%    \begin{beamercolorbox}[wd=.2\paperwidth]{logo in headline}
+%      \centering
+%      \LARGE{LOGO}
+%    \end{beamercolorbox}  
+
+
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[ht=0.01\paperheight,wd=\paperwidth]{thin line}
+%    \rule{0pt}{8pt}
+  \end{beamercolorbox}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Display a grid to help align images ... and it looks nice with this color scheme
+%\beamertemplategridbackground[1cm]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mode<all>
+
+% adapt height of imtemize rectangles
+\setbeamertemplate{itemize items}[triangle]
+\setbeamertemplate{itemize item}{\raisebox{0.12ex}{$\blacktriangleright$}\hskip0.1em}
+\setbeamertemplate{itemize subitem}{\raisebox{0.12ex}{$\triangleright$}\hskip0.1em}
+% or define your own template using \defbeamertemplate{itemize item}, see beameruserguide.pdf
+
+% equal font sizes for all levels
+\setbeamerfont{itemize/enumerate body}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\normalsize}
+
+\usefonttheme{professionalfonts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-master: "poster-surf"
+%%% End: 
