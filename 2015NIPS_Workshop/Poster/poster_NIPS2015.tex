@@ -123,12 +123,12 @@
 				\]
 				\item Measure of independence:
 					\[
-					D_4(\nu_1,\nu_2)	= \sup_{f\in\mathcal{F}} \big|\int f(s) \big(\nu_1(ds) -\nu_2(ds)\big) \big|,
+					D_4(\nu_1,\nu_2)	= \sup_{f\in\mathcal{F}} \left|\int f(s) \big(\nu_1(ds) -\nu_2(ds)\big) \right|,
 					\]
 				 $\mathcal{F}$: the set of all monomials up to degree $4$; 
-				  \[ \quad D_4^{(p,q)} (\nu)= \inf_{\mu_1,\mu_2} D_4(\mu_1\otimes \mu_2,\nu).
+				  \[ \quad D_4^{(d)} (\nu)= \inf_{\mu_1,\mu_2} D_4(\mu_1\otimes \mu_2,\nu).
 				  \]
-				  $\mu_1$ and $\mu_2$ range over all measures over $\real^p$ and $\real^q$.
+				  $\mu_1, \mu_2$ range over all measures over $\real^d$.
 			\end{itemize}
 		\end{block}
 		
@@ -143,7 +143,7 @@
 	\begin{column}{.32\textwidth}% the right size for a 3-column layout
 		\begin{block}{The Non-stochastic Setting (Con't)}
 			\begin{itemize}
-				\item Measure Gaussianness:
+				\item Measure of normality:
 					\begin{align*}
 							\MoveEqLeft \kappa^2(\mu)  =   \max_{1\le i,j\le d} \sum_{k,l} 
 							\big\{ 
@@ -154,14 +154,14 @@
 					where $M_{a,\dots,z}(\mu) = \int y_a \dots y_z \mu(dy)$.
 				\item Measure of centrality: 
 					\[
-				 	N(\nu) = ||\int x \nu(dx) ||_F
+				 	N(\nu) = \left\|\int x \nu(dx) \right\|_F
 					\]
 				\item Accuracy of reconstruction:
 					\[
 					d(\hat{A},A) = \inf_{
 						 \substack{\pi \in \mathrm{Perm}([d])\\
 						 c\in \real^d}} \max_{k} 
-						|| c_k A_{:\pi(k)} - A_{:k} ||_2\,.
+						\| c_k A_{:\pi(k)} - A_{:k} \|_2\,.
 					\]
 			\end{itemize}
 		\end{block}
@@ -213,19 +213,20 @@
 					\end{itemize}
 		\end{block}
 		\vspace{0.5ex}
-			\begin{block}{Hsu and Kakade's method (HKICA)}
+			\begin{block}{Hsu and Kakade's Method (HKICA)}
 				\begin{figure}
 				\begin{algorithmic}[1]
 					\STATE Let $f(\eta) = \EEp{(\eta^{\top}x)^4} - 3 \EEp{(\eta^{\top}x)^2}^2$.
 					\STATE  Choose $\phi$ and $\psi$. (How?)
 					\STATE Let $T(\phi) = \nabla^2 f(\phi)$. Then 
-						\[T(\phi) = AK \triangle\left( (\sigma_1,\ldots,  \sigma_d)\right)A^{\top},
+						\[T(\phi) = AK \left\langle \sigma_1,\ldots,  \sigma_d\right\rangle A^{\top},
 						\]
 						where $\sigma_i = \left(\phi^{\top}A_i\right)^2$ and $K$ is some diagonal matrix.
 					\STATE Let $M = T(\phi)(T(\psi))^{-1}$. Then 
-						\[M = A \triangle \left( \lambda_1, \ldots, \lambda_d \right) A^{-1},
+						\[M = A \left\langle \lambda_1, \ldots, \lambda_d \right\rangle A^{-1},
 						\]
 						where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
+						\vspace{0.5cm}
 					\STATE Do an eigen-decomposition of $M$ to recover $A$, assuming all $\lambda_i$'s are distinct.
 				\end{algorithmic}
 				\end{figure}
@@ -243,7 +244,7 @@
 			\vspace{0.5ex}
 		\begin{block}{Our method: Deterministic ICA (DICA)}	
 			\begin{itemize}
-				\item Theoretical analysis shows that the performance depends on $\gamma_A^{-1}$, where
+				\item In its theoretical analysis,  the performance of HKICA depends on $\gamma_A^{-1}$, where
 					\[
 					\gamma_A = \min_{i\neq j} \left\vert \lambda_i - \lambda_j\right \vert.
 					\]
@@ -257,7 +258,7 @@
 				\STATE Calculate $T(\phi_1) = \nabla^2 f(B^{-\top}\phi_1)$ and $T(\phi_2) = \nabla^2 f(B^{-\top}\phi_2)$.
 				\STATE Calculate $M = T(\phi_1)(T(\phi_2))^{-1}$.
 					\[
-					M = R \triangle\left( \tilde{\lambda}_1, \ldots, \tilde{\lambda}_d \right)R^{\top},
+					M = R \left\langle\tilde{\lambda}_1, \ldots, \tilde{\lambda}_d \right\rangle R^{\top},
 					\]
 					where $\tilde{\lambda}_i = \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2$ and $R$ is some orthonormal matrix.
 				\STATE Do an eigen-decomposition of $M$ to recover $R$.
