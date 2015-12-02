@@ -17,6 +17,7 @@
 \usepackage{caption}
 \usepackage{algorithmic}
 \usepackage{tcolorbox}
+\usepackage{mathtools} % MoveEqLeft
 \setbeamertemplate{bibliography item}[text]
 
 \setlength{\leftmargini}{2cm}
@@ -73,7 +74,7 @@
 		\vspace{0.5ex}
 
 	
-		\begin{block}{Classical definition}
+		\begin{block}{Classical ICA}
 		Given a set of observations of random variables
 		$(x_1(t),x_2(t),\dots,x_d(t))$, 
 		assume that they are generated as a linear mixture of \alert{independent components}:
@@ -124,14 +125,14 @@
 	\end{column}
 	
 	\begin{column}{.32\textwidth}% the right size for a 3-column layout
-		\begin{block}{Non-stochastic settings}
+		\begin{block}{The Non-stochastic Setting}
 			\begin{itemize}
 				\item The source signals are a function of time: $s:[T] \to [-C,C]^d$.
 				\item Empirical distribution induced by function $s$:
 				\[
 					\nu^{(s)}(B)=\tfrac{1}{t}|\{\tau \in [t]: s(\tau) \in B\}|.
 				\]
-				\item Measure independence:
+				\item Measure of independence:
 					\[
 					D_4(\nu_1,\nu_2)	= \sup_{f\in\mathcal{F}} \big|\int f(s) \big(\nu_1(ds) -\nu_2(ds)\big) \big|,
 					\]
@@ -141,18 +142,18 @@
 				  $\mu_1$ and $\mu_2$ range over all measures over $\real^p$ and $\real^q$.
 				\item Measure Gaussianness:
 					\begin{align*}
-							\kappa^2(\mu)  = &  \max_{1\le i,j\le d} \sum_{k,l} 
+							\MoveEqLeft \kappa^2(\mu)  =   \max_{1\le i,j\le d} \sum_{k,l} 
 							\big\{ 
 							M_{i,j,k,l}(\mu) \\
 							& - M_{i,j}(\mu) M_{k,l}(\mu) -  M_{i,k}(\mu) M_{j,l}(\mu) \\
 							& - M_{i,l}(\mu) M_{j,k}(\mu)\big\}^2,
 					\end{align*}
 					where $M_{a,\dots,z}(\mu) = \int y_a \dots y_z \mu(dy)$.
-				\item Measure zero mean:
+				\item Measure of centrality: 
 					\[
 				 	N(\nu) = ||\int x \nu(dx) ||_F
 					\]
-				\item Accuracy measure:
+				\item Accuracy of reconstruction:
 					\[
 					d(\hat{A},A) = \inf_{
 						 \substack{\pi \in \mathrm{Perm}([d])\\
@@ -162,13 +163,14 @@
 			\end{itemize}
 		\end{block}
 		\vspace{0.5ex}
-		\begin{block}{Result}
-				\begin{tcolorbox}[title = \vspace{0.4cm}\textbf{\large Our Contributions} \vspace{0.4cm}, title filled, width = 0.93\textwidth, colback = uofagreen!10, colframe = red]
+		\begin{block}{Main Result}
+		\begin{center}
+				\begin{tcolorbox}[title = \vspace{0.4cm}\textbf{\large Our Contributions} \vspace{0.4cm}, title filled, width = 0.95\textwidth, colback = uofagreen!10, colframe = red]
 						\begin{itemize}
 						\vspace{0.5cm}
 						\item[$\diamondsuit$] Develop a randomized algorithm such that 
 						for any $A\in \real^{d\times d}$, and $x, s, \eps: [T] \rightarrow \real^d$ satisfying $x(t) = As(t)+\eps(t)$,
-						the algorithm returns $\hat{A}$ such that:
+						the algorithm returns $\hat{A}\in \real^{d \times d}$ such that:
 							\begin{itemize}
 								\item[--] The computational complexity is $O(d^3 T)$;
 								\item[--] Universal: No free parameters;
@@ -179,7 +181,7 @@
 									& + \kappa(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)}) \\
 										& +N(\nu^{(\eps)}) + N( \nu^{(s)}), \Theta(\mu) \Big);
 									\end{align*}
-								\item[] Here,$\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent, polynomial in the parameters.
+								\item[] Here, $\mathcal{C}(\mu)$ and $\Theta(\mu)$ are problem dependent constants, polynomial in the parameters.
 								\item[] $\Pi_0$ is the set of all product measures.
 							\end{itemize}
 						\vspace{1cm}
@@ -188,10 +190,12 @@
 							\item[--] the classic stochastic setting;
 							\item[--] Markov sources;
 							\item[--] deterministic source signals.
+							\item[]
 							\end{itemize} 
 						\end{itemize}	
 					\vspace{0.5ex}	
 				\end{tcolorbox}
+		\end{center}				
 		\end{block}
 	\end{column}
 %------------------------------------------------------------------------------
@@ -240,7 +244,7 @@
 					\]
 					where $\tilde{\lambda}_i = \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2$ and $R$ is some orthonormal matrix.
 				\STATE Do an eigen-decomposition of $M$ to recover $R$.
-				\STATE Return $\hat{A} = BR$ as an estimation of $A$. 
+				\STATE Return $\hat{A} = BR$ as an estimate of $A$. 
 			\end{algorithmic}
 			\end{figure}
 			\begin{itemize}
@@ -257,8 +261,8 @@
 		\end{itemize}
 		\end{block}
 		\vspace{0.5ex}
-		\begin{block}{Ackonwledgement}
-This work was supported by the Alberta Innovates Technology Futures and NSERC.
+		\begin{block}{Acknowledgements}
+This work was supported by Alberta Innovates Technology Futures and NSERC.
 		\end{block}
 	\end{column}
 		
