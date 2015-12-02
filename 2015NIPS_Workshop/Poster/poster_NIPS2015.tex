@@ -232,7 +232,7 @@
 						\[M = A \left\langle \lambda_1, \ldots, \lambda_d \right\rangle A^{-1},
 						\]
 						where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
-						\vspace{0.5cm}
+						\vspace{0.55cm}
 					\STATE Do an eigen-decomposition of $M$ to recover $A$, assuming all $\lambda_i$'s are distinct.
 				\end{algorithmic}
 				\end{figure}
@@ -254,21 +254,21 @@
 					\[
 					\gamma_A = \min_{i\neq j} \left\vert \lambda_i - \lambda_j\right \vert.
 					\]
-					\vspace{-1cm}
+					\vspace{-0.98cm}
 				\item $\gamma_A$ is not yet well understood.
 			\end{itemize}	
 			\begin{figure}
 			\begin{algorithmic}[1]
-				\STATE Sample $\psi$, $\phi_1$, and $\phi_2$ independently from standard normal distribution.
-				\STATE Calculate $\nabla^2 f(\psi)$ and $B$ such that $\nabla^2 f(\psi) = BB^{\top}$.
-				\STATE Calculate $T(\phi_1) = \nabla^2 f(B^{-\top}\phi_1)$ and $T(\phi_2) = \nabla^2 f(B^{-\top}\phi_2)$.
+				\STATE Sample $\psi$, $\phi_1$, and $\phi_2$ independently from standard normal distribution.\vspace{0.1ex}
+				\STATE Calculate $\nabla^2 f(\psi)$ and $B$ such that $\nabla^2 f(\psi) = BB^{\top}$.\vspace{0.1ex}
+				\STATE Calculate $T(\phi_1) = \nabla^2 f(B^{-\top}\phi_1)$ and $T(\phi_2) = \nabla^2 f(B^{-\top}\phi_2)$.\vspace{0.1ex}
 				\STATE Calculate $M = T(\phi_1)(T(\phi_2))^{-1}$.
 					\[
 					M = R \left\langle\tilde{\lambda}_1, \ldots, \tilde{\lambda}_d \right\rangle R^{\top},
 					\]
-					where $\tilde{\lambda}_i = \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2$ and $R$ is some orthonormal matrix.
-				\STATE Do an eigen-decomposition of $M$ to recover $R$.
-				\STATE Return $\hat{A} = BR$ as an estimate of $A$. 
+					where $\tilde{\lambda}_i = \left(\frac{\phi_1^{\top}R_i}{\phi_2^{\top}R_i}\right)^2$ and $R$ is some orthonormal matrix.\vspace{0.1ex}
+				\STATE Do an eigen-decomposition of $M$ to recover $R$.\vspace{0.1ex}
+				\STATE Return $\hat{A} = BR$ as an estimate of $A$. \vspace{0.1ex}
 			\end{algorithmic}
 			\end{figure}
 			\begin{itemize}
@@ -277,8 +277,7 @@
 			\end{itemize}
 			\bigskip
 		\end{block}
-		\vspace{0.5ex}
-		\bigskip
+		\vspace{0.48ex}
 		\bigskip
 		\bigskip
 		\begin{block}{Simulation Results}
@@ -290,6 +289,7 @@
 				\item DICA; 
 				\item MDICA (heuristic version of DICA)
 			\end{itemize}
+			\vspace{0.2ex}
 			\begin{columns}[t]
 			\column{0.5\textwidth}
 			\includegraphics[width=\textwidth]{barchart-A1-noisefree}
@@ -304,11 +304,11 @@
 			\ec
 			\end{columns}		
 			\bc
-			Reconstruction error of a ``blind guess'' : $2.2$.\\
+			Reconstruction error of a blind guess: $2.2$.\\
 			Error bars are based on $150$ runs.
 			\ec
 		\end{block}
-		\vspace{0.5ex}
+		\vspace{0.48ex}
 		\bigskip
 		\bigskip
 		\begin{block}{Conclusions}
@@ -318,7 +318,7 @@
 			\item New method: DICA. Universal, strong guarantees.
 			\end{itemize}
 		\end{block}		
-		\vspace{0.5ex}
+		\vspace{0.48ex}
 		\bigskip
 		\bigskip
 		\begin{block}{References}
@@ -326,7 +326,7 @@
 			\bibliographystyle{abbrvnat}
 			\bibliography{DICA}
 		\end{block}
-		\vspace{0.5ex}
+		\vspace{0.48ex}
 		\bigskip
 		\bigskip
 		\begin{block}{Acknowledgements}
