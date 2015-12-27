@@ -86,13 +86,13 @@
  Csaba Szepesv\'ari}
 
 
-\institute{University of Alberta}
+\institute{University of Alberta; Imperial College London}
 
 
-\date{July 9, 2015 }
+%\date{July 9, 2015 }
 %\logo{{\centering \includegraphics[width=5cm]{UA-CMPSCI-COLOUR.png} \hspace{0.5cm} \includegraphics[width=3cm]{logo.jpg}}\hspace{0.2cm}}
 
-\titlegraphic{\includegraphics[height=8mm]{UA-CMPSCI-COLOUR} \hspace{150pt} \includegraphics[height=10mm]{logo} \hspace{5pt}}
+\titlegraphic{\includegraphics[height=8mm]{UA-CMPSCI-COLOUR} \hspace{150pt} \includegraphics[height=10mm]{logo} \hspace{20pt}\includegraphics[height = 10mm]{Imperial_2_Pantones}}
 \date{\today}
 
 \makebeamertitle
@@ -171,7 +171,7 @@ where $A$ is some unknown matrix.}
 \bi
 \item Is $s_1(t)$ independent of $s_2(t)$? \uncover<+->{Sure!}
 \item Any two numbers are independent of each other! 
-\uncover<+->{All deterministic signal sources are fine then?}
+\uncover<+->{All deterministic signal sources are fine then?} What if $s_2(t) = 2s_1(t)$?
 \item Should we be worried about temporal dependencies? \uncover<+->{No?}
 \uncover<+->{What if $s_1(t) = s_1(t+1) = \dots$? }
 \item Can we redefine ICA in a more meaningful way?
@@ -179,34 +179,15 @@ where $A$ is some unknown matrix.}
 \ei
 }
 
+\section{Deterministic ICA}
+
 \frame{
 \frametitle{How to go beyond statistical analysis?}
+
 \begin{enumerate}[<+->]
-\item Perform a deterministic analysis of the algorithm, reducing the problem to perturbation analysis
-\item Perform statistical analysis on the size of perturbations when necessary or desired
+	\item Perform a deterministic analysis of the algorithm, reducing the problem to perturbation analysis
+	\item Perform statistical analysis on the size of perturbations when necessary or desired
 \end{enumerate}
-
-\begin{block}<+->{History}
-\bi
-\item Online learning (adversarial, regret analysis of learning algorithms) \citet{CBLu06:book}
-\item Regression analysis: \citet{vito2006learning}
-\item Value function estimation in RL: \citet{PiSze1206}
-\item ICA: This work
-\ei
-\end{block}
-}
-
-\section{Deterministic ICA}
-\begin{frame}{Outline}
-\tableofcontents[currentsection,currentsubsection]
-\end{frame}
-
-\frame{
-\frametitle{Deterministic ICA}
-\bi
-\item What signals can be separated?
-\item Better: To what extent can we separate the mixture of some signals? 
-\ei
 \uncover<+->{
 Let $[T] = \{1,\dots,T\}$.
 Sources:  $s:[T] \to [-C,C]^d$.
@@ -373,28 +354,13 @@ d(\hat{A}, A) \le &
 
 
 \section{Conclusions}
-\begin{frame}{Outline}
-\tableofcontents[currentsection]
-\end{frame}
-
-\frame{\frametitle{Conclusions and Open Questions}
+\frame{\frametitle{Conclusions}
 
 \bi
 \item[\ds] Independent Component Analysis without probabilities! 
 \item[\ds] Deterministic analysis: Cleaner, more general, should do it more often! Limits?
 \item[\ds] New method: DICA. Universal, strong guarantees.
 \ei
-
-\vspace{1.5cm}
-\uncover<+->{
-\centering 
-{\LARGE \textcolor{blue}{Questions?}}
-}
 }
 
-\frame{ \frametitle{References}
-\tiny
-\bibliographystyle{abbrvnat}
-\bibliography{DICA}
-}
 \end{document}
