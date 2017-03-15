@@ -1,4 +1,4 @@
-%% Do not edit unless you really know what you are doing.
+%\documentclass[english,handout]{beamer}
 \documentclass[english]{beamer}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
@@ -20,7 +20,7 @@
 \usepackage{rotating}
 \usepackage{natbib}
 \usepackage{multicol}
-
+\usepackage{ulem}
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
@@ -82,7 +82,7 @@
 
 
 \author{Ruitong Huang\hspace{4mm} Andr\'{a}s Gy\"{o}rgy \hspace{4mm}
- Csaba Szepesv\'ari}
+{\bf Csaba Szepesv\'ari}}
 
 
 \institute{University of Alberta}
@@ -118,6 +118,10 @@
 
 \frame{
 \includegraphics{ICABOOK2001_ObservedSignals}
+\vspace*{-0.1in}
+\bc
+$x(t)=As(t),t\in [T]:= \{1,\dots,T\}$
+\ec
 }
 
 \frame{
@@ -132,7 +136,7 @@
 %\vspace*{-0.5in}
 \begin{quotation}
 \uncover<+->{%
-``Using just this information on the \alert{statistical independence}, we can in fact estimate the coefficient matrix $W$ for the signals in Fig. 1.2. 
+``Using just this information on the \alert{statistical independence}, we can in fact estimate the coefficient matrix \sout{$W$} $A$ for the signals in Fig. 1.2. 
 }
 \uncover<+->{%
 What we obtain are the source signals in Fig. 1.3. (These signals were estimated by the FastICA algorithm that we shall meet in several chapters of this book.)}
@@ -320,7 +324,7 @@ Accuracy measure:
 d(\hat{A},A) = \inf_{
 	 \substack{\pi \in \mathrm{Perm}([d])\\
 	 c\in \R^d}} \max_{k} 
-	|| c_k A_{:\pi(k)} - A_{:k} ||_2\,.
+	|| c_k \hat{A}_{:\pi(k)} - A_{:k} ||_2\,.
 \]
 }
 }
@@ -395,24 +399,29 @@ Moment methods: \citep{frieze1996learning,DHsu2012, arora2012provable,goyal2014f
 
 
 \section{Results}
+\subsection{Main result}
 \begin{frame}{Outline}
 \tableofcontents[currentsection]
 \end{frame}
 
-\frame{ \frametitle{Result}
-There exist a randomized method to estimate $A$ from $(x(t))_{t=1}^T$, with $x(t)=A s(t) + \eps(t)$, $t=1,\dots,T$ s.t.:
+\frame{ \frametitle{Main Result}
+There exist a randomized algorithm DICA that maps $(x(t))_{t=1}^T\in \R^{d\times T}$ to $\hat{A}\in \R^{d\times d}$ such that
+for all $(x,s,A)$, $x(t)=A s(t) + \eps(t)$, $t=1,\dots,T$,
+\medskip
 \bi
-\item The computational complexity is $O(d^3 T)$;
-\item With high probability, the output $\hat{A}$ satisfies
+\setlength\itemsep{1em}
+\item the computational complexity of DICA is $O(d^3 T)$;
+\item with high probability, the output $\hat{A}$ satisfies
 	\[
-	d(\hat{A},A) \le \theta_1 \min( D_4 + 1/\sqrt{T}, \theta_2 )\,.
+	d(\hat{A},A) \le \theta_1 \min( D_4(s) + 1/\sqrt{T}, \theta_2 )\,,
 	\]
-\item Here, $\theta_1,\theta_2$ problem dependent, polynomial in the parameters.
+%\item[] 
+where $\theta_1,\theta_2$ are problem-dependent, polynomial in the ``parameters'' (scales, conditioning, kurtosis).
 \ei
 }
 
 
-\subsection{Our algorithm: Deterministic ICA}
+\subsection{The DICA (Deterministic ICA) Algorithm}
 \begin{frame}{Outline}
 \tableofcontents[currentsection]
 \end{frame}
@@ -489,14 +498,14 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 }
 \fi
 
-\frame{ \frametitle{Our issue with the HK method}
+\frame{ \frametitle{The issue with the HK method}
 {\large{Problem: Minimal gap of the eigenvalues.}}			
 \bi
 \item Theoretical analysis shows that the performance depends on $\gamma_A^{-1}$, where
 	\[
 	\gamma_A = \min_{i\neq j} \left\vert \lambda_i - \lambda_j\right \vert.
 	\]
-\item $\gamma_A$ is not yet well understood%
+\item $\gamma_A$ is not  well understood%
 \footnote{Is $\gamma_A^{-1}$ polynomially bounded in $d$?}
 %\item[] in particular, it is not known whether $\gamma_A^{-1} = \mathrm{Poly}(d,A)$\,.
 \ei
@@ -517,7 +526,7 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 {\footnote{
 \uncover<+->{Recall: $f(\eta) = \EEp{(\eta^{\top}x)^4} - 3 \EEp{(\eta^{\top}x)^2}^2$}}}
 \item[--] Calculate $T(\phi_1) = \nabla^2 f(B^{-\top}\phi_1)$ and $T(\phi_2) = \nabla^2 f(B^{-\top}\phi_2)$.
-\item[--] Calculate $M = T(\phi_1)(T(\phi_2))^{-1}$.
+\item[--] Calculate $M = T(\phi_1)(T(\phi_2))^{-1}$. Note:
 	\[
 	M = R \,\mathrm{diag}\left( \tilde{\lambda}_1, \ldots, \tilde{\lambda}_d \right)R^{\top},
 	\]
@@ -582,7 +591,7 @@ where $\lambda_i = \left(\frac{\phi^{\top}A_i}{\psi^{\top}A_i}\right)^2$.
 \frame{
 \frametitle{Sources}
 
-BPSK sources, $T=20,000$:
+BPSK (binary phase-shift keying) sources, $T=20,000$:
 \bc
 \includegraphics[width=0.75\textwidth]{Diagrams/Hidden-noisefree}
 \ec
@@ -641,7 +650,7 @@ Reconstruction:
 \fi
 
 \frame{
-\frametitle{Turf: Noise and coherence}
+\frametitle{The Turf: Noise and coherence}
 \begin{columns}[t]
 \column{0.5\textwidth}
 \includegraphics[width=\textwidth]{Diagrams/barchart-A1-noisefree}
@@ -727,35 +736,79 @@ Error bars are based on $150$ runs.
 }
 \fi
 
-\section{Conclusions}
+\section{Big Picture}
+
 \begin{frame}{Outline}
 \tableofcontents[currentsection]
 \end{frame}
 
-\frame{\frametitle{Conclusions and Open Questions}
+\frame{\frametitle{Statistical Unsupervised Learning (Generative)}
+\begin{center}
+\includegraphics[width=\textwidth]{StatLearning}
+\end{center}
+}
+
+\frame{\frametitle{Agnostic Statistical Unsupervised Learning (New, \footnotesize{unexplored})}
+\begin{center}
+\includegraphics[width=\textwidth]{StatAgnosticLearning}
+\end{center}
+}
+
+\frame{\frametitle{Agnostic \sout{Statistical} Unsupervised Learning (New: \footnotesize{This work})}
+\begin{center}
+\includegraphics[width=\textwidth]{AgnosticLearning}
+\end{center}
+}
+
+
+\section{Conclusions}
+
+\begin{frame}{Outline}
+\tableofcontents[currentsection]
+\end{frame}
+
+\frame{\frametitle{ICA Conclusions}
+\bi
+\item[\ds] Independent Component Analysis without generative models! 
+\item[\ds] New method: DICA. Universal, strong guarantees. Reproduces and strengthens previous results.
+\item[\ds] In practice, moment-methods are indeed more robust to noise.
+\item[\ds] Deterministic analysis: Cleaner, more general, should do it more often! Limits? Lower bounds?
+\item[\ds] Questions:
+\bi
+\item Why does coherence help?
+\item HKICA is great! Why? MDICA is also good. Why?
+\item ``Recursive versions'': No significant advantage was found (limited study?).
+\ei
+\ei
+\medskip
+\uncover<+->{Code: \url{https://github.com/Armstring/Deterministic-ICA}}
+}
+
+
+\frame{\frametitle{General Conclusions and Open Questions}
 
 \bi
-\item[\ds] Independent Component Analysis without probabilities! 
-\item[\ds] Deterministic analysis: Cleaner, more general, should do it more often! Limits?
-\item[\ds] New method: DICA. Universal, strong guarantees.
-\item[\ds] In practice, moment-methods are indeed more robust to noise.
-\item[\ds] Why does coherence help?
-\item[\ds] HKICA is great! Why? MDICA is also good. Why?
-\item[\ds] ``Recursive versions'': No significant advantage was found (limited study?).
+\setlength\itemsep{1em}
+\item[\ds] Unsupervised learning: \\
+$\qquad$ Generative Statistical $\Rightarrow$ 
+ Agnostic Statistical $\Rightarrow$ 
+ Agnostic
+\item[\ds] Apply to topic modeling, GMMs, multi-view, HMMs/time series, $\dots$? Control?
+\item[\ds] Differences to the statistical approach: Deterministic stability analyis separated from probabilistic arguments. What are the limits?
+\item[\ds] What is the right measure for ``data fitness''?
+\item[\ds] Relationship to ``online learning'' (i.e., sequential regret minimization)?
 \ei
+\bigskip
+\bigskip
 
 \uncover<+->{
 \centering 
 {\LARGE \textcolor{blue}{Questions?}}
 
-\mbox{}\\
-
-Code: \url{https://github.com/Armstring/Deterministic-ICA}
+}
 
 }
 
-
-}
 
 \if0
 \frame{ \frametitle{Simulation results} 
