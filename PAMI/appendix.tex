@@ -920,8 +920,9 @@ the estimation error of \\ ${V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{
 \end{align*}
 Also, by Proposition \ref{prop:maximalGapCauchy} with probability at least $1-2\delta$ the maximal spacing of the diagonal elements of $\Lambda_{1:m}$ satisfying
 \begin{align*}
-& \max_i\min_{j\neq i} |Z_i^2 - Z_j^2| \ge \frac{\delta}{2}\left(\frac{\delta}{d}\right)^{1/(d-1)}\ge \frac{2\delta}{\pi^2 \log(d/\delta)}. \ge \frac{\delta^2}{2d}
+& \max_i\min_{j\neq i} |Z_i^2 - Z_j^2| \ge \frac{\delta}{2}\left(\frac{\delta}{d}\right)^{1/(d-1)}\ge \frac{\delta^2}{4},
 \end{align*}
+where for the last inequality we use $d^{1/(d-1)} \le 2$ and $\delta^{d/(d-1)} \ge \delta^2$.
 
 Now consider the error after the eigen-decomposition of ${V^{(k-1)}}^\top \hat{M}V^{(k-1)}$. Assume the maximal gap in $\Lambda_{1:m}$ divides $\Lambda_{1:m}$ into $\Lambda_{1:t}$ and $\Lambda_{t+1:m}$.
 Let $E ={V^{(k-1)}}^\top \hat{M}V^{(k-1)} - {V^{(k-1)}}^\top\bar{R}_{1:m}\Lambda_{1:m} \bar{R}_{1:m}^{\top} V^{(k-1)}$, and 
@@ -938,20 +939,20 @@ F_{3} & F_{4} \\
 It is easy to see that if $\frac{\delta^2}{2d} \ge 4\|E\|_2 $, then the conditions of Theorem 2.8 in Chapter V, \citep{stewart1990matrix} are satisfied. Thus,
 
 \[
-E_k \le \frac{4}{\frac{\delta^2}{2d}}\left(Q_{\text{recur}}+ E_{k-1}^2 \frac{9(d+1)^2}{\pi^2\delta^2}\right) = \frac{8dQ_{\text{recur}}}{\delta^2} + \frac{72d(d+1)^2 }{\pi^2\delta^4}E_{k-1}^2.
+E_k \le \frac{4}{\frac{\delta^2}{4}}\left(Q_{\text{recur}}+ E_{k-1}^2 \frac{9(d+1)^2}{\pi^2\delta^2}\right) = \frac{16Q_{\text{recur}}}{\delta^2} + \frac{72d(d+1)^2 }{\pi^2\delta^4}E_{k-1}^2.
 \]
 
 \begin{prop}[From the first version of \citep{vempala2014max}]
 	Fix $a,b>0$ where $4a/b^2 \le 1$, and define the recurrence $y_{i+1} = a + (y_i/b)^2$ and $y_i = 0$. Then $y_i \le 2a $ for all $i$.
 \end{prop}
-Therefore, given that $Q_{\text{recur}} \le \frac{\pi^2\delta^6}{576d^2(d+1)^2}$, for $0\le k\le d$,
+Therefore, given that $Q_{\text{recur}} \le \frac{\pi^2\delta^6}{1152d(d+1)^2}$, for $0\le k\le d$,
 \[
-E_k \le \frac{16d}{\delta^2} Q_{\text{recur}}. 
+E_k \le \frac{32}{\delta^2} Q_{\text{recur}}. 
 \]
 Thus Line 6 in Algorithm \ref{alg:HKICA_recur} returns a matrix $\hat{R}$ s.t.
 \begin{align*}
 & \|\hat{R} - R^*R\|_2 = 2-2\cos(\Theta)= 2 - 2\sqrt{1-\sin^2(\Theta)} \\
-& \qquad \le 2 - 2\sqrt{1- \frac{256d^2}{\delta^4} Q_{\text{recur}}^2}\,.
+& \qquad \le 2 - 2\sqrt{1- \frac{1024}{\delta^4} Q_{\text{recur}}^2}\,.
 \end{align*}
 Therefore,
 \begin{align*}
@@ -969,11 +970,11 @@ Also, given that $\bar{\xi} \le 1/2$, by Lemma \ref{lem:inversevariation}, $\|B^
 Adding all the terms together,
 \begin{align*}
 & \| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2\\
-& \quad \le \sigma_{\max}L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\left(  2 - 2\sqrt{1- \frac{256d^2}{\delta^4} Q_{\text{recur}}^2}\right) + 2\bar{\xi}\right).
+& \quad \le \sigma_{\max}L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\left(  2 - 2\sqrt{1- \frac{1024}{\delta^4} Q_{\text{recur}}^2}\right) + 2\bar{\xi}\right).
 \end{align*}
 Note that for a small enough $\eps$, $\sqrt{1-\eps} \ge 1-\frac{2\eps}{3}$. Thus, given large enough $T$ such that $Q_{\text{recur}}$ is small enough,
 \begin{align*}
-\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le & \sigma_{\max}L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\frac{512d^2}{3\delta^4} Q_{\text{recur}}^2+ 2\bar{\xi}\right) \\
+\| \hat{B}\hat{R} - AD_{\phi}^{1/2}K^{1/2}\|_2 \le & \sigma_{\max}L_uA_{(2,\max)}\kappa_{\max}^{1/2}\left((1+\bar{\xi})^{1/2}\frac{2048}{3\delta^4} Q_{\text{recur}}^2+ 2\bar{\xi}\right) \\
 \le & \mathcal{C}(\mu) \min\left(K^2+K, \Theta(\mu) \right),
 \end{align*}
 where $K = D_4(\nu^{(s)},\mu)+ \cQ(\nu^{(\eps)}) + D_4^{(d,d)}(\nu^{(As,\eps)})
